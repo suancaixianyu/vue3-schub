@@ -10,17 +10,16 @@
       <el-main :style="maincontainer">
         <router-view></router-view>
       </el-main>
-      <el-footer v-if="cfg.isshow" :style="container" style="height: 30px">
-      </el-footer>
+      <el-footer v-if="cfg.isshow" :style="container" style="height: 30px"> </el-footer>
     </el-container>
   </div>
 </template>
 
 <script lang="ts">
-import { provide, ref, onUpdated } from "vue";
-import Cfg from "@/config/config";
+import { provide, ref, onUpdated } from "vue"
+import Cfg from "@/config/config"
 /** 顶部导航栏 */
-import NavigationMenu from "@comps/navigation/NavigationMenu.vue";
+import NavigationMenu from "@comps/navigation/NavigationMenu.vue"
 
 /** 页面主体框架 */
 export default {
@@ -29,40 +28,31 @@ export default {
     NavigationMenu,
   },
   setup() {
-    let windowwidth = ref(document.body.clientWidth);
+    let windowwidth = ref(document.body.clientWidth)
 
-    let immediate = true;
+    let immediate = true
     // 窗口变化监听
     window.onresize = () => {
       if (immediate) {
-        immediate = false;
+        immediate = false
         setTimeout(() => {
-          windowwidth.value = document.body.clientWidth;
-          immediate = true;
-        }, 200);
+          windowwidth.value = document.body.clientWidth
+          immediate = true
+        }, 200)
       }
-    };
+    }
 
     onUpdated(() => {
-      console.log("更新组件");
-    });
-    let theme = ref("cupcake");
-    provide("windowwidth", windowwidth);
-    provide("theme", theme);
+      console.log("更新组件")
+    })
+    let theme = ref("cupcake")
+    provide("windowwidth", windowwidth)
+    provide("theme", theme)
     return {
       ...Cfg.config.homestyle,
-    };
+    }
   },
-};
-
-// const body = document.querySelector("body");
-// body.addEventListener("mouseenter", () => {
-//   body.style.animationPlayState = "running";
-// });
-
-// body.addEventListener("mouseleave", () => {
-//   body.style.animationPlayState = "paused";
-// });
+}
 </script>
 
 <style>
@@ -101,8 +91,7 @@ export default {
 
 *::-webkit-scrollbar-thumb {
   /* 设置滚动条的颜色 */
-  background-image: url("../assets/icon/mifengup.svg"),
-    url("../assets/icon/mifengbottom.svg");
+  background-image: url("../assets/icon/mifengup.svg"), url("../assets/icon/mifengbottom.svg");
   background-position:
     center top,
     center bottom;

@@ -37,14 +37,14 @@ export default {
           date: "2023-07-21 11:12",
         },
       ],
-    };
+    }
   },
   methods: {
     goPublish() {
-      this.$router.push({ name: "ModPublish" });
+      this.$router.push({ name: "ModPublish" })
     },
   },
-};
+}
 </script>
 <style scoped>
 .el-header {

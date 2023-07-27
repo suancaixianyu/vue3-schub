@@ -64,11 +64,9 @@
               <div>[工业2]工业时代(Industrial II)</div>
             </div>
             <div class="description-line">
-              [h1=简介]工业2是围绕 Minecraft
-              生活现代化和生产自动化两个主题而展开的 Minecraft 模组，由
-              IndustrialCraft2 Dev Team
-              开发并维护。它在工业1的基础上发展而来，引入了名为 [EU] 能量单元
-              (Energy Unit)
+              [h1=简介]工业2是围绕 Minecraft 生活现代化和生产自动化两个主题而展开的 Minecraft
+              模组，由 IndustrialCraft2 Dev Team 开发并维护。它在工业1的基础上发展而来，引入了名为
+              [EU] 能量单元 (Energy Unit)
               的电力能源系统，以及对应的发电设备，并以此为基础添加了大量相关物品、方块以及机器。其内容涉及资源处理、矿物采集、农业等多个主题...
             </div>
             <div class="btn-line">
@@ -93,18 +91,18 @@
 </template>
 
 <script lang="ts">
-import { Grid } from "@element-plus/icons-vue";
-import IconTechnology from "@/components/icons/mod/technology";
-import IconMagic from "@/components/icons/mod/magic";
-import IconAdventure from "@/components/icons/mod/adventure";
-import IconAgriculture from "@/components/icons/mod/agriculture";
-import IconLibrary from "@/components/icons/mod/library";
-import ScLogo from "@/components/icons/ScLogo";
-import IconServer from "@/components/icons/mod/server";
-import ModFlag from "@/components/mod/flag";
-import IconHot from "@/components/icons/common/hot";
-import LikeIcon from "@/components/icons/Like";
-import IconDown from "@/components/icons/common/down";
+import { Grid } from "@element-plus/icons-vue"
+import IconTechnology from "@/components/icons/mod/technology"
+import IconMagic from "@/components/icons/mod/magic"
+import IconAdventure from "@/components/icons/mod/adventure"
+import IconAgriculture from "@/components/icons/mod/agriculture"
+import IconLibrary from "@/components/icons/mod/library"
+import ScLogo from "@/components/icons/ScLogo"
+import IconServer from "@/components/icons/mod/server"
+import ModFlag from "@/components/mod/flag"
+import IconHot from "@/components/icons/common/hot"
+import LikeIcon from "@/components/icons/Like"
+import IconDown from "@/components/icons/common/down"
 export default {
   name: "ModList",
   components: {
@@ -122,12 +120,12 @@ export default {
     Grid,
   },
   data() {
-    return {};
+    return {}
   },
   methods: {
     goPublish() {},
   },
-};
+}
 </script>
 <style scoped>
 .filter-item {

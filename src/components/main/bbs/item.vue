@@ -16,20 +16,11 @@
     <!-- 中部 -->
     <el-container>
       <el-aside width="70%">
-        <el-text class="mx-1 time" size="large" tag="b">{{
-          item.title
-        }}</el-text>
-        <el-text class="mx-1 time" style="text-align: left">{{
-          item.summary
-        }}</el-text>
+        <el-text class="mx-1 time" size="large" tag="b">{{ item.title }}</el-text>
+        <el-text class="mx-1 time" style="text-align: left">{{ item.summary }}</el-text>
       </el-aside>
       <el-main style="padding: 0px; text-align: right">
-        <el-image
-          v-if="item.cover"
-          style="height: 80px"
-          :src="item.cover"
-          fit="cover"
-        />
+        <el-image v-if="item.cover" style="height: 80px" :src="item.cover" fit="cover" />
       </el-main>
     </el-container>
     <!-- 底部 -->
@@ -53,13 +44,14 @@
 </template>
 
 <script lang="ts">
-import LikeIcon from "@/components/icons/Like.vue";
-import UserHead from "@/components/parts/UserHead.vue";
-import { reactive, toRefs } from "vue";
-import { ElMessage } from "element-plus";
+import LikeIcon from "@/components/icons/Like.vue"
+import UserHead from "@/components/parts/UserHead.vue"
+import { reactive, toRefs } from "vue"
+import { api } from "@/apitypes"
+import { ElMessage } from "element-plus"
 
-import Method from "@/globalmethods";
-import Cfg from "@/config/config";
+import Method from "@/globalmethods"
+// import Cfg from "@/config/config";
 
 export default {
   name: "BbsItem",
@@ -80,26 +72,26 @@ export default {
       isDoGooding: false,
       isDoBading: false,
       goodNum: 0,
-    });
-    data.headUrl = Method.getHostUrl(props.item.author.headurl);
-    data.time = Method.formatBbsTime(props.item.time);
-    data.goodNum = parseInt(props.item.likes);
+    })
+    data.headUrl = Method.getHostUrl(props.item.author.headurl)
+    data.time = Method.formatBbsTime(props.item.time)
+    data.goodNum = parseInt(props.item.likes)
     function doGood() {
       //帖子点赞
-      data.isDoGooding = true;
-      Method.api_get(`/bbs/good/${props.item.id}`).then((res) => {
-        let code = res.data.code;
-        data.isDoGooding = false;
-        if (code === 200) data.goodNum += parseInt(res.data.data);
+      data.isDoGooding = true
+      Method.api_get(`/bbs/good/${props.item.id}`).then((res: any) => {
+        let obj = res.data as api
+        data.isDoGooding = false
+        if (obj.code === 200) data.goodNum += parseInt(obj.data)
         ElMessage({
-          type: code == 200 ? "success" : "error",
-          message: res.data.msg,
-        });
-      });
+          type: obj.code == 200 ? "success" : "error",
+          message: obj.msg,
+        })
+      })
     }
-    return { ...toRefs(data), doGood };
+    return { ...toRefs(data), doGood }
   },
-};
+}
 </script>
 
 <style scoped>

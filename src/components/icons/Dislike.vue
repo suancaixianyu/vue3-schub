@@ -20,5 +20,5 @@
 <script lang="ts">
 export default {
   name: "DislikeIcon",
-};
+}
 </script>

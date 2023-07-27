@@ -1,71 +1,71 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
 
 const routes: RouteRecordRaw[] = [
   /** 主页 */
   {
-    path: '/',
-    name: 'PlateBox',
-    component: () => import("@comps/main/PlateBox"),
+    path: "/",
+    name: "PlateBox",
+    component: () => import("@comps/main/PlateBox.vue"),
   },
   /** 帖子列表 */
   {
-    path: '/postlist/:chatid',
-    name: 'PostPage',
+    path: "/postlist/:chatid",
+    name: "PostPage",
     component: () => import("@comps/main/PostPage.vue"),
     children: [
       {
-        name: 'xiangqing',
-        path: ':id',
+        name: "xiangqing",
+        path: ":id",
         component: () => import("@comps/main/cards/DetailPlate.vue"),
       },
     ],
   },
   /** 用户主页 */
   {
-    path: '/user',
-    name: 'UserIndex',
+    path: "/user",
+    name: "UserIndex",
     component: () => import("@comps/main/UserIndex.vue"),
   },
 
   {
-    path: '/setup',
-    name: 'UserSetup',
+    path: "/setup",
+    name: "UserSetup",
     component: () => import("@comps/main/UserSetup.vue"),
   },
   /** 登录和注册 */
   {
-    path: '/login/:register?',
-    name: 'UserLogin',
+    path: "/login/:register?",
+    name: "UserLogin",
     component: () => import("@comps/main/UserLogin.vue"),
   },
   /** 发帖 */
   {
-    path: '/publish/:chatid',
-    name: 'publish',
+    path: "/publish/:chatid",
+    name: "publish",
     component: () => import("@comps/main/PublishPost.vue"),
   },
   /**发模组*/
   {
-    path: '/ModPublish',
-    name: 'ModPublish',
-    component: () => import("@comps/mod/publish.vue")
+    path: "/ModPublish",
+    name: "ModPublish",
+    component: () => import("@comps/mod/publish.vue"),
   },
   /**模组列表 or 资源大厅*/
   {
-    path: '/ModList',
-    name: 'ModList',
-    component: () => import("@comps/mod/list.vue")
+    path: "/ModList",
+    name: "ModList",
+    component: () => import("@comps/mod/list.vue"),
   },
   {
     path: "/ModDetail/:id",
-    name: 'ModDetail',
-    component: () => import("@comps/mod/detail.vue")
-  }
-];
+    name: "ModDetail",
+    component: () => import("@comps/mod/detail.vue"),
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
-export default router;
+export default router

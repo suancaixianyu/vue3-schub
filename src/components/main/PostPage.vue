@@ -1,11 +1,6 @@
 <template>
   <div style="padding: 0px 10px">
-    <el-row
-      :gutter="24"
-      style="height:100% overflow-y: 'scroll'"
-      class="row-bg"
-      justify="center"
-    >
+    <el-row :gutter="24" style="height:100% overflow-y: 'scroll'" class="row-bg" justify="center">
       <!-- 占位元素 -->
       <el-col :span="col.placeholder"></el-col>
       <el-col :span="col.postlist" style="padding: 4px 0px">
@@ -25,24 +20,14 @@
                   style="margin-right: 12px"
                   :style="inputstyle"
                 />
-                <button
-                  class="btn btn-sm"
-                  @click="search"
-                  style="margin: 0px"
-                  title="搜索"
-                >
+                <button class="btn btn-sm" @click="search" style="margin: 0px" title="搜索">
                   <el-icon>
                     <Search />
                   </el-icon>
                   <el-text v-if="btn">搜索</el-text>
                 </button>
                 <samp style="margin: 6px"></samp>
-                <button
-                  class="btn btn-sm"
-                  style="margin: 0px"
-                  title="发帖"
-                  @click="topublish"
-                >
+                <button class="btn btn-sm" style="margin: 0px" title="发帖" @click="topublish">
                   <el-icon>
                     <Edit />
                   </el-icon>
@@ -73,22 +58,14 @@
 </template>
 
 <script lang="ts">
-import {
-  ref,
-  toRefs,
-  reactive,
-  inject,
-  watch,
-  onMounted,
-  onUpdated,
-} from "vue";
-import type { Ref } from "vue";
-import { CSSProperties } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
-import Method from "@/globalmethods";
+import { ref, toRefs, reactive, inject, watch, onMounted, onUpdated } from "vue"
+import type { Ref } from "vue"
+import { CSSProperties } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { ElMessage } from "element-plus"
+import Method from "@/globalmethods"
 
-import PostListPlate from "./cards/PostListPlate.vue";
+import PostListPlate from "./cards/PostListPlate.vue"
 /** 帖子列表 */
 export default {
   name: "PostPage",
@@ -98,8 +75,8 @@ export default {
   },
   cateId: 0,
   setup() {
-    const route = useRoute();
-    const router = useRouter();
+    const route = useRoute()
+    const router = useRouter()
 
     const data = reactive({
       chatid: route.params.chatid,
@@ -142,10 +119,9 @@ export default {
           /** 帖子标题 */
           title: "标题",
           /** 内容摘要 */
-          summary: "哈哈哈，这是这个帖子41654616545616856156中的内容66666",
+          summary: "这是测试帖子标题",
           /** 所有的图片 */
-          cover:
-            "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
+          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
           /** 发帖时间 */
           time: 1688918819,
           /** 点赞 */
@@ -159,20 +135,20 @@ export default {
           },
         },
       ],
-    });
+    })
 
-    let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>;
+    let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>
     watch(windowwidth, (newValue) => {
-      pageup(newValue);
-    });
+      pageup(newValue)
+    })
 
     onMounted(() => {
-      data.isLoadingList = true;
-      pageup(windowwidth.value);
+      data.isLoadingList = true
+      pageup(windowwidth.value)
       Method.api_get(`/bbs/list/${route.params.chatid}`)
         .then((response: any) => {
-          data.isLoadingList = false;
-          let obj = response.data;
+          data.isLoadingList = false
+          let obj = response.data
           if (obj.code === 200) {
             obj.data.forEach((el: any) => {
               data.plate.push({
@@ -182,7 +158,9 @@ export default {
                 title: el.title,
                 /** 内容摘要 */
                 summary: el.summary,
+                /** 用户信息 */
                 author: el.author,
+                /** 图片列表 */
                 cover: el.cover,
                 /** 发帖时间 */
                 time: el.time,
@@ -190,142 +168,140 @@ export default {
                 likes: el.likes,
                 /** 评论 */
                 comments: el.comments,
-              });
-            });
+              })
+            })
           }
         })
         .catch((error) => {
+          data.isLoadingList = false
           ElMessage({
             type: "error",
             message: "获取列表失败",
-          });
-          console.error(error);
-        });
-    });
+          })
+          console.error(error)
+        })
+    })
 
     onUpdated(() => {
-      console.log("更新组件");
-      pageup(windowwidth.value);
-    });
+      console.log("更新组件")
+      pageup(windowwidth.value)
+    })
 
     /** 样式调整 */
     function pageup(width: number) {
-      console.log(route.params);
+      console.log(route.params)
       // 打开帖子
       if (route.params.id) {
         if (width <= 720) {
-          console.log("打开帖子，小于720");
+          console.log("打开帖子，小于720")
           data.col = {
             postlist: 0,
             detail: 24,
             placeholder: 0,
-          };
-          data.btn = true;
+          }
+          data.btn = true
           data.inputstyle = {
             width: "calc(100% - 104px)",
-          };
+          }
         } else if (width > 720 && width <= 900) {
-          console.log("打开帖子，大于720，小于1200");
+          console.log("打开帖子，大于720，小于1200")
           data.col = {
             postlist: 10,
             detail: 14,
             placeholder: 0,
-          };
-          data.btn = false;
+          }
+          data.btn = false
           data.inputstyle = {
             width: "calc(100% - 104px)",
-          };
+          }
         } else if (width > 900 && width <= 1200) {
           data.col = {
             postlist: 10,
             detail: 14,
             placeholder: 0,
-          };
-          data.btn = true;
+          }
+          data.btn = true
           data.inputstyle = {
             width: "calc(100% - 176px)",
-          };
+          }
         } else if (width > 1200) {
-          console.log("打开帖子，大于1200");
+          console.log("打开帖子，大于1200")
           data.col = {
             postlist: 10,
             detail: 14,
             placeholder: 0,
-          };
-          data.btn = true;
+          }
+          data.btn = true
           data.inputstyle = {
             width: "calc(100% - 176px)",
-          };
+          }
         }
       } else {
         // 关闭帖子
         if (width <= 720) {
-          console.log("关闭帖子，小于720");
+          console.log("关闭帖子，小于720")
           data.col = {
             postlist: 24,
             detail: 0,
             placeholder: 0,
-          };
-          data.btn = false;
+          }
+          data.btn = false
           data.inputstyle = {
             width: "calc(100% - 104px)",
-          };
+          }
         } else if (width > 720 && width <= 820) {
-          console.log("关闭帖子，大于720，小于820");
+          console.log("关闭帖子，大于720，小于820")
           data.col = {
             postlist: 18,
             detail: 0,
             placeholder: 3,
-          };
-          data.btn = false;
+          }
+          data.btn = false
           data.inputstyle = {
             width: "calc(100% - 104px)",
-          };
+          }
         } else if (width > 820 && width <= 1200) {
-          console.log("关闭帖子，大于820，小于1200");
+          console.log("关闭帖子，大于820，小于1200")
           data.col = {
             postlist: 18,
             detail: 0,
             placeholder: 3,
-          };
-          data.btn = true;
+          }
+          data.btn = true
           data.inputstyle = {
             width: "calc(100% - 176px)",
-          };
+          }
         } else if (width > 1200) {
-          console.log("关闭帖子，大于1200");
+          console.log("关闭帖子，大于1200")
           data.col = {
             postlist: 12,
             detail: 0,
             placeholder: 6,
-          };
-          data.btn = true;
+          }
+          data.btn = true
           data.inputstyle = {
             width: "calc(100% - 176px)",
-          };
+          }
         }
       }
     }
 
     /** 搜索结果 */
-    let outcomeplate = ref(data.plate);
+    let outcomeplate = ref(data.plate)
 
     /** 搜索（本地） */
     function search() {
-      console.log(outcomeplate.value);
+      console.log(outcomeplate.value)
       outcomeplate.value = data.plate.filter(function (object) {
-        return (
-          object.title.includes(data.searchinput) ||
-          object.summary.includes(data.searchinput)
-        );
-      });
+        return object.title.includes(data.searchinput) || object.summary.includes(data.searchinput)
+      })
     }
 
     /** 发帖 */
     function topublish() {
       router.push({
         path: `/publish/${data.chatid}`,
-      });
+      })
     }
 
     return {
@@ -333,7 +309,7 @@ export default {
       ...toRefs(data),
       search,
       topublish,
-    };
+    }
   },
-};
+}
 </script>

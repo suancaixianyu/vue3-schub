@@ -1,57 +1,29 @@
 <template>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-if="flag === 'agriculture'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-if="flag === 'agriculture'">
     <icon-agriculture></icon-agriculture>
     <div class="name">农业</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'adventure'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'adventure'">
     <icon-adventure></icon-adventure>
     <div class="name">冒险</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'library'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'library'">
     <icon-library></icon-library>
     <div class="name">Lib</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'magic'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'magic'">
     <icon-magic></icon-magic>
     <div class="name">魔法</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'technology'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'technology'">
     <icon-technology></icon-technology>
     <div class="name">科技</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'world'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'world'">
     <sc-logo></sc-logo>
     <div class="name">世界</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'texture'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'texture'">
     <sc-logo></sc-logo>
     <div class="name">材质包</div>
   </div>
@@ -59,19 +31,11 @@
     <sc-logo></sc-logo>
     <div class="name">皮肤</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'furniture'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'furniture'">
     <sc-logo></sc-logo>
     <div class="name">家具包</div>
   </div>
-  <div
-    class="item"
-    :class="active ? 'active' : ''"
-    v-else-if="flag === 'server'"
-  >
+  <div class="item" :class="active ? 'active' : ''" v-else-if="flag === 'server'">
     <icon-server></icon-server>
     <div class="name">服务器</div>
   </div>
@@ -81,13 +45,13 @@
   </div>
 </template>
 <script lang="ts">
-import IconAgriculture from "@/components/icons/mod/agriculture";
-import IconAdventure from "@/components/icons/mod/adventure";
-import IconLibrary from "@/components/icons/mod/library";
-import IconMagic from "@/components/icons/mod/magic";
-import IconTechnology from "@/components/icons/mod/technology";
-import ScLogo from "@/components/icons/ScLogo";
-import IconServer from "@/components/icons/mod/server";
+import IconAgriculture from "@comps/icons/mod/agriculture.vue"
+import IconAdventure from "@comps/icons/mod/adventure.vue"
+import IconLibrary from "@comps/icons/mod/library.vue"
+import IconMagic from "@comps/icons/mod/magic.vue"
+import IconTechnology from "@comps/icons/mod/technology.vue"
+import ScLogo from "@comps/icons/ScLogo.vue"
+import IconServer from "@comps/icons/mod/server.vue"
 export default {
   name: "ModFlag",
   components: {
@@ -103,7 +67,7 @@ export default {
     active: { type: Boolean },
     flag: { type: String },
   },
-};
+}
 </script>
 <style scoped>
 .item {

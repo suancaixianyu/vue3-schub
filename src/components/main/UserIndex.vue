@@ -14,36 +14,28 @@
         <el-tab-pane name="index">
           <template #label
             ><span class="custom-tabs-label"
-              ><el-icon>
-                <House /> </el-icon
-              ><span>主页</span></span
+              ><el-icon> <House /> </el-icon><span>主页</span></span
             ></template
           >
         </el-tab-pane>
         <el-tab-pane name="bbs">
           <template #label
             ><span class="custom-tabs-label"
-              ><el-icon>
-                <ChatLineSquare /> </el-icon
-              ><span>我的帖子</span></span
+              ><el-icon> <ChatLineSquare /> </el-icon><span>我的帖子</span></span
             ></template
           >
         </el-tab-pane>
         <el-tab-pane name="world">
           <template #label
             ><span class="custom-tabs-label"
-              ><el-icon>
-                <UploadFilled /> </el-icon
-              ><span>我的存档</span></span
+              ><el-icon> <UploadFilled /> </el-icon><span>我的存档</span></span
             ></template
           >
         </el-tab-pane>
         <el-tab-pane name="mod">
           <template #label
             ><span class="custom-tabs-label"
-              ><el-icon>
-                <Promotion /> </el-icon
-              ><span>我的模组</span></span
+              ><el-icon> <Promotion /> </el-icon><span>我的模组</span></span
             ></template
           >
         </el-tab-pane>
@@ -65,20 +57,15 @@
 
 <script lang="ts">
 // 用户主页
-import {
-  House,
-  ChatLineSquare,
-  UploadFilled,
-  Promotion,
-} from "@element-plus/icons-vue";
-import UserIndexPage from "@comps/user/zone-page/index.vue";
-import ModPage from "@comps/user/zone-page/mod.vue";
-import BbsPage from "@comps/user/zone-page/bbs.vue";
-import WorldPage from "@comps/user/zone-page/world.vue";
-import { ElMessage } from "element-plus";
-import { useRoute } from "vue-router";
-import Cfg from "@/config/config";
-import Method from "@/globalmethods";
+import { House, ChatLineSquare, UploadFilled, Promotion } from "@element-plus/icons-vue"
+import UserIndexPage from "@comps/user/zone-page/index.vue"
+import ModPage from "@comps/user/zone-page/mod.vue"
+import BbsPage from "@comps/user/zone-page/bbs.vue"
+import WorldPage from "@comps/user/zone-page/world.vue"
+import { ElMessage } from "element-plus"
+import { useRoute } from "vue-router"
+import Cfg from "@/config/config"
+import Method from "@/globalmethods"
 
 export default {
   name: "UserIndex",
@@ -94,7 +81,7 @@ export default {
   },
   methods: {
     onTabChange(e: any) {
-      this.activeTab = e.index;
+      this.activeTab = e.index
     },
   },
   data() {
@@ -107,34 +94,34 @@ export default {
       modList: [],
 
       userInfo: Cfg.config.userInfo,
-    };
+    }
   },
   created() {
-    let route = useRoute();
-    let userInfo = this.userInfo;
-    this.isLoading = true;
-    this.isSelf = userInfo.id === route.params.id;
+    let route = useRoute()
+    let userInfo = this.userInfo
+    this.isLoading = true
+    this.isSelf = userInfo.id === route.params.id
     Method.api_get(`/user/zone/1`).then((response: any) => {
-      let res = response.data;
-      this.isLoading = false;
+      let res = response.data
+      this.isLoading = false
       if (res.code == 200) {
         res.data.bbs.forEach((x: any) => {
-          x.create_time = Method.formatNormalTime(x.create_time);
-        });
-        this.bbsList = res.data.bbs;
-        this.modList = res.data.mod;
+          x.create_time = Method.formatNormalTime(x.create_time)
+        })
+        this.bbsList = res.data.bbs
+        this.modList = res.data.mod
         res.data.world.forEach((x: any) => {
-          x.type_name = Method.getScTypeName(x.file_type);
-          x.file_name = Method.getFileName(x.name);
-          x.create_time = Method.formatNormalTime(x.create_time);
-        });
-        this.worldList = res.data.world;
+          x.type_name = Method.getScTypeName(x.file_type)
+          x.file_name = Method.getFileName(x.name)
+          x.create_time = Method.formatNormalTime(x.create_time)
+        })
+        this.worldList = res.data.world
       } else {
-        ElMessage(res.msg);
+        ElMessage(res.msg)
       }
-    });
+    })
   },
-};
+}
 </script>
 
 <style scoped>

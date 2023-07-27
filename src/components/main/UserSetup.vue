@@ -6,24 +6,19 @@
       <el-input v-model="homestyle.maincontainer.padding" clearable />
     </el-form-item>
     <el-form-item label="抽屉菜单">
-      <input
-        type="checkbox"
-        class="toggle"
-        checked
-        v-model="homestyle.cfg.menu"
-      />
+      <input type="checkbox" class="toggle" checked v-model="homestyle.cfg.menu" />
     </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts">
-import Cfg from "@/config/config";
+import Cfg from "@/config/config"
 export default {
   name: "UserSetup",
   setup() {
     return {
       ...Cfg.config,
-    };
+    }
   },
-};
+}
 </script>

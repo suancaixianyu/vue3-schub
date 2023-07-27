@@ -1,7 +1,5 @@
 <template>
   <el-row :gutter="24" class="row-bg" justify="center">
-    <!-- 占位元素 -->
-    <el-col :span="col.placeholder"></el-col>
     <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister">
       <el-form
         label-position="top"
@@ -62,18 +60,12 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button plain v-loading="loading" @click="submitLogin('register')"
-            >注册</el-button
-          >
+          <el-button plain v-loading="loading" @click="submitLogin('register')">注册</el-button>
           <el-button plain @click="goLogin()">去登录</el-button>
         </el-form-item>
       </el-form>
     </el-col>
-    <el-col
-      :span="col.body"
-      :style="{ textAlign: 'center' }"
-      v-if="isregister === false"
-    >
+    <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister === false">
       <el-form>
         <el-form-item>
           <el-input v-model="loginconfig.user" placeholder="请输入用户名">
@@ -90,24 +82,20 @@
         <el-checkbox v-model="remember" label="记账账号" size="large" />
       </el-form-item>
       <el-form-item>
-        <el-button plain :loading="loading" @click="submitLogin('login')"
-          >登录</el-button
-        >
+        <el-button plain :loading="loading" @click="submitLogin('login')">登录</el-button>
         <el-button plain type="primary" @click="goRegister()">去注册</el-button>
       </el-form-item>
     </el-col>
-    <!-- 占位元素 -->
-    <el-col :span="col.placeholder"></el-col>
   </el-row>
 </template>
 
 <script lang="ts">
 // 登录与注册（找回密码，更换邮箱等操作都 可以 在此页）
-import { useRoute } from "vue-router";
-import Cfg from "@/config/config";
-import Method from "@/globalmethods";
+import { useRoute } from "vue-router"
+import Cfg from "@/config/config"
+import Method from "@/globalmethods"
 
-import { ElMessage } from "element-plus";
+import { ElMessage } from "element-plus"
 
 export default {
   name: "UserLogin",
@@ -135,97 +123,95 @@ export default {
       },
       col: {
         /** 表单宽度 */
-        body: 8,
+        body: 22,
         /** 占位元素宽度 */
-        placeholder: 8,
+        placeholder: 0,
       },
-    };
+    }
   },
   methods: {
     submitLogin(type: string) {
-      let userInfo = Cfg.config.userInfo;
+      let userInfo = Cfg.config.userInfo
 
-      if (this.loading) return;
+      if (this.loading) return
 
-      let configdata: object, url: string;
-      let infourl: string = "/user/info";
+      let configdata: object, url: string
+      let infourl: string = "/user/info"
       if (type === "login") {
-        configdata = this.loginconfig;
-        url = "/user/login";
+        configdata = this.loginconfig
+        url = "/user/login"
       } else {
-        configdata = this.regitser;
-        url = "/user/register";
+        configdata = this.regitser
+        url = "/user/register"
       }
-      this.loading = true;
+      this.loading = true
       Method.api_post(url, configdata)
         .then((response) => {
           if (response.data.code === 200) {
             if (type == "login") {
               Method.api_get(infourl).then((response2: any) => {
                 if (response2.data.code == 200) {
-                  this.loading = false;
+                  this.loading = false
                   if (this.remember) {
                     Method.localSet("loginInfo", {
                       user: this.loginconfig.user,
                       pass: this.loginconfig.pass,
                       remember: this.remember,
-                    });
+                    })
                   }
-                  userInfo.isLogin = true;
-                  userInfo.isLoginDialogVisible = false;
-                  response2.data.data.headurl = Method.getHostUrl(
-                    response2.data.data.headurl,
-                  );
-                  userInfo.data = response2.data.data;
+                  userInfo.isLogin = true
+                  userInfo.isLoginDialogVisible = false
+                  response2.data.data.headurl = Method.getHostUrl(response2.data.data.headurl)
+                  userInfo.data = response2.data.data
                 }
-              });
+              })
             }
             ElMessage({
               message: response.data.msg,
               type: "success",
-            });
+            })
           } else {
             ElMessage({
               message: response.data.msg,
               type: "error",
-            });
+            })
           }
         })
         .catch((error) => {
           ElMessage({
             type: "error",
             message: error,
-          });
-          this.loading = false;
-        });
+          })
+          this.loading = false
+        })
     },
     goRegister() {
-      this.isregister = true;
+      this.isregister = true
     },
     goLogin() {
-      this.isregister = false;
+      this.isregister = false
     },
   },
   created() {
-    const route = useRoute();
+    const route = useRoute()
     const loginInfo = Method.localGet("loginInfo", {
       remember: false,
       user: "",
       pass: "",
-    });
+    })
     if (loginInfo.remember) {
-      this.loginconfig.user = loginInfo.user;
-      this.loginconfig.pass = loginInfo.pass;
-      this.remember = loginInfo.remember;
+      this.loginconfig.user = loginInfo.user
+      this.loginconfig.pass = loginInfo.pass
+      this.remember = loginInfo.remember
     }
 
     if (route.params.register) {
-      this.isregister = true;
+      this.isregister = true
     } else {
-      this.isregister = false;
+      this.isregister = false
     }
   },
-};
+}
 </script>
 
 <style scoped>

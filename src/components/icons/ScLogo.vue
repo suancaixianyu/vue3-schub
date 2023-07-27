@@ -1,10 +1,5 @@
 <template>
-  <svg
-    viewBox="0 0 32 32"
-    :width="size"
-    :height="size"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg viewBox="0 0 32 32" :width="size" :height="size" xmlns="http://www.w3.org/2000/svg">
     <g stroke="null">
       <path
         fill="currentColor"
@@ -28,5 +23,5 @@ export default {
   props: {
     size: { type: Number, default: 25 },
   },
-};
+}
 </script>

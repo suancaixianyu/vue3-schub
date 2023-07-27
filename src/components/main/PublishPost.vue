@@ -8,12 +8,7 @@
         </template>
         <div class="title-line">
           <el-input class="my-input" v-model="config.title" />
-          <el-button
-            :loading="isPublishing"
-            class="btn btn-sm"
-            title="发帖"
-            @click="submit"
-          >
+          <el-button :loading="isPublishing" class="btn btn-sm" title="发帖" @click="submit">
             <el-icon>
               <Edit />
             </el-icon>
@@ -30,15 +25,15 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from "vue";
-import { ElMessage } from "element-plus";
-import { MdEditor } from "md-editor-v3";
-import "md-editor-v3/lib/style.css";
-import { useRoute, useRouter } from "vue-router";
+import { onMounted } from "vue"
+import { ElMessage } from "element-plus"
+import { MdEditor } from "md-editor-v3"
+import "md-editor-v3/lib/style.css"
+import { useRoute, useRouter } from "vue-router"
 
-import Cfg from "@/config/config";
+import Cfg from "@/config/config"
 
-import Method from "@/globalmethods";
+import Method from "@/globalmethods"
 export default {
   name: "PublishPost",
   components: {
@@ -53,52 +48,52 @@ export default {
         cate_id: 1,
         cover_src: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
       },
-    };
+    }
   },
   methods: {
     submit() {
-      console.log(this.config);
-      if (this.config.title === "") return ElMessage("请输入帖子标题");
-      else if (this.config.content === "") return ElMessage("请输入帖子内容");
-      this.isPublishing = true;
+      console.log(this.config)
+      if (this.config.title === "") return ElMessage("请输入帖子标题")
+      else if (this.config.content === "") return ElMessage("请输入帖子内容")
+      this.isPublishing = true
       Method.api_post("/bbs/add", this.config)
         .then((response) => {
-          this.isPublishing = false;
+          this.isPublishing = false
           ElMessage({
             type: "success",
             message: response.data,
             onClose: () => {
               this.router.push({
                 path: `/postlist/${this.route.params.chatid}`,
-              });
+              })
             },
-          });
+          })
         })
         .catch((error) => {
-          this.isPublishing = false;
+          this.isPublishing = false
           ElMessage({
             type: "error",
             message: "发送失败",
-          });
-          console.log(error);
-        });
+          })
+          console.log(error)
+        })
     },
   },
   setup() {
-    const router = useRouter();
-    const route = useRoute();
+    const router = useRouter()
+    const route = useRoute()
 
     onMounted(() => {
-      Cfg.config.homestyle.maincontainer.padding = "0px";
-      console.log("homestyle" + Cfg.config.homestyle.maincontainer.padding);
-    });
+      Cfg.config.homestyle.maincontainer.padding = "0px"
+      console.log("homestyle" + Cfg.config.homestyle.maincontainer.padding)
+    })
 
     return {
       router,
       route,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

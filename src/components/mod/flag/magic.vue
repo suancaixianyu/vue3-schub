@@ -24,7 +24,7 @@ export default {
   props: {
     active: { type: Boolean },
   },
-};
+}
 </script>
 <style scoped>
 .item {

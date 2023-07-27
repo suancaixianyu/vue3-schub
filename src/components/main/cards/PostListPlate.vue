@@ -11,8 +11,8 @@
 
 <script lang="ts">
 // 帖子卡片
-import BbsItem from "@comps/main/bbs/item.vue";
-import Method from "@/globalmethods";
+import BbsItem from "@comps/main/bbs/item.vue"
+import Method from "@/globalmethods"
 export default {
   name: "PostListPlate",
   components: {
@@ -37,14 +37,14 @@ export default {
     },
   },
   setup(props) {
-    let time = Method.formatBbsTime(props.item.time);
+    let time = Method.formatBbsTime(props.item.time)
     return {
       time,
       size: 35,
       role: "管理员",
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

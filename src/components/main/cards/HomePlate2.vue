@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs } from "vue"
 
 export default {
   name: "HomePlate2",
@@ -31,12 +31,12 @@ export default {
         maxHeight: "200px",
         boxShadow: `var(--el-box-shadow-light)`,
       },
-    });
+    })
     return {
       ...toRefs(data),
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -45,12 +45,7 @@ export default {
   width: 50vh;
   height: 150px;
   background: #ffffff;
-  background-image: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 1),
-      rgba(0, 0, 0, 1),
-      rgba(0, 0, 0, 0)
-    ),
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
     url("https://tse3-mm.cn.bing.net/th/id/OIP-C.5helr3rKyvKBZ4smxBLgdgHaNK?pid=ImgDet&rs=1");
 
   background-size: cover;

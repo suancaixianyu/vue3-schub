@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import XyHome from "@comps/XyHome.vue";
+import XyHome from "@comps/XyHome.vue"
 </script>
 
 <style>

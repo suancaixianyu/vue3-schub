@@ -10,19 +10,11 @@
           <el-header style="padding: 0px">
             <!-- 顶部按钮 -->
             <el-row :gutter="24">
-              <el-col
-                :span="24"
-                style="display: flex; justify-content: flex-end"
-              >
+              <el-col :span="24" style="display: flex; justify-content: flex-end">
                 <el-icon @click="flushed" :size="25" title="刷新" class="icon">
                   <Flushed />
                 </el-icon>
-                <el-icon
-                  @click="copytext"
-                  :size="25"
-                  title="复制链接"
-                  class="icon"
-                >
+                <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
                   <Link />
                 </el-icon>
                 <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -55,21 +47,9 @@
               <div class="large">评论</div>
               <div class="small">{{ sum.total }}</div>
               <div class="space"></div>
-              <div
-                class="filter"
-                :class="{ active: sort == 0 }"
-                @click="sortByTime"
-              >
-                最新
-              </div>
+              <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">最新</div>
               <div class="filter">|</div>
-              <div
-                class="filter"
-                :class="{ active: sort == 1 }"
-                @click="sortByHot"
-              >
-                最热
-              </div>
+              <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">最热</div>
             </label>
             <!-- 个人评论区 -->
             <div class="reply-body">
@@ -81,22 +61,17 @@
                   :size="size"
                   style="margin-right: 12px"
                 />
-                <el-input
-                  v-model="comments"
-                  autosize
-                  type="textarea"
-                  placeholder="发表评论"
-                />
-                <el-button icon="Edit" :loading="isReplying" @click="doReply"
-                  >发表</el-button
-                >
+                <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
+                <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
               </div>
               <!-- 回复列表 -->
               <div v-loading="isLoadingReply">
                 <OneReply
                   v-for="x in reply_list"
-                  :key="x."
-                  :x="{ ...x, shape, size }"
+                  :key="x"
+                  :x="{ ...x }"
+                  :shape="shape"
+                  :size="size"
                   @refreshEvent="refresh_reply_list"
                 />
               </div>
@@ -117,12 +92,7 @@
               <el-icon @click="flushed" :size="25" title="刷新" class="icon">
                 <Flushed />
               </el-icon>
-              <el-icon
-                @click="copytext"
-                :size="25"
-                title="复制链接"
-                class="icon"
-              >
+              <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
                 <Link />
               </el-icon>
               <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -177,18 +147,18 @@
 
 <script lang="ts">
 // 帖子详情卡片
-import { reactive, toRefs, onUpdated, onBeforeMount, inject, watch } from "vue";
-import type { Ref } from "vue";
-import { ElMessage } from "element-plus";
-import { useRoute, useRouter } from "vue-router";
-import Flushed from "@/components/icons/Flushed.vue";
-import UserHead from "@/components/parts/UserHead.vue";
-import OneReply from "@/components/parts/OneReply.vue";
+import { reactive, toRefs, onUpdated, onBeforeMount, inject, watch } from "vue"
+import type { Ref } from "vue"
+import { ElMessage } from "element-plus"
+import { useRoute, useRouter } from "vue-router"
+import Flushed from "@/components/icons/Flushed.vue"
+import UserHead from "@/components/parts/UserHead.vue"
+import OneReply from "@/components/parts/OneReply.vue"
 
-import Method from "@/globalmethods";
-import Cfg from "@/config/config";
+import Method from "@/globalmethods"
+import Cfg from "@/config/config"
 
-import { MdPreview } from "md-editor-v3";
+import { MdPreview } from "md-editor-v3"
 
 export default {
   name: "DetailPlate",
@@ -200,8 +170,8 @@ export default {
   },
   setup() {
     // const md = new MarkdownIt();
-    const route = useRoute();
-    const router = useRouter();
+    const route = useRoute()
+    const router = useRouter()
     const data = reactive({
       isLoading: false,
       isReplying: false,
@@ -234,170 +204,165 @@ export default {
           role: "管理员",
         },
       },
-      reply_list: [] as Array<object>,
-    });
+      reply_list: [] as any,
+    })
 
     function refresh_item() {
-      data.isLoading = true;
-      if (route.params.id == null) return;
-      Method.axios
-        .get(`${Cfg.config.server}/bbs/item/${route.params.id}`)
+      data.isLoading = true
+      if (route.params.id == null) return
+      Method.api_get(`${Cfg.config.server}/bbs/item/${route.params.id}`)
         .then((res: any) => {
-          let item = res.data.data;
-          item.time = Method.formatBbsTime(item.time);
-          item.author.headurl = Method.getHostUrl(item.author.headurl);
-          data.content = item;
+          data.isLoading = false
+          let item = res.data.data
+          item.time = Method.formatBbsTime(item.time)
+          item.author.headurl = Method.getHostUrl(item.author.headurl)
+          data.content = item
           /** 获取帖子的评论 */
-          refresh_reply_list();
+          refresh_reply_list()
         })
         .catch((error: any) => {
+          data.isLoading = false
           ElMessage({
             type: "error",
             message: "详情获取失败，请点击刷新按钮重试",
-          });
-          console.error(error);
-        });
+          })
+          console.error(error)
+        })
     }
     /**
      * 获取帖子的回复列表
      */
     function refresh_reply_list() {
-      let { page, limit, sort } = data;
-      data.isLoadingReply = true;
-      Method.axios
-        .get(
-          `${Cfg.config.server}/bbs/reply_list/${route.params.id}?page=${page}&limit=${limit}&sort=${sort}`,
-        )
-        .then((res: { data: { data: any; sum: { total: number } } }) => {
-          data.isLoading = false;
-          let list = res.data.data;
+      let { page, limit, sort } = data
+      data.isLoadingReply = true
+      Method.api_get(
+        `${Cfg.config.server}/bbs/reply_list/${route.params.id}?page=${page}&limit=${limit}&sort=${sort}`,
+      )
+        .then((res: any) => {
+          data.isLoading = false
+          let list = res.data.data
           function formatList(l: any[]) {
-            l.forEach(
-              (xl: {
-                time: any;
-                author: { headurl: string };
-                children: any;
-              }) => {
-                xl.time = Method.formatBbsTime(xl.time);
-                xl.author.headurl = Method.getHostUrl(xl.author.headurl);
-                formatList(xl.children);
-              },
-            );
+            l.forEach((xl: { time: any; author: { headurl: string }; children: any }) => {
+              xl.time = Method.formatBbsTime(xl.time)
+              xl.author.headurl = Method.getHostUrl(xl.author.headurl)
+              formatList(xl.children)
+            })
           }
-          formatList(list);
-          data.reply_list = list;
+          formatList(list)
+          data.reply_list = list
           if (data.page === 1) {
-            data.sum.total = res.data.sum.total;
+            data.sum.total = res.data.sum.total
           }
-          data.isLoadingReply = false;
+          data.isLoadingReply = false
         })
         .catch((error: { message: any }) => {
+          data.isLoading = false
           ElMessage({
             type: "error",
             message: "评论获取失败，请点击刷新按钮重试",
-          });
-          console.error(error.message);
-        });
+          })
+          console.error(error.message)
+        })
     }
 
     function sortByTime() {
-      data.sort = 0;
-      data.page = 1;
-      refresh_reply_list();
+      data.sort = 0
+      data.page = 1
+      refresh_reply_list()
     }
     function sortByHot() {
-      data.sort = 1;
-      data.page = 1;
-      refresh_reply_list();
+      data.sort = 1
+      data.page = 1
+      refresh_reply_list()
     }
-    let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>;
+    let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>
 
     watch(windowwidth, (newValue) => {
-      pagewidth(newValue);
-    });
+      pagewidth(newValue)
+    })
     //监听路由数据变化
     watch(
       () => route.params,
       () => {
-        refresh_item();
+        refresh_item()
       },
       { immediate: true },
-    );
+    )
 
     function pagewidth(width: number) {
       if (width <= 480) {
-        data.width = "mobile";
+        data.width = "mobile"
       } else {
-        data.width = "pc";
+        data.width = "pc"
       }
     }
     onUpdated(() => {
-      pagewidth(windowwidth.value);
-    });
+      pagewidth(windowwidth.value)
+    })
 
     onBeforeMount(() => {
-      pagewidth(windowwidth.value);
-    });
+      pagewidth(windowwidth.value)
+    })
     function flushed() {
       router.replace({
         path: route.path,
         force: true,
-      });
+      })
     }
 
     async function copytext() {
       try {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(window.location.href)
         ElMessage({
           message: "链接已复制",
           type: "success",
-        });
+        })
       } catch (error) {
-        const textarea = document.createElement("textarea");
-        textarea.value = window.location.href;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
+        const textarea = document.createElement("textarea")
+        textarea.value = window.location.href
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand("copy")
+        document.body.removeChild(textarea)
         ElMessage({
           message: "链接已复制",
           type: "success",
-        });
+        })
       }
     }
 
     function message() {
-      ElMessage("this is a message.");
+      ElMessage("this is a message.")
     }
 
     function close() {
-      router.push({ name: "PostPage", params: { id: data.id } });
+      router.push({ name: "PostPage", params: { id: data.id } })
     }
 
     function formatTimestamp(timestamp: number) {
-      return Method.formatBbsTime(timestamp);
+      return Method.formatBbsTime(timestamp)
     }
 
     function doReply() {
-      if (data.comments === "") return ElMessage("评论内容不可为空");
-      data.isReplying = true;
-      let bid = route.params.id;
+      if (data.comments === "") return ElMessage("评论内容不可为空")
+      data.isReplying = true
+      let bid = route.params.id
       Method.axios
         .post(`${Cfg.config.server}/bbs/reply`, {
           content: data.comments,
           bid: bid,
         })
         .then((response: { data: { code: number } }) => {
-          data.isReplying = false;
+          data.isReplying = false
           if (response.data.code == 200) {
-            data.isLoadingReply = true;
-            data.comments = "";
-            refresh_reply_list(); //刷新评论
-            ElMessage("评论成功");
+            data.isLoadingReply = true
+            data.comments = ""
+            refresh_reply_list() //刷新评论
+            ElMessage("评论成功")
           } else {
-            ElMessage("评论失败");
+            ElMessage("评论失败")
           }
-        });
+        })
     }
     return {
       ...toRefs(data),
@@ -410,9 +375,9 @@ export default {
       doReply,
       formatTimestamp,
       refresh_reply_list,
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

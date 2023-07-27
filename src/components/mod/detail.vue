@@ -57,16 +57,15 @@
         </div>
         <el-tabs class="el-tabs" type="border-card">
           <el-tab-pane label="Mod介绍">
-            工业2是围绕 Minecraft 生活现代化和生产自动化两个主题而展开的
-            Minecraft 模组，由 IndustrialCraft2 Dev Team 开发并维护。
-            它在工业1的基础上发展而来，引入了名为 [EU] 能量单元 (Energy Unit)
+            工业2是围绕 Minecraft 生活现代化和生产自动化两个主题而展开的 Minecraft 模组，由
+            IndustrialCraft2 Dev Team 开发并维护。 它在工业1的基础上发展而来，引入了名为 [EU]
+            能量单元 (Energy Unit)
             的电力能源系统，以及对应的发电设备，并以此为基础添加了大量相关物品、方块以及机器。其内容涉及资源处理、矿物采集、农业等多个主题，极大地平衡和丰富了前代的游戏体验，同时还拥有许多拓展模组，进一步丰富了游戏体验，增加了新的游戏目标。
-            作为最著名的 Minecraft 模组之一，其内容相对简单基础，是初次接触大型
-            Minecraft 模组的玩家很好的选择。 Tips 使用 1.9.4
-            之后的版本请注意，IC2
+            作为最著名的 Minecraft 模组之一，其内容相对简单基础，是初次接触大型 Minecraft
+            模组的玩家很好的选择。 Tips 使用 1.9.4 之后的版本请注意，IC2
             的电压机制被重新采用，当机器的输入电压过大时，机器将会爆炸！且已移除物品中部分已重新启用。
-            （原文：Explosions in the EnergyNet are enabled again. If you
-            connect a machine to an improper voltage, it will explode!）
+            （原文：Explosions in the EnergyNet are enabled again. If you connect a machine to an
+            improper voltage, it will explode!）
           </el-tab-pane>
           <el-tab-pane label="Mod关系">Mod介绍</el-tab-pane>
           <el-tab-pane label="Mod下载">Mod介绍</el-tab-pane>
@@ -81,11 +80,11 @@
         </div>
         <div class="rate-info">
           <div class="rate-line">
-            <icon-hot size="20"></icon-hot>
-            <icon-hot size="20"></icon-hot>
-            <icon-hot size="20"></icon-hot>
-            <icon-hot size="20"></icon-hot>
-            <icon-hot size="20"></icon-hot>
+            <icon-hot :size="20"></icon-hot>
+            <icon-hot :size="20"></icon-hot>
+            <icon-hot :size="20"></icon-hot>
+            <icon-hot :size="20"></icon-hot>
+            <icon-hot :size="20"></icon-hot>
           </div>
           <div>总浏览:1103.5k</div>
           <div>总浏览:1103.5k</div>
@@ -140,14 +139,14 @@
 </template>
 
 <script lang="ts">
-import ModFlag from "@/components/mod/flag";
-import IconDown from "@/components/icons/common/down";
-import IconHot from "@/components/icons/common/hot";
+import ModFlag from "@/components/mod/flag.vue"
+import IconDown from "@/components/icons/common/down.vue"
+import IconHot from "@/components/icons/common/hot.vue"
 export default {
   name: "modDetail",
   components: { IconHot, IconDown, ModFlag },
   props: {},
-};
+}
 </script>
 <style scoped>
 .el-container {

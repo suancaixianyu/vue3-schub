@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive } from "vue"
 
 const homestyle = reactive({
   /** 内容样式 */
@@ -16,37 +16,37 @@ const homestyle = reactive({
     menu: true,
     isshow: true,
   },
-});
+})
 
 const userInfo = reactive({
   isLogin: false,
   isLoginDialogVisible: false,
   data: {},
-});
+})
 
 class Cfg {
   [config: string]: {
     /** 后端服务器地址 */
-    server: string;
+    server: string
     /** 主页样式 */
     homestyle: {
       maincontainer: {
-        padding: string;
+        padding: string
         /** 内容样式 */
-        height: string;
-        overflowY: string;
-      };
-      container: { padding: string };
-      cfg: { menu: boolean; isshow: boolean };
-    };
+        height: string
+        overflowY: string
+      }
+      container: { padding: string }
+      cfg: { menu: boolean; isshow: boolean }
+    }
     /** 用户信息 */
     userInfo: {
-      isLogin: boolean;
-      isLoginDialogVisible: boolean;
-      id?: string;
-      data: { headurl?: string; nickname?: string };
-    };
-  };
+      isLogin: boolean
+      isLoginDialogVisible: boolean
+      id?: string
+      data: { headurl?: string; nickname?: string }
+    }
+  }
   constructor() {
     this.config = {
       /** 后端服务器地址 */
@@ -55,8 +55,8 @@ class Cfg {
       homestyle,
       /** 用户信息 */
       userInfo,
-    };
+    }
   }
 }
 
-export default new Cfg();
+export default new Cfg()

@@ -6,39 +6,40 @@
 
 #### ~~免费招前端开发~~
 
-   - ~~工作日：周一至周日~~
-   - ~~工作时间：0点到24点~~
+- ~~工作日：周一至周日~~
+- ~~工作时间：0点到24点~~
 
 ~~要求：对此项目感兴趣~~
 
 ### 安装
 
-   1. 克隆项目，进入项目目录安装依赖
+1.  克隆项目，进入项目目录安装依赖
 
-      ```
-      git clone https://gitee.com/suancaixianyu/vue3-schub.git
-      cd vue3-schub
-      pnpm i
-      ```
+    ```
+    git clone https://gitee.com/suancaixianyu/vue3-schub.git
+    cd vue3-schub
+    pnpm i
+    ```
 
-   2. 启动项目
+2.  启动项目
 
-      ```
-      npm run dev
-      ```
+    ```
+    npm run dev
+    ```
 
 ### 扩展指令
 
-   1. 格式化代码
+1.  格式化代码
 
-      ```
-      npm run prettier
-      ```
-   2. 打包项目
+    ```
+    npm run prettier
+    ```
 
-      ```
-      npm run build
-      ```
+2.  打包项目
+
+    ```
+    npm run build
+    ```
 
 ### 开发环境
 
@@ -51,3 +52,4 @@
 3. TypeScript Vue Plugin (Volar)
 4. Vue Language Features (Volar)
 5. VS Code for Vite
+6. Prettier - Code formatter

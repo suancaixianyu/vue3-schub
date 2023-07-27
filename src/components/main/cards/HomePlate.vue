@@ -25,26 +25,16 @@
         </el-header>
         <!-- 中部，板块标题，介绍 -->
         <el-main :style="st.mainstyle">
-          <el-text :style="`font-size: var(--el-font-size-large)`">{{
-            item.title
-          }}</el-text>
+          <el-text :style="`font-size: var(--el-font-size-large)`">{{ item.title }}</el-text>
           <br />
-          <el-text :style="`font-size: var(--el-font-size-base)`">{{
-            item.introduce
-          }}</el-text>
+          <el-text :style="`font-size: var(--el-font-size-base)`">{{ item.introduce }}</el-text>
         </el-main>
       </router-link>
       <!-- 底部，头像，最新帖子 -->
       <el-footer :style="st.footerstyle">
         <div class="topic-title">
-          <el-avatar
-            :src="item.userhead"
-            :size="28"
-            style="margin: 5px 5px 5px 0px"
-          />
-          <el-link :underline="false" :href="item.posturl">{{
-            item.toptitle
-          }}</el-link>
+          <el-avatar :src="item.userhead" :size="28" style="margin: 5px 5px 5px 0px" />
+          <el-link :underline="false" :href="item.posturl">{{ item.toptitle }}</el-link>
         </div>
       </el-footer>
     </el-container>
@@ -65,5 +55,5 @@ export default {
       required: true,
     },
   },
-};
+}
 </script>
