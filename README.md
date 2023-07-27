@@ -37,7 +37,7 @@
    2. 打包项目
 
       ```
-      npm run prettier
+      npm run build
       ```
 
 ### 开发环境
