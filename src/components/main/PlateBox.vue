@@ -18,7 +18,6 @@ import type { Ref } from "vue"
 import { catelist, api } from "@/apitypes"
 import HomePlate from "./cards/HomePlate.vue"
 // import HomePlate2 from "./cards/HomePlate2.vue";
-import Cfg from "@/config/config"
 import Method from "@/globalmethods"
 
 import { ElMessage } from "element-plus"
@@ -121,9 +120,10 @@ export default {
     onBeforeMount(() => {
       data.isLoading = true
       // 获取列表
-      Method.api_get(`${Cfg.config.server}/cate/list`)
+      Method.api_get("/cate/list")
         .then((response: any) => {
           let obj = response.data as api
+          console.log(response.body)
 
           data.isLoading = false
           if (obj.code === 200) {

@@ -50,7 +50,7 @@ class Cfg {
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      server: "https://schub.top",
+      server: "http://suancaixianyu.cn:8000",
       /** 主页样式 */
       homestyle,
       /** 用户信息 */

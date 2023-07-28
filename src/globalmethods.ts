@@ -22,7 +22,11 @@ class global {
    * @param {string} path 请求路径
    */
   api_get(path: string) {
-    return fetch(`${Cfg.config.server}${path}`)
+    return axios.get(`${Cfg.config.server}${path}`, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
   }
 
   /**

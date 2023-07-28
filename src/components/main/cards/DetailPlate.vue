@@ -210,7 +210,7 @@ export default {
     function refresh_item() {
       data.isLoading = true
       if (route.params.id == null) return
-      Method.api_get(`${Cfg.config.server}/bbs/item/${route.params.id}`)
+      Method.api_get(`/bbs/item/${route.params.id}`)
         .then((res: any) => {
           data.isLoading = false
           let item = res.data.data
