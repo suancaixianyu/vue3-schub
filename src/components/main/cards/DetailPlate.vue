@@ -29,7 +29,7 @@
                 time: content.time,
                 role: content.author.role,
                 shape,
-                size,
+                headsize,
                 style: {
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -58,7 +58,7 @@
                 <el-avatar
                   :src="content.author.headurl"
                   :shape="shape"
-                  :size="size"
+                  :size="headsize"
                   style="margin-right: 12px"
                 />
                 <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
@@ -71,7 +71,7 @@
                   :key="x"
                   :x="{ ...x }"
                   :shape="shape"
-                  :size="size"
+                  :size="headsize"
                   @refreshEvent="refresh_reply_list"
                 />
               </div>
@@ -105,7 +105,7 @@
               ...content.author,
               time: '发布于：' + formatTimestamp(content.time),
               shape,
-              size,
+              headsize,
               style: {
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -135,7 +135,7 @@
               <el-avatar
                 :src="content.author.headurl"
                 :shape="shape"
-                :size="size"
+                :size="headsize"
                 style="margin-right: 12px"
               />
               <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
@@ -148,7 +148,7 @@
                 :key="x"
                 :x="{ ...x }"
                 :shape="shape"
-                :size="size"
+                :size="headsize"
                 @refreshEvent="refresh_reply_list"
               />
             </div>
@@ -182,6 +182,11 @@ export default {
     MdPreview,
     OneReply,
   },
+  data() {
+    return {
+      headsize: Cfg.config.homestyle.cfg.headsize.post,
+    }
+  },
   setup() {
     // const md = new MarkdownIt();
     const route = useRoute()
@@ -193,7 +198,7 @@ export default {
       comments: "",
       width: "pc",
       markdown: '```js \n console.log("hello world!") \n```',
-      shape: "square",
+      shape: Cfg.config.homestyle.cfg.shape,
       size: 28,
       chatid: route.params.chatid,
       id: route.params.id,

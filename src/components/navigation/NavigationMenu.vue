@@ -182,6 +182,18 @@
               <li>
                 <a href="https://suancaixianyu.com">白嫖gpt</a>
               </li>
+              <li>
+                <!-- 设置 -->
+
+                <div>
+                  <router-link to="/setup">
+                    <el-icon :size="28" style="padding: 0px 2px">
+                      <setting />
+                    </el-icon>
+                    <span>设置</span>
+                  </router-link>
+                </div>
+              </li>
             </ul>
           </details>
         </li>
@@ -225,7 +237,7 @@
           </div>
           <div class="dropdown dropdown-bottom dropdown-end dropdown-hover" v-else>
             <label tabindex="0">
-              <el-avatar :src="userInfo.data.headurl" :shape="square" :size="32" />
+              <el-avatar :src="userInfo.data.headurl" :shape="shape" :size="32" />
             </label>
             <ul
               tabindex="0"
@@ -269,7 +281,7 @@ export default {
   data() {
     return {
       userInfo: Cfg.config.userInfo,
-      square: "square",
+      shape: Cfg.config.homestyle.cfg.shape,
       iconid: false,
       menumode: "horizontal",
       showtext: false,

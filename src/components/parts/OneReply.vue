@@ -24,7 +24,7 @@
       <div class="post-area" v-if="isReadyReply">
         <el-avatar
           :src="userInfo.data.headurl"
-          :shape="square"
+          :shape="shape"
           :size="26"
           style="margin-right: 12px"
         />
@@ -54,10 +54,6 @@ export default {
       type: Object,
       required: true,
     },
-    shape: {
-      type: String,
-      required: true,
-    },
     size: {
       type: Number,
       required: true,
@@ -66,6 +62,7 @@ export default {
   data() {
     return {
       userInfo: Cfg.config.userInfo,
+      shape: Cfg.config.homestyle.cfg.shape,
     }
   },
   methods: {
@@ -84,7 +81,6 @@ export default {
   setup(props) {
     let data = reactive({
       comments: "",
-      square: "square",
       isReadyReply: false,
       likes: 0,
       isReplying: false,

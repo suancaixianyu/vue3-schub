@@ -5,8 +5,8 @@
       <UserHead
         :item="{
           headurl: headUrl,
-          shape: 'square',
-          size: 36,
+          shape,
+          headsize,
           nickname: item.author.nickname,
           time: time,
           role: item.author.role,
@@ -49,6 +49,7 @@ import UserHead from "@comps/parts/UserHead.vue"
 import { reactive, toRefs } from "vue"
 import { api } from "@/apitypes"
 import { ElMessage } from "element-plus"
+import Cfg from "@/config/config"
 
 import Method from "@/globalmethods"
 // import Cfg from "@/config/config";
@@ -64,6 +65,12 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      shape: Cfg.config.homestyle.cfg.shape,
+      headsize: Cfg.config.homestyle.cfg.headsize.post,
+    }
   },
   setup(props) {
     let data = reactive({

@@ -1,6 +1,6 @@
 <template>
   <div class="post-area">
-    <el-avatar :src="v.xx.author.headurl" :shape="v.shape" :size="26" style="margin-right: 12px" />
+    <el-avatar :src="v.xx.author.headurl" :shape="shape" :size="26" style="margin-right: 12px" />
     <div class="area">
       <div class="user-label">
         <div>{{ v.xx.author.nickname }}</div>
@@ -20,7 +20,7 @@
       <div class="post-area" v-if="isReadyReply">
         <el-avatar
           :src="userInfo.data.headurl"
-          :shape="square"
+          :shape="shape"
           :size="26"
           style="margin-right: 12px"
         />
@@ -54,6 +54,7 @@ export default {
   data() {
     return {
       userInfo: Cfg.config.userInfo,
+      shape: Cfg.config.homestyle.cfg.shape,
     }
   },
   methods: {
@@ -69,7 +70,6 @@ export default {
       comments: "",
       likes: 0,
       isReplying: false,
-      square: "square",
       isDoGooding: false,
       isLoadingReply: false,
     })

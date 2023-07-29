@@ -2,7 +2,7 @@ import { reactive } from "vue"
 const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
-    padding: "0px 20px",
+    padding: "0px",
     height: "calc(100vh - 90px)",
     overflowY: "hidden",
   },
@@ -14,6 +14,11 @@ const homestyle = reactive({
   cfg: {
     menu: true,
     isshow: true,
+    shape: "square",
+    headsize: reactive({
+      post: 28,
+      userindex: 28,
+    }),
   },
 })
 
@@ -36,7 +41,15 @@ class Cfg {
         overflowY: string
       }
       container: { padding: string }
-      cfg: { menu: boolean; isshow: boolean }
+      cfg: {
+        menu: boolean
+        isshow: boolean
+        shape: string
+        headsize: {
+          post: number
+          userindex: number
+        }
+      }
     }
     /** 用户信息 */
     userInfo: {
@@ -46,6 +59,7 @@ class Cfg {
       data: { headurl?: string; nickname?: string }
     }
   }
+
   constructor() {
     this.config = {
       /** 后端服务器地址 */

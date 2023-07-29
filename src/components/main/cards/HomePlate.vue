@@ -33,7 +33,7 @@
       <!-- 底部，头像，最新帖子 -->
       <el-footer :style="st.footerstyle">
         <div class="topic-title">
-          <el-avatar :src="item.userhead" :size="28" style="margin: 5px 5px 5px 0px" />
+          <el-avatar :src="item.userhead" :size="headsize" style="margin: 5px 5px 5px 0px" />
           <el-link :underline="false" :href="item.posturl">{{ item.toptitle }}</el-link>
         </div>
       </el-footer>
@@ -42,6 +42,8 @@
 </template>
 
 <script lang="ts">
+import Cfg from "@/config/config"
+
 //主页卡片，经典
 export default {
   name: "HomePlate",
@@ -54,6 +56,11 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      headsize: Cfg.config.homestyle.cfg.headsize.post,
+    }
   },
 }
 </script>

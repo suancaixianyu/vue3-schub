@@ -64,6 +64,7 @@ import { CSSProperties } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { ElMessage } from "element-plus"
 import Method from "@/globalmethods"
+import Cfg from "@/config/config"
 
 import PostListPlate from "./cards/PostListPlate.vue"
 /** 帖子列表 */
@@ -89,7 +90,7 @@ export default {
       colstype: {
         padding: "0px",
       } as CSSProperties,
-      shape: "square",
+      shape: Cfg.config.homestyle.cfg.shape,
       postlistseype: {
         display: "flex",
         padding: "12px 18px",

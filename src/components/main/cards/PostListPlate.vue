@@ -40,8 +40,6 @@ export default {
     let time = Method.formatBbsTime(props.item.time)
     return {
       time,
-      size: 35,
-      role: "管理员",
     }
   },
 }

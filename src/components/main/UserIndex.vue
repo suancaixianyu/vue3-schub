@@ -3,7 +3,7 @@
     <el-header class="zone-head-container">
       <img class="img" src="@/assets/image/head_zone_bg.png" />
       <div class="head-area">
-        <el-avatar :size="32" :src="userInfo.data.headurl" />
+        <el-avatar :size="headsize" :src="userInfo.data.headurl" />
         <div class="nickname">{{ userInfo.data.nickname }}</div>
         <el-tag size="small">管理员</el-tag>
         <el-tag size="small" class="ml-2" type="warning">SVIP 6</el-tag>
@@ -92,7 +92,7 @@ export default {
       bbsList: [],
       worldList: [],
       modList: [],
-
+      headsize: Cfg.config.homestyle.cfg.headsize.post,
       userInfo: Cfg.config.userInfo,
     }
   },
