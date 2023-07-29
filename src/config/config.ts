@@ -16,8 +16,8 @@ const homestyle = reactive({
     isshow: true,
     shape: "square",
     headsize: reactive({
-      post: 28,
-      userindex: 28,
+      post: 32,
+      userindex: 32,
     }),
   },
 })

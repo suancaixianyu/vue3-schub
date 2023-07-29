@@ -4,7 +4,7 @@
     <el-avatar
       :src="item.headurl"
       :shape="item.shape"
-      :size="item.size"
+      :size="item.headsize"
       style="margin-right: 12px"
     />
     <!-- 昵称，日期 -->
