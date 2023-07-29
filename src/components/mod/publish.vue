@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import ModFlag from "@/components/mod/flag"
+import ModFlag from "@comps/mod/flag.vue"
 export default {
   name: "ModPublish",
   components: {
@@ -104,27 +104,27 @@ export default {
       name: "",
       packageName: "",
       desc: "",
-      relation: [],
-      apiSupport: [],
-      scVersion: [],
-      link: [],
+      relation: [] as any[],
+      apiSupport: [] as any[],
+      scVersion: [] as any[],
+      link: [] as any[],
       flag: [false, false, false, false, false, false, false, false, false, false],
     }
   },
   methods: {
-    pushFlag(i) {
+    pushFlag(i: number) {
       this.flag[i] = !this.flag[i]
     },
     newLink() {
       this.link.push({ src: "" })
     },
-    deleteLink(e) {
+    deleteLink(e: number) {
       this.link.splice(e, 1)
     },
     newRelation() {
       this.relation.push({ package: "", type: "" })
     },
-    deleteRelation(e) {
+    deleteRelation(e: number) {
       this.relation.splice(e, 1)
     },
     submit() {

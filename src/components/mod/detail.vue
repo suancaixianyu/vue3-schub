@@ -139,9 +139,9 @@
 </template>
 
 <script lang="ts">
-import ModFlag from "@/components/mod/flag.vue"
-import IconDown from "@/components/icons/common/down.vue"
-import IconHot from "@/components/icons/common/hot.vue"
+import ModFlag from "@comps/mod/flag.vue"
+import IconDown from "@comps/icons/common/down.vue"
+import IconHot from "@comps/icons/common/hot.vue"
 export default {
   name: "modDetail",
   components: { IconHot, IconDown, ModFlag },

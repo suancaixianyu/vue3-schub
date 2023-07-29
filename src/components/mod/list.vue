@@ -28,23 +28,23 @@
         <div>Lib(0)</div>
       </div>
       <div class="filter-item">
-        <sc-logo size="18"></sc-logo>
+        <sc-logo :size="18"></sc-logo>
         <div>世界(0)</div>
       </div>
       <div class="filter-item">
-        <sc-logo size="18"></sc-logo>
+        <sc-logo :size="18"></sc-logo>
         <div>方块材质(0)</div>
       </div>
       <div class="filter-item">
-        <sc-logo size="18"></sc-logo>
+        <sc-logo :size="18"></sc-logo>
         <div>皮肤(0)</div>
       </div>
       <div class="filter-item">
-        <sc-logo size="18"></sc-logo>
+        <sc-logo :size="18"></sc-logo>
         <div>家具包(0)</div>
       </div>
       <div class="filter-item">
-        <icon-server size="16"></icon-server>
+        <icon-server :size="16"></icon-server>
         <div>服务器(0)</div>
       </div>
     </el-header>
@@ -71,15 +71,15 @@
             </div>
             <div class="btn-line">
               <div class="item">
-                <icon-hot size="18"></icon-hot>
+                <icon-hot :size="18"></icon-hot>
                 <div class="hot">81.6k</div>
               </div>
               <div class="item">
-                <like-icon size="24"></like-icon>
+                <like-icon :size="24"></like-icon>
                 <div class="like">2.6k</div>
               </div>
               <div class="item">
-                <icon-down size="18"></icon-down>
+                <icon-down :size="18"></icon-down>
                 <div class="down">1.8k</div>
               </div>
             </div>
@@ -92,17 +92,17 @@
 
 <script lang="ts">
 import { Grid } from "@element-plus/icons-vue"
-import IconTechnology from "@/components/icons/mod/technology"
-import IconMagic from "@/components/icons/mod/magic"
-import IconAdventure from "@/components/icons/mod/adventure"
-import IconAgriculture from "@/components/icons/mod/agriculture"
-import IconLibrary from "@/components/icons/mod/library"
-import ScLogo from "@/components/icons/ScLogo"
-import IconServer from "@/components/icons/mod/server"
-import ModFlag from "@/components/mod/flag"
-import IconHot from "@/components/icons/common/hot"
-import LikeIcon from "@/components/icons/Like"
-import IconDown from "@/components/icons/common/down"
+import IconTechnology from "@comps/icons/mod/technology.vue"
+import IconMagic from "@comps/icons/mod/magic.vue"
+import IconAdventure from "@comps/icons/mod/adventure.vue"
+import IconAgriculture from "@comps/icons/mod/agriculture.vue"
+import IconLibrary from "@comps/icons/mod/library.vue"
+import ScLogo from "@comps/icons/ScLogo.vue"
+import IconServer from "@comps/icons/mod/server.vue"
+import ModFlag from "@comps/mod/flag.vue"
+import IconHot from "@comps/icons/common/hot.vue"
+import LikeIcon from "@comps/icons/Like.vue"
+import IconDown from "@comps/icons/common/down.vue"
 export default {
   name: "ModList",
   components: {

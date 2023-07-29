@@ -44,8 +44,8 @@
 </template>
 
 <script lang="ts">
-import LikeIcon from "@/components/icons/Like.vue"
-import UserHead from "@/components/parts/UserHead.vue"
+import LikeIcon from "@comps/icons/Like.vue"
+import UserHead from "@comps/parts/UserHead.vue"
 import { reactive, toRefs } from "vue"
 import { api } from "@/apitypes"
 import { ElMessage } from "element-plus"

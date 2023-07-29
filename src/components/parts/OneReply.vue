@@ -36,8 +36,8 @@
 </template>
 
 <script lang="ts">
-import LikeIcon from "@/components/icons/Like.vue"
-import TowReply from "@/components/parts/TowReply.vue"
+import LikeIcon from "@comps/icons/Like.vue"
+import TowReply from "@comps/parts/TowReply.vue"
 import { reactive, toRefs } from "vue"
 import { api } from "@/apitypes"
 import { ElMessage } from "element-plus"
