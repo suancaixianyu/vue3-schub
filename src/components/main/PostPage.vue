@@ -46,6 +46,20 @@
               :st="{ postlistseype, shape }"
             />
           </div>
+          <div
+            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
+            :style="postlistseype"
+            style="height: 60px"
+          >
+            <el-pagination
+              :current-page="pagenum"
+              :page-size="10"
+              :pager-count="5"
+              :total="total"
+              @current-change="handleCurrentChange"
+              style="justify-content: center"
+            ></el-pagination>
+          </div>
         </div>
       </el-col>
       <!-- 占位元素 -->
@@ -58,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { ref, toRefs, reactive, inject, watch, onMounted, onUpdated } from "vue"
+import { ref, toRefs, reactive, inject, provide, watch, onMounted, onUpdated } from "vue"
 import type { Ref } from "vue"
 import { CSSProperties } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -74,12 +88,13 @@ export default {
   components: {
     PostListPlate,
   },
-  cateId: 0,
   setup() {
     const route = useRoute()
     const router = useRouter()
 
     const data = reactive({
+      pagenum: 1,
+      total: 125, // 总帖子数
       chatid: route.params.chatid,
       isLoadingList: false,
       btn: true,
@@ -143,21 +158,25 @@ export default {
       pageup(newValue)
     })
 
-    onMounted(() => {
-      data.isLoadingList = true
-      pageup(windowwidth.value)
-      Method.api_get(`/bbs/list/${route.params.chatid}`)
+    function handleCurrentChange(page: any) {
+      data.pagenum = page // 更新当前页码
+      listup(route.params.chatid, page)
+    }
+
+    function listup(id: any, page: any) {
+      Method.api_get(`/bbs/list/${id}?page=${page}`)
         .then((response: any) => {
           data.isLoadingList = false
           let obj = response.data
           if (obj.code === 200) {
+            data.total = obj.sum.total
             obj.data.forEach((el: any) => {
               data.plate.push({
                 /** 帖子id */
                 id: el.id,
                 /** 帖子标题 */
                 title: el.title,
-                /** 内容摘要 */
+                /** 内容摘要，全部内容 */
                 summary: el.summary,
                 /** 用户信息 */
                 author: el.author,
@@ -181,6 +200,12 @@ export default {
           })
           console.error(error)
         })
+    }
+
+    onMounted(() => {
+      data.isLoadingList = true
+      pageup(windowwidth.value)
+      listup(route.params.chatid, 1)
     })
 
     onUpdated(() => {
@@ -289,6 +314,7 @@ export default {
 
     /** 搜索结果 */
     let outcomeplate = ref(data.plate)
+    provide("outcomeplate", outcomeplate)
 
     /** 搜索（本地） */
     function search() {
@@ -310,6 +336,7 @@ export default {
       ...toRefs(data),
       search,
       topublish,
+      handleCurrentChange,
     }
   },
 }

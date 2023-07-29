@@ -25,13 +25,12 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from "vue"
 import { ElMessage } from "element-plus"
 import { MdEditor } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 import { useRoute, useRouter } from "vue-router"
 
-import Cfg from "@/config/config"
+// import Cfg from "@/config/config"
 
 import Method from "@/globalmethods"
 export default {
@@ -82,11 +81,6 @@ export default {
   setup() {
     const router = useRouter()
     const route = useRoute()
-
-    onMounted(() => {
-      Cfg.config.homestyle.maincontainer.padding = "0px"
-      console.log("homestyle" + Cfg.config.homestyle.maincontainer.padding)
-    })
 
     return {
       router,

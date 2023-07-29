@@ -63,7 +63,7 @@ class Cfg {
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      server: "http://suancaixianyu.cn:8000",
+      server: "/xyapi",
       /** 主页样式 */
       homestyle,
       /** 用户信息 */

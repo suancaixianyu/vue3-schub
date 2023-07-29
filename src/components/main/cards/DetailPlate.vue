@@ -41,7 +41,7 @@
           <!-- 内容 -->
           <el-main>
             <!-- 帖子内容展示 -->
-            <MdPreview :modelValue="content.content" class="bg-base-100" />
+            <MdPreview :modelValue="content.summary" class="bg-base-100" />
             <!-- 分割线 -->
             <label class="plate-label">
               <div class="large">评论</div>
@@ -115,9 +115,9 @@
           />
         </el-header>
         <!-- 内容 -->
-        <el-main style="padding: 0px">
+        <el-main style="padding: 20px 0px">
           <!-- 帖子内容展示 -->
-          <MdPreview :modelValue="markdown" class="bg-base-200" />
+          <MdPreview :modelValue="content.summary" class="bg-base-200" />
 
           <!-- 分割线 -->
           <label class="plate-label">
@@ -216,7 +216,7 @@ export default {
         dislikes: 666,
         comments: 123,
         time: 1689087371,
-        content: "帖子完整内容",
+        summary: "帖子完整内容",
         author: {
           nickname: "酸菜咸鱼",
           headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
@@ -254,9 +254,7 @@ export default {
     function refresh_reply_list() {
       let { page, limit, sort } = data
       data.isLoadingReply = true
-      Method.api_get(
-        `${Cfg.config.server}/bbs/reply_list/${route.params.id}?page=${page}&limit=${limit}&sort=${sort}`,
-      )
+      Method.api_get(`/bbs/reply_list/${route.params.id}?page=${page}&limit=${limit}&sort=${sort}`)
         .then((res: any) => {
           data.isLoading = false
           let list = res.data.data
@@ -366,22 +364,20 @@ export default {
       if (data.comments === "") return ElMessage("评论内容不可为空")
       data.isReplying = true
       let bid = route.params.id
-      Method.axios
-        .post(`${Cfg.config.server}/bbs/reply`, {
-          content: data.comments,
-          bid: bid,
-        })
-        .then((response: { data: { code: number } }) => {
-          data.isReplying = false
-          if (response.data.code == 200) {
-            data.isLoadingReply = true
-            data.comments = ""
-            refresh_reply_list() //刷新评论
-            ElMessage("评论成功")
-          } else {
-            ElMessage("评论失败")
-          }
-        })
+      Method.api_post(`/bbs/reply`, {
+        content: data.comments,
+        bid: bid,
+      }).then((response: { data: { code: number } }) => {
+        data.isReplying = false
+        if (response.data.code == 200) {
+          data.isLoadingReply = true
+          data.comments = ""
+          refresh_reply_list() //刷新评论
+          ElMessage("评论成功")
+        } else {
+          ElMessage("评论失败")
+        }
+      })
     }
     return {
       ...toRefs(data),
