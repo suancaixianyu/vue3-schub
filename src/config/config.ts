@@ -49,7 +49,7 @@ class Cfg {
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      server: "http://suancaixianyu.cn:11451",
+      server: "http://suancaixianyu.cn:8000",
       /** 主页样式 */
       homestyle,
       /** 用户信息 */
