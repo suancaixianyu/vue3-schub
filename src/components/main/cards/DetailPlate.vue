@@ -116,27 +116,41 @@
         </el-header>
         <!-- 内容 -->
         <el-main style="padding: 0px">
-          <MdPreview :modelValue="markdown" class="bg-base-100" />
-          <!-- <div v-html="markdown" class="markdown-body" style="background-color: transparent;"></div> -->
-          <hr />
+          <!-- 帖子内容展示 -->
+          <MdPreview :modelValue="markdown" class="bg-base-200" />
+
+          <!-- 分割线 -->
+          <label class="plate-label">
+            <div class="large">评论</div>
+            <div class="small">{{ sum.total }}</div>
+            <div class="space"></div>
+            <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">最新</div>
+            <div class="filter">|</div>
+            <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">最热</div>
+          </label>
+          <!-- 个人评论区 -->
           <div class="reply-body">
-            <!-- 功能键 -->
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Your bio</span>
-                <span class="label-text-alt">Alt label</span>
-              </label>
-              <el-input
-                class="bg-base-200"
-                v-model="comments"
-                autosize
-                type="textarea"
-                placeholder="发表评论"
+            <!-- 发表评论 -->
+            <div class="post-area">
+              <el-avatar
+                :src="content.author.headurl"
+                :shape="shape"
+                :size="size"
+                style="margin-right: 12px"
               />
-              <label class="label">
-                <span class="label-text-alt">Your bio</span>
-                <span class="label-text-alt">Alt label</span>
-              </label>
+              <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
+              <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
+            </div>
+            <!-- 回复列表 -->
+            <div v-loading="isLoadingReply">
+              <OneReply
+                v-for="x in reply_list"
+                :key="x"
+                :x="{ ...x }"
+                :shape="shape"
+                :size="size"
+                @refreshEvent="refresh_reply_list"
+              />
             </div>
           </div>
         </el-main>

@@ -1,7 +1,7 @@
 <template>
   <el-container class="el-container">
     <div class="panel-left">
-      <img class="img" src="../../assets/image/mod-icon.jpg" />
+      <img class="img" src="@/assets/image/head_zone_bg.png" />
       <div class="update-area">
         <div class="tab">更新日志</div>
         <div class="update-log">

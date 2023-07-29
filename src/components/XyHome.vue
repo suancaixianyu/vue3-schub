@@ -1,5 +1,5 @@
 <template>
-  <div class="common-layout bg-base-200">
+  <div class="common-layout bg-base-200" data-theme="light">
     <el-container :style="container">
       <el-header :style="container" style="z-index: 20">
         <el-affix :offset="0">
@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts">
+import "element-plus/theme-chalk/display.css"
 import { provide, ref, onUpdated } from "vue"
 import Cfg from "@/config/config"
 /** 顶部导航栏 */
@@ -91,7 +92,7 @@ export default {
 
 *::-webkit-scrollbar-thumb {
   /* 设置滚动条的颜色 */
-  background-image: url("../assets/icon/mifengup.svg"), url("../assets/icon/mifengbottom.svg");
+  background-image: url("@/assets/icon/mifengup.svg"), url("@/assets/icon/mifengbottom.svg");
   background-position:
     center top,
     center bottom;

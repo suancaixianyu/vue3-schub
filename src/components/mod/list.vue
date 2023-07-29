@@ -52,7 +52,7 @@
       <router-link to="/ModDetail/1">
         <div class="res-item">
           <div class="right">
-            <img class="img" src="../../assets/image/mod-icon.jpg" />
+            <img class="img" src="@/assets/image/head_zone_bg.png" />
           </div>
           <div class="left">
             <div class="name-line">

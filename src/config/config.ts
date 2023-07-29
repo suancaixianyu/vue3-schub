@@ -1,5 +1,4 @@
 import { reactive } from "vue"
-
 const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
@@ -50,7 +49,7 @@ class Cfg {
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      server: "http://suancaixianyu.cn:8000",
+      server: "http://suancaixianyu.cn:11451",
       /** 主页样式 */
       homestyle,
       /** 用户信息 */

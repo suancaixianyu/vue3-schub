@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 100%" v-loading="isLoading">
     <el-header class="zone-head-container">
-      <img class="img" src="../../assets/image/head_zone_bg.png" />
+      <img class="img" src="@/assets/image/head_zone_bg.png" />
       <div class="head-area">
         <el-avatar :size="32" :src="userInfo.data.headurl" />
         <div class="nickname">{{ userInfo.data.nickname }}</div>

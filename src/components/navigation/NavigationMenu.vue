@@ -257,7 +257,6 @@ import ScLogo from "@comps/icons/ScLogo.vue"
 import ScMod from "@comps/icons/ScMod.vue"
 import UserLogin from "@comps/main/UserLogin.vue"
 import { ElMessage } from "element-plus"
-import "element-plus/theme-chalk/display.css"
 import { ref } from "vue"
 import type { Ref } from "vue"
 export default {
