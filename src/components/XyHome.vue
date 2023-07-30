@@ -1,5 +1,5 @@
 <template>
-  <div class="common-layout bg-base-200" data-theme="light">
+  <div class="common-layout bg-base-100" data-theme="light">
     <el-container :style="container">
       <el-header :style="container" style="z-index: 20">
         <el-affix :offset="0">

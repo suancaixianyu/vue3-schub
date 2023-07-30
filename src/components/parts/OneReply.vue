@@ -6,7 +6,12 @@
         <div>{{ x.author.nickname }}</div>
         <el-tag size="small">{{ x.author.role }}</el-tag>
       </div>
-      <div class="comments">{{ x.content }}</div>
+      <!-- <div class="comments">{{ x.content }}</div> -->
+      <MdPreview
+        :editorId="`preview-one-${previewid}`"
+        :modelValue="x.content"
+        class="bg-base-100"
+      />
       <div class="extra-line">
         <div class="time">{{ x.time }}</div>
         <LikeIcon @click="doGood" class="label"></LikeIcon>
@@ -16,9 +21,10 @@
       </div>
       <!-- 二级评论 -->
       <TowReply
-        v-for="xx in x.children"
+        v-for="(xx, index) in x.children"
         :key="xx"
         :v="{ x, xx, shape, size }"
+        :previewid="index"
         @refreshEvent="refreshList"
       />
       <div class="post-area" v-if="isReadyReply">
@@ -41,6 +47,11 @@ import TowReply from "@comps/parts/TowReply.vue"
 import { reactive, toRefs } from "vue"
 import { api } from "@/apitypes"
 import { ElMessage } from "element-plus"
+import { MdPreview } from "md-editor-v3"
+
+/** md编辑器 */
+import "md-editor-v3/lib/preview.css"
+
 import Method from "@/globalmethods"
 import Cfg from "@/config/config"
 
@@ -48,8 +59,13 @@ export default {
   components: {
     TowReply,
     LikeIcon,
+    MdPreview,
   },
   props: {
+    previewid: {
+      type: Number,
+      required: true,
+    },
     x: {
       type: Object,
       required: true,
@@ -59,6 +75,7 @@ export default {
       required: true,
     },
   },
+
   data() {
     return {
       userInfo: Cfg.config.userInfo,

@@ -11,9 +11,6 @@ import ElementPlus from "element-plus"
 import "element-plus/dist/index.css"
 import * as ElementPlusIconsVue from "@element-plus/icons-vue"
 
-/** md编辑器 */
-import "md-editor-v3/lib/style.css"
-
 /** 自定义全局方法 */
 import Method from "./globalmethods"
 import Cfg from "@/config/config"

@@ -20,7 +20,7 @@
         <el-input v-model="config.cover_src" />
       </el-form-item>
     </el-form>
-    <MdEditor v-model="config.content" style="height: 72vh" />
+    <MdEditor :editorId="previewid" v-model="config.content" style="height: 72vh" />
   </el-container>
 </template>
 
@@ -29,6 +29,9 @@ import { ElMessage } from "element-plus"
 import { MdEditor } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 import { useRoute, useRouter } from "vue-router"
+
+/** md编辑器 */
+import "md-editor-v3/lib/style.css"
 
 // import Cfg from "@/config/config"
 
@@ -40,6 +43,7 @@ export default {
   },
   data() {
     return {
+      previewid: "preview-set",
       isPublishing: false,
       config: {
         title: "",

@@ -38,18 +38,28 @@
             </el-row>
           </div>
           <div v-loading="isLoadingList" element-loading-text="加载中">
-            <PostListPlate
-              v-for="item in outcomeplate"
-              :key="item.id"
-              :item="item"
-              :bbsid="chatid"
-              :st="{ postlistseype, shape }"
-            />
+            <ul
+              v-infinite-scroll="loadmore"
+              :infinite-scroll-distance="20"
+              :infinite-scroll-immediate="false"
+              :infinite-scroll-disabled="disableloading"
+            >
+              <li>
+                <PostListPlate
+                  v-for="item in outcomeplate"
+                  :key="item.id"
+                  :item="item"
+                  :bbsid="chatid"
+                  :st="{ postlistseype, shape }"
+                />
+              </li>
+            </ul>
           </div>
           <div
-            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
+            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
             :style="postlistseype"
             style="height: 60px"
+            v-if="showpagenum"
           >
             <el-pagination
               :current-page="pagenum"
@@ -93,8 +103,11 @@ export default {
     const router = useRouter()
 
     const data = reactive({
-      pagenum: 1,
+      disableloading: true, // 禁用加载
+      showpagenum: true, // 显示页码
+      pagenum: 1, // 页码
       total: 125, // 总帖子数
+      totalpages: 2, // 总页数
       chatid: route.params.chatid,
       isLoadingList: false,
       btn: true,
@@ -150,6 +163,76 @@ export default {
             role: "管理员",
           },
         },
+        {
+          id: 2,
+          title: "标题",
+          summary: "这是测试帖子标题",
+          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
+          time: 1688918819,
+          likes: 120,
+          comments: 50,
+          author: {
+            nickname: "酸菜咸鱼",
+            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
+            role: "管理员",
+          },
+        },
+        {
+          id: 2,
+          title: "标题",
+          summary: "这是测试帖子标题",
+          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
+          time: 1688918819,
+          likes: 120,
+          comments: 50,
+          author: {
+            nickname: "酸菜咸鱼",
+            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
+            role: "管理员",
+          },
+        },
+        {
+          id: 2,
+          title: "标题",
+          summary: "这是测试帖子标题",
+          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
+          time: 1688918819,
+          likes: 120,
+          comments: 50,
+          author: {
+            nickname: "酸菜咸鱼",
+            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
+            role: "管理员",
+          },
+        },
+        {
+          id: 2,
+          title: "标题",
+          summary: "这是测试帖子标题",
+          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
+          time: 1688918819,
+          likes: 120,
+          comments: 50,
+          author: {
+            nickname: "酸菜咸鱼",
+            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
+            role: "管理员",
+          },
+        },
+        {
+          id: 2,
+          title: "标题",
+          summary: "这是测试帖子标题",
+          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
+          time: 1688918819,
+          likes: 120,
+          comments: 50,
+          author: {
+            nickname: "酸菜咸鱼",
+            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
+            role: "管理员",
+          },
+        },
       ],
     })
 
@@ -160,16 +243,28 @@ export default {
 
     function handleCurrentChange(page: any) {
       data.pagenum = page // 更新当前页码
-      listup(route.params.chatid, page)
+      listup(route.params.chatid, page, "pc")
+    }
+    function loadmore() {
+      if (data.pagenum + 1 <= data.totalpages) {
+        data.pagenum++
+        listup(route.params.chatid, data.pagenum, "move")
+      }
     }
 
-    function listup(id: any, page: any) {
+    function listup(id: any, page: any, type: string) {
       Method.api_get(`/bbs/list/${id}?page=${page}`)
         .then((response: any) => {
           data.isLoadingList = false
           let obj = response.data
           if (obj.code === 200) {
+            // 其他处理
             data.total = obj.sum.total
+            let a = Math.floor(obj.sum.total / 10)
+            if (obj.sum.total % 10 > 0) ++a
+            data.totalpages = a
+            // 更新列表
+            if (type === "pc") data.plate.length = 0
             obj.data.forEach((el: any) => {
               data.plate.push({
                 /** 帖子id */
@@ -205,19 +300,34 @@ export default {
     onMounted(() => {
       data.isLoadingList = true
       pageup(windowwidth.value)
-      listup(route.params.chatid, 1)
+      listup(route.params.chatid, 1, "pc")
     })
 
     onUpdated(() => {
-      console.log("更新组件")
       pageup(windowwidth.value)
     })
 
     /** 样式调整 */
     function pageup(width: number) {
       console.log(route.params)
+      if (width <= 720) {
+        Cfg.config.homestyle.maincontainer.height = "auto"
+        data.windowseype.height = "auto"
+        data.disableloading = false
+      } else {
+        Cfg.config.homestyle.maincontainer.height = "calc(100vh - 90px)"
+        data.windowseype.height = "calc(100vh - 100px)"
+
+        if (route.params.id) {
+          data.disableloading = false
+        } else {
+          data.disableloading = true
+        }
+      }
       // 打开帖子
       if (route.params.id) {
+        data.showpagenum = false
+
         if (width <= 720) {
           console.log("打开帖子，小于720")
           data.col = {
@@ -264,6 +374,7 @@ export default {
         }
       } else {
         // 关闭帖子
+        data.showpagenum = true
         if (width <= 720) {
           console.log("关闭帖子，小于720")
           data.col = {
@@ -337,6 +448,7 @@ export default {
       search,
       topublish,
       handleCurrentChange,
+      loadmore,
     }
   },
 }

@@ -3,6 +3,7 @@
     <div
       v-if="width === 'pc'"
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
+      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px"
     >
       <div class="common-layout">
         <el-container>
@@ -41,7 +42,7 @@
           <!-- 内容 -->
           <el-main>
             <!-- 帖子内容展示 -->
-            <MdPreview :modelValue="content.summary" class="bg-base-100" />
+            <MdPreview editorId="preview-pc" :modelValue="content.summary" class="bg-base-100" />
             <!-- 分割线 -->
             <label class="plate-label">
               <div class="large">评论</div>
@@ -67,11 +68,12 @@
               <!-- 回复列表 -->
               <div v-loading="isLoadingReply">
                 <OneReply
-                  v-for="x in reply_list"
+                  v-for="(x, index) in reply_list"
                   :key="x"
                   :x="{ ...x }"
                   :shape="shape"
                   :size="headsize"
+                  :previewid="index"
                   @refreshEvent="refresh_reply_list"
                 />
               </div>
@@ -117,7 +119,7 @@
         <!-- 内容 -->
         <el-main style="padding: 20px 0px">
           <!-- 帖子内容展示 -->
-          <MdPreview :modelValue="content.summary" class="bg-base-200" />
+          <MdPreview editorId="preview-m" :modelValue="content.summary" class="bg-base-200" />
 
           <!-- 分割线 -->
           <label class="plate-label">
@@ -144,11 +146,12 @@
             <!-- 回复列表 -->
             <div v-loading="isLoadingReply">
               <OneReply
-                v-for="x in reply_list"
+                v-for="(x, index) in reply_list"
                 :key="x"
                 :x="{ ...x }"
                 :shape="shape"
                 :size="headsize"
+                :previewid="index"
                 @refreshEvent="refresh_reply_list"
               />
             </div>
@@ -173,6 +176,8 @@ import Method from "@/globalmethods"
 import Cfg from "@/config/config"
 
 import { MdPreview } from "md-editor-v3"
+/** md编辑器 */
+import "md-editor-v3/lib/preview.css"
 
 export default {
   name: "DetailPlate",
@@ -309,8 +314,10 @@ export default {
     function pagewidth(width: number) {
       if (width <= 480) {
         data.width = "mobile"
+        Cfg.config.homestyle.maincontainer.overflowY = "visible"
       } else {
         data.width = "pc"
+        Cfg.config.homestyle.maincontainer.overflowY = "hidden"
       }
     }
     onUpdated(() => {

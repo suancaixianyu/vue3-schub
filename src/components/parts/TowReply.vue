@@ -10,7 +10,8 @@
           >:
         </div>
       </div>
-      <div class="comments">{{ v.xx.content }}</div>
+      <!-- <div class="comments">{{ v.xx.content }}</div> -->
+      <MdPreview :modelValue="v.xx.content" :editorId="`preview-tow-${previewid}`" />
       <div class="extra-line">
         <div class="time">{{ v.xx.time }}</div>
         <LikeIcon class="label"></LikeIcon>
@@ -36,6 +37,10 @@ import LikeIcon from "@comps/icons/Like.vue"
 import { reactive, toRefs } from "vue"
 import { api } from "@/apitypes"
 import { ElMessage } from "element-plus"
+import { MdPreview } from "md-editor-v3"
+
+/** md编辑器 */
+import "md-editor-v3/lib/preview.css"
 
 import Method from "@/globalmethods"
 import Cfg from "@/config/config"
@@ -44,8 +49,13 @@ export default {
   name: "TowReply",
   components: {
     LikeIcon,
+    MdPreview,
   },
   props: {
+    previewid: {
+      type: Number,
+      required: true,
+    },
     v: {
       type: Object,
       required: true,
