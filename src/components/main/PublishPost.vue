@@ -42,6 +42,7 @@ import "md-editor-v3/lib/style.css"
 // import Cfg from "@/config/config"
 
 import Method from "@/globalmethods"
+import { api } from "@/apitypes"
 export default {
   name: "PublishPost",
   components: {
@@ -67,17 +68,14 @@ export default {
       ElMessage("上传中...")
       // 执行图片上传的逻辑
       const formdata = new FormData()
-      formdata.append(
-        "key",
-        "chv_W62p_56237fd84ea0d8f73b07efcfc5bea8b24e7e35ba4b03d4257460d3fbedb8683e75a15990b61a24e9f1294b54e2a01a71f5cf32dc9986ec4e1c8b396c17aa55be",
-      )
-      formdata.append("source", file[0], file[0].name)
 
-      Method.uploadimg("/api/1/upload", formdata)
+      formdata.append("file", file[0], file[0].name)
+
+      Method.api_post("/Upload/Upload", formdata)
         .then((response) => {
-          let obj = response.data
-          if (obj.status_code === 200) {
-            this.$data.config.content += `![](${obj.image.image.url})`
+          let obj = response.data as api
+          if (obj.code === 200) {
+            this.$data.config.content += `![](${obj.data})`
             ElMessage({
               type: "success",
               message: "上传成功",

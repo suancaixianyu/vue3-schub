@@ -66,6 +66,7 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       server: "/xyapi",
+      /** 上传图片接口 */
       uploadimg: "/uploadimg",
       /** 主页样式 */
       homestyle,
