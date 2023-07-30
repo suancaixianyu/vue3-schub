@@ -5,6 +5,7 @@
       <el-col :span="col.placeholder"></el-col>
       <el-col :span="col.postlist" style="padding: 4px 0px">
         <div class="window hide-scrollbar" :style="windowseype">
+          <!-- 头部搜索框 -->
           <div
             class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
             :style="postlistseype"
@@ -37,6 +38,7 @@
               <el-col :span="24"></el-col>
             </el-row>
           </div>
+          <!-- 列表 -->
           <div v-loading="isLoadingList" element-loading-text="加载中">
             <ul
               v-infinite-scroll="loadmore"
@@ -55,6 +57,7 @@
               </li>
             </ul>
           </div>
+          <!-- 底部分页 -->
           <div
             class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
             :style="postlistseype"
@@ -70,6 +73,12 @@
               style="justify-content: center"
             ></el-pagination>
           </div>
+          <div
+            style="text-align: center; cursor: pointer"
+            @click="loadmore"
+            v-html="txt"
+            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-sm-and-up"
+          ></div>
         </div>
       </el-col>
       <!-- 占位元素 -->
@@ -103,6 +112,7 @@ export default {
     const router = useRouter()
 
     const data = reactive({
+      txt: "加载更多",
       disableloading: true, // 禁用加载
       showpagenum: true, // 显示页码
       pagenum: 1, // 页码
@@ -241,14 +251,19 @@ export default {
       pageup(newValue)
     })
 
+    /**指定页面加载 */
     function handleCurrentChange(page: any) {
       data.pagenum = page // 更新当前页码
       listup(route.params.chatid, page, "pc")
     }
+    /**无限滚动加载 */
     function loadmore() {
       if (data.pagenum + 1 <= data.totalpages) {
         data.pagenum++
         listup(route.params.chatid, data.pagenum, "move")
+        data.txt = "加载更多"
+      } else {
+        data.txt = "到底了~"
       }
     }
 

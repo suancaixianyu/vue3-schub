@@ -13,14 +13,17 @@
     <div class="hidden-sm-and-up" v-if="cfg.menu">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
-        <!-- Page content here -->
         <label for="my-drawer" tabindex="0" class="btn btn-ghost btn-circle">
           <ScLogo />
         </label>
       </div>
+      <!-- 抽屉菜单 -->
       <div class="drawer-side">
         <label for="my-drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content" style="height: 100%">
+        <ul
+          class="menu p-4 w-80 h-full bg-base-200 text-base-content"
+          style="height: 100%; box-shadow: var(--el-box-shadow-light)"
+        >
           <!-- Sidebar content here -->
           <li>
             <router-link to="/">
@@ -69,8 +72,8 @@
             <details>
               <summary>扩展工具</summary>
               <ul>
-                <li><a href="https://suancaixianyu.cn/sss">简谱转换</a></li>
-                <li><a href="https://suancaixianyu.com">白嫖gpt</a></li>
+                <li><a href="http://suancaixianyu.cn/sss">简谱转换</a></li>
+                <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
               </ul>
             </details>
           </li>
@@ -78,7 +81,7 @@
       </div>
     </div>
 
-    <!-- 样式1 -->
+    <!-- 弹窗菜单 -->
     <div class="dropdown hidden-sm-and-up bg-base-100" v-else>
       <label tabindex="0" class="btn btn-ghost btn-circle">
         <ScLogo />
@@ -86,7 +89,7 @@
       <el-menu
         default-active="2"
         class="el-menu-vertical-demo dropdown-content bg-base-100"
-        style="border: none; z-index: 20"
+        style="border: none; z-index: 20; box-shadow: var(--el-box-shadow-light)"
         @open="true"
       >
         <!-- 返回主页 -->
@@ -140,10 +143,10 @@
         <!-- 工具 -->
         <el-menu-item-group title="外部工具" index="4" style="text-align: left">
           <el-menu-item index="4-1">
-            <a href="https://suancaixianyu.cn/sss">简谱转换</a>
+            <a href="http://suancaixianyu.cn/sss">简谱转换</a>
           </el-menu-item>
           <el-menu-item index="4-2">
-            <a href="https://suancaixianyu.com">白嫖gpt</a>
+            <a href="https://suancaixianyu.com/gpt">白嫖gpt</a>
           </el-menu-item>
         </el-menu-item-group>
       </el-menu>
@@ -177,10 +180,10 @@
             <summary>工具</summary>
             <ul class="p-2 bg-base-100">
               <li>
-                <a href="https://suancaixianyu.cn/sss">简谱转换</a>
+                <a href="http://suancaixianyu.cn/sss">简谱转换</a>
               </li>
               <li>
-                <a href="https://suancaixianyu.com">白嫖gpt</a>
+                <a href="https://suancaixianyu.com/gpt">白嫖gpt</a>
               </li>
               <li>
                 <!-- 设置 -->

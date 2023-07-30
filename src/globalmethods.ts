@@ -1,5 +1,5 @@
 import Cfg from "./config/config"
-import axios from "axios"
+import axios, { AxiosStatic } from "axios"
 
 //开启cookie携带
 axios.defaults.withCredentials = true
@@ -9,7 +9,7 @@ class global {
     // 配置信息
     version: string
   }
-  axios: any
+  axios: AxiosStatic
   constructor() {
     this._config = {
       // 配置信息
@@ -36,6 +36,15 @@ class global {
    */
   api_post(path: string, data: object) {
     return axios.post(`${Cfg.config.server}${path}`, data)
+  }
+
+  /**
+   * post方法请求图床api
+   * @param {string} path 请求路径
+   * @param {object} data 请求体
+   */
+  uploadimg(path: string, data: object) {
+    return axios.post(`${Cfg.config.uploadimg}${path}`, data)
   }
 
   /**

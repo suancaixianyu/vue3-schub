@@ -20,7 +20,13 @@
         <el-input v-model="config.cover_src" />
       </el-form-item>
     </el-form>
-    <MdEditor :editorId="previewid" v-model="config.content" style="height: 72vh" />
+    <input type="file" id="as" />
+    <MdEditor
+      :editorId="previewid"
+      v-model="config.content"
+      style="height: 72vh"
+      @onUploadImg="UploadImage"
+    />
   </el-container>
 </template>
 
@@ -54,6 +60,44 @@ export default {
     }
   },
   methods: {
+    /**
+     * 上传图片
+     */
+    UploadImage(file: any) {
+      ElMessage("上传中...")
+      // 执行图片上传的逻辑
+      const formdata = new FormData()
+      formdata.append(
+        "key",
+        "chv_W62p_56237fd84ea0d8f73b07efcfc5bea8b24e7e35ba4b03d4257460d3fbedb8683e75a15990b61a24e9f1294b54e2a01a71f5cf32dc9986ec4e1c8b396c17aa55be",
+      )
+      formdata.append("source", file[0], file[0].name)
+
+      Method.uploadimg("/api/1/upload", formdata)
+        .then((response) => {
+          let obj = response.data
+          if (obj.status_code === 200) {
+            this.$data.config.content += `![](${obj.image.image.url})`
+            ElMessage({
+              type: "success",
+              message: "上传成功",
+            })
+          }
+          console.log(obj)
+        })
+        .catch((error) => {
+          ElMessage({
+            type: "error",
+            message: "上传失败",
+          })
+          console.log("error", error)
+        })
+
+      console.log(file)
+    },
+    /**
+     * 提交帖子
+     */
     submit() {
       console.log(this.config)
       if (this.config.title === "") return ElMessage("请输入帖子标题")
