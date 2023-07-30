@@ -32,6 +32,8 @@ class Cfg {
   [config: string]: {
     /** 后端服务器地址 */
     server: string
+    /** 上传图片接口 */
+    uploadimg: string
     /** 主页样式 */
     homestyle: {
       maincontainer: {
@@ -64,6 +66,7 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       server: "/xyapi",
+      uploadimg: "/uploadimg",
       /** 主页样式 */
       homestyle,
       /** 用户信息 */
