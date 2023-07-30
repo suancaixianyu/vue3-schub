@@ -1,5 +1,6 @@
 <template>
   <div v-loading="isLoading">
+    <!-- pc页面 -->
     <div
       v-if="width === 'pc'"
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
@@ -105,7 +106,7 @@
           <UserHead
             :item="{
               ...content.author,
-              time: '发布于：' + formatTimestamp(content.time),
+              time: content.time,
               shape,
               headsize,
               style: {
