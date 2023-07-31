@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       userInfo: Cfg.config.userInfo,
-      shape: Cfg.config.homestyle.cfg.shape,
+      shape: Cfg.config.homestyle.set.shape,
     }
   },
   methods: {

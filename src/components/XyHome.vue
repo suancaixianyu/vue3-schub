@@ -10,14 +10,14 @@
       <el-main :style="maincontainer">
         <router-view></router-view>
       </el-main>
-      <el-footer v-if="cfg.isshow" :style="container" style="height: 30px"> </el-footer>
+      <el-footer v-if="set.showfooter" :style="container" style="height: 30px"> </el-footer>
     </el-container>
   </div>
 </template>
 
 <script lang="ts">
 import "element-plus/theme-chalk/display.css"
-import { provide, ref, onUpdated } from "vue"
+import { provide, ref, onUpdated, onMounted } from "vue"
 import Cfg from "@/config/config"
 /** 顶部导航栏 */
 import NavigationMenu from "@comps/navigation/NavigationMenu.vue"
@@ -39,13 +39,27 @@ export default {
         setTimeout(() => {
           windowwidth.value = document.body.clientWidth
           immediate = true
+          pagewidth(windowwidth.value)
         }, 200)
+      }
+    }
+
+    function pagewidth(width: number) {
+      if (width <= 480) {
+        Cfg.config.homestyle.set.ismobile = true
+      } else {
+        Cfg.config.homestyle.set.ismobile = false
       }
     }
 
     onUpdated(() => {
       console.log("更新组件")
     })
+
+    onMounted(() => {
+      console.log("主页挂载")
+    })
+
     let theme = ref("cupcake")
     provide("windowwidth", windowwidth)
     provide("theme", theme)
@@ -57,6 +71,11 @@ export default {
 </script>
 
 <style>
+/** tag标签左右加空格 */
+.el-tag {
+  margin: 0px 5px;
+}
+
 /* 添加 class="hide-scrollbar" 使用 */
 /* 隐藏滚动条样式 */
 .hide-scrollbar::-webkit-scrollbar {
@@ -79,10 +98,11 @@ export default {
 }
 
 /** 滚动条样式 */
+/** 所有自定义变量在此使用 */
 
 *::-webkit-scrollbar {
   /* 设置滚动条的宽度 */
-  width: 12px;
+  width: var(--webkit-scrollbar-width);
 }
 
 *::-webkit-scrollbar-track {
@@ -92,22 +112,19 @@ export default {
 
 *::-webkit-scrollbar-thumb {
   /* 设置滚动条的颜色 */
-  background-image: url("@/assets/icon/mifengup.svg"), url("@/assets/icon/mifengbottom.svg");
-  background-position:
-    center top,
-    center bottom;
-  background-repeat: no-repeat, no-repeat;
-  background-size: 100%, 100%;
-  border-radius: 10px;
+  background: var(--webkit-scrollbar-thumb-background);
+  border: var(--webkit-scrollbar-thumb-border);
+  border-radius: var(--webkit-scrollbar-thumb-border-radius);
+  background-size: var(--webkit-scrollbar-thumb-background-size);
+  background-color: var(--webkit-scrollbar-thumb-background-color);
 }
 
 *::-webkit-scrollbar-thumb:hover {
   /* 设置滚动条悬停时的颜色 */
-  background-color: #eee;
-}
-
-/** tag标签左右加空格 */
-.el-tag {
-  margin: 0px 5px;
+  background: var(--webkit-scrollbar-thumb-background-hover);
+  border: var(--webkit-scrollbar-thumb-border-hover);
+  border-radius: var(--webkit-scrollbar-thumb-border-radius-hover);
+  background-size: var(--webkit-scrollbar-thumb-background-size-hover);
+  background-color: var(--webkit-scrollbar-thumb-background-color-hover);
 }
 </style>

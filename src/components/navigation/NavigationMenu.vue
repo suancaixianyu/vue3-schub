@@ -10,7 +10,7 @@
     </div>
 
     <!-- 窄屏折叠logo，菜单 -->
-    <div class="hidden-sm-and-up" v-if="cfg.menu">
+    <div class="hidden-sm-and-up" v-if="set.menu">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
         <label for="my-drawer" tabindex="0" class="btn btn-ghost btn-circle">
@@ -20,10 +20,7 @@
       <!-- 抽屉菜单 -->
       <div class="drawer-side">
         <label for="my-drawer" class="drawer-overlay"></label>
-        <ul
-          class="menu p-4 w-80 h-full bg-base-200 text-base-content"
-          style="height: 100%; box-shadow: var(--el-box-shadow-light)"
-        >
+        <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content" style="height: 100%">
           <!-- Sidebar content here -->
           <li>
             <router-link to="/">
@@ -166,7 +163,7 @@
           </router-link>
         </li>
         <!-- 消息 -->
-        <li class="hidden-xs-only">
+        <li class="hidden-xs-only" @click="bailanle">
           <div class="indicator">
             <span class="indicator-item badge">5</span>
             <el-icon :size="28" style="padding: 0px 2px">
@@ -209,6 +206,7 @@
                 data-toggle-theme="dark,light"
                 data-act-class="ACTIVECLASS"
                 style="width: 22px; height: 22px"
+                @click="bailanle"
               />
               <svg
                 class="swap-off fill-current w-10 h-10"
@@ -259,7 +257,7 @@
         </li>
       </ul>
     </div>
-    <el-dialog :show-close="true" v-model="userInfo.isLoginDialogVisible">
+    <el-dialog v-model="userInfo.isLoginDialogVisible" :draggable="true" :fullscreen="true">
       <UserLogin />
     </el-dialog>
   </div>
@@ -283,8 +281,9 @@ export default {
   },
   data() {
     return {
+      bailan: 0,
       userInfo: Cfg.config.userInfo,
-      shape: Cfg.config.homestyle.cfg.shape,
+      shape: Cfg.config.homestyle.set.shape,
       iconid: false,
       menumode: "horizontal",
       showtext: false,
@@ -315,6 +314,33 @@ export default {
     },
     showLoginDialog() {
       this.userInfo.isLoginDialogVisible = !this.userInfo.isLoginDialogVisible
+    },
+    /** 主题切换摆烂 */
+    bailanle() {
+      ++this.$data.bailan
+      console.log(this.$data.bailan)
+      if (this.$data.bailan >= 5) {
+        let 摆烂语句 = [
+          "别点了，还没做呢",
+          "没完没了了是吧？",
+          "你行你来？",
+          "凑合看吧",
+          "你是不是想看到底有多少条消息？",
+          "这不是bug",
+          "我写的东西怎么可能会有bug",
+          "你觉得很对是吧？",
+          "你再怎么点都没用",
+          "怎么这么固执？",
+        ]
+        if (this.$data.bailan === 100) {
+          ElMessage({
+            type: "success",
+            message: "是男人就点一百次！！！",
+          })
+        } else {
+          ElMessage(摆烂语句[Math.floor(Math.random() * 摆烂语句.length)])
+        }
+      }
     },
   },
   setup() {

@@ -25,6 +25,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 //刷新页面重新获取用户信息
 Method.getInformation()
+// 初始化页面样式
+Method.setwebstyle()
 
 console.log(Method, "******", Cfg)
 

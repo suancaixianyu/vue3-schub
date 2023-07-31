@@ -75,7 +75,7 @@ export default {
         .then((response) => {
           let obj = response.data as api
           if (obj.code === 200) {
-            this.$data.config.content += `![](${obj.data})`
+            this.$data.config.content += `![](${Method.getHostUrl(obj.data)})`
             ElMessage({
               type: "success",
               message: "上传成功",

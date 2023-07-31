@@ -68,8 +68,8 @@ export default {
   },
   data() {
     return {
-      shape: Cfg.config.homestyle.cfg.shape,
-      headsize: Cfg.config.homestyle.cfg.headsize.post,
+      shape: Cfg.config.homestyle.set.shape,
+      headsize: Cfg.config.homestyle.headsize.post,
     }
   },
   setup(props) {

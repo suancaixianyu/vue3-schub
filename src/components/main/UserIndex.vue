@@ -92,7 +92,7 @@ export default {
       bbsList: [],
       worldList: [],
       modList: [],
-      headsize: Cfg.config.homestyle.cfg.headsize.post,
+      headsize: Cfg.config.homestyle.headsize.post,
       userInfo: Cfg.config.userInfo,
     }
   },

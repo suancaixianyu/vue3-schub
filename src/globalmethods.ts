@@ -4,15 +4,15 @@ import axios, { AxiosStatic } from "axios"
 //开启cookie携带
 axios.defaults.withCredentials = true
 
-class global {
+class Method {
+  /** 配置信息 */
   _config: {
-    // 配置信息
+    /** 版本号 */
     version: string
   }
   axios: AxiosStatic
   constructor() {
     this._config = {
-      // 配置信息
       version: "1.0.0",
     }
     this.axios = axios
@@ -22,11 +22,7 @@ class global {
    * @param {string} path 请求路径
    */
   api_get(path: string) {
-    return axios.get(`${Cfg.config.server}${path}`, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
+    return axios.get(`${Cfg.config.server}${path}`)
   }
 
   /**
@@ -153,6 +149,10 @@ class global {
     else return JSON.parse(v)
   }
 
+  /**
+   * 将资源相对路径转为绝对路径
+   * @param e 资源相对路径
+   */
   getHostUrl(e: string): string {
     if (e.indexOf("http://") != -1 || e.indexOf("https://") != -1) return e
     if (e.indexOf("./") == -1) {
@@ -162,8 +162,10 @@ class global {
     }
   }
 
+  /**
+   * 刷新页面重新获取用户信息
+   */
   getInformation() {
-    //刷新页面重新获取用户信息
     this.api_get("/user/info").then((response2: any) => {
       if (response2.code == 200) {
         Cfg.config.userInfo.isLogin = true
@@ -173,6 +175,14 @@ class global {
       }
     })
   }
+
+  setwebstyle() {
+    for (let a in Cfg.config.webstyle) {
+      for (let b in Cfg.config.webstyle[a]) {
+        document.documentElement.style.setProperty(`--${b}`, Cfg.config.webstyle[a][b])
+      }
+    }
+  }
 }
 
-export default new global()
+export default new Method()
