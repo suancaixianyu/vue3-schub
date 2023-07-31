@@ -257,7 +257,7 @@
         </li>
       </ul>
     </div>
-    <el-dialog v-model="userInfo.isLoginDialogVisible" :draggable="true" :fullscreen="true">
+    <el-dialog v-model="userInfo.isLoginDialogVisible" :draggable="true" :fullscreen="ismobile">
       <UserLogin />
     </el-dialog>
   </div>
@@ -284,6 +284,7 @@ export default {
       bailan: 0,
       userInfo: Cfg.config.userInfo,
       shape: Cfg.config.homestyle.set.shape,
+      ismobile: Cfg.config.homestyle.set.ismobile,
       iconid: false,
       menumode: "horizontal",
       showtext: false,
@@ -336,6 +337,13 @@ export default {
           ElMessage({
             type: "success",
             message: "是男人就点一百次！！！",
+          })
+          let date = new Date()
+          Method.localSet("accomplishment", {
+            真的很闲: {
+              Completed: true,
+              time: date.getDate(),
+            },
           })
         } else {
           ElMessage(摆烂语句[Math.floor(Math.random() * 摆烂语句.length)])
