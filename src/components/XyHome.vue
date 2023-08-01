@@ -46,8 +46,10 @@ export default {
 
     function pagewidth(width: number) {
       if (width <= 480) {
+        console.log('切换为手机')
         Cfg.config.homestyle.set.ismobile = true
       } else {
+        console.log('切换为pc')
         Cfg.config.homestyle.set.ismobile = false
       }
     }
@@ -58,6 +60,7 @@ export default {
 
     onMounted(() => {
       console.log("主页挂载")
+      pagewidth(document.body.clientWidth)
     })
 
     let theme = ref("cupcake")

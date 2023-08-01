@@ -2,7 +2,7 @@ import { reactive } from "vue"
 const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
-    padding: "0px 5px",
+    padding: "0px 18px",
     height: "calc(100vh - 90px)",
     overflowY: "hidden",
   },
@@ -24,22 +24,24 @@ const homestyle = reactive({
   },
 })
 
-let webkit = reactive({
-  // 滚动条样式
-  "webkit-scrollbar-thumb-background":
-    'url("./src/assets/icon/mifengup.svg") center top no-repeat, url("./src/assets/icon/mifengbottom.svg") center bottom no-repeat',
-  "webkit-scrollbar-thumb-background-color": "",
-  "webkit-scrollbar-thumb-border": "none",
-  "webkit-scrollbar-thumb-border-radius": "10px",
-  "webkit-scrollbar-thumb-background-size": "100%",
-  // 鼠标悬停效果
-  "webkit-scrollbar-thumb-background-hover": "var(--webkit-scrollbar-thumb-background)",
-  "webkit-scrollbar-thumb-background-color-hover": "#F5F5F5",
-  "webkit-scrollbar-thumb-border-hover": "none",
-  "webkit-scrollbar-thumb-border-radius-hover": "10px",
-  "webkit-scrollbar-thumb-background-size-hover": "100%",
-  // 滚动条框框样式
-  "webkit-scrollbar-width": "12px",
+let webstyle = reactive({
+  webkit: {
+    // 滚动条样式
+    "webkit-scrollbar-thumb-background":
+      'url("./src/assets/icon/mifengup.svg") center top no-repeat, url("./src/assets/icon/mifengbottom.svg") center bottom no-repeat',
+    "webkit-scrollbar-thumb-background-color": "",
+    "webkit-scrollbar-thumb-border": "none",
+    "webkit-scrollbar-thumb-border-radius": "10px",
+    "webkit-scrollbar-thumb-background-size": "100%",
+    // 鼠标悬停效果
+    "webkit-scrollbar-thumb-background-hover": "var(--webkit-scrollbar-thumb-background)",
+    "webkit-scrollbar-thumb-background-color-hover": "#F5F5F5",
+    "webkit-scrollbar-thumb-border-hover": "none",
+    "webkit-scrollbar-thumb-border-radius-hover": "10px",
+    "webkit-scrollbar-thumb-background-size-hover": "100%",
+    // 滚动条框框样式
+    "webkit-scrollbar-width": "12px",
+  }
 })
 
 const userInfo = reactive({
@@ -115,14 +117,13 @@ class Cfg {
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      server: "http://localhost:8081",
+      // server: "http://localhost:8081",
+      server: "/xyapi",
       uploadimg: "/upload",
       /** 主页样式 */
       homestyle,
       userInfo,
-      webstyle: {
-        webkit,
-      },
+      webstyle
     }
   }
 }

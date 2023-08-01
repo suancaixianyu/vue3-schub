@@ -4,23 +4,14 @@
       <!-- 占位元素 -->
       <el-col :span="col.placeholder"></el-col>
       <el-col :span="col.postlist" style="padding: 4px 0px">
-        <div class="window hide-scrollbar" :style="windowseype">
+        <div class="window hide-scrollbar" :style="windowseype" ref="container">
           <!-- 头部搜索框 -->
-          <div
-            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-            :style="postlistseype"
-            style="height: 60px"
-          >
+          <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" :style="postlistseype"
+            style="height: 60px">
             <el-row :gutter="24">
               <el-col :span="24">
-                <input
-                  v-model="searchinput"
-                  type="search"
-                  placeholder="搜索"
-                  class="input input-bordered input-sm"
-                  style="margin-right: 12px"
-                  :style="inputstyle"
-                />
+                <input v-model="searchinput" type="search" placeholder="搜索" class="input input-bordered input-sm"
+                  style="margin-right: 12px" :style="inputstyle" />
                 <button class="btn btn-sm" @click="search" style="margin: 0px" title="搜索">
                   <el-icon>
                     <Search />
@@ -40,45 +31,22 @@
           </div>
           <!-- 列表 -->
           <div v-loading="isLoadingList" element-loading-text="加载中">
-            <ul
-              v-infinite-scroll="loadmore"
-              :infinite-scroll-distance="20"
-              :infinite-scroll-immediate="false"
-              :infinite-scroll-disabled="disableloading"
-            >
+            <ul v-infinite-scroll="loadmore" :infinite-scroll-distance="20" :infinite-scroll-immediate="false"
+              :infinite-scroll-disabled="disableloading">
               <li>
-                <PostListPlate
-                  v-for="item in outcomeplate"
-                  :key="item.id"
-                  :item="item"
-                  :bbsid="chatid"
-                  :st="{ postlistseype, shape }"
-                />
+                <PostListPlate v-for="item in outcomeplate" :key="item.id" :item="item" :bbsid="chatid"
+                  :st="{ postlistseype, shape }" />
               </li>
             </ul>
           </div>
           <!-- 底部分页 -->
-          <div
-            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
-            :style="postlistseype"
-            style="height: 60px"
-            v-if="showpagenum"
-          >
-            <el-pagination
-              :current-page="pagenum"
-              :page-size="10"
-              :pager-count="5"
-              :total="total"
-              @current-change="handleCurrentChange"
-              style="justify-content: center"
-            ></el-pagination>
+          <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
+            :style="postlistseype" style="height: 60px" v-if="showpagenum">
+            <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
+              @current-change="handleCurrentChange" style="justify-content: center"></el-pagination>
           </div>
-          <div
-            style="text-align: center; cursor: pointer"
-            @click="loadmore"
-            v-html="txt"
-            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-sm-and-up"
-          ></div>
+          <div style="text-align: center; cursor: pointer" @click="loadmore" v-html="txt"
+            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-sm-and-up"></div>
         </div>
       </el-col>
       <!-- 占位元素 -->
@@ -103,7 +71,6 @@ import PostListPlate from "./cards/PostListPlate.vue"
 /** 帖子列表 */
 export default {
   name: "PostPage",
-
   components: {
     PostListPlate,
   },
@@ -230,6 +197,12 @@ export default {
                 comments: el.comments,
               })
             })
+            if (type === "pc") {
+              const scrollElement = ref<HTMLDivElement | null>(null);
+              if (scrollElement.value) {
+                scrollElement.value.scrollTop = 0;
+              }
+            }
           }
         })
         .catch((error) => {

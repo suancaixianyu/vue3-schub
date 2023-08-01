@@ -21,11 +21,7 @@
         <hr />
         <el-form-item label="预览">
           帖子&emsp;<el-avatar :shape="set.shape" :size="headsize.post" :src="userhead" />
-          &emsp;&emsp; 用户中心&emsp;<el-avatar
-            :shape="set.shape"
-            :size="headsize.userindex"
-            :src="userhead"
-          />
+          &emsp;&emsp; 用户中心&emsp;<el-avatar :shape="set.shape" :size="headsize.userindex" :src="userhead" />
         </el-form-item>
 
         <el-form-item label="头像形状">
@@ -48,89 +44,52 @@
           <el-text>滚动条：css样式</el-text>
         </el-radio-group>
         <hr />
-        <el-form-item label="预览">
-          <el-text>输入文本，换行查看效果，或拖动右下角调整大小，手机端长按右下角即可拖动</el-text>
-          <textarea class="textarea" placeholder="输入文本" style="width: 100%"></textarea>
-        </el-form-item>
 
-        <hr />
         <el-form-item label="::-webkit-scrollbar-thumb">
           <el-text>背景: var(--webkit-scrollbar-thumb-background)</el-text>
-          <textarea
-            class="textarea bg-base-200"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-background']"
-          />
+          <textarea class="textarea bg-base-200" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background']" />
           <el-text>悬停背景: var(--webkit-scrollbar-thumb-background-hover)</el-text>
-          <textarea
-            class="textarea bg-base-200"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-hover']"
-          />
+          <textarea class="textarea bg-base-200" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-hover']" />
           <el-text>背景颜色: var(--webkit-scrollbar-thumb-background-color)</el-text>
-          <el-color-picker
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color']"
-            size="small"
-          />
-          <el-input
-            class="bg-base-200"
-            type="text"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color']"
-          />
+          <el-color-picker v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color']" size="small" />
+          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color']" />
           <el-text>悬停背景颜色: var(--webkit-scrollbar-thumb-background-color-hover)</el-text>
-          <el-color-picker
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color-hover']"
-            size="small"
-          />
-          <el-input
-            class="bg-base-200"
-            type="text"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color-hover']"
-          />
+          <el-color-picker v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color-hover']" size="small" />
+          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color-hover']" />
 
           <el-text>背景大小: var(--webkit-scrollbar-thumb-background-size)</el-text>
-          <el-input
-            class="bg-base-200"
-            type="text"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-size']"
-          />
+          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-size']" />
           <el-text>边框: var(--webkit-scrollbar-thumb-border)</el-text>
-          <textarea
-            class="textarea bg-base-200"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-border']"
-          />
+          <textarea class="textarea bg-base-200" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-border']" />
           <el-text>圆角: var(--webkit-scrollbar-thumb-border-radius)</el-text>
-          <el-input
-            class="bg-base-200"
-            type="text"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-thumb-border-radius']"
-          />
+          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-border-radius']" />
         </el-form-item>
         <hr />
         <el-form-item label="::-webkit-scrollbar">
           <el-text>宽度: var(--webkit-scrollbar-width)</el-text>
-          <el-input
-            class="bg-base-200"
-            type="text"
-            placeholder="输入文本"
-            style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-width']"
-          />
+          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-width']" />
         </el-form-item>
         <el-form-item>
           <el-button @click="setstyle">应用</el-button>
+          <el-button text @click="dialogFormVisible = true">导入配置</el-button>
+          <el-button text @click="getconfiguration">导出配置</el-button>
+          <el-dialog v-model="dialogFormVisible" title="Shipping address">
+            <textarea class="textarea bg-base-200" placeholder="输入文本" style="width: 100%" v-model="configuration" />
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">关闭</el-button>
+                <el-button @click="setconfiguration">设置</el-button>
+              </span>
+            </template>
+          </el-dialog>
         </el-form-item>
       </el-form>
     </el-col>
@@ -146,7 +105,8 @@ export default {
   name: "UserSetup",
   data() {
     return {
-      webkit_background: Cfg.config.webstyle.webkit["webkit-scrollbar-thumb-background"],
+      dialogFormVisible: false,
+      configuration: ''
     }
   },
   setup() {
@@ -177,6 +137,15 @@ export default {
       Method.localSet("webkit", Cfg.config.webstyle)
       Method.setwebstyle()
     },
+    setconfiguration() {
+      this.dialogFormVisible = false
+      Method.localSet("webkit", this.configuration)
+      Method.setwebstyle()
+    },
+    getconfiguration() {
+      this.dialogFormVisible = true
+      this.configuration = JSON.stringify(Method.localGet("webkit", {}))
+    }
   },
 }
 </script>

@@ -136,8 +136,12 @@ class Method {
   /**
    * 储存信息到本地
    */
-  localSet(key: string, obj: object) {
-    localStorage.setItem(key, JSON.stringify(obj))
+  localSet(key: string, obj: object | string) {
+    if (typeof obj === 'string') {
+      localStorage.setItem(key, obj)
+    } else {
+      localStorage.setItem(key, JSON.stringify(obj))
+    }
   }
 
   /**
@@ -322,8 +326,8 @@ class Method {
    */
   setwebstyle() {
     let data = this.localGet("webkit", {})
-    console.log(data.webkit)
-    if (data) {
+    if (data.webkit) {
+      console.log('加载本地设置', data.webkit)
       Cfg.config.webstyle.webkit = data.webkit
     }
     for (let a in Cfg.config.webstyle) {
