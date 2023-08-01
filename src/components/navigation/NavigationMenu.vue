@@ -351,6 +351,10 @@ export default {
       }
     },
   },
+  created(){
+    //刷新页面重新获取用户信息
+    Method.getInformation()
+  },
   setup() {
     const toggleInput: Ref<HTMLElement | null> = ref(null)
     const handleLiClick = () => {

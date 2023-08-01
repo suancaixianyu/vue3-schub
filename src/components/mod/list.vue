@@ -49,44 +49,36 @@
       </div>
     </el-header>
     <el-container class="el-container">
-      <router-link to="/ModDetail/1">
-        <div class="res-item">
-          <div class="right">
-            <img class="img" src="@/assets/image/head_zone_bg.png" />
+      <div class="res-item" v-for="(x,i) in list" @click="goDetail(i)">
+        <div class="right">
+          <img class="img" :src="x.cover_src" />
+        </div>
+        <div class="left">
+          <div class="name-line">
+            <div class="flag-area">
+              <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list"/>
+            </div>
+            <div>[工业2]{{x.name}}(Industrial II)</div>
           </div>
-          <div class="left">
-            <div class="name-line">
-              <div class="flag-area">
-                <mod-flag class="flag" flag="adventure" active></mod-flag>
-                <mod-flag class="flag" flag="adventure" active></mod-flag>
-                <mod-flag class="flag" flag="adventure" active></mod-flag>
-              </div>
-              <div>[工业2]工业时代(Industrial II)</div>
+          <div class="description-line">{{x.description}}</div>
+          <div class="btn-line">
+            <div class="item">
+              <icon-hot :size="18"></icon-hot>
+              <div class="hot">{{x.views}}</div>
             </div>
-            <div class="description-line">
-              [h1=简介]工业2是围绕 Minecraft 生活现代化和生产自动化两个主题而展开的 Minecraft
-              模组，由 IndustrialCraft2 Dev Team 开发并维护。它在工业1的基础上发展而来，引入了名为
-              [EU] 能量单元 (Energy Unit)
-              的电力能源系统，以及对应的发电设备，并以此为基础添加了大量相关物品、方块以及机器。其内容涉及资源处理、矿物采集、农业等多个主题...
+            <div class="item">
+              <like-icon :size="24"></like-icon>
+              <div class="like">{{x.likes}}</div>
             </div>
-            <div class="btn-line">
-              <div class="item">
-                <icon-hot :size="18"></icon-hot>
-                <div class="hot">81.6k</div>
-              </div>
-              <div class="item">
-                <like-icon :size="24"></like-icon>
-                <div class="like">2.6k</div>
-              </div>
-              <div class="item">
-                <icon-down :size="18"></icon-down>
-                <div class="down">1.8k</div>
-              </div>
+            <div class="item">
+              <icon-down :size="18"></icon-down>
+              <div class="down">{{x.downloads}}</div>
             </div>
           </div>
         </div>
-      </router-link>
+      </div>
     </el-container>
+    <el-pagination background layout="prev, pager, next" :total="total" v-model="page"/>
   </div>
 </template>
 
@@ -103,6 +95,9 @@ import ModFlag from "@comps/mod/flag.vue"
 import IconHot from "@comps/icons/common/hot.vue"
 import LikeIcon from "@comps/icons/Like.vue"
 import IconDown from "@comps/icons/common/down.vue"
+import Method from "@/globalmethods"
+import {watch} from "vue";
+import Cfg from "@/config/config";
 export default {
   name: "ModList",
   components: {
@@ -120,11 +115,50 @@ export default {
     Grid,
   },
   data() {
-    return {}
+    return {
+      total:0,
+      page:1,
+      limit:10,
+      list:[] as any[],
+      search:'',
+      flag_filter:0,
+      isLoading:false
+    }
   },
   methods: {
-    goPublish() {},
+    goDetail(index:number){
+      let item = this.list[index];
+      this.$router.push(`/ModDetail/${item.id}`);
+    },
+    pullList(){
+      let payLoad = {
+        page:this.page,
+        limit:this.limit,
+        search:this.search,
+        flag_filter:this.flag_filter
+      };
+      this.isLoading = true;
+      Method.api_post('/mod/list',payLoad).then(response=>{
+        let res = response.data;
+        this.isLoading = false;
+        if(res.code==200){
+          this.total = res.sum.total;
+          res.data.forEach((x:any)=>{
+            x.flag_list = Method.decodeFlagList(x.flag_list);
+          });
+          if(this.page == 1) this.list = res.data;
+          else this.list = this.list.concat(res.data);
+        }
+      });
+
+    }
   },
+  created(){
+    this.pullList();
+    watch(()=>this.page,()=>{
+      this.pullList();
+    })
+  }
 }
 </script>
 <style scoped>
@@ -150,6 +184,8 @@ export default {
 
 .el-container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   background: #fff;
 }
 

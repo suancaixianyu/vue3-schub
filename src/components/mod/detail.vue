@@ -1,7 +1,7 @@
 <template>
-  <el-container class="el-container">
+  <el-container class="el-container" v-loading="isLoading">
     <div class="panel-left">
-      <img class="img" src="@/assets/image/head_zone_bg.png" />
+      <el-avatar class="img" :src="cover_src" />
       <div class="update-area">
         <div class="tab">更新日志</div>
         <div class="update-log">
@@ -28,47 +28,48 @@
           <div class="item left">活跃</div>
           <div class="item right">闭源</div>
         </div>
-        <div class="name">[IC2]工业时代</div>
-        <div class="en-name">Industrial Craft 2</div>
+        <div class="name">[{{mini_name}}]{{name}}</div>
+        <div class="en-name">{{en_name}}</div>
       </div>
       <div class="flag-area">
-        <mod-flag class="flag" flag="adventure" active></mod-flag>
-        <mod-flag class="flag" flag="adventure" active></mod-flag>
-        <mod-flag class="flag" flag="adventure" active></mod-flag>
+        <mod-flag class="flag" :flag="x.flag_name" active v-for="x in flag_list"></mod-flag>
       </div>
       <div class="extra-area">
         <div class="item">
           <div>支持的游戏版本:</div>
-          <div class="href">2.1</div>
-          <div class="href">2.2</div>
-          <div class="href">2.3</div>
+          <div class="href" v-for="x in game_list">{{x.name}}</div>
         </div>
-        <div class="item">最后编辑: 2天前</div>
+        <div class="item">
+          <div>支持的API版本:</div>
+          <div class="href" v-for="x in api_list">{{x.name}}</div>
+        </div>
+        <div class="item">最后编辑: {{last_modify}}</div>
         <div class="item">
           <div>Mod作者/开发团队:</div>
           <div>无</div>
         </div>
         <div class="item">相关链接:</div>
         <div class="item">
-          <div class="link">
+          <a class="link" :href="x.src" v-for="x in link_list">
             <icon-down></icon-down>
-            官方
-          </div>
+            <div>{{x.name}}</div>
+          </a>
         </div>
         <el-tabs class="el-tabs" type="border-card">
           <el-tab-pane label="Mod介绍">
-            工业2是围绕 Minecraft 生活现代化和生产自动化两个主题而展开的 Minecraft 模组，由
-            IndustrialCraft2 Dev Team 开发并维护。 它在工业1的基础上发展而来，引入了名为 [EU]
-            能量单元 (Energy Unit)
-            的电力能源系统，以及对应的发电设备，并以此为基础添加了大量相关物品、方块以及机器。其内容涉及资源处理、矿物采集、农业等多个主题，极大地平衡和丰富了前代的游戏体验，同时还拥有许多拓展模组，进一步丰富了游戏体验，增加了新的游戏目标。
-            作为最著名的 Minecraft 模组之一，其内容相对简单基础，是初次接触大型 Minecraft
-            模组的玩家很好的选择。 Tips 使用 1.9.4 之后的版本请注意，IC2
-            的电压机制被重新采用，当机器的输入电压过大时，机器将会爆炸！且已移除物品中部分已重新启用。
-            （原文：Explosions in the EnergyNet are enabled again. If you connect a machine to an
-            improper voltage, it will explode!）
+            {{description}}
           </el-tab-pane>
-          <el-tab-pane label="Mod关系">Mod介绍</el-tab-pane>
-          <el-tab-pane label="Mod下载">Mod介绍</el-tab-pane>
+          <el-tab-pane label="Mod关系">
+            <el-collapse v-model="activeRelation">
+              <el-collapse-item v-for="(x,i) in relation_list" :title="x.condition" :name="i">
+                <div class="flex" v-for="xx in x.list">
+                  <el-tag class="ml-2" type="success">{{xx.type_name}}</el-tag>
+                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{xx.package_name}}</el-button>
+                </div>
+              </el-collapse-item>
+            </el-collapse>
+          </el-tab-pane>
+          <el-tab-pane label="Mod下载">Mod下载</el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -86,8 +87,8 @@
             <icon-hot :size="20"></icon-hot>
             <icon-hot :size="20"></icon-hot>
           </div>
-          <div>总浏览:1103.5k</div>
-          <div>总浏览:1103.5k</div>
+          <div>总浏览:{{views}}</div>
+          <div>总点赞:{{likes}}</div>
         </div>
       </div>
       <div class="operate-list">
@@ -142,10 +143,72 @@
 import ModFlag from "@comps/mod/flag.vue"
 import IconDown from "@comps/icons/common/down.vue"
 import IconHot from "@comps/icons/common/hot.vue"
+import Method from "@/globalmethods";
+import {watch} from "vue";
 export default {
   name: "modDetail",
   components: { IconHot, IconDown, ModFlag },
   props: {},
+  methods:{
+    goModDetail(id:number){
+      this.$router.push(`/ModDetail/${id}`);
+    },
+    reloadPageData(){
+      this.isLoading = true;
+      Method.api_get(`/mod/item/${this.$route.params.id}`).then(response=>{
+        let res = response.data;
+        if(res.code==200){
+          this.isLoading = false;
+          let modInfo = res.data.mod;
+          this.relation_list = Method.decodeRelationList(res.data.relation);
+          this.cover_src = modInfo.cover_src;
+          this.create_time = modInfo.create_time;
+          this.description = modInfo.description;
+          this.downloads = modInfo.downloads;
+          this.id = modInfo.id;
+          this.likes = modInfo.likes;
+          this.last_modify = Method.formatBbsTime(modInfo.last_modify_time);
+          this.link_list = Method.decodeLinkList(modInfo.link_list);
+          this.flag_list = Method.decodeFlagList(modInfo.flag_list);
+          this.api_list = Method.decodeApiVersionList(modInfo.api_list);
+          this.game_list = Method.decodeGameVersionList(modInfo.game_list);
+          this.name = modInfo.name;
+          this.views = modInfo.views;
+          this.mini_name = modInfo.mini_name;
+          this.en_name = modInfo.en_name;
+        }
+      });
+    }
+  },
+  data(){
+    return {
+      activeRelation:[0] as any,
+      isLoading:false,
+      last_modify:'',
+      cover_src:'',
+      create_time   : 0,
+      description   :'',
+      downloads   : 0,
+      id   : 1,
+      last_modify_time   : 0,
+      likes   :     0,
+      flag_list   : [] as any,
+      link_list :     [] as any,
+      game_list:[] as any,
+      api_list:[] as any,
+      relation_list:[] as any,
+      name   :     '',
+      views   :     0,
+      mini_name:'',
+      en_name:''
+    };
+  },
+  created(){
+    watch(()=>this.$route.params.id,()=>{
+      this.reloadPageData();
+    })
+    this.reloadPageData();
+  }
 }
 </script>
 <style scoped>
@@ -293,6 +356,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0 10px;
 }
 
 .rate-area {

@@ -68,9 +68,7 @@ export default {
       ElMessage("上传中...")
       // 执行图片上传的逻辑
       const formdata = new FormData()
-
       formdata.append("file", file[0], file[0].name)
-
       Method.api_post("/Upload/Upload", formdata)
         .then((response) => {
           let obj = response.data as api
@@ -81,7 +79,6 @@ export default {
               message: "上传成功",
             })
           }
-          console.log(obj)
         })
         .catch((error) => {
           ElMessage({
@@ -90,14 +87,11 @@ export default {
           })
           console.log("error", error)
         })
-
-      console.log(file)
     },
     /**
      * 提交帖子
      */
     submit() {
-      console.log(this.config)
       if (this.config.title === "") return ElMessage("请输入帖子标题")
       else if (this.config.content === "") return ElMessage("请输入帖子内容")
       this.isPublishing = true

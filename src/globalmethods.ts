@@ -163,17 +163,129 @@ class Method {
   }
 
   /**
+   * 解码flag_list
+   * @param flag_list_str
+   */
+  decodeFlagList(flag_list_str:string){
+    let {userInfo:{global_mod_data_list:{flag_list}}} = Cfg.config;
+    let arr = flag_list_str.split(',');
+    let result = [] as any;
+    if(arr.length>0){
+      arr.forEach((x:any)=>{
+        let f = flag_list.find((xx:any)=>{return xx.id == x;});
+        if(f!=null){
+          result.push({name:f.name,flag_name:f.flag_name});
+        }
+      })
+    }
+    return result;
+  }
+
+  /**
+   * 解码link_list
+   * @param linkStr
+   */
+  decodeLinkList(linkStr:string){
+    let {userInfo:{global_mod_data_list:{link_type}}} = Cfg.config;
+    let result=[] as any;
+    if(linkStr==null)return result;
+    let arr = linkStr.split('|');
+    arr.forEach((x:string)=>{
+      let arr2 = x.split(',');
+      let f = link_type.find((xx:any)=>{return xx.id == arr2[0]});
+      if(f!=null){
+        result.push({name:f.name,src:arr2[1]});
+      }
+    });
+    return result;
+  }
+  /**
+   * 解码api_version_list
+   * @param linkStr
+   */
+  decodeApiVersionList(linkStr:string){
+    let {userInfo:{global_mod_data_list:{api_version}}} = Cfg.config;
+    let result=[] as any;
+    if(linkStr==null)return result;
+    let arr = linkStr.split('|');
+    arr.forEach((x:string)=>{
+      let f = api_version.find((xx:any)=>{return xx.id == x});
+      if(f!=null){
+        result.push({name:f.name});
+      }
+    });
+    return result;
+  }
+  /**
+   * 解码game_version_list
+   * @param linkStr
+   */
+  decodeGameVersionList(linkStr:string){
+    let {userInfo:{global_mod_data_list:{game_version}}} = Cfg.config;
+    let result=[] as any;
+    if(linkStr==null)return result;
+    let arr = linkStr.split('|');
+    arr.forEach((x:string)=>{
+      let f = game_version.find((xx:any)=>{return xx.id == x});
+      if(f!=null){
+        result.push({name:f.name});
+      }
+    });
+    return result;
+  }
+  /**
+   * 解码relation_list
+   * @param linkStr
+   */
+  decodeRelationList(relationList:any){
+    let {userInfo:{global_mod_data_list:{relate_type}}} = Cfg.config;
+    let result=[] as any;
+    relationList.forEach((linkStr:any)=>{
+      let item = {condition:linkStr.condition_value,list:[] as any};
+      if(linkStr.relation!=null){
+        let arr = linkStr.relation.split('|');
+        arr.forEach((x:string)=>{
+          let arr2 = x.split(',');
+          let f = relate_type.find((xx:any)=>{return xx.id == arr2[0]});
+          if(f!=null){
+            item.list.push({type_name:f.name,package_name:arr2[1],package_id:arr2[2]});
+          }
+        });
+      }
+      result.push(item);
+    });
+    return result;
+  }
+  /**
    * 刷新页面重新获取用户信息
    */
   getInformation() {
+    let {userInfo} = Cfg.config;
+    //刷新页面重新获取用户信息
+    this.api_get('/user/role_list').then(response=>{
+      let roleRes = response.data;
+      if(roleRes.code==200){
+        userInfo.role_list = roleRes.data;//全局角色列表缓存
+      }
+    });
+    this.api_get('/mod/global_data_list').then(response=>{
+      let roleRes = response.data;
+      if(roleRes.code==200){
+        userInfo.global_mod_data_list = roleRes.data;//全局角色列表缓存
+      }
+    });
     this.api_get("/user/info").then((response2: any) => {
-      if (response2.code == 200) {
-        Cfg.config.userInfo.isLogin = true
-        Cfg.config.userInfo.isLoginDialogVisible = false
-        response2.data.data.headurl = this.getHostUrl(response2.data.data.headurl)
-        Cfg.config.userInfo.data = response2.data.data
+      let res = response2.data;
+      if (res.code == 200) {
+        let role_list = res.data.role_list.split(',');
+        res.data.role_list = role_list;
+        userInfo.isLogin = true
+        userInfo.isLoginDialogVisible = false
+        res.data.headurl = this.getHostUrl(res.data.headurl);
+        userInfo.data = res.data
       }
     })
+
   }
 
   /**

@@ -23,13 +23,8 @@ app.use(router)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
-//刷新页面重新获取用户信息
-Method.getInformation()
 // 初始化页面样式
 Method.setwebstyle()
-
-console.log(Method, "******", Cfg)
-
 // 注入全局方法和变量
 // app.provide('global', {
 //   Method,
