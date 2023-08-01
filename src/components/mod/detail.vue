@@ -28,8 +28,8 @@
           <div class="item left">活跃</div>
           <div class="item right">闭源</div>
         </div>
-        <div class="name">[{{mini_name}}]{{name}}</div>
-        <div class="en-name">{{en_name}}</div>
+        <div class="name">[{{ mini_name }}]{{ name }}</div>
+        <div class="en-name">{{ en_name }}</div>
       </div>
       <div class="flag-area">
         <mod-flag class="flag" :flag="x.flag_name" active v-for="x in flag_list"></mod-flag>
@@ -37,13 +37,13 @@
       <div class="extra-area">
         <div class="item">
           <div>支持的游戏版本:</div>
-          <div class="href" v-for="x in game_list">{{x.name}}</div>
+          <div class="href" v-for="x in game_list">{{ x.name }}</div>
         </div>
         <div class="item">
           <div>支持的API版本:</div>
-          <div class="href" v-for="x in api_list">{{x.name}}</div>
+          <div class="href" v-for="x in api_list">{{ x.name }}</div>
         </div>
-        <div class="item">最后编辑: {{last_modify}}</div>
+        <div class="item">最后编辑: {{ last_modify }}</div>
         <div class="item">
           <div>Mod作者/开发团队:</div>
           <div>无</div>
@@ -52,19 +52,21 @@
         <div class="item">
           <a class="link" :href="x.src" v-for="x in link_list">
             <icon-down></icon-down>
-            <div>{{x.name}}</div>
+            <div>{{ x.name }}</div>
           </a>
         </div>
         <el-tabs class="el-tabs" type="border-card">
           <el-tab-pane label="Mod介绍">
-            {{description}}
+            {{ description }}
           </el-tab-pane>
           <el-tab-pane label="Mod关系">
             <el-collapse v-model="activeRelation">
-              <el-collapse-item v-for="(x,i) in relation_list" :title="x.condition" :name="i">
+              <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
                 <div class="flex" v-for="xx in x.list">
-                  <el-tag class="ml-2" type="success">{{xx.type_name}}</el-tag>
-                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{xx.package_name}}</el-button>
+                  <el-tag class="ml-2" type="success">{{ xx.type_name }}</el-tag>
+                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{
+                    xx.package_name
+                  }}</el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -87,8 +89,8 @@
             <icon-hot :size="20"></icon-hot>
             <icon-hot :size="20"></icon-hot>
           </div>
-          <div>总浏览:{{views}}</div>
-          <div>总点赞:{{likes}}</div>
+          <div>总浏览:{{ views }}</div>
+          <div>总点赞:{{ likes }}</div>
         </div>
       </div>
       <div class="operate-list">
@@ -143,72 +145,75 @@
 import ModFlag from "@comps/mod/flag.vue"
 import IconDown from "@comps/icons/common/down.vue"
 import IconHot from "@comps/icons/common/hot.vue"
-import Method from "@/globalmethods";
-import {watch} from "vue";
+import Method from "@/globalmethods"
+import { watch } from "vue"
 export default {
   name: "modDetail",
   components: { IconHot, IconDown, ModFlag },
   props: {},
-  methods:{
-    goModDetail(id:number){
-      this.$router.push(`/ModDetail/${id}`);
+  methods: {
+    goModDetail(id: number) {
+      this.$router.push(`/ModDetail/${id}`)
     },
-    reloadPageData(){
-      this.isLoading = true;
-      Method.api_get(`/mod/item/${this.$route.params.id}`).then(response=>{
-        let res = response.data;
-        if(res.code==200){
-          this.isLoading = false;
-          let modInfo = res.data.mod;
-          this.relation_list = Method.decodeRelationList(res.data.relation);
-          this.cover_src = modInfo.cover_src;
-          this.create_time = modInfo.create_time;
-          this.description = modInfo.description;
-          this.downloads = modInfo.downloads;
-          this.id = modInfo.id;
-          this.likes = modInfo.likes;
-          this.last_modify = Method.formatBbsTime(modInfo.last_modify_time);
-          this.link_list = Method.decodeLinkList(modInfo.link_list);
-          this.flag_list = Method.decodeFlagList(modInfo.flag_list);
-          this.api_list = Method.decodeApiVersionList(modInfo.api_list);
-          this.game_list = Method.decodeGameVersionList(modInfo.game_list);
-          this.name = modInfo.name;
-          this.views = modInfo.views;
-          this.mini_name = modInfo.mini_name;
-          this.en_name = modInfo.en_name;
+    reloadPageData() {
+      this.isLoading = true
+      Method.api_get(`/mod/item/${this.$route.params.id}`).then((response) => {
+        let res = response.data
+        if (res.code == 200) {
+          this.isLoading = false
+          let modInfo = res.data.mod
+          this.relation_list = Method.decodeRelationList(res.data.relation)
+          this.cover_src = modInfo.cover_src
+          this.create_time = modInfo.create_time
+          this.description = modInfo.description
+          this.downloads = modInfo.downloads
+          this.id = modInfo.id
+          this.likes = modInfo.likes
+          this.last_modify = Method.formatBbsTime(modInfo.last_modify_time)
+          this.link_list = Method.decodeLinkList(modInfo.link_list)
+          this.flag_list = Method.decodeFlagList(modInfo.flag_list)
+          this.api_list = Method.decodeApiVersionList(modInfo.api_list)
+          this.game_list = Method.decodeGameVersionList(modInfo.game_list)
+          this.name = modInfo.name
+          this.views = modInfo.views
+          this.mini_name = modInfo.mini_name
+          this.en_name = modInfo.en_name
         }
-      });
+      })
+    },
+  },
+  data() {
+    return {
+      activeRelation: [0] as any,
+      isLoading: false,
+      last_modify: "",
+      cover_src: "",
+      create_time: 0,
+      description: "",
+      downloads: 0,
+      id: 1,
+      last_modify_time: 0,
+      likes: 0,
+      flag_list: [] as any,
+      link_list: [] as any,
+      game_list: [] as any,
+      api_list: [] as any,
+      relation_list: [] as any,
+      name: "",
+      views: 0,
+      mini_name: "",
+      en_name: "",
     }
   },
-  data(){
-    return {
-      activeRelation:[0] as any,
-      isLoading:false,
-      last_modify:'',
-      cover_src:'',
-      create_time   : 0,
-      description   :'',
-      downloads   : 0,
-      id   : 1,
-      last_modify_time   : 0,
-      likes   :     0,
-      flag_list   : [] as any,
-      link_list :     [] as any,
-      game_list:[] as any,
-      api_list:[] as any,
-      relation_list:[] as any,
-      name   :     '',
-      views   :     0,
-      mini_name:'',
-      en_name:''
-    };
+  created() {
+    watch(
+      () => this.$route.params.id,
+      () => {
+        this.reloadPageData()
+      },
+    )
+    this.reloadPageData()
   },
-  created(){
-    watch(()=>this.$route.params.id,()=>{
-      this.reloadPageData();
-    })
-    this.reloadPageData();
-  }
 }
 </script>
 <style scoped>

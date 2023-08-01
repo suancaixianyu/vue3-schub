@@ -351,7 +351,7 @@ export default {
       }
     },
   },
-  created(){
+  created() {
     //刷新页面重新获取用户信息
     Method.getInformation()
   },

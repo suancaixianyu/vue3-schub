@@ -1,17 +1,12 @@
 <template>
   <div class="user">
     <!-- 头像 -->
-    <el-avatar
-      :src="headurl"
-      :shape="shape"
-      :size="headsize"
-      style="margin-right: 12px"
-    />
+    <el-avatar :src="headurl" :shape="shape" :size="headsize" style="margin-right: 12px" />
     <!-- 昵称，日期 -->
     <div class="time" :style="style">
       <div style="display: flex; justify-content: center">
         <div style="font-size: 15px">{{ nickname }}</div>
-        <el-tag size="small" :color="x.color" v-for="x in role_list">{{x.name}}</el-tag>
+        <el-tag size="small" :color="x.color" v-for="x in role_list">{{ x.name }}</el-tag>
       </div>
       <div>
         <el-text
@@ -35,26 +30,28 @@ export default {
       required: true,
     },
   },
-  data(){
-    let item = this.item;
-    let rl = [];
-    let grl = Cfg.config.userInfo.role_list;
-    if(item.role instanceof Array){
-      item.role.forEach((x:any)=>{
-        let f = grl.find((xx:any)=>{return xx.id == x});
-        if(f!=null) rl.push(f);
-      });
+  data() {
+    let item = this.item
+    let rl = []
+    let grl = Cfg.config.userInfo.role_list
+    if (item.role instanceof Array) {
+      item.role.forEach((x: any) => {
+        let f = grl.find((xx: any) => {
+          return xx.id == x
+        })
+        if (f != null) rl.push(f)
+      })
     }
     return {
-      headurl:item.headurl,
-      time:item.time,
-      nickname:item.nickname,
-      shape:item.shape,
-      headsize:item.headsize,
-      style:item.style,
-      role_list:grl
+      headurl: item.headurl,
+      time: item.time,
+      nickname: item.nickname,
+      shape: item.shape,
+      headsize: item.headsize,
+      style: item.style,
+      role_list: grl,
     }
-  }
+  },
 }
 </script>
 

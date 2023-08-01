@@ -49,36 +49,36 @@
       </div>
     </el-header>
     <el-container class="el-container">
-      <div class="res-item" v-for="(x,i) in list" @click="goDetail(i)">
+      <div class="res-item" v-for="(x, i) in list" @click="goDetail(i)">
         <div class="right">
           <img class="img" :src="x.cover_src" />
         </div>
         <div class="left">
           <div class="name-line">
             <div class="flag-area">
-              <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list"/>
+              <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
             </div>
-            <div>[工业2]{{x.name}}(Industrial II)</div>
+            <div>[工业2]{{ x.name }}(Industrial II)</div>
           </div>
-          <div class="description-line">{{x.description}}</div>
+          <div class="description-line">{{ x.description }}</div>
           <div class="btn-line">
             <div class="item">
               <icon-hot :size="18"></icon-hot>
-              <div class="hot">{{x.views}}</div>
+              <div class="hot">{{ x.views }}</div>
             </div>
             <div class="item">
               <like-icon :size="24"></like-icon>
-              <div class="like">{{x.likes}}</div>
+              <div class="like">{{ x.likes }}</div>
             </div>
             <div class="item">
               <icon-down :size="18"></icon-down>
-              <div class="down">{{x.downloads}}</div>
+              <div class="down">{{ x.downloads }}</div>
             </div>
           </div>
         </div>
       </div>
     </el-container>
-    <el-pagination background layout="prev, pager, next" :total="total" v-model="page"/>
+    <el-pagination background layout="prev, pager, next" :total="total" v-model="page" />
   </div>
 </template>
 
@@ -96,8 +96,7 @@ import IconHot from "@comps/icons/common/hot.vue"
 import LikeIcon from "@comps/icons/Like.vue"
 import IconDown from "@comps/icons/common/down.vue"
 import Method from "@/globalmethods"
-import {watch} from "vue";
-import Cfg from "@/config/config";
+import { watch } from "vue"
 export default {
   name: "ModList",
   components: {
@@ -116,49 +115,51 @@ export default {
   },
   data() {
     return {
-      total:0,
-      page:1,
-      limit:10,
-      list:[] as any[],
-      search:'',
-      flag_filter:0,
-      isLoading:false
+      total: 0,
+      page: 1,
+      limit: 10,
+      list: [] as any[],
+      search: "",
+      flag_filter: 0,
+      isLoading: false,
     }
   },
   methods: {
-    goDetail(index:number){
-      let item = this.list[index];
-      this.$router.push(`/ModDetail/${item.id}`);
+    goDetail(index: number) {
+      let item = this.list[index]
+      this.$router.push(`/ModDetail/${item.id}`)
     },
-    pullList(){
+    pullList() {
       let payLoad = {
-        page:this.page,
-        limit:this.limit,
-        search:this.search,
-        flag_filter:this.flag_filter
-      };
-      this.isLoading = true;
-      Method.api_post('/mod/list',payLoad).then(response=>{
-        let res = response.data;
-        this.isLoading = false;
-        if(res.code==200){
-          this.total = res.sum.total;
-          res.data.forEach((x:any)=>{
-            x.flag_list = Method.decodeFlagList(x.flag_list);
-          });
-          if(this.page == 1) this.list = res.data;
-          else this.list = this.list.concat(res.data);
+        page: this.page,
+        limit: this.limit,
+        search: this.search,
+        flag_filter: this.flag_filter,
+      }
+      this.isLoading = true
+      Method.api_post("/mod/list", payLoad).then((response) => {
+        let res = response.data
+        this.isLoading = false
+        if (res.code == 200) {
+          this.total = res.sum.total
+          res.data.forEach((x: any) => {
+            x.flag_list = Method.decodeFlagList(x.flag_list)
+          })
+          if (this.page == 1) this.list = res.data
+          else this.list = this.list.concat(res.data)
         }
-      });
-
-    }
+      })
+    },
   },
-  created(){
-    this.pullList();
-    watch(()=>this.page,()=>{
-      this.pullList();
-    })
-  }
+  created() {
+    this.pullList()
+    watch(
+      () => this.page,
+      () => {
+        this.pullList()
+      },
+    )
+  },
 }
 </script>
 <style scoped>

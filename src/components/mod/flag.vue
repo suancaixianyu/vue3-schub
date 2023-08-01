@@ -81,7 +81,7 @@ export default {
   line-height: initial;
   cursor: pointer;
   margin: 0 5px;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 .item .my-icon {

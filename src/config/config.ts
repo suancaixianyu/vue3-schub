@@ -43,14 +43,14 @@ let webkit = reactive({
 })
 
 const userInfo = reactive({
-  global_mod_data_list:{
-    game_version:[],
-    api_version:[],
-    relate_type:[],
-    link_type:[],
-    flag_list:[]
+  global_mod_data_list: {
+    game_version: [],
+    api_version: [],
+    relate_type: [],
+    link_type: [],
+    flag_list: [],
   },
-  role_list:[],
+  role_list: [],
   isLogin: false,
   isLoginDialogVisible: false,
   data: {},
@@ -97,18 +97,18 @@ class Cfg {
     webstyle: { [key: string]: { [key: string]: string } }
     /** 用户信息 */
     userInfo: {
-      global_mod_data_list:{
-        game_version:any//版本列表
-        api_version:any//api列表
-        relate_type:any//关系列表
-        link_type:any//链接类型列表
-        flag_list:any//标签列表
-      }//全局标签列表
-      role_list: any//角色列表
-      isLogin: boolean//是否已登录
-      isLoginDialogVisible: boolean//登陆窗口是否可见
-      id?: string//用户ID
-      data: { headurl?: string; nickname?: string }//用户信息
+      global_mod_data_list: {
+        game_version: any //版本列表
+        api_version: any //api列表
+        relate_type: any //关系列表
+        link_type: any //链接类型列表
+        flag_list: any //标签列表
+      } //全局标签列表
+      role_list: any //角色列表
+      isLogin: boolean //是否已登录
+      isLoginDialogVisible: boolean //登陆窗口是否可见
+      id?: string //用户ID
+      data: { headurl?: string; nickname?: string } //用户信息
     }
   }
 

@@ -13,7 +13,6 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue"
 
 /** 自定义全局方法 */
 import Method from "./globalmethods"
-import Cfg from "@/config/config"
 
 let app = createApp(App)
 
