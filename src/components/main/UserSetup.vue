@@ -1,6 +1,6 @@
 <template>
   <div style="margin: 20px" />
-  <el-row :gutter="24" style="margin: 0px 2px">
+  <el-row :gutter="24" style="margin: 0px">
     <el-col :xs="0" :sm="2" :md="3" :lg="5" :xl="5" />
 
     <el-col :xs="24" :sm="20" :md="18" :lg="14" :xl="14">
@@ -9,39 +9,8 @@
           <el-text>样式</el-text>
         </el-radio-group>
         <hr />
-        <el-form-item label="内边距">
-          <el-input v-model="maincontainer.padding" clearable />
-        </el-form-item>
         <el-form-item label="抽屉菜单">
-          <input type="checkbox" class="toggle" checked v-model="cfg.menu" />
-        </el-form-item>
-      </el-form>
-      <el-form label-position="top" label-width="100px">
-        <el-radio-group>
-          <el-text>头像</el-text>
-        </el-radio-group>
-        <hr />
-        <el-form-item label="预览">
-          帖子&emsp;<el-avatar :shape="cfg.shape" :size="cfg.headsize.post" :src="userhead" />
-          &emsp;&emsp; 用户中心&emsp;<el-avatar
-            shape="circle"
-            :size="cfg.headsize.userindex"
-            :src="userhead"
-          />
-        </el-form-item>
-
-        <el-form-item label="头像形状">
-          <el-radio-group v-model="cfg.shape" size="small">
-            <el-radio-button label="square" />
-            <el-radio-button label="circle" />
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="帖子头像大小">
-          <el-input type="number" v-model="cfg.headsize.post" @blur="sizepost" />
-        </el-form-item>
-        <el-form-item label="用户主头像页大小">
-          <el-input type="number" v-model="cfg.headsize.userindex" @blur="sizeuser" />
+          <input type="checkbox" class="toggle" checked v-model="set.menu" />
         </el-form-item>
       </el-form>
 
@@ -51,30 +20,120 @@
         </el-radio-group>
         <hr />
         <el-form-item label="预览">
-          帖子&emsp;<el-avatar :shape="cfg.shape" :size="cfg.headsize.post" :src="userhead" />
+          帖子&emsp;<el-avatar :shape="set.shape" :size="headsize.post" :src="userhead" />
           &emsp;&emsp; 用户中心&emsp;<el-avatar
-            shape="circle"
-            :size="cfg.headsize.userindex"
+            :shape="set.shape"
+            :size="headsize.userindex"
             :src="userhead"
           />
         </el-form-item>
 
         <el-form-item label="头像形状">
-          <el-radio-group v-model="cfg.shape" size="small">
+          <el-radio-group v-model="set.shape" size="small">
             <el-radio-button label="square" />
             <el-radio-button label="circle" />
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="帖子头像大小">
-          <el-input type="number" v-model="cfg.headsize.post" @blur="sizepost" />
+          <el-input type="number" v-model="headsize.post" @blur="sizepost" />
         </el-form-item>
         <el-form-item label="用户主头像页大小">
-          <el-input type="number" v-model="cfg.headsize.userindex" @blur="sizeuser" />
+          <el-input type="number" v-model="headsize.userindex" @blur="sizeuser" />
+        </el-form-item>
+      </el-form>
+
+      <el-form label-position="top" label-width="100px">
+        <el-radio-group>
+          <el-text>滚动条：css样式</el-text>
+        </el-radio-group>
+        <hr />
+        <el-form-item label="预览">
+          <el-text>输入文本，换行查看效果，或拖动右下角调整大小，手机端长按右下角即可拖动</el-text>
+          <textarea class="textarea" placeholder="输入文本" style="width: 100%"></textarea>
+        </el-form-item>
+
+        <hr />
+        <el-form-item label="::-webkit-scrollbar-thumb">
+          <el-text>背景: var(--webkit-scrollbar-thumb-background)</el-text>
+          <textarea
+            class="textarea bg-base-200"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background']"
+          />
+          <el-text>悬停背景: var(--webkit-scrollbar-thumb-background-hover)</el-text>
+          <textarea
+            class="textarea bg-base-200"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-hover']"
+          />
+          <el-text>背景颜色: var(--webkit-scrollbar-thumb-background-color)</el-text>
+          <el-color-picker
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color']"
+            size="small"
+          />
+          <el-input
+            class="bg-base-200"
+            type="text"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color']"
+          />
+          <el-text>悬停背景颜色: var(--webkit-scrollbar-thumb-background-color-hover)</el-text>
+          <el-color-picker
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color-hover']"
+            size="small"
+          />
+          <el-input
+            class="bg-base-200"
+            type="text"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-color-hover']"
+          />
+
+          <el-text>背景大小: var(--webkit-scrollbar-thumb-background-size)</el-text>
+          <el-input
+            class="bg-base-200"
+            type="text"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-background-size']"
+          />
+          <el-text>边框: var(--webkit-scrollbar-thumb-border)</el-text>
+          <textarea
+            class="textarea bg-base-200"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-border']"
+          />
+          <el-text>圆角: var(--webkit-scrollbar-thumb-border-radius)</el-text>
+          <el-input
+            class="bg-base-200"
+            type="text"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-thumb-border-radius']"
+          />
+        </el-form-item>
+        <hr />
+        <el-form-item label="::-webkit-scrollbar">
+          <el-text>宽度: var(--webkit-scrollbar-width)</el-text>
+          <el-input
+            class="bg-base-200"
+            type="text"
+            placeholder="输入文本"
+            style="width: 100%"
+            v-model="webstyle.webkit['webkit-scrollbar-width']"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="setstyle">应用</el-button>
         </el-form-item>
       </el-form>
     </el-col>
-
     <el-col :xs="0" :sm="2" :md="3" :lg="5" :xl="5" />
   </el-row>
 </template>
@@ -82,28 +141,40 @@
 <script lang="ts">
 import Cfg from "@/config/config"
 import { onMounted, onUnmounted } from "vue"
+import Method from "@/globalmethods"
 export default {
   name: "UserSetup",
+  data() {
+    return {
+      webkit_background: Cfg.config.webstyle.webkit["webkit-scrollbar-thumb-background"],
+    }
+  },
   setup() {
     onMounted(() => {
       console.log("挂载")
       Cfg.config.homestyle.maincontainer.overflowY = "visible"
+      Cfg.config.homestyle.maincontainer.height = "auto"
     })
     onUnmounted(() => {
       console.log("卸载")
       Cfg.config.homestyle.maincontainer.overflowY = "hidden"
+      Cfg.config.homestyle.maincontainer.height = "auto"
     })
     return {
       userhead: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       ...Cfg.config.homestyle,
+      ...Cfg.config,
     }
   },
   methods: {
     sizepost() {
-      this.cfg.headsize.post = Number(this.cfg.headsize.post)
+      this.headsize.post = Number(this.headsize.post)
     },
     sizeuser() {
-      this.cfg.headsize.userindex = Number(this.cfg.headsize.userindex)
+      this.headsize.userindex = Number(this.headsize.userindex)
+    },
+    setstyle() {
+      Method.setwebstyle()
     },
   },
 }

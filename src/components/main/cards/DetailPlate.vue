@@ -1,8 +1,85 @@
 <template>
   <div v-loading="isLoading">
+    <!-- 移动端 -->
+    <div v-if="width">
+      <el-container>
+        <!-- 头部 -->
+        <el-header style="padding: 0px">
+          <!-- 顶部按钮 -->
+          <el-row :gutter="24" style="padding: 0px">
+            <el-col :span="24" style="display: flex; justify-content: flex-end">
+              <el-icon @click="flushed" :size="25" title="刷新" class="icon">
+                <Flushed />
+              </el-icon>
+              <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
+                <Link />
+              </el-icon>
+              <el-icon @click="close" :size="25" title="关闭" class="icon">
+                <Close />
+              </el-icon>
+            </el-col>
+          </el-row>
+          <UserHead
+            :item="{
+              ...content.author,
+              time: content.time,
+              shape,
+              headsize,
+              style: {
+                flexDirection: 'row',
+                alignItems: 'center',
+              },
+            }"
+            style="padding-left: 10px"
+          />
+        </el-header>
+        <!-- 内容 -->
+        <el-main style="padding: 20px 0px">
+          <!-- 帖子内容展示 -->
+          <MdPreview editorId="preview-mobile" :modelValue="content.summary" class="bg-base-200" />
+
+          <!-- 分割线 -->
+          <label class="plate-label">
+            <div class="large">评论</div>
+            <div class="small">{{ sum.total }}</div>
+            <div class="space"></div>
+            <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">最新</div>
+            <div class="filter">|</div>
+            <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">最热</div>
+          </label>
+          <!-- 个人评论区 -->
+          <div class="reply-body">
+            <!-- 发表评论 -->
+            <div class="post-area">
+              <el-avatar
+                :src="content.author.headurl"
+                :shape="shape"
+                :size="headsize"
+                style="margin-right: 12px"
+              />
+              <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
+              <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
+            </div>
+            <!-- 回复列表 -->
+            <div v-loading="isLoadingReply">
+              <OneReply
+                v-for="(x, index) in reply_list"
+                :key="x"
+                :x="{ ...x }"
+                :shape="shape"
+                :size="headsize"
+                :previewid="index"
+                @refreshEvent="refresh_reply_list"
+              />
+            </div>
+          </div>
+        </el-main>
+      </el-container>
+    </div>
+
     <!-- pc页面 -->
     <div
-      v-if="width === 'pc'"
+      v-else
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
       style="box-shadow: var(--el-box-shadow-light); margin-right: 28px"
     >
@@ -83,83 +160,6 @@
         </el-container>
       </div>
     </div>
-
-    <!-- 移动端 -->
-    <div v-if="width === 'mobile'">
-      <el-container>
-        <!-- 头部 -->
-        <el-header style="padding: 0px">
-          <!-- 顶部按钮 -->
-          <el-row :gutter="24" style="padding: 0px">
-            <el-col :span="24" style="display: flex; justify-content: flex-end">
-              <el-icon @click="flushed" :size="25" title="刷新" class="icon">
-                <Flushed />
-              </el-icon>
-              <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
-                <Link />
-              </el-icon>
-              <el-icon @click="close" :size="25" title="关闭" class="icon">
-                <Close />
-              </el-icon>
-            </el-col>
-          </el-row>
-          <UserHead
-            :item="{
-              ...content.author,
-              time: content.time,
-              shape,
-              headsize,
-              style: {
-                flexDirection: 'row',
-                alignItems: 'center',
-              },
-            }"
-            style="padding-left: 10px"
-          />
-        </el-header>
-        <!-- 内容 -->
-        <el-main style="padding: 20px 0px">
-          <!-- 帖子内容展示 -->
-          <MdPreview editorId="preview-m" :modelValue="content.summary" class="bg-base-200" />
-
-          <!-- 分割线 -->
-          <label class="plate-label">
-            <div class="large">评论</div>
-            <div class="small">{{ sum.total }}</div>
-            <div class="space"></div>
-            <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">最新</div>
-            <div class="filter">|</div>
-            <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">最热</div>
-          </label>
-          <!-- 个人评论区 -->
-          <div class="reply-body">
-            <!-- 发表评论 -->
-            <div class="post-area">
-              <el-avatar
-                :src="content.author.headurl"
-                :shape="shape"
-                :size="headsize"
-                style="margin-right: 12px"
-              />
-              <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
-              <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
-            </div>
-            <!-- 回复列表 -->
-            <div v-loading="isLoadingReply">
-              <OneReply
-                v-for="(x, index) in reply_list"
-                :key="x"
-                :x="{ ...x }"
-                :shape="shape"
-                :size="headsize"
-                :previewid="index"
-                @refreshEvent="refresh_reply_list"
-              />
-            </div>
-          </div>
-        </el-main>
-      </el-container>
-    </div>
   </div>
 </template>
 
@@ -190,7 +190,7 @@ export default {
   },
   data() {
     return {
-      headsize: Cfg.config.homestyle.cfg.headsize.post,
+      headsize: Cfg.config.homestyle.headsize.post,
     }
   },
   setup() {
@@ -202,9 +202,9 @@ export default {
       isReplying: false,
       replyType: 0, //0对帖子1对评论
       comments: "",
-      width: "pc",
+      width: Cfg.config.homestyle.set.ismobile,
       markdown: '```js \n console.log("hello world!") \n```',
-      shape: Cfg.config.homestyle.cfg.shape,
+      shape: Cfg.config.homestyle.set.shape,
       size: 28,
       chatid: route.params.chatid,
       id: route.params.id,
@@ -314,10 +314,8 @@ export default {
 
     function pagewidth(width: number) {
       if (width <= 480) {
-        data.width = "mobile"
         Cfg.config.homestyle.maincontainer.overflowY = "visible"
       } else {
-        data.width = "pc"
         Cfg.config.homestyle.maincontainer.overflowY = "hidden"
       }
     }

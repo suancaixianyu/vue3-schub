@@ -23,9 +23,8 @@ app.use(router)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
-
-console.log(Method, "******", Cfg)
-
+// 初始化页面样式
+Method.setwebstyle()
 // 注入全局方法和变量
 // app.provide('global', {
 //   Method,

@@ -128,7 +128,7 @@ export default {
       colstype: {
         padding: "0px",
       } as CSSProperties,
-      shape: Cfg.config.homestyle.cfg.shape,
+      shape: Cfg.config.homestyle.set.shape,
       postlistseype: {
         display: "flex",
         padding: "12px 18px",
@@ -159,83 +159,13 @@ export default {
           title: "标题",
           /** 内容摘要 */
           summary: "这是测试帖子标题",
-          /** 所有的图片 */
+          /** 封面 */
           cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
           /** 发帖时间 */
           time: 1688918819,
           /** 点赞 */
           likes: 120,
           /** 评论 */
-          comments: 50,
-          author: {
-            nickname: "酸菜咸鱼",
-            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
-            role: "管理员",
-          },
-        },
-        {
-          id: 2,
-          title: "标题",
-          summary: "这是测试帖子标题",
-          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
-          time: 1688918819,
-          likes: 120,
-          comments: 50,
-          author: {
-            nickname: "酸菜咸鱼",
-            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
-            role: "管理员",
-          },
-        },
-        {
-          id: 2,
-          title: "标题",
-          summary: "这是测试帖子标题",
-          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
-          time: 1688918819,
-          likes: 120,
-          comments: 50,
-          author: {
-            nickname: "酸菜咸鱼",
-            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
-            role: "管理员",
-          },
-        },
-        {
-          id: 2,
-          title: "标题",
-          summary: "这是测试帖子标题",
-          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
-          time: 1688918819,
-          likes: 120,
-          comments: 50,
-          author: {
-            nickname: "酸菜咸鱼",
-            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
-            role: "管理员",
-          },
-        },
-        {
-          id: 2,
-          title: "标题",
-          summary: "这是测试帖子标题",
-          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
-          time: 1688918819,
-          likes: 120,
-          comments: 50,
-          author: {
-            nickname: "酸菜咸鱼",
-            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
-            role: "管理员",
-          },
-        },
-        {
-          id: 2,
-          title: "标题",
-          summary: "这是测试帖子标题",
-          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
-          time: 1688918819,
-          likes: 120,
           comments: 50,
           author: {
             nickname: "酸菜咸鱼",

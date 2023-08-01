@@ -4,6 +4,7 @@
       <el-form
         label-position="top"
         label-width="100px"
+        label="top"
         :model="regitser"
         style="max-width: 460px; margin: 0 auto"
       >
@@ -66,7 +67,7 @@
       </el-form>
     </el-col>
     <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister === false">
-      <el-form>
+      <el-form label="top">
         <el-form-item>
           <el-input v-model="loginconfig.user" placeholder="请输入用户名">
             <template #prepend>用户名</template>

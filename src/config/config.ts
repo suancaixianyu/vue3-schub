@@ -10,16 +10,36 @@ const homestyle = reactive({
   container: {
     padding: "0px",
   },
-
-  cfg: {
-    menu: true,
-    isshow: true,
-    shape: "square",
-    headsize: reactive({
-      post: 32,
-      userindex: 32,
-    }),
+  /** 头像大小 */
+  headsize: {
+    post: 32,
+    userindex: 32,
   },
+  /** 配置信息 */
+  set: {
+    menu: true,
+    showfooter: true,
+    shape: "square",
+    ismobile: false,
+  },
+})
+
+const webkit = reactive({
+  // 滚动条样式
+  "webkit-scrollbar-thumb-background":
+    'url("./src/assets/icon/mifengup.svg") center top no-repeat, url("./src/assets/icon/mifengbottom.svg") center bottom no-repeat',
+  "webkit-scrollbar-thumb-background-color": "",
+  "webkit-scrollbar-thumb-border": "none",
+  "webkit-scrollbar-thumb-border-radius": "10px",
+  "webkit-scrollbar-thumb-background-size": "100%",
+  // 鼠标悬停效果
+  "webkit-scrollbar-thumb-background-hover": "var(--webkit-scrollbar-thumb-background)",
+  "webkit-scrollbar-thumb-background-color-hover": "#F5F5F5",
+  "webkit-scrollbar-thumb-border-hover": "none",
+  "webkit-scrollbar-thumb-border-radius-hover": "10px",
+  "webkit-scrollbar-thumb-background-size-hover": "100%",
+  // 滚动条框框样式
+  "webkit-scrollbar-width": "12px",
 })
 
 const userInfo = reactive({
@@ -44,23 +64,37 @@ class Cfg {
     uploadimg: string
     /** 主页样式 */
     homestyle: {
+      /** 内容样式 */
       maincontainer: {
         padding: string
-        /** 内容样式 */
         height: string
         overflowY: string
       }
-      container: { padding: string }
-      cfg: {
+      /** 整体样式 */
+      container: {
+        padding: string
+      }
+      /** 设置 */
+      set: {
+        /** 是否显示抽屉菜单 */
         menu: boolean
-        isshow: boolean
+        /** 是否显示底部栏 */
+        showfooter: boolean
+        /** 头像形状 */
         shape: string
-        headsize: {
-          post: number
-          userindex: number
-        }
+        /** 是否为移动端 */
+        ismobile: boolean
+      }
+      /** 头像大小 */
+      headsize: {
+        /** 在帖子中的大小 */
+        post: number
+        /** 在用户中心的大小 */
+        userindex: number
       }
     }
+    /** 滚动条样式 */
+    webstyle: { [key: string]: { [key: string]: string } }
     /** 用户信息 */
     userInfo: {
       global_mod_data_list:{
@@ -85,8 +119,10 @@ class Cfg {
       uploadimg: "/upload",
       /** 主页样式 */
       homestyle,
-      /** 用户信息 */
       userInfo,
+      webstyle: {
+        webkit,
+      },
     }
   }
 }

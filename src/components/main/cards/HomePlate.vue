@@ -59,7 +59,7 @@ export default {
   },
   data() {
     return {
-      headsize: Cfg.config.homestyle.cfg.headsize.post,
+      headsize: Cfg.config.homestyle.headsize.post,
     }
   },
 }
