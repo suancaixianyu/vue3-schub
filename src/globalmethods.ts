@@ -176,7 +176,15 @@ class Method {
     })
   }
 
+  /**
+   * 设置页面样式
+   */
   setwebstyle() {
+    let data = this.localGet("webkit", {})
+    console.log(data.webkit)
+    if (data) {
+      Cfg.config.webstyle.webkit = data.webkit
+    }
     for (let a in Cfg.config.webstyle) {
       for (let b in Cfg.config.webstyle[a]) {
         document.documentElement.style.setProperty(`--${b}`, Cfg.config.webstyle[a][b])

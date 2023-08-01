@@ -24,7 +24,7 @@ const homestyle = reactive({
   },
 })
 
-const webkit = reactive({
+let webkit = reactive({
   // 滚动条样式
   "webkit-scrollbar-thumb-background":
     'url("./src/assets/icon/mifengup.svg") center top no-repeat, url("./src/assets/icon/mifengbottom.svg") center bottom no-repeat',

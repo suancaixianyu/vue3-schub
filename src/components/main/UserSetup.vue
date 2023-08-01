@@ -174,6 +174,7 @@ export default {
       this.headsize.userindex = Number(this.headsize.userindex)
     },
     setstyle() {
+      Method.localSet("webkit", Cfg.config.webstyle)
       Method.setwebstyle()
     },
   },
