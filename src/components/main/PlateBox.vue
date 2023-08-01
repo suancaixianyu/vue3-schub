@@ -123,8 +123,6 @@ export default {
       Method.api_get("/cate/list")
         .then((response: any) => {
           let obj = response.data as api
-          console.log(response.body)
-
           data.isLoading = false
           if (obj.code === 200) {
             obj.data.forEach((el: catelist) => {

@@ -5,7 +5,7 @@
         label-position="top"
         label-width="100px"
         :model="regitser"
-        style="max-width: 460px; margin: 0px auto"
+        style="max-width: 460px; margin: 0 auto"
       >
         <el-form-item></el-form-item>
 

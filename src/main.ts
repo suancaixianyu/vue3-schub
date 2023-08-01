@@ -23,8 +23,6 @@ app.use(router)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
-//刷新页面重新获取用户信息
-Method.getInformation()
 
 console.log(Method, "******", Cfg)
 
