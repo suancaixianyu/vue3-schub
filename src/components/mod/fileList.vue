@@ -84,7 +84,7 @@ export default {
   data() {
     let uploadServer = Method.getHostUrl("/Upload/Upload");
     return {
-      type_list:[{id:1,name:'世界'},{id:2,name:'方块材质'},{id:3,name:'人物皮肤'},{id:4,name:'家具包'}],
+      type_list:<any>[{id:1,name:'世界'},{id:2,name:'方块材质'},{id:3,name:'人物皮肤'},{id:4,name:'家具包'}],
       modName:'',
       isDeleteDialogVisible:false,
       api_type:0,
