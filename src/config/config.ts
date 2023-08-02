@@ -55,7 +55,7 @@ const userInfo = reactive({
   role_list: [],
   isLogin: false,
   isLoginDialogVisible: false,
-  data: {role_list:[],nickname:'',headurl:''},
+  data: {role:'',nickname:'',headurl:''},
 })
 
 class Cfg {
@@ -110,7 +110,7 @@ class Cfg {
       isLogin: boolean //是否已登录
       isLoginDialogVisible: boolean //登陆窗口是否可见
       id?: string //用户ID
-      data: { headurl?: string; nickname?: string,role_list: any } //用户信息
+      data: { headurl?: string; nickname?: string,role: any } //用户信息
     }
   }
 

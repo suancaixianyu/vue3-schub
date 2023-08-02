@@ -88,27 +88,27 @@ export default {
       modName:'',
       isDeleteDialogVisible:false,
       api_type:0,
-      api_list:[] as any,
+      api_list:<any>[],
       isCreating:false,
       isDialogVisible:false,
       isLoading:false,
-      list:[],
+      list:<any>[],
       activeItemIndex:-1,
       modFileName:'',
       file_name:'',
       file_id:0,
       uploadFileSrc:uploadServer,
-      world_list:[] as any,
+      world_list:<any>[],
       inner_name:'',
       inner_file_name:'',
       desc:'',
       version:'',
       isDeleting:false,
-      progress:''
+      progress:0
     }
   },
   methods:{
-    onProgress(event){
+    onProgress(event:any){
       this.progress = event.percent;
       if(this.progress==100){
         ElMessage('上传成功');
@@ -117,7 +117,7 @@ export default {
         },1000)
       }
     },
-    uploadFile(e){
+    uploadFile(e:any){
       if(e.code==200){
         this.file_name = e.data.file_name;
         this.file_id = e.data.file_id;
@@ -134,7 +134,7 @@ export default {
     },
     refreshDocList(){
       let id = this.inner_name;
-      let item = this.type_list.find(x=>{return x.id == id});
+      let item = this.type_list.find((x:any)=>{return x.id == id});
       if(item != null){
         let payLoad = {type:item.id};
         Method.api_post(`/user/document_list`,payLoad).then(response=>{
@@ -151,7 +151,7 @@ export default {
       let docId=0;
       if(this.inner_file_name != ''){
         fileId = parseInt(this.inner_file_name);
-        let item = this.world_list.find(x=>{return x.file_id == fileId});
+        let item = this.world_list.find((x:any)=>{return x.file_id == fileId});
         docId = item.id;
       }
       let payLoad = {

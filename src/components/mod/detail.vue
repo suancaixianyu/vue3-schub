@@ -105,13 +105,37 @@ import { watch } from "vue"
 export default {
   name: "modDetail",
   components: { IconHot, IconDown, ModFlag },
-  props: {},
+  data() {
+    return {
+      activeRelation: [0] as any,
+      isLoading: false,
+      last_modify: "",
+      cover_src: "",
+      create_time: 0,
+      description: "",
+      downloads: 0,
+      id: 1,
+      last_modify_time: 0,
+      likes: 0,
+      version_list:[] as any,
+      flag_list: [] as any,
+      link_list: [] as any,
+      game_list: [] as any,
+      api_list: [] as any,
+      relation_list: [] as any,
+      name: "",
+      views: 0,
+      mini_name: "",
+      en_name: "",
+      activeIndex:0
+    }
+  },
   methods: {
     goModDetail(id: number) {
       this.$router.push(`/ModDetail/${id}`)
     },
-    downLoad(){
-
+    downLoad(index:number){
+      this.activeIndex = index;
     },
     reloadPageData() {
       this.isLoading = true
@@ -145,30 +169,6 @@ export default {
         }
       })
     },
-  },
-  data() {
-    return {
-      activeRelation: [0] as any,
-      isLoading: false,
-      last_modify: "",
-      cover_src: "",
-      create_time: 0,
-      description: "",
-      downloads: 0,
-      id: 1,
-      last_modify_time: 0,
-      likes: 0,
-      version_list:[] as any,
-      flag_list: [] as any,
-      link_list: [] as any,
-      game_list: [] as any,
-      api_list: [] as any,
-      relation_list: [] as any,
-      name: "",
-      views: 0,
-      mini_name: "",
-      en_name: "",
-    }
   },
   created() {
     watch(

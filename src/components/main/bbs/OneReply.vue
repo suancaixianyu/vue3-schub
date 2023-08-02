@@ -133,9 +133,10 @@ export default {
       Method.api_post(`/bbs/reply`, {
         content: data.comments,
         reply_id: rid,
-      }).then((response) => {
+      }).then(response => {
         data.isReplying = false
-        if (response.code == 200) {
+        let res = response.data;
+        if (res.code == 200) {
           data.isLoadingReply = true
           data.comments = ""
           data.isReadyReply = false

@@ -118,7 +118,7 @@ export default {
         /** 占位元素宽度 */
         placeholder: 8,
       },
-      plate: [],
+      plate: <any>[],
     })
 
     let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>
@@ -320,13 +320,12 @@ export default {
     }
 
     /** 搜索结果 */
-    let outcomeplate = ref(data.plate)
+    let outcomeplate = <any>ref(data.plate);
     provide("outcomeplate", outcomeplate)
 
     /** 搜索（本地） */
     function search() {
-      console.log(outcomeplate.value)
-      outcomeplate.value = data.plate.filter(function (object) {
+      outcomeplate.value = data.plate.filter(function (object:any) {
         return object.title.includes(data.searchinput) || object.summary.includes(data.searchinput)
       })
     }

@@ -58,7 +58,7 @@ export default {
       Method.api_get(`/bbs/list/${this.active_cate_id}?page=${this.page}`).then(response2=>{
         this.loadingBbs = false;
         let res2 = response2.data;
-        res2.data.forEach(xx=>{
+        res2.data.forEach((xx:any)=>{
           xx.url = `/postlist/${this.active_cate_id}/${xx.id}`;
         });
         if(res2.code==200){
@@ -72,7 +72,7 @@ export default {
     Method.api_get('/cate/list').then(response=>{
       let res = response.data;
       this.loadingCate = false;
-      res.data.forEach(x=>{
+      res.data.forEach((x:any)=>{
         x.url = `/postlist/${x.id}`;
       });
       if(res.code==200){

@@ -7,7 +7,6 @@
       <div style="display: flex; justify-content: center">
         <div style="font-size: 15px">{{ item.nickname }}</div>
         <UserRole :role="item.role"/>
-        <el-tag size="small" :color="x.color" v-for="x in role_list">{{ x.name }}</el-tag>
       </div>
       <div>
         <el-text class="mx-1 time" size="small" style="display: flex; justify-content: flex-start">
@@ -19,7 +18,6 @@
 </template>
 
 <script lang="ts">
-import Method from "@/globalmethods.ts"
 import UserRole from "@comps/user/roleList.vue";
 export default {
   name: "UserHead",
