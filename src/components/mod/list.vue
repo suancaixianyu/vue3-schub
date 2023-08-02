@@ -49,36 +49,38 @@
       </div>
     </el-header>
     <el-container class="el-container">
-      <div class="res-item" v-for="(x, i) in list" @click="goDetail(i)">
-        <div class="right">
-          <img class="img" :src="x.cover_src" />
-        </div>
-        <div class="left">
-          <div class="name-line">
-            <div class="flag-area">
-              <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
-            </div>
-            <div>[工业2]{{ x.name }}(Industrial II)</div>
+      <router-link :to="x.to_link" v-for="x in list">
+        <div class="res-item">
+          <div class="right">
+            <img class="img" :src="x.cover_src" />
           </div>
-          <div class="description-line">{{ x.description }}</div>
-          <div class="btn-line">
-            <div class="item">
-              <icon-hot :size="18"></icon-hot>
-              <div class="hot">{{ x.views }}</div>
+          <div class="left">
+            <div class="name-line">
+              <div class="flag-area">
+                <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
+              </div>
+              <div>[工业2]{{ x.name }}(Industrial II)</div>
             </div>
-            <div class="item">
-              <like-icon :size="24"></like-icon>
-              <div class="like">{{ x.likes }}</div>
-            </div>
-            <div class="item">
-              <icon-down :size="18"></icon-down>
-              <div class="down">{{ x.downloads }}</div>
+            <div class="description-line">{{ x.description }}</div>
+            <div class="btn-line">
+              <div class="item">
+                <icon-hot :size="18"></icon-hot>
+                <div class="hot">{{ x.views }}</div>
+              </div>
+              <div class="item">
+                <like-icon :size="24"></like-icon>
+                <div class="like">{{ x.likes }}</div>
+              </div>
+              <div class="item">
+                <icon-down :size="18"></icon-down>
+                <div class="down">{{ x.downloads }}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </router-link>
     </el-container>
-    <el-pagination background layout="prev, pager, next" :total="total" v-model="page" />
+    <el-pagination layout="prev, pager, next, total" :total="total" v-model="page" />
   </div>
 </template>
 
@@ -125,10 +127,6 @@ export default {
     }
   },
   methods: {
-    goDetail(index: number) {
-      let item = this.list[index]
-      this.$router.push(`/ModDetail/${item.id}`)
-    },
     pullList() {
       let payLoad = {
         page: this.page,
@@ -143,6 +141,7 @@ export default {
         if (res.code == 200) {
           this.total = res.sum.total
           res.data.forEach((x: any) => {
+            x.to_link = `/ModDetail/${x.id}`;
             x.flag_list = Method.decodeFlagList(x.flag_list)
           })
           if (this.page == 1) this.list = res.data
@@ -163,6 +162,11 @@ export default {
 }
 </script>
 <style scoped>
+.tab-container{
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+}
 .filter-item {
   display: flex;
   flex-direction: row;

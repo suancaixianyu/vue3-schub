@@ -346,8 +346,4 @@ export default {
 .flex-grow {
   flex-grow: 1;
 }
-
-.el-sub-menu__title {
-  border: none;
-}
 </style>

@@ -55,7 +55,7 @@ const userInfo = reactive({
   role_list: [],
   isLogin: false,
   isLoginDialogVisible: false,
-  data: {},
+  data: {role_list:[],nickname:'',headurl:''},
 })
 
 class Cfg {
@@ -106,19 +106,19 @@ class Cfg {
         link_type: any //链接类型列表
         flag_list: any //标签列表
       } //全局标签列表
-      role_list: any //角色列表
+      role_list: any //全局角色列表
       isLogin: boolean //是否已登录
       isLoginDialogVisible: boolean //登陆窗口是否可见
       id?: string //用户ID
-      data: { headurl?: string; nickname?: string } //用户信息
+      data: { headurl?: string; nickname?: string,role_list: any } //用户信息
     }
   }
 
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      // server: "http://localhost:8081",
-      server: "/xyapi",
+       server: "http://localhost:8081",
+      //server: "/xyapi",
       uploadimg: "/upload",
       /** 主页样式 */
       homestyle,

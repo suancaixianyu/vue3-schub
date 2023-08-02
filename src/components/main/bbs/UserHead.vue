@@ -6,6 +6,7 @@
     <div class="time" :style="item.style">
       <div style="display: flex; justify-content: center">
         <div style="font-size: 15px">{{ item.nickname }}</div>
+        <UserRole :role="item.role"/>
         <el-tag size="small" :color="x.color" v-for="x in role_list">{{ x.name }}</el-tag>
       </div>
       <div>
@@ -18,30 +19,17 @@
 </template>
 
 <script lang="ts">
-import Cfg from "@/config/config"
+import Method from "@/globalmethods.ts"
+import UserRole from "@comps/user/roleList.vue";
 export default {
   name: "UserHead",
+  components: {UserRole},
   props: {
     item: {
       type: Object,
       required: true,
     },
-  },
-  setup(props) {
-    let rl = []
-    let grl = Cfg.config.userInfo.role_list
-    if (props.item.role instanceof Array) {
-      props.item.role.forEach((x: any) => {
-        let f = grl.find((xx: any) => {
-          return xx.id == x
-        })
-        if (f != null) rl.push(f)
-      })
-    }
-    return {
-      role_list: grl,
-    }
-  },
+  }
 }
 </script>
 

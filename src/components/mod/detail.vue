@@ -4,22 +4,11 @@
       <el-avatar class="img" :src="cover_src" />
       <div class="update-area">
         <div class="tab">更新日志</div>
-        <div class="update-log">
-          <div class="version">2.33.1</div>
-          <div class="date">2023-07-02</div>
+        <div class="update-log" v-if="version_list.length != 0" v-for="x in version_list">
+          <div class="version">{{x.version}}</div>
+          <div class="date">{{x.time}}</div>
         </div>
-        <div class="update-log">
-          <div class="version">2.33.1</div>
-          <div class="date">2023-07-02</div>
-        </div>
-        <div class="update-log">
-          <div class="version">2.33.1</div>
-          <div class="date">2023-07-02</div>
-        </div>
-        <div class="update-log">
-          <div class="version">2.33.1</div>
-          <div class="date">2023-07-02</div>
-        </div>
+        <div class="update-log" v-if="version_list.length == 0">暂无更新日志</div>
       </div>
     </div>
     <div class="panel-center">
@@ -64,14 +53,23 @@
               <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
                 <div class="flex" v-for="xx in x.list">
                   <el-tag class="ml-2" type="success">{{ xx.type_name }}</el-tag>
-                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{
-                    xx.package_name
-                  }}</el-button>
+                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{xx.package_name}}</el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
           </el-tab-pane>
-          <el-tab-pane label="Mod下载">Mod下载</el-tab-pane>
+          <el-tab-pane label="Mod下载">
+            <el-table :data="version_list" stripe style="width: 100%">
+              <el-table-column prop="name" label="文件名" />
+              <el-table-column prop="create_time_str" label="创建时间" width="180" />
+              <el-table-column prop="size" label="大小" width="180" />
+              <el-table-column label="操作" >
+                <template #default="scope">
+                  <el-button size="small" link type="danger" @click="downLoad(scope.$index)">下载</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -93,50 +91,7 @@
           <div>总点赞:{{ likes }}</div>
         </div>
       </div>
-      <div class="operate-list">
-        <div class="line">
-          <div class="item">
-            <el-icon>
-              <EditPen />
-            </el-icon>
-            <div>编辑模组</div>
-          </div>
-          <div class="item">
-            <el-icon>
-              <EditPen />
-            </el-icon>
-            <div>新建日志</div>
-          </div>
-        </div>
-        <div class="line">
-          <div class="item">
-            <el-icon>
-              <EditPen />
-            </el-icon>
-            <div>编辑模组</div>
-          </div>
-          <div class="item">
-            <el-icon>
-              <EditPen />
-            </el-icon>
-            <div>新建日志</div>
-          </div>
-        </div>
-        <div class="line">
-          <div class="item">
-            <el-icon>
-              <EditPen />
-            </el-icon>
-            <div>新建日志</div>
-          </div>
-          <div class="item">
-            <el-icon>
-              <EditPen />
-            </el-icon>
-            <div>新建日志</div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </el-container>
 </template>
@@ -155,6 +110,9 @@ export default {
     goModDetail(id: number) {
       this.$router.push(`/ModDetail/${id}`)
     },
+    downLoad(){
+
+    },
     reloadPageData() {
       this.isLoading = true
       Method.api_get(`/mod/item/${this.$route.params.id}`).then((response) => {
@@ -162,6 +120,11 @@ export default {
         if (res.code == 200) {
           this.isLoading = false
           let modInfo = res.data.mod
+          let version_list = res.data.version_list;
+          version_list.forEach((x:any)=>{
+            x.time = Method.formatNormalTime(x.create_time,'Y-m-d');
+            x.create_time_str = Method.formatBbsTime(x.create_time);
+          });
           this.relation_list = Method.decodeRelationList(res.data.relation)
           this.cover_src = modInfo.cover_src
           this.create_time = modInfo.create_time
@@ -174,6 +137,7 @@ export default {
           this.flag_list = Method.decodeFlagList(modInfo.flag_list)
           this.api_list = Method.decodeApiVersionList(modInfo.api_list)
           this.game_list = Method.decodeGameVersionList(modInfo.game_list)
+          this.version_list = version_list;
           this.name = modInfo.name
           this.views = modInfo.views
           this.mini_name = modInfo.mini_name
@@ -194,6 +158,7 @@ export default {
       id: 1,
       last_modify_time: 0,
       likes: 0,
+      version_list:[] as any,
       flag_list: [] as any,
       link_list: [] as any,
       game_list: [] as any,

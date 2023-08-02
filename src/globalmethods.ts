@@ -113,24 +113,22 @@ class Method {
     }
   }
 
-  formatNormalTime(time: number): string {
-    function myDate(date: Date, format: string): string {
-      const pad = (n: number) => (n < 10 ? "0" + n : n.toString())
-      const formatMap: Record<string, number> = {
-        Y: date.getFullYear(),
-        m: date.getMonth() + 1,
-        d: date.getDate(),
-        H: date.getHours(),
-        i: date.getMinutes(),
-        s: date.getSeconds(),
-      }
-
-      return format.replace(/([YmdHis])/g, (_, char) => pad(formatMap[char]))
+  myDate(date: Date, format: string): string {
+    const pad = (n: number) => (n < 10 ? "0" + n : n.toString())
+    const formatMap: Record<string, number> = {
+      Y: date.getFullYear(),
+      m: date.getMonth() + 1,
+      d: date.getDate(),
+      H: date.getHours(),
+      i: date.getMinutes(),
+      s: date.getSeconds(),
     }
+    return format.replace(/([YmdHis])/g, (_, char) => pad(formatMap[char]))
+  }
 
+  formatNormalTime(time: number,format="Y-m-d H:i:s"): string {
     const date = new Date(time * 1000)
-
-    return myDate(date, "Y-m-d H:i:s")
+    return this.myDate(date, format)
   }
 
   /**
@@ -166,6 +164,29 @@ class Method {
     }
   }
 
+  /**
+   * 解码角色列表
+   * @param roleStr
+   */
+  decodeRoleList(roleStr: string) {
+    let {
+      userInfo: {
+        role_list
+      },
+    } = Cfg.config
+    let result = [] as any
+    if (roleStr == null) return result
+    let arr = roleStr.split(",")
+    arr.forEach((x: string) => {
+      let f = role_list.find((xx: any) => {
+        return xx.id == x
+      })
+      if (f != null) {
+        result.push(f)
+      }
+    })
+    return result
+  }
   /**
    * 解码flag_list
    * @param flag_list_str
@@ -227,7 +248,7 @@ class Method {
     } = Cfg.config
     let result = [] as any
     if (linkStr == null) return result
-    let arr = linkStr.split("|")
+    let arr = linkStr.split(",")
     arr.forEach((x: string) => {
       let f = api_version.find((xx: any) => {
         return xx.id == x
@@ -250,7 +271,7 @@ class Method {
     } = Cfg.config
     let result = [] as any
     if (linkStr == null) return result
-    let arr = linkStr.split("|")
+    let arr = linkStr.split(",")
     arr.forEach((x: string) => {
       let f = game_version.find((xx: any) => {
         return xx.id == x
@@ -259,11 +280,12 @@ class Method {
         result.push({ name: f.name })
       }
     })
+    console.log(linkStr)
     return result
   }
   /**
    * 解码relation_list
-   * @param linkStr
+   * @param relationList
    */
   decodeRelationList(relationList: any) {
     let {
@@ -311,8 +333,6 @@ class Method {
     this.api_get("/user/info").then((response2: any) => {
       let res = response2.data
       if (res.code == 200) {
-        let role_list = res.data.role_list.split(",")
-        res.data.role_list = role_list
         userInfo.isLogin = true
         userInfo.isLoginDialogVisible = false
         res.data.headurl = this.getHostUrl(res.data.headurl)
@@ -338,4 +358,4 @@ class Method {
   }
 }
 
-export default new Method()
+export default new Method();

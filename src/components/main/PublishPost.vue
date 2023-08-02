@@ -73,7 +73,7 @@ export default {
         .then((response) => {
           let obj = response.data as api
           if (obj.code === 200) {
-            this.$data.config.content += `![](${Method.getHostUrl(obj.data)})`
+            this.$data.config.content += `![](${Method.getHostUrl(obj.data.src)})`
             ElMessage({
               type: "success",
               message: "上传成功",
@@ -100,13 +100,12 @@ export default {
           this.isPublishing = false
           ElMessage({
             type: "success",
-            message: response.data,
-            onClose: () => {
-              this.router.push({
-                path: `/postlist/${this.route.params.chatid}`,
-              })
-            },
+            message: response.data.msg,
+          });
+          this.router.push({
+            path: `/postlist/${this.route.params.chatid}`,
           })
+
         })
         .catch((error) => {
           this.isPublishing = false

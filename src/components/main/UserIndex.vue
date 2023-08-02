@@ -5,53 +5,37 @@
       <div class="head-area">
         <el-avatar :size="headsize" :src="userInfo.data.headurl" />
         <div class="nickname">{{ userInfo.data.nickname }}</div>
-        <el-tag size="small">管理员</el-tag>
-        <el-tag size="small" class="ml-2" type="warning">SVIP 6</el-tag>
+        <UserRole :role="userInfo.data.role"/>
       </div>
     </el-header>
     <el-header class="zone-head-container btn-area">
-      <el-tabs model-value="index" @tab-click="onTabChange">
+      <el-tabs class="el-tabs" model-value="index" @tab-click="onTabChange">
         <el-tab-pane name="index">
-          <template #label
-            ><span class="custom-tabs-label"
-              ><el-icon> <House /> </el-icon><span>主页</span></span
-            ></template
-          >
+          <template #label>
+            <span class="custom-tabs-label"><el-icon> <House /> </el-icon><span>主页</span></span>
+          </template>
+          <UserIndexPage :bbs="bbsList" :mod="modList" :world="worldList" v-if="activePages[0]"/>
         </el-tab-pane>
         <el-tab-pane name="bbs">
-          <template #label
-            ><span class="custom-tabs-label"
-              ><el-icon> <ChatLineSquare /> </el-icon><span>我的帖子</span></span
-            ></template
-          >
+          <template #label>
+            <span class="custom-tabs-label"><el-icon> <ChatLineSquare /> </el-icon><span>我的帖子</span></span>
+          </template>
+          <BbsPage v-if="activePages[1]"/>
         </el-tab-pane>
         <el-tab-pane name="world">
-          <template #label
-            ><span class="custom-tabs-label"
-              ><el-icon> <UploadFilled /> </el-icon><span>我的存档</span></span
-            ></template
-          >
+          <template #label>
+            <span class="custom-tabs-label"><el-icon> <UploadFilled /> </el-icon><span>我的存档</span></span>
+          </template>
+          <WorldPage v-if="activePages[2]"/>
         </el-tab-pane>
         <el-tab-pane name="mod">
-          <template #label
-            ><span class="custom-tabs-label"
-              ><el-icon> <Promotion /> </el-icon><span>我的模组</span></span
-            ></template
-          >
+          <template #label>
+            <span class="custom-tabs-label"><el-icon> <Promotion /> </el-icon><span>我的模组</span></span>
+          </template>
+          <ModPage v-if="activePages[3]"/>
         </el-tab-pane>
       </el-tabs>
     </el-header>
-    <div class="body-area">
-      <UserIndexPage
-        :bbs="bbsList"
-        :mod="modList"
-        :world="worldList"
-        v-if="activeTab == 0"
-      ></UserIndexPage>
-      <BbsPage v-if="activeTab == 1"></BbsPage>
-      <WorldPage v-if="activeTab == 2"></WorldPage>
-      <ModPage v-if="activeTab == 3"></ModPage>
-    </div>
   </el-container>
 </template>
 
@@ -66,10 +50,12 @@ import { ElMessage } from "element-plus"
 import { useRoute } from "vue-router"
 import Cfg from "@/config/config"
 import Method from "@/globalmethods"
+import UserRole from "@comps/user/roleList.vue";
 
 export default {
   name: "UserIndex",
   components: {
+    UserRole,
     Promotion,
     House,
     UserIndexPage,
@@ -81,6 +67,7 @@ export default {
   },
   methods: {
     onTabChange(e: any) {
+      this.activePages[e.index] = true
       this.activeTab = e.index
     },
   },
@@ -92,6 +79,7 @@ export default {
       bbsList: [],
       worldList: [],
       modList: [],
+      activePages:[true,false,false,false] as boolean[],
       headsize: Cfg.config.homestyle.headsize.post,
       userInfo: Cfg.config.userInfo,
     }
@@ -125,6 +113,7 @@ export default {
 </script>
 
 <style scoped>
+.el-tabs{flex: 1}
 .custom-tabs-label {
   display: flex;
   align-items: center;
@@ -154,16 +143,6 @@ export default {
   height: auto;
 }
 
-.body-area {
-  margin: 20px 0 0 0;
-  flex: 1;
-  background: #fff;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  padding: 0 10px;
-  overflow-y: auto;
-}
-
 .head-area {
   display: flex;
   flex-direction: row;
@@ -178,20 +157,5 @@ export default {
   font-size: 18px;
   font-weight: bold;
   color: #fff;
-}
-
-.tab-head {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 33px;
-  border-bottom: 1px solid #eee;
-  margin: 10px 0;
-  padding-bottom: 10px;
-  color: #222;
-}
-
-.tab-head:hover {
-  color: #008ac5;
-  cursor: pointer;
 }
 </style>

@@ -5,7 +5,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "PlateBox",
-    component: () => import("@comps/main/PlateBox.vue"),
+    component: () => import("@comps/main/cards/HomePlate.vue"),
   },
   /** 帖子列表 */
   {
@@ -56,11 +56,19 @@ const routes: RouteRecordRaw[] = [
     name: "ModList",
     component: () => import("@comps/mod/list.vue"),
   },
+    /**模组详情**/
   {
     path: "/ModDetail/:id",
     name: "ModDetail",
     component: () => import("@comps/mod/detail.vue"),
   },
+  /**文件列表**/
+  {
+    path: "/ModFiles/:id",
+    name: "ModFiles",
+    component: () => import("@comps/mod/fileList.vue"),
+  },
+
 ]
 
 const router = createRouter({

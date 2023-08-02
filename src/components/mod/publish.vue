@@ -206,7 +206,7 @@ export default {
       })
     },
     uploadCover(e: any) {
-      this.cover = Method.getHostUrl(e.data)
+      this.cover = Method.getHostUrl(e.data.src)
     },
     newLink() {
       this.link.push({ src: "", type: "" })

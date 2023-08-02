@@ -67,7 +67,7 @@ import { ElMessage } from "element-plus"
 import Method from "@/globalmethods"
 import Cfg from "@/config/config"
 
-import PostListPlate from "./cards/PostListPlate.vue"
+import PostListPlate from "./bbs/list.vue"
 /** 帖子列表 */
 export default {
   name: "PostPage",
@@ -118,29 +118,7 @@ export default {
         /** 占位元素宽度 */
         placeholder: 8,
       },
-      plate: [
-        {
-          /** 帖子id */
-          id: 1,
-          /** 帖子标题 */
-          title: "标题",
-          /** 内容摘要 */
-          summary: "这是测试帖子标题",
-          /** 封面 */
-          cover: "https://pic1.zhimg.com/v2-11bf3df5dc5706c812a2b71e6ed255b2_r.jpg",
-          /** 发帖时间 */
-          time: 1688918819,
-          /** 点赞 */
-          likes: 120,
-          /** 评论 */
-          comments: 50,
-          author: {
-            nickname: "酸菜咸鱼",
-            headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
-            role: "管理员",
-          },
-        },
-      ],
+      plate: [],
     })
 
     let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>
@@ -371,3 +349,15 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.bbs-item{
+  display: flex;
+  padding: 12px 18px;
+  justify-content: center;
+  margin: 10px auto;
+  width: 90%;
+  max-height: 200px;
+  box-shadow: var(--el-box-shadow-light)
+}
+</style>

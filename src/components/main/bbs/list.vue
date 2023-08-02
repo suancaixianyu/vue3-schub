@@ -12,9 +12,9 @@
 <script lang="ts">
 // 帖子卡片
 import BbsItem from "@comps/main/bbs/item.vue"
-import Method from "@/globalmethods"
+import Method from "@/globalmethods.ts"
 export default {
-  name: "PostListPlate",
+  name: "BbsList",
   components: {
     BbsItem,
   },
@@ -50,24 +50,5 @@ export default {
   display: inline-flex;
   align-items: center;
   margin-right: 10px;
-}
-
-.user {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.time {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.category-counts {
-  height: 30px;
-  display: inline-flex;
-  padding-left: 0;
-  list-style-type: none;
 }
 </style>
