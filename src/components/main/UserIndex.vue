@@ -1,38 +1,47 @@
 <template>
   <el-container style="height: 100%" v-loading="isLoading">
     <el-header class="zone-head-container">
-      <img class="img" src="@/assets/image/head_zone_bg.png" />
+      <img class="img" src="../../assets/image/headbj.png" />
+      <img class="img2" src="../../assets/image/wenben.png" />
       <div class="head-area">
         <el-avatar :size="headsize" :src="userInfo.data.headurl" />
         <div class="nickname">{{ userInfo.data.nickname }}</div>
-        <UserRole :role="userInfo.data.role"/>
+        <UserRole :role="userInfo.data.role" />
       </div>
     </el-header>
     <el-header class="zone-head-container btn-area">
-      <el-tabs class="el-tabs" model-value="index" @tab-click="onTabChange">
-        <el-tab-pane name="index">
+      <el-tabs class="el-tabs" model-value="bbs" @tab-click="onTabChange">
+        <!-- <el-tab-pane name="index">
           <template #label>
-            <span class="custom-tabs-label"><el-icon> <House /> </el-icon><span>主页</span></span>
+            <span class="custom-tabs-label"><el-icon>
+                <House />
+              </el-icon><span>主页</span></span>
           </template>
-          <UserIndexPage :bbs="bbsList" :mod="modList" :world="worldList" v-if="activePages[0]"/>
-        </el-tab-pane>
+          <UserIndexPage :bbs="bbsList" :mod="modList" :world="worldList" v-if="activePages[0]" />
+        </el-tab-pane> -->
         <el-tab-pane name="bbs">
           <template #label>
-            <span class="custom-tabs-label"><el-icon> <ChatLineSquare /> </el-icon><span>我的帖子</span></span>
+            <span class="custom-tabs-label"><el-icon>
+                <ChatLineSquare />
+              </el-icon><span>我的帖子</span></span>
           </template>
-          <BbsPage v-if="activePages[1]"/>
+          <BbsPage v-if="activePages[0]" />
         </el-tab-pane>
         <el-tab-pane name="world">
           <template #label>
-            <span class="custom-tabs-label"><el-icon> <UploadFilled /> </el-icon><span>我的存档</span></span>
+            <span class="custom-tabs-label"><el-icon>
+                <UploadFilled />
+              </el-icon><span>我的存档</span></span>
           </template>
-          <WorldPage v-if="activePages[2]"/>
+          <WorldPage v-if="activePages[1]" />
         </el-tab-pane>
         <el-tab-pane name="mod">
           <template #label>
-            <span class="custom-tabs-label"><el-icon> <Promotion /> </el-icon><span>我的模组</span></span>
+            <span class="custom-tabs-label"><el-icon>
+                <Promotion />
+              </el-icon><span>我的模组</span></span>
           </template>
-          <ModPage v-if="activePages[3]"/>
+          <ModPage v-if="activePages[2]" />
         </el-tab-pane>
       </el-tabs>
     </el-header>
@@ -42,7 +51,7 @@
 <script lang="ts">
 // 用户主页
 import { House, ChatLineSquare, UploadFilled, Promotion } from "@element-plus/icons-vue"
-import UserIndexPage from "@comps/user/zone-page/index.vue"
+// import UserIndexPage from "@comps/user/zone-page/index.vue"
 import ModPage from "@comps/user/zone-page/mod.vue"
 import BbsPage from "@comps/user/zone-page/bbs.vue"
 import WorldPage from "@comps/user/zone-page/world.vue"
@@ -58,7 +67,7 @@ export default {
     UserRole,
     Promotion,
     House,
-    UserIndexPage,
+    // UserIndexPage,
     ChatLineSquare,
     UploadFilled,
     ModPage,
@@ -79,7 +88,7 @@ export default {
       bbsList: [],
       worldList: [],
       modList: [],
-      activePages:[true,false,false,false] as boolean[],
+      activePages: [true, false, false, false],
       headsize: Cfg.config.homestyle.headsize.post,
       userInfo: Cfg.config.userInfo,
     }
@@ -107,13 +116,28 @@ export default {
       } else {
         ElMessage(res.msg)
       }
+    }).catch(() => {
+      this.isLoading = false
     })
   },
+  mounted() {
+    Cfg.config.homestyle.maincontainer.padding = '0px'
+    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+  },
+  unmounted() {
+    console.log('卸载用户主页');
+    Cfg.config.homestyle.maincontainer.padding = '0px 18px'
+    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+  }
 }
 </script>
 
 <style scoped>
-.el-tabs{flex: 1}
+.el-tabs {
+  flex: 1;
+  padding: 0px
+}
+
 .custom-tabs-label {
   display: flex;
   align-items: center;
@@ -134,6 +158,16 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+.zone-head-container .img2 {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 38%;
+  object-fit: cover;
 }
 
 .zone-head-container.btn-area {

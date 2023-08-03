@@ -77,6 +77,23 @@
           <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
             v-model="webstyle.webkit['webkit-scrollbar-width']" />
         </el-form-item>
+
+      </el-form>
+
+      <el-form label-position="top" label-width="100px">
+        <el-radio-group>
+          <el-text>卡片样式</el-text>
+        </el-radio-group>
+        <hr />
+        <el-form-item label="圆角">
+          <el-text>圆角: var(--rounded-card)</el-text>
+          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.card['rounded-card']" />
+        </el-form-item>
+      </el-form>
+
+      <el-form label-position="top" label-width="100px">
+        <el-form-item></el-form-item>
         <el-form-item>
           <el-button @click="setstyle">应用</el-button>
           <el-button text @click="dialogFormVisible = true">导入配置</el-button>
@@ -114,11 +131,13 @@ export default {
       console.log("挂载")
       Cfg.config.homestyle.maincontainer.overflowY = "visible"
       Cfg.config.homestyle.maincontainer.height = "auto"
+      Cfg.config.homestyle.set.showfooter = false
     })
     onUnmounted(() => {
       console.log("卸载")
       Cfg.config.homestyle.maincontainer.overflowY = "hidden"
       Cfg.config.homestyle.maincontainer.height = "auto"
+      Cfg.config.homestyle.set.showfooter = true
     })
     return {
       userhead: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
@@ -134,12 +153,12 @@ export default {
       this.headsize.userindex = Number(this.headsize.userindex)
     },
     setstyle() {
-      Method.localSet("webkit", Cfg.config.webstyle)
+      Method.localSet("webstyle", Cfg.config.webstyle)
       Method.setwebstyle()
     },
     setconfiguration() {
       this.dialogFormVisible = false
-      Method.localSet("webkit", this.configuration)
+      Method.localSet("webstyle", this.configuration)
       Method.setwebstyle()
     },
     getconfiguration() {
@@ -154,7 +173,7 @@ export default {
 .el-form {
   background-color: hsl(var(--b1));
   box-shadow: var(--el-box-shadow-light);
-  border-radius: var(--rounded-box, 1rem);
+  border-radius: var(--rounded-card);
   padding: 10px;
   margin: 5px;
 }

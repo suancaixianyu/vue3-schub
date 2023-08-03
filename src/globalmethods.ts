@@ -96,6 +96,32 @@ class Method {
     return name.substring(0, i)
   }
 
+  /**
+   * 格式化文件大小
+   * @param size 文件大小
+   */
+  getFileSize(size: number): string {
+    if (size / 1000 >= 1) {
+      return `${(size / 1000).toFixed(1)}MB`
+    } else {
+      return `${size}KB`
+    }
+  }
+
+  /**
+   * 格式化数字
+   * @param number 数量
+   */
+  getNumber(number: number): string {
+    if (number / 1000 >= 1) {
+      return `${(number / 1000).toFixed(1)}k`
+    } else if (number / 10000 >= 1) {
+      return `${(number / 1000).toFixed(1)}万`
+    } else {
+      return `${number}`
+    }
+  }
+
   fixTimePre(str: number) {
     if (str < 10) return "0" + str
     else return str
@@ -126,7 +152,7 @@ class Method {
     return format.replace(/([YmdHis])/g, (_, char) => pad(formatMap[char]))
   }
 
-  formatNormalTime(time: number,format="Y-m-d H:i:s"): string {
+  formatNormalTime(time: number, format = "Y-m-d H:i:s"): string {
     const date = new Date(time * 1000)
     return this.myDate(date, format)
   }
@@ -345,14 +371,19 @@ class Method {
    * 设置页面样式
    */
   setwebstyle() {
-    let data = this.localGet("webkit", {})
+    let data = this.localGet("webstyle", {})
+    console.log(data)
     if (data.webkit) {
-      console.log('加载本地设置', data.webkit)
-      Cfg.config.webstyle.webkit = data.webkit
+      console.log('加载本地设置', data)
+      for (let key in Cfg.config.webstyle) {
+        Cfg.config.webstyle[key] = data[key]
+      }
     }
-    for (let a in Cfg.config.webstyle) {
-      for (let b in Cfg.config.webstyle[a]) {
-        document.documentElement.style.setProperty(`--${b}`, Cfg.config.webstyle[a][b])
+
+    for (let key in Cfg.config.webstyle) {
+      for (let b in Cfg.config.webstyle[key]) {
+        console.log(key, b, Cfg.config.webstyle[key][b]);
+        document.documentElement.style.setProperty(`--${b}`, Cfg.config.webstyle[key][b])
       }
     }
   }

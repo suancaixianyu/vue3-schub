@@ -96,15 +96,7 @@ export default {
         padding: "0px",
       } as CSSProperties,
       shape: Cfg.config.homestyle.set.shape,
-      postlistseype: {
-        display: "flex",
-        padding: "12px 18px",
-        justifyContent: "center",
-        margin: "10px auto",
-        width: "90%",
-        maxHeight: "200px",
-        boxShadow: `var(--el-box-shadow-light)`,
-      } as CSSProperties,
+      postlistseype: Cfg.config.homestyle.postlistseype,
       windowseype: {
         padding: "10px",
         height: "calc(100vh - 100px)",
@@ -121,10 +113,6 @@ export default {
       plate: <any>[],
     })
 
-    let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>
-    watch(windowwidth, (newValue) => {
-      pageup(newValue)
-    })
 
     /**指定页面加载 */
     function handleCurrentChange(page: any) {
@@ -192,6 +180,11 @@ export default {
           console.error(error)
         })
     }
+
+    let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>
+    watch(windowwidth, (newValue) => {
+      pageup(newValue)
+    })
 
     onMounted(() => {
       data.isLoadingList = true
@@ -325,7 +318,7 @@ export default {
 
     /** 搜索（本地） */
     function search() {
-      outcomeplate.value = data.plate.filter(function (object:any) {
+      outcomeplate.value = data.plate.filter(function (object: any) {
         return object.title.includes(data.searchinput) || object.summary.includes(data.searchinput)
       })
     }
@@ -350,7 +343,7 @@ export default {
 </script>
 
 <style scoped>
-.bbs-item{
+.bbs-item {
   display: flex;
   padding: 12px 18px;
   justify-content: center;

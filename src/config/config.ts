@@ -1,10 +1,20 @@
-import { reactive } from "vue"
+import { CSSProperties, reactive } from "vue"
 const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
     padding: "0px 18px",
     height: "calc(100vh - 90px)",
     overflowY: "hidden",
+  },
+  postlistseype: {
+    display: "flex",
+    padding: "12px 18px",
+    justifyContent: "center",
+    margin: "10px auto",
+    width: "90%",
+    maxHeight: "200px",
+    boxShadow: "var(--el-box-shadow-light)",
+    borderRadius: "var(--rounded-btn)"
   },
   /** 页面整体样式 */
   container: {
@@ -41,6 +51,9 @@ let webstyle = reactive({
     "webkit-scrollbar-thumb-background-size-hover": "100%",
     // 滚动条框框样式
     "webkit-scrollbar-width": "12px",
+  },
+  card: {
+    'rounded-card': 'var(--rounded-btn)'
   }
 })
 
@@ -55,7 +68,7 @@ const userInfo = reactive({
   role_list: [],
   isLogin: false,
   isLoginDialogVisible: false,
-  data: {role:'',nickname:'',headurl:''},
+  data: { role: '', nickname: '', headurl: '' },
 })
 
 class Cfg {
@@ -76,6 +89,7 @@ class Cfg {
       container: {
         padding: string
       }
+      postlistseype: CSSProperties
       /** 设置 */
       set: {
         /** 是否显示抽屉菜单 */
@@ -95,7 +109,7 @@ class Cfg {
         userindex: number
       }
     }
-    /** 滚动条样式 */
+    /** 全局样式 */
     webstyle: { [key: string]: { [key: string]: string } }
     /** 用户信息 */
     userInfo: {
@@ -110,15 +124,17 @@ class Cfg {
       isLogin: boolean //是否已登录
       isLoginDialogVisible: boolean //登陆窗口是否可见
       id?: string //用户ID
-      data: { headurl?: string; nickname?: string,role: any } //用户信息
+      data: { headurl?: string; nickname?: string, role: any } //用户信息
     }
   }
 
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-       server: "http://localhost:8081",
-      //server: "/xyapi",
+      //server: "http://localhost:8081",
+      server: "/xyapi",
+      // server: "http://suancaixianyu.cn:8000",
+      // server: "http://schub.top",
       uploadimg: "/upload",
       /** 主页样式 */
       homestyle,
