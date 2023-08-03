@@ -1,6 +1,6 @@
 <template>
   <div class="tab-container">
-    <el-header class="el-header">
+    <el-header class="el-header" style="flex-wrap: wrap;">
       <div class="filter-item active">
         <el-icon>
           <Grid />
@@ -8,44 +8,105 @@
         <div>全部(0)</div>
       </div>
       <div class="filter-item">
-        <icon-technology></icon-technology>
-        <div>科技(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <icon-technology></icon-technology>
+            </el-icon>
+            科技(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <icon-magic></icon-magic>
-        <div>魔法(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <icon-magic></icon-magic>
+            </el-icon>
+            魔法(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <icon-adventure></icon-adventure>
-        <div>冒险(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <icon-adventure></icon-adventure>
+            </el-icon>
+            冒险(0)
+          </el-text>
+        </el-tag>
+
       </div>
       <div class="filter-item">
-        <icon-agriculture></icon-agriculture>
-        <div>农业(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <icon-agriculture></icon-agriculture>
+            </el-icon>
+            农业(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <icon-library></icon-library>
-        <div>Lib(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <icon-library></icon-library>
+            </el-icon>
+            Lib(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <sc-logo :size="18"></sc-logo>
-        <div>世界(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <sc-logo></sc-logo>
+            </el-icon>
+            世界(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <sc-logo :size="18"></sc-logo>
-        <div>方块材质(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <sc-logo></sc-logo>
+            </el-icon>
+            方块材质(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <sc-logo :size="18"></sc-logo>
-        <div>皮肤(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <sc-logo></sc-logo>
+            </el-icon>
+            皮肤(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <sc-logo :size="18"></sc-logo>
-        <div>家具包(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <sc-logo></sc-logo>
+            </el-icon>
+            家具包(0)
+          </el-text>
+        </el-tag>
       </div>
       <div class="filter-item">
-        <icon-server :size="16"></icon-server>
-        <div>服务器(0)</div>
+        <el-tag>
+          <el-text type="primary">
+            <el-icon>
+              <sc-logo></sc-logo>
+            </el-icon>
+            服务器(0)
+          </el-text>
+        </el-tag>
       </div>
     </el-header>
     <el-container class="el-container">
@@ -162,16 +223,17 @@ export default {
 }
 </script>
 <style scoped>
-.tab-container{
+.tab-container {
   height: inherit;
   display: flex;
   flex-direction: column;
 }
+
 .filter-item {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 5px;
+  margin: 4px 0px;
 }
 
 .filter-item.active {
@@ -185,6 +247,7 @@ export default {
   border-bottom: 1px solid #eee;
   align-items: center;
   display: flex;
+  height: auto;
 }
 
 .el-container {

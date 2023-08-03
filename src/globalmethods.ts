@@ -1,5 +1,8 @@
 import Cfg from "./config/config"
 import axios, { AxiosStatic } from "axios"
+import { ElMessage } from "element-plus"
+import useClipboard from 'vue-clipboard3'
+const { toClipboard } = useClipboard()
 
 //开启cookie携带
 axios.defaults.withCredentials = true
@@ -385,6 +388,21 @@ class Method {
         console.log(key, b, Cfg.config.webstyle[key][b]);
         document.documentElement.style.setProperty(`--${b}`, Cfg.config.webstyle[key][b])
       }
+    }
+  }
+
+  async copyText(txt: string) {
+    try {
+      await toClipboard(txt);
+      ElMessage({
+        type: "success",
+        message: "复制成功！",
+      })
+    } catch (error: any) {
+      ElMessage({
+        type: "error",
+        message: `复制失败：${error.message}`,
+      })
     }
   }
 }

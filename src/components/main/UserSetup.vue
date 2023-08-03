@@ -4,7 +4,7 @@
     <el-col :xs="0" :sm="2" :md="3" :lg="5" :xl="5" />
 
     <el-col :xs="24" :sm="20" :md="18" :lg="14" :xl="14">
-      <el-form label-position="top" label-width="100px">
+      <el-form label-position="top" label-width="100px" @submit.prevent>
         <el-radio-group label="label position">
           <el-text>样式</el-text>
         </el-radio-group>
@@ -14,7 +14,7 @@
         </el-form-item>
       </el-form>
 
-      <el-form label-position="top" label-width="100px">
+      <el-form label-position="top" label-width="100px" @submit.prevent>
         <el-radio-group>
           <el-text>头像</el-text>
         </el-radio-group>
@@ -35,11 +35,11 @@
           <el-input type="number" v-model="headsize.post" @blur="sizepost" />
         </el-form-item>
         <el-form-item label="用户主头像页大小">
-          <el-input type="number" v-model="headsize.userindex" @blur="sizeuser" />
+          <el-input type="number" v-model="headsize.userindex" @blur="sizeuser" @keyup.enter="setstyle" />
         </el-form-item>
       </el-form>
 
-      <el-form label-position="top" label-width="100px">
+      <el-form label-position="top" label-width="100px" @submit.prevent>
         <el-radio-group>
           <el-text>滚动条：css样式</el-text>
         </el-radio-group>
@@ -75,12 +75,12 @@
         <el-form-item label="::-webkit-scrollbar">
           <el-text>宽度: var(--webkit-scrollbar-width)</el-text>
           <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
-            v-model="webstyle.webkit['webkit-scrollbar-width']" />
+            v-model="webstyle.webkit['webkit-scrollbar-width']" @keyup.enter="setstyle" />
         </el-form-item>
 
       </el-form>
 
-      <el-form label-position="top" label-width="100px">
+      <el-form label-position="top" label-width="100px" @submit.prevent>
         <el-radio-group>
           <el-text>卡片样式</el-text>
         </el-radio-group>
@@ -88,7 +88,7 @@
         <el-form-item label="圆角">
           <el-text>圆角: var(--rounded-card)</el-text>
           <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
-            v-model="webstyle.card['rounded-card']" />
+            v-model="webstyle.card['rounded-card']" @keyup.enter="setstyle" />
         </el-form-item>
       </el-form>
 
@@ -98,11 +98,13 @@
           <el-button @click="setstyle">应用</el-button>
           <el-button text @click="dialogFormVisible = true">导入配置</el-button>
           <el-button text @click="getconfiguration">导出配置</el-button>
-          <el-dialog v-model="dialogFormVisible" title="Shipping address">
+          <el-dialog v-model="dialogFormVisible" title="样式设置" :fullscreen="set.ismobile">
+            <el-text>此配置不包括头像设置</el-text>
             <textarea class="textarea bg-base-200" placeholder="输入文本" style="width: 100%" v-model="configuration" />
             <template #footer>
               <span class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">关闭</el-button>
+                <el-button @click="setconfiguration">设置</el-button>
                 <el-button @click="setconfiguration">设置</el-button>
               </span>
             </template>
@@ -163,7 +165,7 @@ export default {
     },
     getconfiguration() {
       this.dialogFormVisible = true
-      this.configuration = JSON.stringify(Method.localGet("webkit", {}))
+      this.configuration = JSON.stringify(Method.localGet("webstyle", {}))
     }
   },
 }

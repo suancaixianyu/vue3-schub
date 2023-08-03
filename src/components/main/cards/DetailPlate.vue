@@ -308,29 +308,8 @@ export default {
       })
     }
 
-    async function copytext() {
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        ElMessage({
-          message: "链接已复制",
-          type: "success",
-        })
-      } catch (error) {
-        const textarea = document.createElement("textarea")
-        textarea.value = window.location.href
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand("copy")
-        document.body.removeChild(textarea)
-        ElMessage({
-          message: "链接已复制",
-          type: "success",
-        })
-      }
-    }
-
-    function message() {
-      ElMessage("this is a message.")
+    function copytext() {
+      Method.copyText(window.location.href)
     }
 
     function close() {
@@ -362,7 +341,6 @@ export default {
     }
     return {
       ...toRefs(data),
-      message,
       close,
       copytext,
       flushed,
@@ -429,6 +407,7 @@ export default {
   margin: 20px 5px;
   height: calc(100vh - 130px);
   overflow-y: auto;
+  border-radius: var(--rounded-card)
 }
 
 .reply-body {

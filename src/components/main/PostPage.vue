@@ -43,7 +43,8 @@
           <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
             :style="postlistseype" style="height: 60px" v-if="showpagenum">
             <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
-              @current-change="handleCurrentChange" style="justify-content: center"></el-pagination>
+              @current-change="handleCurrentChange" style="justify-content: center">
+            </el-pagination>
           </div>
           <div style="text-align: center; cursor: pointer" @click="loadmore" v-html="txt"
             class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-sm-and-up"></div>

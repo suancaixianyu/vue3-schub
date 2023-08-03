@@ -47,23 +47,5 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      tableData: [
-        {
-          type: "2016-05-03",
-          name: "Mk城市",
-          size: "100.1kb",
-          date: "2023-07-21 11:12",
-        },
-        {
-          type: "2016-05-03",
-          name: "Tajbn",
-          size: "345.99kb",
-          date: "2023-07-21 11:12",
-        },
-      ],
-    }
-  },
 }
 </script>

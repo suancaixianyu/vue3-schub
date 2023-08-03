@@ -5,8 +5,8 @@
       <div class="update-area">
         <div class="tab">更新日志</div>
         <div class="update-log" v-if="version_list.length != 0" v-for="x in version_list">
-          <div class="version">{{x.version}}</div>
-          <div class="date">{{x.time}}</div>
+          <div class="version">{{ x.version }}</div>
+          <div class="date">{{ x.time }}</div>
         </div>
         <div class="update-log" v-if="version_list.length == 0">暂无更新日志</div>
       </div>
@@ -53,7 +53,7 @@
               <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
                 <div class="flex" v-for="xx in x.list">
                   <el-tag class="ml-2" type="success">{{ xx.type_name }}</el-tag>
-                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{xx.package_name}}</el-button>
+                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{ xx.package_name }}</el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -62,8 +62,8 @@
             <el-table :data="version_list" stripe style="width: 100%">
               <el-table-column prop="name" label="文件名" />
               <el-table-column prop="create_time_str" label="创建时间" width="180" />
-              <el-table-column prop="size" label="大小" width="180" />
-              <el-table-column label="操作" >
+              <el-table-column prop="file_size" label="大小" width="180" />
+              <el-table-column label="操作">
                 <template #default="scope">
                   <el-button size="small" link type="danger" @click="downLoad(scope.$index)">下载</el-button>
                 </template>
@@ -117,7 +117,7 @@ export default {
       id: 1,
       last_modify_time: 0,
       likes: 0,
-      version_list:[] as any,
+      version_list: [] as any,
       flag_list: [] as any,
       link_list: [] as any,
       game_list: [] as any,
@@ -127,14 +127,16 @@ export default {
       views: 0,
       mini_name: "",
       en_name: "",
-      activeIndex:0
+      activeIndex: 0
     }
   },
   methods: {
     goModDetail(id: number) {
       this.$router.push(`/ModDetail/${id}`)
     },
-    downLoad(index:number){
+    downLoad(index: number) {
+      console.log(index);
+
       this.activeIndex = index;
     },
     reloadPageData() {
@@ -145,9 +147,10 @@ export default {
           this.isLoading = false
           let modInfo = res.data.mod
           let version_list = res.data.version_list;
-          version_list.forEach((x:any)=>{
-            x.time = Method.formatNormalTime(x.create_time,'Y-m-d');
+          version_list.forEach((x: any) => {
+            x.time = Method.formatNormalTime(x.create_time, 'Y-m-d');
             x.create_time_str = Method.formatBbsTime(x.create_time);
+            x.file_size = Method.getFileSize(x.size)
           });
           this.relation_list = Method.decodeRelationList(res.data.relation)
           this.cover_src = modInfo.cover_src
@@ -284,7 +287,7 @@ export default {
   padding: 2px 5px;
 }
 
-.status-area .item + .item {
+.status-area .item+.item {
   margin-left: 2px;
 }
 
