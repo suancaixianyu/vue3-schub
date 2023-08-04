@@ -16,11 +16,20 @@
     <!-- 中部 -->
     <el-container>
       <el-aside width="70%">
-        <el-text class="mx-1 time" size="large" tag="b">{{ item.title }}</el-text>
-        <el-text class="mx-1 time" style="text-align: left">{{ item.summary }}</el-text>
+        <el-text class="mx-1 time" size="large" tag="b">{{
+          item.title
+        }}</el-text>
+        <el-text class="mx-1 time" style="text-align: left">{{
+          item.summary
+        }}</el-text>
       </el-aside>
       <el-main style="padding: 0px; text-align: right">
-        <el-image v-if="item.cover" style="height: 80px" :src="item.cover" fit="cover" />
+        <el-image
+          v-if="item.cover"
+          style="height: 80px"
+          :src="item.cover"
+          fit="cover"
+        />
       </el-main>
     </el-container>
     <!-- 底部 -->
@@ -44,16 +53,16 @@
 </template>
 
 <script lang="ts">
-import LikeIcon from "@comps/icons/Like.vue"
-import UserHead from "@comps/main/bbs/UserHead.vue"
-import { reactive, toRefs } from "vue"
-import { api } from "@/apitypes"
-import { ElMessage } from "element-plus"
-import Cfg from "@/config/config"
-import Method from "@/globalmethods"
+import LikeIcon from '@comps/icons/Like.vue'
+import UserHead from '@comps/main/bbs/UserHead.vue'
+import { reactive, toRefs } from 'vue'
+import { api } from '@/apitypes'
+import { ElMessage } from 'element-plus'
+import Cfg from '@/config/config'
+import Method from '@/globalmethods'
 
 export default {
-  name: "BbsItem",
+  name: 'BbsItem',
   components: {
     LikeIcon,
     UserHead,
@@ -66,14 +75,14 @@ export default {
   },
   data() {
     return {
-      shape: Cfg.config.homestyle.set.shape,
+      shape: Cfg.config.set.shape,
       headsize: Cfg.config.homestyle.headsize.post,
     }
   },
   setup(props) {
     let data = reactive({
-      time: "",
-      headUrl: "",
+      time: '',
+      headUrl: '',
       isDoGooding: false,
       isDoBading: false,
       goodNum: 0,
@@ -89,7 +98,7 @@ export default {
         data.isDoGooding = false
         if (obj.code === 200) data.goodNum += parseInt(obj.data)
         ElMessage({
-          type: obj.code == 200 ? "success" : "error",
+          type: obj.code == 200 ? 'success' : 'error',
           message: obj.msg,
         })
       })

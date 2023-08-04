@@ -32,7 +32,7 @@
 
 <script lang="ts">
 export default {
-  name: "UserIndexPage",
+  name: 'UserIndexPage',
   props: {
     bbs: {
       type: Object,

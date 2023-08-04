@@ -19,6 +19,6 @@
 
 <script lang="ts">
 export default {
-  name: "FlushedIcon",
+  name: 'FlushedIcon',
 }
 </script>

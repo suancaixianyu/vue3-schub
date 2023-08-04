@@ -1,7 +1,7 @@
 <template>
   <div
     class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-    :style="st.postlistseype"
+    :style="st.postliststyle"
   >
     <router-link :to="`/postlist/${bbsid}/${item.id}`">
       <BbsItem :item="item"></BbsItem>
@@ -11,10 +11,10 @@
 
 <script lang="ts">
 // 帖子卡片
-import BbsItem from "@comps/main/bbs/item.vue"
-import Method from "@/globalmethods.ts"
+import BbsItem from '@comps/main/bbs/item.vue'
+import Method from '@/globalmethods.ts'
 export default {
-  name: "BbsList",
+  name: 'BbsList',
   components: {
     BbsItem,
   },
@@ -29,7 +29,7 @@ export default {
     },
     shape: {
       type: String,
-      default: "",
+      default: '',
     },
     bbsid: {
       type: Array as () => string[] | string,

@@ -1,25 +1,28 @@
 <template>
   <div v-if="set.ismobile">
-    <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="(x, index) in list"
-      :key="index" :style="postlistseype">
-      <el-container style="padding:0px">
-        <el-aside width="30%" style="padding:0px;word-wrap: break-word;">
+    <div
+      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
+      v-for="(x, index) in list"
+      :key="index"
+      :style="homestyle.postliststyle"
+    >
+      <el-container style="padding: 0px">
+        <el-aside width="30%" style="padding: 0px; word-wrap: break-word">
           {{ x.type_name }}
         </el-aside>
-        <el-main style="padding:0px;overflow-x: hidden;">
-          <el-text>{{ x.name }}</el-text><br>
-          <el-text>{{ x.create_time }}</el-text><br>
+        <el-main style="padding: 0px; overflow-x: hidden">
+          <el-text>{{ x.name }}</el-text
+          ><br />
+          <el-text>{{ x.create_time }}</el-text
+          ><br />
           <el-row :gutter="5">
             <el-col :span="12">
               <el-text>
-                <el-icon>
-                  <Document />
-                </el-icon>{{ x.file_size }}
+                <el-icon> <Document /> </el-icon>{{ x.file_size }}
               </el-text>
             </el-col>
 
-            <el-col :span="8">
-            </el-col>
+            <el-col :span="8"> </el-col>
 
             <el-col :span="2">
               <el-dropdown>
@@ -33,15 +36,14 @@
                     <el-dropdown-item>复制链接</el-dropdown-item>
                     <el-dropdown-item>下架</el-dropdown-item>
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)">删除</el-dropdown-item>
+                    <el-dropdown-item divided @click="handleDelete(index)"
+                      >删除</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
             </el-col>
-
-
           </el-row>
-
         </el-main>
       </el-container>
     </div>
@@ -54,7 +56,13 @@
       <el-table-column prop="create_time" label="上传日期" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+          <el-button
+            size="small"
+            link
+            type="danger"
+            @click="handleDelete(scope.$index)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -62,45 +70,43 @@
 </template>
 
 <script lang="ts">
-import Method from "@/globalmethods.ts";
-import { ElMessage } from "element-plus";
-import Cfg from "@/config/config"
+import Method from '@/globalmethods.ts'
+import { ElMessage } from 'element-plus'
+import Cfg from '@/config/config'
 
 export default {
-  name: "WorldPage",
+  name: 'WorldPage',
   data() {
     return {
+      ...Cfg.config,
       isLoading: false,
       list: [] as any[],
       activeItemIndex: -1,
-      set: Cfg.config.homestyle.set,
-      postlistseype: Cfg.config.homestyle.postlistseype
     }
   },
   methods: {
     handleDelete(index: number) {
-      this.activeItemIndex = index;
-      ElMessage('暂不支持');
-    }
+      this.activeItemIndex = index
+      ElMessage('暂不支持')
+    },
   },
   created() {
-    this.isLoading = true;
+    this.isLoading = true
     Method.api_get(`/user/my_world_list/1`).then((response: any) => {
       let res = response.data
       this.isLoading = false
       if (res.code == 200) {
         res.data.forEach((x: any) => {
-          x.create_time = Method.formatNormalTime(x.create_time);
+          x.create_time = Method.formatNormalTime(x.create_time)
           x.type_name = Method.getScTypeName(x.file_type)
           x.file_size = Method.getFileSize(x.size)
         })
-        this.list = res.data;
+        this.list = res.data
       } else {
         ElMessage(res.msg)
       }
     })
-
-  }
+  },
 }
 </script>
 
@@ -110,6 +116,6 @@ export default {
 }
 
 .numicon {
-  padding: 12px 0px
+  padding: 12px 0px;
 }
 </style>

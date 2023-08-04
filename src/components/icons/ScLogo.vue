@@ -1,5 +1,10 @@
 <template>
-  <svg :width="size" :height="size" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    :width="size"
+    :height="size"
+    viewBox="0 0 32 32"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <g>
       <g>
         <path
@@ -21,7 +26,7 @@
 
 <script lang="ts">
 export default {
-  name: "ScLogo",
+  name: 'ScLogo',
   props: {
     size: { type: Number, default: 32 },
   },

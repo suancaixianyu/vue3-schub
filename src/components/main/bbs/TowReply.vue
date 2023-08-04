@@ -1,6 +1,11 @@
 <template>
   <div class="post-area">
-    <el-avatar :src="v.xx.author.headurl" :shape="shape" :size="26" style="margin-right: 12px" />
+    <el-avatar
+      :src="v.xx.author.headurl"
+      :shape="shape"
+      :size="26"
+      style="margin-right: 12px"
+    />
     <div class="area">
       <div class="user-label">
         <div>{{ v.xx.author.nickname }}</div>
@@ -11,7 +16,10 @@
         </div>
       </div>
       <!-- <div class="comments">{{ v.xx.content }}</div> -->
-      <MdPreview :modelValue="v.xx.content" :editorId="`preview-tow-${previewid}`" />
+      <MdPreview
+        :modelValue="v.xx.content"
+        :editorId="`preview-tow-${previewid}`"
+      />
       <div class="extra-line">
         <div class="time">{{ v.xx.time }}</div>
         <LikeIcon class="label"></LikeIcon>
@@ -25,29 +33,36 @@
           :size="26"
           style="margin-right: 12px"
         />
-        <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
-        <el-button icon="Edit" @click="reply" :loading="isReplying">回复</el-button>
+        <el-input
+          v-model="comments"
+          autosize
+          type="textarea"
+          placeholder="发表评论"
+        />
+        <el-button icon="Edit" @click="reply" :loading="isReplying"
+          >回复</el-button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import LikeIcon from "@comps/icons/Like.vue"
-import { reactive, toRefs } from "vue"
-import { api } from "@/apitypes"
-import { ElMessage } from "element-plus"
-import { MdPreview } from "md-editor-v3"
+import LikeIcon from '@comps/icons/Like.vue'
+import { reactive, toRefs } from 'vue'
+import { api } from '@/apitypes'
+import { ElMessage } from 'element-plus'
+import { MdPreview } from 'md-editor-v3'
 
 /** md编辑器 */
-import "md-editor-v3/lib/preview.css"
+import 'md-editor-v3/lib/preview.css'
 
-import Method from "@/globalmethods.ts"
-import Cfg from "@/config/config.ts"
-import UserRole from "@comps/user/roleList.vue";
+import Method from '@/globalmethods.ts'
+import Cfg from '@/config/config.ts'
+import UserRole from '@comps/user/roleList.vue'
 
 export default {
-  name: "TowReply",
+  name: 'TowReply',
   components: {
     UserRole,
     LikeIcon,
@@ -66,20 +81,20 @@ export default {
   data() {
     return {
       userInfo: Cfg.config.userInfo,
-      shape: Cfg.config.homestyle.set.shape,
+      shape: Cfg.config.set.shape,
     }
   },
   methods: {
     reply() {
       this.doReply(() => {
-        this.$emit("refreshEvent")
+        this.$emit('refreshEvent')
       })
     },
   },
   setup(props) {
     let data = reactive({
       isReadyReply: false,
-      comments: "",
+      comments: '',
       likes: 0,
       isReplying: false,
       isDoGooding: false,
@@ -97,14 +112,14 @@ export default {
         data.isDoGooding = false
         data.likes += parseInt(obj.data)
         ElMessage({
-          type: obj.code == 200 ? "success" : "error",
+          type: obj.code == 200 ? 'success' : 'error',
           message: obj.msg,
         })
       })
     }
 
     function doReply(callback: any) {
-      if (data.comments === "") return ElMessage("评论内容不可为空")
+      if (data.comments === '') return ElMessage('评论内容不可为空')
       data.isReplying = true
       let rid = props.v.x.id
       let to_rid = props.v.xx.id
@@ -116,12 +131,12 @@ export default {
         data.isReplying = false
         if (response.data.code == 200) {
           data.isLoadingReply = true
-          data.comments = ""
+          data.comments = ''
           data.isReadyReply = false
           if (callback != null) callback()
-          ElMessage("回复成功")
+          ElMessage('回复成功')
         } else {
-          ElMessage("回复失败")
+          ElMessage('回复失败')
         }
       })
     }
@@ -148,5 +163,8 @@ export default {
   padding: 0 5px;
   cursor: pointer;
 }
-.to-user-label{padding-left: 10px}
+
+.to-user-label {
+  padding-left: 10px;
+}
 </style>

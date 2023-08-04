@@ -44,22 +44,38 @@
             <div class="flex v">
               <div class="flex" v-for="(x, i) in link" :key="x">
                 <el-select v-model="x.type" placeholder="选择渠道">
-                  <el-option :label="r.name" :value="r.id" v-for="r in mod_link_type" />
+                  <el-option
+                    :label="r.name"
+                    :value="r.id"
+                    v-for="r in mod_link_type"
+                  />
                 </el-select>
                 <el-input v-model="x.src" />
-                <el-button type="primary" icon="Minus" text @click="deleteLink(i)" :data-index="i"
+                <el-button
+                  type="primary"
+                  icon="Minus"
+                  text
+                  @click="deleteLink(i)"
+                  :data-index="i"
                   >删除</el-button
                 >
               </div>
               <div>
-                <el-button size="small" type="primary" text icon="Plus" @click="newLink"
+                <el-button
+                  size="small"
+                  type="primary"
+                  text
+                  icon="Plus"
+                  @click="newLink"
                   >添加链接</el-button
                 >
               </div>
             </div>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit" :loading="isCreating">创建</el-button>
+            <el-button type="primary" @click="submit" :loading="isCreating"
+              >创建</el-button
+            >
             <el-button plain>取消</el-button>
           </el-form-item>
         </el-tab-pane>
@@ -115,7 +131,11 @@
                     ></el-option>
                   </el-select>
                   <el-select v-model="xx.type" placeholder="选择关系">
-                    <el-option :label="r.name" :value="r.id" v-for="r in relate_type_list" />
+                    <el-option
+                      :label="r.name"
+                      :value="r.id"
+                      v-for="r in relate_type_list"
+                    />
                   </el-select>
                   <el-button
                     type="primary"
@@ -127,13 +147,23 @@
                   >
                 </div>
                 <div>
-                  <el-button size="small" type="primary" text icon="Plus" @click="newRelation(i)"
+                  <el-button
+                    size="small"
+                    type="primary"
+                    text
+                    icon="Plus"
+                    @click="newRelation(i)"
                     >添加关系</el-button
                   >
                 </div>
               </el-card>
               <div>
-                <el-button size="small" type="primary" text icon="Plus" @click="newGroupRelation"
+                <el-button
+                  size="small"
+                  type="primary"
+                  text
+                  icon="Plus"
+                  @click="newGroupRelation"
                   >添加一组</el-button
                 >
               </div>
@@ -146,32 +176,32 @@
 </template>
 
 <script lang="ts">
-import Method from "@/globalmethods"
-import Cfg from "@/config/config"
-import ModFlag from "@comps/mod/flag.vue"
-import { ElMessage } from "element-plus"
+import Method from '@/globalmethods'
+import Cfg from '@/config/config'
+import ModFlag from '@comps/mod/flag.vue'
+import { ElMessage } from 'element-plus'
 interface modItem {
   label: string
   value: string
 }
 export default {
-  name: "ModPublish",
+  name: 'ModPublish',
   components: {
     ModFlag,
   },
   data() {
-    let uploadServer = Method.getHostUrl("/Upload/Upload")
+    let uploadServer = Method.getHostUrl('/Upload/Upload')
     return {
       uploadServer: uploadServer,
       cover_list: [],
-      en_name: "",
-      mini_name: "",
+      en_name: '',
+      mini_name: '',
       isCreating: false,
-      cover: "",
-      activeTab: "base",
-      name: "",
-      packageName: "",
-      desc: "",
+      cover: '',
+      activeTab: 'base',
+      name: '',
+      packageName: '',
+      desc: '',
       mod_flag_list: [] as any[],
       mod_link_type: [] as any[],
       relate_type_list: [] as any[],
@@ -180,7 +210,7 @@ export default {
       relation: [] as any[],
       link: [] as any[],
       activeFlags: [] as boolean[],
-      package_id: "",
+      package_id: '',
       remoteLoading: false,
       relate_mod_list: [] as modItem[],
     }
@@ -209,17 +239,17 @@ export default {
       this.cover = Method.getHostUrl(e.data.src)
     },
     newLink() {
-      this.link.push({ src: "", type: "" })
+      this.link.push({ src: '', type: '' })
     },
     deleteLink(e: number) {
       this.link.splice(e, 1)
     },
     newGroupRelation() {
       this.getModList()
-      this.relation.push({ condition: "", list: [] })
+      this.relation.push({ condition: '', list: [] })
     },
     newRelation(i: number) {
-      this.relation[i].list.push({ package: "", type: "" })
+      this.relation[i].list.push({ package: '', type: '' })
     },
     deleteRelation(index: number) {
       this.relation.splice(index, 1)
@@ -255,10 +285,10 @@ export default {
         package_id: this.package_id,
       }
       this.isCreating = true
-      Method.api_post("/mod/add", payLoad).then((res) => {
+      Method.api_post('/mod/add', payLoad).then((res) => {
         this.isCreating = false
         if (res.data.code == 200) {
-          ElMessage("创建成功")
+          ElMessage('创建成功')
           this.$router.back()
         } else {
           ElMessage(res.data.data)
@@ -269,7 +299,13 @@ export default {
   created() {
     let {
       userInfo: {
-        global_mod_data_list: { flag_list, link_type, relate_type, api_version, game_version },
+        global_mod_data_list: {
+          flag_list,
+          link_type,
+          relate_type,
+          api_version,
+          game_version,
+        },
       },
     } = Cfg.config
     this.api_version_list = api_version

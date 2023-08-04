@@ -2,7 +2,6 @@
   <div v-loading="isLoading">
     <!-- 移动端 -->
     <div v-if="type.ismobile">
-
       <el-container>
         <!-- 头部 -->
         <el-header style="padding: 0px">
@@ -12,7 +11,12 @@
               <el-icon @click="flushed" :size="25" title="刷新" class="icon">
                 <Flushed />
               </el-icon>
-              <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
+              <el-icon
+                @click="copytext"
+                :size="25"
+                title="复制链接"
+                class="icon"
+              >
                 <Link />
               </el-icon>
               <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -20,43 +24,81 @@
               </el-icon>
             </el-col>
           </el-row>
-          <UserHead :item="{
-            ...content.author,
-            time: content.time,
-            shape,
-            headsize,
-            style: {
-              flexDirection: 'row',
-              alignItems: 'center',
-            },
-          }" style="padding-left: 10px" />
+          <UserHead
+            :item="{
+              ...content.author,
+              time: content.time,
+              shape,
+              headsize,
+              style: {
+                flexDirection: 'row',
+                alignItems: 'center',
+              },
+            }"
+            style="padding-left: 10px"
+          />
         </el-header>
         <!-- 内容 -->
         <el-main style="padding: 20px 0px">
           <!-- 帖子内容展示 -->
-          <MdPreview editorId="preview-mobile" :modelValue="content.summary" class="bg-base-200" />
+          <MdPreview
+            editorId="preview-mobile"
+            :modelValue="content.summary"
+            class="bg-base-200"
+          />
 
           <!-- 分割线 -->
           <label class="plate-label">
             <div class="large">评论</div>
             <div class="small">{{ sum.total }}</div>
             <div class="space"></div>
-            <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">最新</div>
+            <div
+              class="filter"
+              :class="{ active: sort == 0 }"
+              @click="sortByTime"
+            >
+              最新
+            </div>
             <div class="filter">|</div>
-            <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">最热</div>
+            <div
+              class="filter"
+              :class="{ active: sort == 1 }"
+              @click="sortByHot"
+            >
+              最热
+            </div>
           </label>
           <!-- 个人评论区 -->
           <div class="reply-body">
             <!-- 发表评论 -->
             <div class="post-area">
-              <el-avatar :src="content.author.headurl" :shape="shape" :size="headsize" style="margin-right: 12px" />
-              <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
-              <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
+              <el-avatar
+                :src="content.author.headurl"
+                :shape="shape"
+                :size="headsize"
+                style="margin-right: 12px"
+              />
+              <el-input
+                v-model="comments"
+                autosize
+                type="textarea"
+                placeholder="发表评论"
+              />
+              <el-button icon="Edit" :loading="isReplying" @click="doReply"
+                >发表</el-button
+              >
             </div>
             <!-- 回复列表 -->
             <div v-loading="isLoadingReply">
-              <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                :previewid="index" @refreshEvent="refresh_reply_list" />
+              <OneReply
+                v-for="(x, index) in reply_list"
+                :key="x"
+                :x="{ ...x }"
+                :shape="shape"
+                :size="headsize"
+                :previewid="index"
+                @refreshEvent="refresh_reply_list"
+              />
             </div>
           </div>
         </el-main>
@@ -64,19 +106,30 @@
     </div>
 
     <!-- pc页面 -->
-    <div v-else class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
-      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px">
+    <div
+      v-else
+      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
+      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px"
+    >
       <div class="common-layout">
         <el-container>
           <!-- 头部 -->
           <el-header style="padding: 0px">
             <!-- 顶部按钮 -->
             <el-row :gutter="24">
-              <el-col :span="24" style="display: flex; justify-content: flex-end">
+              <el-col
+                :span="24"
+                style="display: flex; justify-content: flex-end"
+              >
                 <el-icon @click="flushed" :size="25" title="刷新" class="icon">
                   <Flushed />
                 </el-icon>
-                <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
+                <el-icon
+                  @click="copytext"
+                  :size="25"
+                  title="复制链接"
+                  class="icon"
+                >
                   <Link />
                 </el-icon>
                 <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -84,44 +137,82 @@
                 </el-icon>
               </el-col>
             </el-row>
-            <UserHead :item="{
-              headurl: content.author.headurl,
-              nickname: content.author.nickname,
-              time: content.time,
-              role: content.author.role,
-              shape,
-              headsize,
-              style: {
-                flexDirection: 'row',
-                alignItems: 'center',
-              },
-            }" style="padding-left: 10px" />
+            <UserHead
+              :item="{
+                headurl: content.author.headurl,
+                nickname: content.author.nickname,
+                time: content.time,
+                role: content.author.role,
+                shape,
+                headsize,
+                style: {
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                },
+              }"
+              style="padding-left: 10px"
+            />
           </el-header>
           <!-- 内容 -->
           <el-main>
             <!-- 帖子内容展示 -->
-            <MdPreview editorId="preview-pc" :modelValue="content.summary" class="bg-base-100" />
+            <MdPreview
+              editorId="preview-pc"
+              :modelValue="content.summary"
+              class="bg-base-100"
+            />
             <!-- 分割线 -->
             <label class="plate-label">
               <div class="large">评论</div>
               <div class="small">{{ sum.total }}</div>
               <div class="space"></div>
-              <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">最新</div>
+              <div
+                class="filter"
+                :class="{ active: sort == 0 }"
+                @click="sortByTime"
+              >
+                最新
+              </div>
               <div class="filter">|</div>
-              <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">最热</div>
+              <div
+                class="filter"
+                :class="{ active: sort == 1 }"
+                @click="sortByHot"
+              >
+                最热
+              </div>
             </label>
             <!-- 个人评论区 -->
             <div class="reply-body">
               <!-- 发表评论 -->
               <div class="post-area">
-                <el-avatar :src="content.author.headurl" :shape="shape" :size="headsize" style="margin-right: 12px" />
-                <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
-                <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
+                <el-avatar
+                  :src="content.author.headurl"
+                  :shape="shape"
+                  :size="headsize"
+                  style="margin-right: 12px"
+                />
+                <el-input
+                  v-model="comments"
+                  autosize
+                  type="textarea"
+                  placeholder="发表评论"
+                />
+                <el-button icon="Edit" :loading="isReplying" @click="doReply"
+                  >发表</el-button
+                >
               </div>
               <!-- 回复列表 -->
               <div v-loading="isLoadingReply">
-                <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                  :previewid="index" @refreshEvent="refresh_reply_list" />
+                <OneReply
+                  v-for="(x, index) in reply_list"
+                  :key="x"
+                  :x="{ ...x }"
+                  :shape="shape"
+                  :size="headsize"
+                  :previewid="index"
+                  @refreshEvent="refresh_reply_list"
+                />
               </div>
             </div>
           </el-main>
@@ -133,23 +224,23 @@
 
 <script lang="ts">
 // 帖子详情卡片
-import { reactive, toRefs, onUpdated, onBeforeMount, inject, watch } from "vue"
-import type { Ref } from "vue"
-import { ElMessage } from "element-plus"
-import { useRoute, useRouter } from "vue-router"
-import Flushed from "@comps/icons/Flushed.vue"
-import UserHead from "@comps/main/bbs/UserHead.vue"
-import OneReply from "@comps/main/bbs/OneReply.vue"
+import { reactive, toRefs, onUpdated, onBeforeMount, inject, watch } from 'vue'
+import type { Ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { useRoute, useRouter } from 'vue-router'
+import Flushed from '@comps/icons/Flushed.vue'
+import UserHead from '@comps/main/bbs/UserHead.vue'
+import OneReply from '@comps/main/bbs/OneReply.vue'
 
-import Method from "@/globalmethods"
-import Cfg from "@/config/config"
+import Method from '@/globalmethods'
+import Cfg from '@/config/config'
 
-import { MdPreview } from "md-editor-v3"
+import { MdPreview } from 'md-editor-v3'
 /** md编辑器 */
-import "md-editor-v3/lib/preview.css"
+import 'md-editor-v3/lib/preview.css'
 
 export default {
-  name: "DetailPlate",
+  name: 'DetailPlate',
   components: {
     Flushed,
     UserHead,
@@ -159,7 +250,7 @@ export default {
   data() {
     return {
       headsize: Cfg.config.homestyle.headsize.post,
-      type: Cfg.config.homestyle.set
+      type: Cfg.config.set,
     }
   },
   setup() {
@@ -170,9 +261,9 @@ export default {
       isLoading: false,
       isReplying: false,
       replyType: 0, //0对帖子1对评论
-      comments: "",
+      comments: '',
       markdown: '```js \n console.log("hello world!") \n```',
-      shape: Cfg.config.homestyle.set.shape,
+      shape: Cfg.config.set.shape,
       size: 28,
       chatid: route.params.chatid,
       id: route.params.id,
@@ -185,16 +276,16 @@ export default {
         total: 0,
       },
       content: {
-        title: "标题",
+        title: '标题',
         likes: 666,
         dislikes: 666,
         comments: 123,
         time: 1689087371 as number | string,
-        summary: "帖子完整内容",
+        summary: '帖子完整内容',
         author: {
-          nickname: "酸菜咸鱼",
-          headurl: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
-          role: "管理员",
+          nickname: '酸菜咸鱼',
+          headurl: 'https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160',
+          role: '管理员',
         },
       },
       reply_list: [] as any,
@@ -215,7 +306,7 @@ export default {
             refresh_reply_list()
           } else {
             ElMessage({
-              type: "error",
+              type: 'error',
               message: res.data.msg,
             })
           }
@@ -223,8 +314,8 @@ export default {
         .catch((error: any) => {
           data.isLoading = false
           ElMessage({
-            type: "error",
-            message: "详情获取失败，请点击刷新按钮重试",
+            type: 'error',
+            message: '详情获取失败，请点击刷新按钮重试',
           })
           console.error(error)
         })
@@ -235,16 +326,24 @@ export default {
     function refresh_reply_list() {
       let { page, limit, sort } = data
       data.isLoadingReply = true
-      Method.api_get(`/bbs/reply_list/${route.params.id}?page=${page}&limit=${limit}&sort=${sort}`)
+      Method.api_get(
+        `/bbs/reply_list/${route.params.id}?page=${page}&limit=${limit}&sort=${sort}`,
+      )
         .then((res: any) => {
           data.isLoading = false
           let list = res.data.data
           function formatList(l: any[]) {
-            l.forEach((xl: { time: any; author: { headurl: string }; children: any }) => {
-              xl.time = Method.formatBbsTime(xl.time)
-              xl.author.headurl = Method.getHostUrl(xl.author.headurl)
-              formatList(xl.children)
-            })
+            l.forEach(
+              (xl: {
+                time: any
+                author: { headurl: string }
+                children: any
+              }) => {
+                xl.time = Method.formatBbsTime(xl.time)
+                xl.author.headurl = Method.getHostUrl(xl.author.headurl)
+                formatList(xl.children)
+              },
+            )
           }
           formatList(list)
           data.reply_list = list
@@ -256,8 +355,8 @@ export default {
         .catch((error: { message: any }) => {
           data.isLoading = false
           ElMessage({
-            type: "error",
-            message: "评论获取失败，请点击刷新按钮重试",
+            type: 'error',
+            message: '评论获取失败，请点击刷新按钮重试',
           })
           console.error(error.message)
         })
@@ -273,7 +372,7 @@ export default {
       data.page = 1
       refresh_reply_list()
     }
-    let windowwidth = inject<Ref<number>>("windowwidth") as Ref<number>
+    let windowwidth = inject<Ref<number>>('windowwidth') as Ref<number>
 
     watch(windowwidth, (newValue) => {
       pagewidth(newValue)
@@ -289,9 +388,9 @@ export default {
 
     function pagewidth(width: number) {
       if (width <= 480) {
-        Cfg.config.homestyle.maincontainer.overflowY = "visible"
+        Cfg.config.homestyle.maincontainer.overflowY = 'visible'
       } else {
-        Cfg.config.homestyle.maincontainer.overflowY = "hidden"
+        Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
       }
     }
     onUpdated(() => {
@@ -313,7 +412,7 @@ export default {
     }
 
     function close() {
-      router.push({ name: "PostPage", params: { id: data.id } })
+      router.push({ name: 'PostPage', params: { id: data.id } })
     }
 
     function formatTimestamp(timestamp: number) {
@@ -321,7 +420,7 @@ export default {
     }
 
     function doReply() {
-      if (data.comments === "") return ElMessage("评论内容不可为空")
+      if (data.comments === '') return ElMessage('评论内容不可为空')
       data.isReplying = true
       let bid = route.params.id
       Method.api_post(`/bbs/reply`, {
@@ -331,11 +430,11 @@ export default {
         data.isReplying = false
         if (response.data.code == 200) {
           data.isLoadingReply = true
-          data.comments = ""
+          data.comments = ''
           refresh_reply_list() //刷新评论
-          ElMessage("评论成功")
+          ElMessage('评论成功')
         } else {
-          ElMessage("评论失败")
+          ElMessage('评论失败')
         }
       })
     }
@@ -407,7 +506,7 @@ export default {
   margin: 20px 5px;
   height: calc(100vh - 130px);
   overflow-y: auto;
-  border-radius: var(--rounded-card)
+  border-radius: var(--rounded-card);
 }
 
 .reply-body {

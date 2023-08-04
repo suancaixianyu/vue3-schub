@@ -1,6 +1,6 @@
-import Cfg from "./config/config"
-import axios, { AxiosStatic } from "axios"
-import { ElMessage } from "element-plus"
+import Cfg from './config/config'
+import axios, { AxiosStatic } from 'axios'
+import { ElMessage } from 'element-plus'
 import useClipboard from 'vue-clipboard3'
 const { toClipboard } = useClipboard()
 
@@ -16,7 +16,7 @@ class Method {
   axios: AxiosStatic
   constructor() {
     this._config = {
-      version: "1.0.0",
+      version: '1.0.0',
     }
     this.axios = axios
   }
@@ -78,15 +78,15 @@ class Method {
   getScTypeName(type: number): string {
     switch (type) {
       case 1:
-        return "世界"
+        return '世界'
       case 2:
-        return "方块材质"
+        return '方块材质'
       case 3:
-        return "人物皮肤"
+        return '人物皮肤'
       case 4:
-        return "家具包"
+        return '家具包'
       default:
-        return "未知"
+        return '未知'
     }
   }
 
@@ -95,7 +95,7 @@ class Method {
    * @param {string} name 文件名
    */
   getFileName(name: string): string {
-    let i = name.lastIndexOf(".")
+    let i = name.lastIndexOf('.')
     return name.substring(0, i)
   }
 
@@ -104,10 +104,12 @@ class Method {
    * @param size 文件大小
    */
   getFileSize(size: number): string {
-    if (size / 1000 >= 1) {
-      return `${(size / 1000).toFixed(1)}MB`
+    if (size / 1024 >= 1) {
+      return `${(size / 1024).toFixed(1)}KB`
+    } else if (size / 10240 >= 1) {
+      return `${(size / 10240).toFixed(1)}MB`
     } else {
-      return `${size}KB`
+      return `${size}B`
     }
   }
 
@@ -126,7 +128,7 @@ class Method {
   }
 
   fixTimePre(str: number) {
-    if (str < 10) return "0" + str
+    if (str < 10) return '0' + str
     else return str
   }
 
@@ -135,7 +137,7 @@ class Method {
       let a = Date.now() / 1000
       return a
     } else {
-      date = date.replace(/-/g, "/") //解决IOS不兼容问题
+      date = date.replace(/-/g, '/') //解决IOS不兼容问题
       let d = Date.parse(date)
       d = d / 1000
       return d
@@ -143,7 +145,7 @@ class Method {
   }
 
   myDate(date: Date, format: string): string {
-    const pad = (n: number) => (n < 10 ? "0" + n : n.toString())
+    const pad = (n: number) => (n < 10 ? '0' + n : n.toString())
     const formatMap: Record<string, number> = {
       Y: date.getFullYear(),
       m: date.getMonth() + 1,
@@ -155,7 +157,7 @@ class Method {
     return format.replace(/([YmdHis])/g, (_, char) => pad(formatMap[char]))
   }
 
-  formatNormalTime(time: number, format = "Y-m-d H:i:s"): string {
+  formatNormalTime(time: number, format = 'Y-m-d H:i:s'): string {
     const date = new Date(time * 1000)
     return this.myDate(date, format)
   }
@@ -185,8 +187,8 @@ class Method {
    * @param e 资源相对路径
    */
   getHostUrl(e: string): string {
-    if (e.indexOf("http://") != -1 || e.indexOf("https://") != -1) return e
-    if (e.indexOf("./") == -1) {
+    if (e.indexOf('http://') != -1 || e.indexOf('https://') != -1) return e
+    if (e.indexOf('./') == -1) {
       return Cfg.config.server + e
     } else {
       return Cfg.config.server + e.slice(1)
@@ -199,13 +201,11 @@ class Method {
    */
   decodeRoleList(roleStr: string) {
     let {
-      userInfo: {
-        role_list
-      },
+      userInfo: { role_list },
     } = Cfg.config
     let result = [] as any
     if (roleStr == null) return result
-    let arr = roleStr.split(",")
+    let arr = roleStr.split(',')
     arr.forEach((x: string) => {
       let f = role_list.find((xx: any) => {
         return xx.id == x
@@ -226,7 +226,7 @@ class Method {
         global_mod_data_list: { flag_list },
       },
     } = Cfg.config
-    let arr = flag_list_str.split(",")
+    let arr = flag_list_str.split(',')
     let result = [] as any
     if (arr.length > 0) {
       arr.forEach((x: any) => {
@@ -253,9 +253,9 @@ class Method {
     } = Cfg.config
     let result = [] as any
     if (linkStr == null) return result
-    let arr = linkStr.split("|")
+    let arr = linkStr.split('|')
     arr.forEach((x: string) => {
-      let arr2 = x.split(",")
+      let arr2 = x.split(',')
       let f = link_type.find((xx: any) => {
         return xx.id == arr2[0]
       })
@@ -277,7 +277,7 @@ class Method {
     } = Cfg.config
     let result = [] as any
     if (linkStr == null) return result
-    let arr = linkStr.split(",")
+    let arr = linkStr.split(',')
     arr.forEach((x: string) => {
       let f = api_version.find((xx: any) => {
         return xx.id == x
@@ -300,7 +300,7 @@ class Method {
     } = Cfg.config
     let result = [] as any
     if (linkStr == null) return result
-    let arr = linkStr.split(",")
+    let arr = linkStr.split(',')
     arr.forEach((x: string) => {
       let f = game_version.find((xx: any) => {
         return xx.id == x
@@ -326,14 +326,18 @@ class Method {
     relationList.forEach((linkStr: any) => {
       let item = { condition: linkStr.condition_value, list: [] as any }
       if (linkStr.relation != null) {
-        let arr = linkStr.relation.split("|")
+        let arr = linkStr.relation.split('|')
         arr.forEach((x: string) => {
-          let arr2 = x.split(",")
+          let arr2 = x.split(',')
           let f = relate_type.find((xx: any) => {
             return xx.id == arr2[0]
           })
           if (f != null) {
-            item.list.push({ type_name: f.name, package_name: arr2[1], package_id: arr2[2] })
+            item.list.push({
+              type_name: f.name,
+              package_name: arr2[1],
+              package_id: arr2[2],
+            })
           }
         })
       }
@@ -347,19 +351,19 @@ class Method {
   getInformation() {
     let { userInfo } = Cfg.config
     //刷新页面重新获取用户信息
-    this.api_get("/user/role_list").then((response) => {
+    this.api_get('/user/role_list').then((response) => {
       let roleRes = response.data
       if (roleRes.code == 200) {
         userInfo.role_list = roleRes.data //全局角色列表缓存
       }
     })
-    this.api_get("/mod/global_data_list").then((response) => {
+    this.api_get('/mod/global_data_list').then((response) => {
       let roleRes = response.data
       if (roleRes.code == 200) {
         userInfo.global_mod_data_list = roleRes.data //全局角色列表缓存
       }
     })
-    this.api_get("/user/info").then((response2: any) => {
+    this.api_get('/user/info').then((response2: any) => {
       let res = response2.data
       if (res.code == 200) {
         userInfo.isLogin = true
@@ -374,7 +378,7 @@ class Method {
    * 设置页面样式
    */
   setwebstyle() {
-    let data = this.localGet("webstyle", {})
+    let data = this.localGet('webstyle', {})
     console.log(data)
     if (data.webkit) {
       console.log('加载本地设置', data)
@@ -385,26 +389,33 @@ class Method {
 
     for (let key in Cfg.config.webstyle) {
       for (let b in Cfg.config.webstyle[key]) {
-        console.log(key, b, Cfg.config.webstyle[key][b]);
-        document.documentElement.style.setProperty(`--${b}`, Cfg.config.webstyle[key][b])
+        console.log(key, b, Cfg.config.webstyle[key][b])
+        document.documentElement.style.setProperty(
+          `--${b}`,
+          Cfg.config.webstyle[key][b],
+        )
       }
     }
   }
 
+  /**
+   * 将文本复制到剪切板
+   * @param txt 需要复制的文本
+   */
   async copyText(txt: string) {
     try {
-      await toClipboard(txt);
+      await toClipboard(txt)
       ElMessage({
-        type: "success",
-        message: "复制成功！",
+        type: 'success',
+        message: '复制成功！',
       })
     } catch (error: any) {
       ElMessage({
-        type: "error",
+        type: 'error',
         message: `复制失败：${error.message}`,
       })
     }
   }
 }
 
-export default new Method();
+export default new Method()

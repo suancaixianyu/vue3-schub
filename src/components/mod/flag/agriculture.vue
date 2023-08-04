@@ -22,7 +22,7 @@
 </template>
 <script lang="ts">
 export default {
-  name: "ModPage",
+  name: 'ModPage',
   props: {
     active: { type: Boolean },
   },

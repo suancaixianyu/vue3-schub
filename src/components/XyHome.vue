@@ -10,21 +10,22 @@
       <el-main :style="maincontainer">
         <router-view></router-view>
       </el-main>
-      <el-footer v-if="set.showfooter" :style="container" style="height: 30px"> </el-footer>
+      <el-footer v-if="set.showfooter" :style="container" style="height: 30px">
+      </el-footer>
     </el-container>
   </div>
 </template>
 
 <script lang="ts">
-import "element-plus/theme-chalk/display.css"
-import { provide, ref, onUpdated, onMounted } from "vue"
-import Cfg from "@/config/config"
+import 'element-plus/theme-chalk/display.css'
+import { provide, ref, onMounted } from 'vue'
+import Cfg from '@/config/config'
 /** 顶部导航栏 */
-import NavigationMenu from "@comps/navigation/NavigationMenu.vue"
+import NavigationMenu from '@comps/navigation/NavigationMenu.vue'
 
 /** 页面主体框架 */
 export default {
-  name: "XyHome",
+  name: 'XyHome',
   components: {
     NavigationMenu,
   },
@@ -47,33 +48,34 @@ export default {
     function pagewidth(width: number) {
       if (width <= 480) {
         console.log('切换为手机')
-        Cfg.config.homestyle.set.ismobile = true
+        Cfg.config.set.ismobile = true
       } else {
         console.log('切换为pc')
-        Cfg.config.homestyle.set.ismobile = false
+        Cfg.config.set.ismobile = false
       }
     }
 
-    onUpdated(() => {
-      console.log("更新组件")
-    })
-
     onMounted(() => {
-      console.log("主页挂载")
+      console.log('主页挂载')
       pagewidth(document.body.clientWidth)
     })
 
-    let theme = ref("cupcake")
-    provide("windowwidth", windowwidth)
-    provide("theme", theme)
+    let theme = ref('cupcake')
+    provide('windowwidth', windowwidth)
+    provide('theme', theme)
     return {
       ...Cfg.config.homestyle,
+      ...Cfg.config,
     }
   },
 }
 </script>
 
 <style>
+.drawer-side {
+  z-index: 114514;
+}
+
 /** tag标签左右加空格 */
 .el-tag {
   margin: 0px 5px;
@@ -92,7 +94,7 @@ export default {
 }
 
 .hide-scrollbar::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   right: 0;
@@ -105,7 +107,7 @@ export default {
 
 *::-webkit-scrollbar {
   /* 设置滚动条的宽度 */
-  width: var(--webkit-scrollbar-width);
+  width: var(--scrollbar-width);
 }
 
 *::-webkit-scrollbar-track {
@@ -115,19 +117,19 @@ export default {
 
 *::-webkit-scrollbar-thumb {
   /* 设置滚动条的颜色 */
-  background: var(--webkit-scrollbar-thumb-background);
-  border: var(--webkit-scrollbar-thumb-border);
-  border-radius: var(--webkit-scrollbar-thumb-border-radius);
-  background-size: var(--webkit-scrollbar-thumb-background-size);
-  background-color: var(--webkit-scrollbar-thumb-background-color);
+  background: var(--scrollbar-thumb-background);
+  border: var(--scrollbar-thumb-border);
+  border-radius: var(--scrollbar-thumb-border-radius);
+  background-size: var(--scrollbar-thumb-background-size);
+  background-color: var(--scrollbar-thumb-background-color);
 }
 
 *::-webkit-scrollbar-thumb:hover {
   /* 设置滚动条悬停时的颜色 */
-  background: var(--webkit-scrollbar-thumb-background-hover);
-  border: var(--webkit-scrollbar-thumb-border-hover);
-  border-radius: var(--webkit-scrollbar-thumb-border-radius-hover);
-  background-size: var(--webkit-scrollbar-thumb-background-size-hover);
-  background-color: var(--webkit-scrollbar-thumb-background-color-hover);
+  background: var(--scrollbar-thumb-background-hover);
+  border: var(--scrollbar-thumb-border-hover);
+  border-radius: var(--scrollbar-thumb-border-radius-hover);
+  background-size: var(--scrollbar-thumb-background-size-hover);
+  background-color: var(--scrollbar-thumb-background-color-hover);
 }
 </style>

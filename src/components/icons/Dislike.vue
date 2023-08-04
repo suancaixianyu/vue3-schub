@@ -19,6 +19,6 @@
 
 <script lang="ts">
 export default {
-  name: "DislikeIcon",
+  name: 'DislikeIcon',
 }
 </script>

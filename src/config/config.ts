@@ -1,60 +1,60 @@
-import { CSSProperties, reactive } from "vue"
+import { CSSProperties, reactive } from 'vue'
 const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
-    padding: "0px 18px",
-    height: "calc(100vh - 90px)",
-    overflowY: "hidden",
+    padding: '0px 18px',
+    height: 'calc(100vh - 90px)',
+    overflowY: 'hidden',
   },
-  postlistseype: {
-    display: "flex",
-    padding: "12px 18px",
-    justifyContent: "center",
-    margin: "10px auto",
-    width: "90%",
-    maxHeight: "200px",
-    boxShadow: "var(--el-box-shadow-light)",
-    borderRadius: "var(--rounded-btn)"
+  postliststyle: {
+    display: 'flex',
+    padding: '12px 18px',
+    justifyContent: 'center',
+    margin: '10px auto',
+    width: '100%',
+    maxHeight: '200px',
+    boxShadow: 'var(--el-box-shadow-light)',
+    borderRadius: 'var(--rounded-btn)',
   },
   /** 页面整体样式 */
   container: {
-    padding: "0px",
+    padding: '0px',
   },
   /** 头像大小 */
   headsize: {
     post: 32,
     userindex: 32,
   },
-  /** 配置信息 */
-  set: {
-    menu: true,
-    showfooter: true,
-    shape: "square",
-    ismobile: false,
-  },
+})
+
+const set = reactive({
+  menu: true,
+  showfooter: true,
+  shape: 'square',
+  ismobile: false,
 })
 
 let webstyle = reactive({
   webkit: {
     // 滚动条样式
-    "webkit-scrollbar-thumb-background":
+    'scrollbar-thumb-background':
       'url("./src/assets/icon/mifengup.svg") center top no-repeat, url("./src/assets/icon/mifengbottom.svg") center bottom no-repeat',
-    "webkit-scrollbar-thumb-background-color": "",
-    "webkit-scrollbar-thumb-border": "none",
-    "webkit-scrollbar-thumb-border-radius": "10px",
-    "webkit-scrollbar-thumb-background-size": "100%",
+    'scrollbar-thumb-background-color': '',
+    'scrollbar-thumb-border': 'none',
+    'scrollbar-thumb-border-radius': '10px',
+    'scrollbar-thumb-background-size': '100%',
     // 鼠标悬停效果
-    "webkit-scrollbar-thumb-background-hover": "var(--webkit-scrollbar-thumb-background)",
-    "webkit-scrollbar-thumb-background-color-hover": "#F5F5F5",
-    "webkit-scrollbar-thumb-border-hover": "none",
-    "webkit-scrollbar-thumb-border-radius-hover": "10px",
-    "webkit-scrollbar-thumb-background-size-hover": "100%",
+    'scrollbar-thumb-background-hover': 'var(--scrollbar-thumb-background)',
+    'scrollbar-thumb-background-color-hover': '#F5F5F5',
+    'scrollbar-thumb-border-hover': 'none',
+    'scrollbar-thumb-border-radius-hover': '10px',
+    'scrollbar-thumb-background-size-hover': '100%',
     // 滚动条框框样式
-    "webkit-scrollbar-width": "12px",
+    'scrollbar-width': '12px',
   },
   card: {
-    'rounded-card': 'var(--rounded-btn)'
-  }
+    'rounded-card': 'var(--rounded-btn)',
+  },
 })
 
 const userInfo = reactive({
@@ -89,18 +89,8 @@ class Cfg {
       container: {
         padding: string
       }
-      postlistseype: CSSProperties
-      /** 设置 */
-      set: {
-        /** 是否显示抽屉菜单 */
-        menu: boolean
-        /** 是否显示底部栏 */
-        showfooter: boolean
-        /** 头像形状 */
-        shape: string
-        /** 是否为移动端 */
-        ismobile: boolean
-      }
+      /** 卡片样式 */
+      postliststyle: CSSProperties
       /** 头像大小 */
       headsize: {
         /** 在帖子中的大小 */
@@ -108,6 +98,17 @@ class Cfg {
         /** 在用户中心的大小 */
         userindex: number
       }
+    }
+    /** 设置 */
+    set: {
+      /** 是否显示抽屉菜单 */
+      menu: boolean
+      /** 是否显示底部栏 */
+      showfooter: boolean
+      /** 头像形状 */
+      shape: string
+      /** 是否为移动端 */
+      ismobile: boolean
     }
     /** 全局样式 */
     webstyle: { [key: string]: { [key: string]: string } }
@@ -124,7 +125,7 @@ class Cfg {
       isLogin: boolean //是否已登录
       isLoginDialogVisible: boolean //登陆窗口是否可见
       id?: string //用户ID
-      data: { headurl?: string; nickname?: string, role: any } //用户信息
+      data: { headurl?: string; nickname?: string; role: any } //用户信息
     }
   }
 
@@ -132,14 +133,15 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       //server: "http://localhost:8081",
-      // server: "/xyapi",
+      server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
-      server: "http://schub.top",
-      uploadimg: "/upload",
+      // server: "http://schub.top",
+      uploadimg: '/upload',
       /** 主页样式 */
       homestyle,
+      set,
       userInfo,
-      webstyle
+      webstyle,
     }
   }
 }

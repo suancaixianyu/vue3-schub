@@ -1,18 +1,18 @@
-import { createApp } from "vue"
-import App from "./App.vue"
-import router from "./router"
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
 
 /** daisy样式库 */
-import "tailwindcss/tailwind.css"
-import "daisyui/dist/full.css"
+import 'tailwindcss/tailwind.css'
+import 'daisyui/dist/full.css'
 
 /** element样式库 */
-import ElementPlus from "element-plus"
-import "element-plus/dist/index.css"
-import * as ElementPlusIconsVue from "@element-plus/icons-vue"
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 /** 自定义全局方法 */
-import Method from "./globalmethods"
+import Method from './globalmethods'
 
 let app = createApp(App)
 
@@ -31,4 +31,4 @@ Method.setwebstyle()
 // })
 
 // 指定容器
-app.mount("#app")
+app.mount('#app')

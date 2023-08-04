@@ -8,7 +8,12 @@
         </template>
         <div class="title-line">
           <el-input class="my-input" v-model="config.title" />
-          <el-button :loading="isPublishing" class="btn btn-sm" title="发帖" @click="submit">
+          <el-button
+            :loading="isPublishing"
+            class="btn btn-sm"
+            title="发帖"
+            @click="submit"
+          >
             <el-icon>
               <Edit />
             </el-icon>
@@ -31,32 +36,32 @@
 </template>
 
 <script lang="ts">
-import { ElMessage } from "element-plus"
-import { MdEditor } from "md-editor-v3"
-import "md-editor-v3/lib/style.css"
-import { useRoute, useRouter } from "vue-router"
+import { ElMessage } from 'element-plus'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
+import { useRoute, useRouter } from 'vue-router'
 
 /** md编辑器 */
-import "md-editor-v3/lib/style.css"
+import 'md-editor-v3/lib/style.css'
 
 // import Cfg from "@/config/config"
 
-import Method from "@/globalmethods"
-import { api } from "@/apitypes"
+import Method from '@/globalmethods'
+import { api } from '@/apitypes'
 export default {
-  name: "PublishPost",
+  name: 'PublishPost',
   components: {
     MdEditor,
   },
   data() {
     return {
-      previewid: "preview-set",
+      previewid: 'preview-set',
       isPublishing: false,
       config: {
-        title: "",
-        content: "",
+        title: '',
+        content: '',
         cate_id: 1,
-        cover_src: "https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160",
+        cover_src: 'https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160',
       },
     }
   },
@@ -65,53 +70,54 @@ export default {
      * 上传图片
      */
     UploadImage(file: any) {
-      ElMessage("上传中...")
+      ElMessage('上传中...')
       // 执行图片上传的逻辑
       const formdata = new FormData()
-      formdata.append("file", file[0], file[0].name)
-      Method.api_post("/Upload/Upload", formdata)
+      formdata.append('file', file[0], file[0].name)
+      Method.api_post('/Upload/Upload', formdata)
         .then((response) => {
           let obj = response.data as api
           if (obj.code === 200) {
-            this.$data.config.content += `![](${Method.getHostUrl(obj.data.src)})`
+            this.$data.config.content += `![](${Method.getHostUrl(
+              obj.data.src,
+            )})`
             ElMessage({
-              type: "success",
-              message: "上传成功",
+              type: 'success',
+              message: '上传成功',
             })
           }
         })
         .catch((error) => {
           ElMessage({
-            type: "error",
-            message: "上传失败",
+            type: 'error',
+            message: '上传失败',
           })
-          console.log("error", error)
+          console.log('error', error)
         })
     },
     /**
      * 提交帖子
      */
     submit() {
-      if (this.config.title === "") return ElMessage("请输入帖子标题")
-      else if (this.config.content === "") return ElMessage("请输入帖子内容")
+      if (this.config.title === '') return ElMessage('请输入帖子标题')
+      else if (this.config.content === '') return ElMessage('请输入帖子内容')
       this.isPublishing = true
-      Method.api_post("/bbs/add", this.config)
+      Method.api_post('/bbs/add', this.config)
         .then((response) => {
           this.isPublishing = false
           ElMessage({
-            type: "success",
+            type: 'success',
             message: response.data.msg,
-          });
+          })
           this.router.push({
             path: `/postlist/${this.route.params.chatid}`,
           })
-
         })
         .catch((error) => {
           this.isPublishing = false
           ElMessage({
-            type: "error",
-            message: "发送失败",
+            type: 'error',
+            message: '发送失败',
           })
           console.log(error)
         })

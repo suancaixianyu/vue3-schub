@@ -19,7 +19,7 @@
 
 <script lang="ts">
 export default {
-  name: "LikeIcon",
+  name: 'LikeIcon',
   props: {
     size: { type: Number, default: 32 },
   },

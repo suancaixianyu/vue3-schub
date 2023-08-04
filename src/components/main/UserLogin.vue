@@ -61,12 +61,18 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button plain v-loading="loading" @click="submitLogin('register')">注册</el-button>
+          <el-button plain v-loading="loading" @click="submitLogin('register')"
+            >注册</el-button
+          >
           <el-button plain @click="goLogin()">去登录</el-button>
         </el-form-item>
       </el-form>
     </el-col>
-    <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister === false">
+    <el-col
+      :span="col.body"
+      :style="{ textAlign: 'center' }"
+      v-if="isregister === false"
+    >
       <el-form label="top">
         <el-form-item>
           <el-input v-model="loginconfig.user" placeholder="请输入用户名">
@@ -83,7 +89,9 @@
         <el-checkbox v-model="remember" label="记账账号" size="large" />
       </el-form-item>
       <el-form-item>
-        <el-button plain :loading="loading" @click="submitLogin('login')">登录</el-button>
+        <el-button plain :loading="loading" @click="submitLogin('login')"
+          >登录</el-button
+        >
         <el-button plain type="primary" @click="goRegister()">去注册</el-button>
       </el-form-item>
     </el-col>
@@ -92,35 +100,35 @@
 
 <script lang="ts">
 // 登录与注册（找回密码，更换邮箱等操作都 可以 在此页）
-import { useRoute } from "vue-router"
-import Cfg from "@/config/config"
-import Method from "@/globalmethods"
+import { useRoute } from 'vue-router'
+import Cfg from '@/config/config'
+import Method from '@/globalmethods'
 
-import { ElMessage } from "element-plus"
+import { ElMessage } from 'element-plus'
 
 export default {
-  name: "UserLogin",
+  name: 'UserLogin',
   data() {
     return {
       remember: false,
       loading: false,
       isregister: true,
       regitser: {
-        user: "",
-        pass: "",
-        repass: "",
-        email: "",
-        nickname: "",
+        user: '',
+        pass: '',
+        repass: '',
+        email: '',
+        nickname: '',
       },
       loginconfig: {
-        user: "",
-        pass: "",
+        user: '',
+        pass: '',
       },
       windowseype: {
-        display: "flex",
-        padding: "30px",
-        justifyContent: "center",
-        flexWrap: "wrap",
+        display: 'flex',
+        padding: '30px',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
       },
       col: {
         /** 表单宽度 */
@@ -137,24 +145,24 @@ export default {
       if (this.loading) return
 
       let configdata: object, url: string
-      let infourl: string = "/user/info"
-      if (type === "login") {
+      let infourl: string = '/user/info'
+      if (type === 'login') {
         configdata = this.loginconfig
-        url = "/user/login"
+        url = '/user/login'
       } else {
         configdata = this.regitser
-        url = "/user/register"
+        url = '/user/register'
       }
       this.loading = true
       Method.api_post(url, configdata)
         .then((response) => {
           if (response.data.code === 200) {
-            if (type == "login") {
+            if (type == 'login') {
               Method.api_get(infourl).then((response2: any) => {
                 if (response2.data.code == 200) {
                   this.loading = false
                   if (this.remember) {
-                    Method.localSet("loginInfo", {
+                    Method.localSet('loginInfo', {
                       user: this.loginconfig.user,
                       pass: this.loginconfig.pass,
                       remember: this.remember,
@@ -162,25 +170,27 @@ export default {
                   }
                   userInfo.isLogin = true
                   userInfo.isLoginDialogVisible = false
-                  response2.data.data.headurl = Method.getHostUrl(response2.data.data.headurl)
+                  response2.data.data.headurl = Method.getHostUrl(
+                    response2.data.data.headurl,
+                  )
                   userInfo.data = response2.data.data
                 }
               })
             }
             ElMessage({
               message: response.data.msg,
-              type: "success",
+              type: 'success',
             })
           } else {
             ElMessage({
               message: response.data.msg,
-              type: "error",
+              type: 'error',
             })
           }
         })
         .catch((error) => {
           ElMessage({
-            type: "error",
+            type: 'error',
             message: error,
           })
           this.loading = false
@@ -195,10 +205,10 @@ export default {
   },
   created() {
     const route = useRoute()
-    const loginInfo = Method.localGet("loginInfo", {
+    const loginInfo = Method.localGet('loginInfo', {
       remember: false,
-      user: "",
-      pass: "",
+      user: '',
+      pass: '',
     })
     if (loginInfo.remember) {
       this.loginconfig.user = loginInfo.user

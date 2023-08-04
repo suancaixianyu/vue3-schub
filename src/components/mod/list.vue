@@ -1,6 +1,6 @@
 <template>
   <div class="tab-container">
-    <el-header class="el-header" style="flex-wrap: wrap;">
+    <el-header class="el-header" style="flex-wrap: wrap">
       <div class="filter-item active">
         <el-icon>
           <Grid />
@@ -36,7 +36,6 @@
             冒险(0)
           </el-text>
         </el-tag>
-
       </div>
       <div class="filter-item">
         <el-tag>
@@ -118,7 +117,12 @@
           <div class="left">
             <div class="name-line">
               <div class="flag-area">
-                <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
+                <mod-flag
+                  class="flag"
+                  :flag="xx.flag_name"
+                  active
+                  v-for="xx in x.flag_list"
+                />
               </div>
               <div>[工业2]{{ x.name }}(Industrial II)</div>
             </div>
@@ -141,27 +145,31 @@
         </div>
       </router-link>
     </el-container>
-    <el-pagination layout="prev, pager, next, total" :total="total" v-model="page" />
+    <el-pagination
+      layout="prev, pager, next, total"
+      :total="total"
+      v-model="page"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Grid } from "@element-plus/icons-vue"
-import IconTechnology from "@comps/icons/mod/technology.vue"
-import IconMagic from "@comps/icons/mod/magic.vue"
-import IconAdventure from "@comps/icons/mod/adventure.vue"
-import IconAgriculture from "@comps/icons/mod/agriculture.vue"
-import IconLibrary from "@comps/icons/mod/library.vue"
-import ScLogo from "@comps/icons/ScLogo.vue"
-import IconServer from "@comps/icons/mod/server.vue"
-import ModFlag from "@comps/mod/flag.vue"
-import IconHot from "@comps/icons/common/hot.vue"
-import LikeIcon from "@comps/icons/Like.vue"
-import IconDown from "@comps/icons/common/down.vue"
-import Method from "@/globalmethods"
-import { watch } from "vue"
+import { Grid } from '@element-plus/icons-vue'
+import IconTechnology from '@comps/icons/mod/technology.vue'
+import IconMagic from '@comps/icons/mod/magic.vue'
+import IconAdventure from '@comps/icons/mod/adventure.vue'
+import IconAgriculture from '@comps/icons/mod/agriculture.vue'
+import IconLibrary from '@comps/icons/mod/library.vue'
+import ScLogo from '@comps/icons/ScLogo.vue'
+import IconServer from '@comps/icons/mod/server.vue'
+import ModFlag from '@comps/mod/flag.vue'
+import IconHot from '@comps/icons/common/hot.vue'
+import LikeIcon from '@comps/icons/Like.vue'
+import IconDown from '@comps/icons/common/down.vue'
+import Method from '@/globalmethods'
+import { watch } from 'vue'
 export default {
-  name: "ModList",
+  name: 'ModList',
   components: {
     IconDown,
     LikeIcon,
@@ -182,7 +190,7 @@ export default {
       page: 1,
       limit: 10,
       list: [] as any[],
-      search: "",
+      search: '',
       flag_filter: 0,
       isLoading: false,
     }
@@ -196,13 +204,13 @@ export default {
         flag_filter: this.flag_filter,
       }
       this.isLoading = true
-      Method.api_post("/mod/list", payLoad).then((response) => {
+      Method.api_post('/mod/list', payLoad).then((response) => {
         let res = response.data
         this.isLoading = false
         if (res.code == 200) {
           this.total = res.sum.total
           res.data.forEach((x: any) => {
-            x.to_link = `/ModDetail/${x.id}`;
+            x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
           })
           if (this.page == 1) this.list = res.data
