@@ -1,114 +1,17 @@
 <template>
   <div class="tab-container">
     <el-header class="el-header" style="flex-wrap: wrap">
-      <div class="filter-item active">
-        <el-icon>
-          <Grid />
-        </el-icon>
-        <div>全部(0)</div>
-      </div>
       <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <icon-technology></icon-technology>
-            </el-icon>
-            科技(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <icon-magic></icon-magic>
-            </el-icon>
-            魔法(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <icon-adventure></icon-adventure>
-            </el-icon>
-            冒险(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <icon-agriculture></icon-agriculture>
-            </el-icon>
-            农业(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <icon-library></icon-library>
-            </el-icon>
-            Lib(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <sc-logo></sc-logo>
-            </el-icon>
-            世界(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <sc-logo></sc-logo>
-            </el-icon>
-            方块材质(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <sc-logo></sc-logo>
-            </el-icon>
-            皮肤(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <sc-logo></sc-logo>
-            </el-icon>
-            家具包(0)
-          </el-text>
-        </el-tag>
-      </div>
-      <div class="filter-item">
-        <el-tag>
-          <el-text type="primary">
-            <el-icon>
-              <sc-logo></sc-logo>
-            </el-icon>
-            服务器(0)
-          </el-text>
-        </el-tag>
+        <mod-flag
+            :flag="x.flag_name"
+            :active="x.id == activeFlagId"
+            :count="x.count"
+            v-for="x in mod_flag_list"
+            @click="activeFlagId = x.id"
+        />
       </div>
     </el-header>
-    <el-container class="el-container">
+    <el-container class="el-container" v-loading="isLoading">
       <router-link :to="x.to_link" v-for="x in list">
         <div class="res-item">
           <div class="right">
@@ -124,7 +27,7 @@
                   v-for="xx in x.flag_list"
                 />
               </div>
-              <div>[工业2]{{ x.name }}(Industrial II)</div>
+              <div>[{{x.mini_name}}]{{ x.name }}({{x.en_name}})</div>
             </div>
             <div class="description-line">{{ x.description }}</div>
             <div class="btn-line">
@@ -168,6 +71,7 @@ import LikeIcon from '@comps/icons/Like.vue'
 import IconDown from '@comps/icons/common/down.vue'
 import Method from '@/globalmethods'
 import { watch } from 'vue'
+import Cfg from "@/config/config.ts";
 export default {
   name: 'ModList',
   components: {
@@ -186,12 +90,13 @@ export default {
   },
   data() {
     return {
+      activeFlagId:0,
       total: 0,
       page: 1,
       limit: 10,
-      list: [] as any[],
+      list: <any>[],
+      mod_flag_list:<any>[],
       search: '',
-      flag_filter: 0,
       isLoading: false,
     }
   },
@@ -201,7 +106,7 @@ export default {
         page: this.page,
         limit: this.limit,
         search: this.search,
-        flag_filter: this.flag_filter,
+        flag_filter: this.activeFlagId,
       }
       this.isLoading = true
       Method.api_post('/mod/list', payLoad).then((response) => {
@@ -209,6 +114,13 @@ export default {
         this.isLoading = false
         if (res.code == 200) {
           this.total = res.sum.total
+          let flagSum = <any>res.flag_sum;
+          flagSum.forEach((x:any)=>{
+            let f = this.mod_flag_list.find((xx:any)=>{return xx.id == x.flag_id;});
+            if(f!=null){
+              f.count = x.count;
+            }
+          });
           res.data.forEach((x: any) => {
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
@@ -220,13 +132,28 @@ export default {
     },
   },
   created() {
+    let {
+      userInfo: {
+        global_mod_data_list: {
+          flag_list
+        }
+      }
+    } = Cfg.config
+    let mod_flag_list = <any>[{flag_name:'all',count:0,id:0}];
+    flag_list.forEach((x:any)=>{
+      mod_flag_list.push({flag_name:x.flag_name,count:0,id:x.id});
+    });
+    this.mod_flag_list = mod_flag_list;
     this.pullList()
     watch(
       () => this.page,
       () => {
         this.pullList()
       },
-    )
+    );
+    watch(()=>this.activeFlagId,()=>{
+      this.pullList();
+    })
   },
 }
 </script>

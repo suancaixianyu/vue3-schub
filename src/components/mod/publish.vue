@@ -12,11 +12,11 @@
           <el-form-item label="模组简称*">
             <el-input v-model="mini_name" />
           </el-form-item>
-          <el-form-item label="模组元素*">
+          <el-form-item label="模组元素*" >
             <mod-flag
               :flag="x.flag_name"
               :active="x.active"
-              @click="x.active = !x.active"
+              @click="x.active=!x.active"
               v-for="x in mod_flag_list"
             />
           </el-form-item>
@@ -216,6 +216,10 @@ export default {
     }
   },
   methods: {
+    changeFlag(x:any){
+      x.active = !x.active;
+      console.log(x.active);
+    },
     getModList(query?: string) {
       let payLoad = {
         page: 1,
