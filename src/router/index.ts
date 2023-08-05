@@ -6,20 +6,22 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'PlateBox',
     component: () => import('@comps/main/cards/HomePlate.vue'),
-  },
-  /** 帖子列表 */
-  {
-    path: '/postlist/:chatid',
-    name: 'PostPage',
-    component: () => import('@comps/main/PostPage.vue'),
     children: [
+      /** 帖子列表 */
       {
-        name: 'xiangqing',
-        path: ':id',
-        component: () => import('@comps/main/cards/DetailPlate.vue'),
+        path: 'postlist/:chatid',
+        name: 'PostPage',
+        children: [
+          {
+            name: 'xiangqing',
+            path: ':id',
+            component: () => import('@comps/main/cards/DetailPlate.vue'),
+          },
+        ],
       },
-    ],
+    ]
   },
+
   /** 用户主页 */
   {
     path: '/user',

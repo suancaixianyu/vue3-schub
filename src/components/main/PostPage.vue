@@ -1,109 +1,57 @@
 <template>
-  <div style="padding: 0px 10px">
-    <el-row
-      :gutter="24"
-      style="height:100% overflow-y: 'scroll'"
-      class="row-bg"
-      justify="center"
-    >
-      <!-- 占位元素 -->
-      <el-col :span="col.placeholder"></el-col>
-      <el-col :span="col.postlist" style="padding: 4px 0px">
-        <div class="window hide-scrollbar" :style="windowseype" ref="container">
-          <!-- 头部搜索框 -->
-          <div
-            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-            :style="postliststyle"
-            style="height: 60px"
-          >
-            <el-row :gutter="24">
-              <el-col :span="24">
-                <input
-                  v-model="searchinput"
-                  type="search"
-                  placeholder="搜索"
-                  class="input input-bordered input-sm"
-                  style="margin-right: 12px"
-                  :style="inputstyle"
-                />
-                <button
-                  class="btn btn-sm"
-                  @click="search"
-                  style="margin: 0px"
-                  title="搜索"
-                >
-                  <el-icon>
-                    <Search />
-                  </el-icon>
-                  <el-text v-if="btn">搜索</el-text>
-                </button>
-                <samp style="margin: 6px"></samp>
-                <button
-                  class="btn btn-sm"
-                  style="margin: 0px"
-                  title="发帖"
-                  @click="topublish"
-                >
-                  <el-icon>
-                    <Edit />
-                  </el-icon>
-                  <el-text v-if="btn">发帖</el-text>
-                </button>
-              </el-col>
-              <el-col :span="24"></el-col>
-            </el-row>
-          </div>
-          <!-- 列表 -->
-          <div v-loading="isLoadingList" element-loading-text="加载中">
-            <ul
-              v-infinite-scroll="loadmore"
-              :infinite-scroll-distance="20"
-              :infinite-scroll-immediate="false"
-              :infinite-scroll-disabled="disableloading"
-            >
-              <li>
-                <PostListPlate
-                  v-for="item in outcomeplate"
-                  :key="item.id"
-                  :item="item"
-                  :bbsid="chatid"
-                  :st="{ postliststyle, shape }"
-                />
-              </li>
-            </ul>
-          </div>
-          <!-- 底部分页 -->
-          <div
-            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
-            :style="postliststyle"
-            style="height: 60px"
-            v-if="showpagenum"
-          >
-            <el-pagination
-              :current-page="pagenum"
-              :page-size="10"
-              :pager-count="5"
-              :total="total"
-              @current-change="handleCurrentChange"
-              style="justify-content: center"
-            >
-            </el-pagination>
-          </div>
-          <div
-            style="text-align: center; cursor: pointer"
-            @click="loadmore"
-            v-html="txt"
-            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-sm-and-up"
-          ></div>
+  <el-row :gutter="24" style="height:100% overflow-y: 'scroll'" class="row-bg" justify="center">
+    <el-col :span="col.postlist" style="padding: 4px 0px">
+      <div class="window hide-scrollbar" :style="windowseype" ref="container">
+        <!-- 头部搜索框 -->
+        <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" :style="postliststyle"
+          style="height: 60px">
+          <el-row :gutter="24">
+            <el-col :span="24">
+              <input v-model="searchinput" type="search" placeholder="搜索" class="input input-bordered input-sm"
+                style="margin-right: 12px" :style="inputstyle" />
+              <button class="btn btn-sm" @click="search" style="margin: 0px" title="搜索">
+                <el-icon>
+                  <Search />
+                </el-icon>
+                <el-text v-if="btn">搜索</el-text>
+              </button>
+              <samp style="margin: 6px"></samp>
+              <button class="btn btn-sm" style="margin: 0px" title="发帖" @click="topublish">
+                <el-icon>
+                  <Edit />
+                </el-icon>
+                <el-text v-if="btn">发帖</el-text>
+              </button>
+            </el-col>
+            <el-col :span="24"></el-col>
+          </el-row>
         </div>
-      </el-col>
-      <!-- 占位元素 -->
-      <el-col :span="col.placeholder"></el-col>
-      <el-col :span="col.detail" :style="colstype">
-        <router-view />
-      </el-col>
-    </el-row>
-  </div>
+        <!-- 列表 -->
+        <div v-loading="isLoadingList" element-loading-text="加载中">
+          <ul v-infinite-scroll="loadmore" :infinite-scroll-distance="20" :infinite-scroll-immediate="false"
+            :infinite-scroll-disabled="disableloading">
+            <li>
+              <PostListPlate v-for="item in outcomeplate" :key="item.id" :item="item" :bbsid="chatid"
+                :st="{ postliststyle, shape }" />
+            </li>
+          </ul>
+        </div>
+        <!-- 底部分页 -->
+        <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
+          :style="postliststyle" style="height: 60px" v-if="showpagenum">
+          <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
+            @current-change="handleCurrentChange" style="justify-content: center">
+          </el-pagination>
+        </div>
+        <div style="text-align: center; cursor: pointer" @click="loadmore" v-html="txt"
+          class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-sm-and-up"></div>
+      </div>
+    </el-col>
+
+    <el-col :span="col.detail" :style="colstype">
+      <router-view />
+    </el-col>
+  </el-row>
 </template>
 
 <script lang="ts">
@@ -119,7 +67,7 @@ import {
 } from 'vue'
 import type { Ref } from 'vue'
 import { CSSProperties } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
@@ -131,7 +79,8 @@ export default {
   components: {
     PostListPlate,
   },
-  setup() {
+  props: ['chatid'],
+  setup(props) {
     const route = useRoute()
     const router = useRouter()
 
@@ -142,7 +91,6 @@ export default {
       pagenum: 1, // 页码
       total: 125, // 总帖子数
       totalpages: 2, // 总页数
-      chatid: route.params.chatid,
       isLoadingList: false,
       btn: true,
       searchinput: '',
@@ -161,11 +109,9 @@ export default {
       } as CSSProperties,
       col: {
         /** 列表宽度 */
-        postlist: 8,
+        postlist: 24,
         /** 详情页宽度 */
         detail: 8,
-        /** 占位元素宽度 */
-        placeholder: 8,
       },
       plate: <any>[],
     })
@@ -173,13 +119,13 @@ export default {
     /**指定页面加载 */
     function handleCurrentChange(page: any) {
       data.pagenum = page // 更新当前页码
-      listup(route.params.chatid, page, 'pc')
+      listup(props.chatid, page, 'pc')
     }
     /**无限滚动加载 */
     function loadmore() {
       if (data.pagenum + 1 <= data.totalpages) {
         data.pagenum++
-        listup(route.params.chatid, data.pagenum, 'move')
+        listup(props.chatid, data.pagenum, 'move')
         data.txt = '加载更多'
       } else {
         data.txt = '到底了~'
@@ -192,7 +138,7 @@ export default {
           data.isLoadingList = false
           let obj = response.data
           if (obj.code === 200) {
-            // 其他处理
+            // 获取总帖子数量
             data.total = obj.sum.total
             let a = Math.floor(obj.sum.total / 10)
             if (obj.sum.total % 10 > 0) ++a
@@ -245,11 +191,12 @@ export default {
     onMounted(() => {
       data.isLoadingList = true
       pageup(windowwidth.value)
-      listup(route.params.chatid, 1, 'pc')
+      listup(props.chatid, 1, 'pc')
     })
 
     onUpdated(() => {
       pageup(windowwidth.value)
+      listup(props.chatid, 1, 'pc')
     })
 
     /** 样式调整 */
@@ -274,22 +221,18 @@ export default {
         data.showpagenum = false
 
         if (width <= 720) {
-          console.log('打开帖子，小于720')
           data.col = {
             postlist: 0,
             detail: 24,
-            placeholder: 0,
           }
           data.btn = true
           data.inputstyle = {
             width: 'calc(100% - 104px)',
           }
         } else if (width > 720 && width <= 900) {
-          console.log('打开帖子，大于720，小于1200')
           data.col = {
-            postlist: 10,
-            detail: 14,
-            placeholder: 0,
+            postlist: 0,
+            detail: 24,
           }
           data.btn = false
           data.inputstyle = {
@@ -299,7 +242,7 @@ export default {
           data.col = {
             postlist: 10,
             detail: 14,
-            placeholder: 0,
+
           }
           data.btn = true
           data.inputstyle = {
@@ -310,7 +253,6 @@ export default {
           data.col = {
             postlist: 10,
             detail: 14,
-            placeholder: 0,
           }
           data.btn = true
           data.inputstyle = {
@@ -325,7 +267,6 @@ export default {
           data.col = {
             postlist: 24,
             detail: 0,
-            placeholder: 0,
           }
           data.btn = false
           data.inputstyle = {
@@ -334,9 +275,8 @@ export default {
         } else if (width > 720 && width <= 820) {
           console.log('关闭帖子，大于720，小于820')
           data.col = {
-            postlist: 18,
+            postlist: 24,
             detail: 0,
-            placeholder: 3,
           }
           data.btn = false
           data.inputstyle = {
@@ -345,9 +285,8 @@ export default {
         } else if (width > 820 && width <= 1200) {
           console.log('关闭帖子，大于820，小于1200')
           data.col = {
-            postlist: 18,
+            postlist: 24,
             detail: 0,
-            placeholder: 3,
           }
           data.btn = true
           data.inputstyle = {
@@ -356,9 +295,8 @@ export default {
         } else if (width > 1200) {
           console.log('关闭帖子，大于1200')
           data.col = {
-            postlist: 12,
+            postlist: 24,
             detail: 0,
-            placeholder: 6,
           }
           data.btn = true
           data.inputstyle = {
@@ -385,7 +323,7 @@ export default {
     /** 发帖 */
     function topublish() {
       router.push({
-        path: `/publish/${data.chatid}`,
+        path: `/publish/${props.chatid}`,
       })
     }
 

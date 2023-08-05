@@ -8,12 +8,7 @@
         </template>
         <div class="title-line">
           <el-input class="my-input" v-model="config.title" />
-          <el-button
-            :loading="isPublishing"
-            class="btn btn-sm"
-            title="发帖"
-            @click="submit"
-          >
+          <el-button :loading="isPublishing" class="btn btn-sm" title="发帖" @click="submit">
             <el-icon>
               <Edit />
             </el-icon>
@@ -26,12 +21,7 @@
       </el-form-item>
     </el-form>
     <input type="file" id="as" />
-    <MdEditor
-      :editorId="previewid"
-      v-model="config.content"
-      style="height: 72vh"
-      @onUploadImg="UploadImage"
-    />
+    <MdEditor :editorId="previewid" v-model="config.content" style="height: 72vh" @onUploadImg="UploadImage" />
   </el-container>
 </template>
 
@@ -60,7 +50,7 @@ export default {
       config: {
         title: '',
         content: '',
-        cate_id: 1,
+        cate_id: '',
         cover_src: 'https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160',
       },
     }
@@ -102,6 +92,7 @@ export default {
       if (this.config.title === '') return ElMessage('请输入帖子标题')
       else if (this.config.content === '') return ElMessage('请输入帖子内容')
       this.isPublishing = true
+      this.config.cate_id = <string>this.route.params.chatid
       Method.api_post('/bbs/add', this.config)
         .then((response) => {
           this.isPublishing = false

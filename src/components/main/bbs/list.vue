@@ -32,7 +32,7 @@ export default {
       default: '',
     },
     bbsid: {
-      type: Array as () => string[] | string,
+      type: Number,
       default: () => [],
     },
   },
