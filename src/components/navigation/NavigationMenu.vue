@@ -1,6 +1,6 @@
 <template>
   <!-- 导航 -->
-  <div class="navbar bg-base-100" style="padding: 0px 8px; height: 64px">
+  <div class="navbar bg-base-100" style="padding: 0 8px; height: 64px">
     <!-- 宽屏logo -->
     <div class="flex-1 hidden-xs-only">
       <router-link class="btn btn-ghost normal-case text-xl" to="/">
@@ -27,7 +27,7 @@
           <!-- Sidebar content here -->
           <li>
             <router-link to="/">
-              <el-icon :size="28" style="padding: 0px 2px">
+              <el-icon :size="28" style="padding: 0 2px">
                 <House />
               </el-icon>
               <el-text>主页</el-text>
@@ -35,7 +35,7 @@
           </li>
           <li @click="bailanle">
             <div>
-              <el-icon :size="28" style="padding: 0px 2px">
+              <el-icon :size="28" style="padding: 0 2px">
                 <Message />
               </el-icon>
               <el-text>消息</el-text>
@@ -62,7 +62,7 @@
           </li>
           <li>
             <router-link to="/setup">
-              <el-icon :size="28" style="padding: 0px 2px">
+              <el-icon :size="28" style="padding: 0 2px">
                 <setting />
               </el-icon>
               <span>设置</span>
@@ -100,7 +100,7 @@
         <router-link to="/">
           <el-menu-item index="1">
             <div>
-              <el-icon :size="28" style="padding: 0px 2px">
+              <el-icon :size="28" style="padding: 0 2px">
                 <House />
               </el-icon>
               <el-text>主页</el-text>
@@ -110,7 +110,7 @@
         <!-- 消息 -->
         <el-menu-item index="2" @click="bailanle">
           <div>
-            <el-icon :size="28" style="padding: 0px 2px">
+            <el-icon :size="28" style="padding: 0 2px">
               <Message />
             </el-icon>
             <el-text>消息</el-text>
@@ -142,7 +142,7 @@
         <!-- 设置 -->
         <el-menu-item index="5">
           <router-link to="/setup">
-            <el-icon :size="28" style="padding: 0px 2px">
+            <el-icon :size="28" style="padding: 0 2px">
               <setting />
             </el-icon>
             <span>设置</span>
@@ -166,12 +166,12 @@
       <!-- 右边选项卡 -->
       <ul
         class="menu menu-horizontal px-1"
-        style="align-items: center; padding: 0px 8px"
+        style="align-items: center; padding: 0 8px"
       >
         <!-- mod -->
         <li>
           <router-link to="/ModList">
-            <el-icon :size="25" style="padding: 0px 2px">
+            <el-icon :size="25" style="padding: 0 2px">
               <ScMod />
             </el-icon>
           </router-link>
@@ -180,7 +180,7 @@
         <li class="hidden-xs-only" @click="bailanle">
           <div class="indicator">
             <span class="indicator-item badge">5</span>
-            <el-icon :size="28" style="padding: 0px 2px">
+            <el-icon :size="28" style="padding: 0 2px">
               <Message />
             </el-icon>
           </div>
@@ -202,7 +202,7 @@
                   p-id="5561"
                   width="200"
                   height="200"
-                  style="margin: 0px"
+                  style="margin: 0"
                 >
                   <path
                     d="M817.87 556.31h-63.58v-66.24A42.27 42.27 0 0 0 712 447.8h-84.81a42.27 42.27 0 0 0-42.27 42.27v66.24H436.57v-66.24a42.27 42.27 0 0 0-42.27-42.27h-84.83a42.27 42.27 0 0 0-42.27 42.27v66.24h-61.83A22.39 22.39 0 0 0 183 578.7a22.39 22.39 0 0 0 22.39 22.39h61.81v65.55a42.27 42.27 0 0 0 42.27 42.27h84.83a42.27 42.27 0 0 0 42.27-42.27v-65.55h148.36v65.55a42.27 42.27 0 0 0 42.27 42.27H712a42.27 42.27 0 0 0 42.27-42.27v-65.55h63.58a22.39 22.39 0 0 0 22.39-22.39 22.39 22.39 0 0 0-22.37-22.39z m-438.64 95.26h-54.69V505.14h54.69z m317.72 0h-54.69V505.14H697z"
@@ -276,7 +276,7 @@
         <!-- 个人中心 -->
         <li>
           <div v-if="!userInfo.isLogin" @click="showLoginDialog">
-            <el-icon :size="25" style="padding: 0px 2px">
+            <el-icon :size="25" style="padding: 0 2px">
               <UserFilled />
             </el-icon>
           </div>
@@ -393,7 +393,7 @@ export default {
             type: 'success',
             message: '是男人就点一百次！！！',
           })
-          let date = new Date()
+          let date = new Date
           Method.localSet('accomplishment', {
             真的很闲: {
               Completed: true,

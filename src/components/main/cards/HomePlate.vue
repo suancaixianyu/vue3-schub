@@ -13,7 +13,7 @@
       <el-main style="overflow-x: hidden;">
         <el-row :gutter="24" style="height:100% overflow-y: 'scroll'" class="row-bg" justify="center">
 
-          <el-col :span="col.left" style="padding: 4px 0px">
+          <el-col :span="col.left" style="padding: 4px 0">
             <div class="cate-item">
               <el-button type="primary">发布主题</el-button>
             </div>
@@ -26,7 +26,7 @@
             </div>
           </el-col>
 
-          <el-col :span="col.rigth" style="padding: 4px 0px">
+          <el-col :span="col.rigth" style="padding: 4px 0">
             <PostPage :chatid="active_cate_id" />
           </el-col>
 

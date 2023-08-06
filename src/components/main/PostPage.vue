@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="24" style="height:100% overflow-y: 'scroll'" class="row-bg" justify="center">
-    <el-col :span="col.postlist" style="padding: 4px 0px">
+    <el-col :span="col.postlist" style="padding: 4px 0">
       <div class="window hide-scrollbar" :style="windowseype" ref="container">
         <!-- 头部搜索框 -->
         <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" :style="postliststyle"
@@ -9,14 +9,14 @@
             <el-col :span="24">
               <input v-model="searchinput" type="search" placeholder="搜索" class="input input-bordered input-sm"
                 style="margin-right: 12px" :style="inputstyle" />
-              <button class="btn btn-sm" @click="search" style="margin: 0px" title="搜索">
+              <button class="btn btn-sm" @click="search" style="margin: 0" title="搜索">
                 <el-icon>
                   <Search />
                 </el-icon>
                 <el-text v-if="btn">搜索</el-text>
               </button>
               <samp style="margin: 6px"></samp>
-              <button class="btn btn-sm" style="margin: 0px" title="发帖" @click="topublish">
+              <button class="btn btn-sm" style="margin: 0" title="发帖" @click="topublish">
                 <el-icon>
                   <Edit />
                 </el-icon>
@@ -98,7 +98,7 @@ export default {
         width: 'calc(100% - 176px)',
       } as CSSProperties,
       colstype: {
-        padding: '0px',
+        padding: '0',
       } as CSSProperties,
       shape: Cfg.config.set.shape,
       postliststyle: Cfg.config.homestyle.postliststyle,

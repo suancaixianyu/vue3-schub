@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 头部 -->
-    <el-header style="height: 46px; padding: 0px">
+    <el-header style="height: 46px; padding: 0">
       <UserHead
         :item="{
           headurl: headUrl,
@@ -23,7 +23,7 @@
           item.summary
         }}</el-text>
       </el-aside>
-      <el-main style="padding: 0px; text-align: right">
+      <el-main style="padding: 0; text-align: right">
         <el-image
           v-if="item.cover"
           style="height: 80px"
@@ -33,7 +33,7 @@
       </el-main>
     </el-container>
     <!-- 底部 -->
-    <el-footer style="text-align: left; padding: 0px; height: 25px">
+    <el-footer style="text-align: left; padding: 0; height: 25px">
       <ul class="category-counts">
         <li @click="doGood" v-loading="isDoGooding">
           <el-icon :size="22">

@@ -62,7 +62,7 @@ export default {
     UploadImage(file: any) {
       ElMessage('上传中...')
       // 执行图片上传的逻辑
-      const formdata = new FormData()
+      const formdata = new FormData
       formdata.append('file', file[0], file[0].name)
       Method.api_post('/Upload/Upload', formdata)
         .then((response) => {

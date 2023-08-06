@@ -78,7 +78,7 @@ export default {
 
 /** tag标签左右加空格 */
 .el-tag {
-  margin: 0px 5px;
+  margin: 0 5px;
 }
 
 /* 添加 class="hide-scrollbar" 使用 */

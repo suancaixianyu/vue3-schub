@@ -12,7 +12,7 @@
       :key="x.id"
       :style="homestyle.postliststyle"
     >
-      <el-container style="padding: 0px">
+      <el-container style="padding: 0">
         <el-aside
           width="30%"
           style="padding: 5px; word-wrap: break-word; overflow-y: hidden"
@@ -373,7 +373,7 @@ export default {
 }
 
 .numicon {
-  padding: 12px 0px;
+  padding: 12px 0;
 }
 
 .container {
@@ -381,7 +381,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   /* align-items: flex-start; */
-  padding: 0px 0px 0px 5px;
+  padding: 0 0 0 5px;
   overflow-x: hidden;
   text-align: left;
 }

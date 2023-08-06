@@ -6,11 +6,11 @@
       :key="index"
       :style="homestyle.postliststyle"
     >
-      <el-container style="padding: 0px">
-        <el-aside width="30%" style="padding: 0px; word-wrap: break-word">
+      <el-container style="padding: 0">
+        <el-aside width="30%" style="padding: 0; word-wrap: break-word">
           {{ x.type_name }}
         </el-aside>
-        <el-main style="padding: 0px; overflow-x: hidden">
+        <el-main style="padding: 0; overflow-x: hidden">
           <el-text>{{ x.name }}</el-text
           ><br />
           <el-text>{{ x.create_time }}</el-text
@@ -116,6 +116,6 @@ export default {
 }
 
 .numicon {
-  padding: 12px 0px;
+  padding: 12px 0;
 }
 </style>

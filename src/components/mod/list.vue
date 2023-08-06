@@ -168,7 +168,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 4px 0px;
+  margin: 4px 0;
 }
 
 .filter-item.active {
