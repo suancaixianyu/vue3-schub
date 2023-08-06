@@ -48,15 +48,14 @@ export default {
     function pagewidth(width: number) {
       if (width <= 480) {
         console.log('切换为手机')
-        Cfg.config.set.ismobile = true
+        Cfg.set.ismobile = true
       } else {
         console.log('切换为pc')
-        Cfg.config.set.ismobile = false
+        Cfg.set.ismobile = false
       }
     }
 
     onMounted(() => {
-      console.log('主页挂载')
       pagewidth(document.body.clientWidth)
     })
 
@@ -65,7 +64,7 @@ export default {
     provide('theme', theme)
     return {
       ...Cfg.config.homestyle,
-      ...Cfg.config,
+      set: Cfg.set,
     }
   },
 }

@@ -21,3 +21,42 @@ export interface api {
   /** 返回数据 */
   data: any
 }
+
+export interface userInfoType {
+  /** mod列表 */
+  global_mod_data_list: {
+    /** 版本列表 */
+    game_version: any
+    /** api列表 */
+    api_version: any
+    /** 关系列表 */
+    relate_type: any
+    /** 链接类型列表 */
+    link_type: any
+    /** 标签列表 */
+    flag_list: any
+  }
+  /** 全局角色列表 */
+  role_list: any
+  /** 是否已登录 */
+  isLogin: boolean
+  /** 登陆窗口是否可见 */
+  isLoginDialogVisible: boolean
+  /** 用户ID */
+  id?: string
+  /** 用户信息 */
+  data: { headurl?: string; nickname?: string; role: any }
+}
+
+export interface setType {
+  /** 是否显示抽屉菜单 */
+  menu: boolean
+  /** 是否显示底部栏 */
+  showfooter: boolean
+  /** 头像形状 */
+  shape: string
+  /** 是否为移动端 */
+  ismobile: boolean
+  /** 是否显示顶部导航栏 */
+  showheader: boolean
+}

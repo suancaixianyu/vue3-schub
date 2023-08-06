@@ -202,7 +202,7 @@ class Method {
   decodeRoleList(roleStr: string) {
     let {
       userInfo: { role_list },
-    } = Cfg.config
+    } = Cfg
     let result = [] as any
     if (roleStr == null) return result
     let arr = roleStr.split(',')
@@ -225,7 +225,7 @@ class Method {
       userInfo: {
         global_mod_data_list: { flag_list },
       },
-    } = Cfg.config
+    } = Cfg
     let arr = flag_list_str.split(',')
     let result = [] as any
     if (arr.length > 0) {
@@ -250,7 +250,7 @@ class Method {
       userInfo: {
         global_mod_data_list: { link_type },
       },
-    } = Cfg.config
+    } = Cfg
     let result = [] as any
     if (linkStr == null) return result
     let arr = linkStr.split('|')
@@ -260,6 +260,7 @@ class Method {
         return xx.id == arr2[0]
       })
       if (f != null) {
+        arr2[1] = /^(http|https):\/\//.test(arr2[1]) ? arr2[1] : 'http://' + arr2[1];
         result.push({ name: f.name, src: arr2[1] })
       }
     })
@@ -274,7 +275,7 @@ class Method {
       userInfo: {
         global_mod_data_list: { api_version },
       },
-    } = Cfg.config
+    } = Cfg
     let result = [] as any
     if (linkStr == null) return result
     let arr = linkStr.split(',')
@@ -297,7 +298,7 @@ class Method {
       userInfo: {
         global_mod_data_list: { game_version },
       },
-    } = Cfg.config
+    } = Cfg
     let result = [] as any
     if (linkStr == null) return result
     let arr = linkStr.split(',')
@@ -321,7 +322,7 @@ class Method {
       userInfo: {
         global_mod_data_list: { relate_type },
       },
-    } = Cfg.config
+    } = Cfg
     let result = [] as any
     relationList.forEach((linkStr: any) => {
       let item = { condition: linkStr.condition_value, list: [] as any }
@@ -349,7 +350,7 @@ class Method {
    * 刷新页面重新获取用户信息
    */
   getInformation() {
-    let { userInfo } = Cfg.config
+    let { userInfo } = Cfg
     //刷新页面重新获取用户信息
     this.api_get('/user/role_list').then((response) => {
       let roleRes = response.data

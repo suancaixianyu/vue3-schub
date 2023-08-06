@@ -100,7 +100,7 @@ export default {
       colstype: {
         padding: '0px',
       } as CSSProperties,
-      shape: Cfg.config.set.shape,
+      shape: Cfg.set.shape,
       postliststyle: Cfg.config.homestyle.postliststyle,
       windowseype: {
         padding: '10px',

@@ -1,7 +1,7 @@
 <template>
   <div v-loading="isLoading">
     <!-- 移动端 -->
-    <div v-if="type.ismobile">
+    <div v-if="set.ismobile">
       <el-container>
         <!-- 头部 -->
         <el-header style="padding: 0px">
@@ -11,12 +11,7 @@
               <el-icon @click="flushed" :size="25" title="刷新" class="icon">
                 <Flushed />
               </el-icon>
-              <el-icon
-                @click="copytext"
-                :size="25"
-                title="复制链接"
-                class="icon"
-              >
+              <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
                 <Link />
               </el-icon>
               <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -24,47 +19,32 @@
               </el-icon>
             </el-col>
           </el-row>
-          <UserHead
-            :item="{
-              ...content.author,
-              time: content.time,
-              shape,
-              headsize,
-              style: {
-                flexDirection: 'row',
-                alignItems: 'center',
-              },
-            }"
-            style="padding-left: 10px"
-          />
+          <UserHead :item="{
+            ...content.author,
+            time: content.time,
+            shape,
+            headsize,
+            style: {
+              flexDirection: 'row',
+              alignItems: 'center',
+            },
+          }" style="padding-left: 10px" />
         </el-header>
         <!-- 内容 -->
         <el-main style="padding: 20px 0px">
           <!-- 帖子内容展示 -->
-          <MdPreview
-            editorId="preview-mobile"
-            :modelValue="content.summary"
-            class="bg-base-200"
-          />
+          <MdPreview editorId="preview-mobile" :modelValue="content.summary" class="bg-base-200" />
 
           <!-- 分割线 -->
           <label class="plate-label">
             <div class="large">评论</div>
             <div class="small">{{ sum.total }}</div>
             <div class="space"></div>
-            <div
-              class="filter"
-              :class="{ active: sort == 0 }"
-              @click="sortByTime"
-            >
+            <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">
               最新
             </div>
             <div class="filter">|</div>
-            <div
-              class="filter"
-              :class="{ active: sort == 1 }"
-              @click="sortByHot"
-            >
+            <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">
               最热
             </div>
           </label>
@@ -72,33 +52,14 @@
           <div class="reply-body">
             <!-- 发表评论 -->
             <div class="post-area">
-              <el-avatar
-                :src="content.author.headurl"
-                :shape="shape"
-                :size="headsize"
-                style="margin-right: 12px"
-              />
-              <el-input
-                v-model="comments"
-                autosize
-                type="textarea"
-                placeholder="发表评论"
-              />
-              <el-button icon="Edit" :loading="isReplying" @click="doReply"
-                >发表</el-button
-              >
+              <el-avatar :src="content.author.headurl" :shape="shape" :size="headsize" style="margin-right: 12px" />
+              <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
+              <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
             </div>
             <!-- 回复列表 -->
             <div v-loading="isLoadingReply">
-              <OneReply
-                v-for="(x, index) in reply_list"
-                :key="x"
-                :x="{ ...x }"
-                :shape="shape"
-                :size="headsize"
-                :previewid="index"
-                @refreshEvent="refresh_reply_list"
-              />
+              <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
+                :previewid="index" @refreshEvent="refresh_reply_list" />
             </div>
           </div>
         </el-main>
@@ -106,30 +67,19 @@
     </div>
 
     <!-- pc页面 -->
-    <div
-      v-else
-      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
-      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px"
-    >
+    <div v-else class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
+      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px">
       <div class="common-layout">
         <el-container>
           <!-- 头部 -->
           <el-header style="padding: 0px">
             <!-- 顶部按钮 -->
             <el-row :gutter="24">
-              <el-col
-                :span="24"
-                style="display: flex; justify-content: flex-end"
-              >
+              <el-col :span="24" style="display: flex; justify-content: flex-end">
                 <el-icon @click="flushed" :size="25" title="刷新" class="icon">
                   <Flushed />
                 </el-icon>
-                <el-icon
-                  @click="copytext"
-                  :size="25"
-                  title="复制链接"
-                  class="icon"
-                >
+                <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
                   <Link />
                 </el-icon>
                 <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -137,48 +87,33 @@
                 </el-icon>
               </el-col>
             </el-row>
-            <UserHead
-              :item="{
-                headurl: content.author.headurl,
-                nickname: content.author.nickname,
-                time: content.time,
-                role: content.author.role,
-                shape,
-                headsize,
-                style: {
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                },
-              }"
-              style="padding-left: 10px"
-            />
+            <UserHead :item="{
+              headurl: content.author.headurl,
+              nickname: content.author.nickname,
+              time: content.time,
+              role: content.author.role,
+              shape,
+              headsize,
+              style: {
+                flexDirection: 'row',
+                alignItems: 'center',
+              },
+            }" style="padding-left: 10px" />
           </el-header>
           <!-- 内容 -->
           <el-main>
             <!-- 帖子内容展示 -->
-            <MdPreview
-              editorId="preview-pc"
-              :modelValue="content.summary"
-              class="bg-base-100"
-            />
+            <MdPreview editorId="preview-pc" :modelValue="content.summary" class="bg-base-100" />
             <!-- 分割线 -->
             <label class="plate-label">
               <div class="large">评论</div>
               <div class="small">{{ sum.total }}</div>
               <div class="space"></div>
-              <div
-                class="filter"
-                :class="{ active: sort == 0 }"
-                @click="sortByTime"
-              >
+              <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">
                 最新
               </div>
               <div class="filter">|</div>
-              <div
-                class="filter"
-                :class="{ active: sort == 1 }"
-                @click="sortByHot"
-              >
+              <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">
                 最热
               </div>
             </label>
@@ -186,33 +121,14 @@
             <div class="reply-body">
               <!-- 发表评论 -->
               <div class="post-area">
-                <el-avatar
-                  :src="content.author.headurl"
-                  :shape="shape"
-                  :size="headsize"
-                  style="margin-right: 12px"
-                />
-                <el-input
-                  v-model="comments"
-                  autosize
-                  type="textarea"
-                  placeholder="发表评论"
-                />
-                <el-button icon="Edit" :loading="isReplying" @click="doReply"
-                  >发表</el-button
-                >
+                <el-avatar :src="content.author.headurl" :shape="shape" :size="headsize" style="margin-right: 12px" />
+                <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
+                <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
               </div>
               <!-- 回复列表 -->
               <div v-loading="isLoadingReply">
-                <OneReply
-                  v-for="(x, index) in reply_list"
-                  :key="x"
-                  :x="{ ...x }"
-                  :shape="shape"
-                  :size="headsize"
-                  :previewid="index"
-                  @refreshEvent="refresh_reply_list"
-                />
+                <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
+                  :previewid="index" @refreshEvent="refresh_reply_list" />
               </div>
             </div>
           </el-main>
@@ -250,7 +166,8 @@ export default {
   data() {
     return {
       headsize: Cfg.config.homestyle.headsize.post,
-      type: Cfg.config.set,
+      set: Cfg.set,
+      shape: Cfg.set.shape,
     }
   },
   setup() {
@@ -262,8 +179,6 @@ export default {
       isReplying: false,
       replyType: 0, //0对帖子1对评论
       comments: '',
-      markdown: '```js \n console.log("hello world!") \n```',
-      shape: Cfg.config.set.shape,
       size: 28,
       chatid: route.params.chatid,
       id: route.params.id,

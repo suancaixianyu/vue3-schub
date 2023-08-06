@@ -21,31 +21,25 @@
         </el-tab-pane> -->
         <el-tab-pane name="bbs">
           <template #label>
-            <span class="custom-tabs-label"
-              ><el-icon>
-                <ChatLineSquare /> </el-icon
-              ><span>我的帖子</span></span
-            >
+            <span class="custom-tabs-label"><el-icon>
+                <ChatLineSquare />
+              </el-icon><span>我的帖子</span></span>
           </template>
           <BbsPage v-if="activePages[0]" />
         </el-tab-pane>
         <el-tab-pane name="world">
           <template #label>
-            <span class="custom-tabs-label"
-              ><el-icon>
-                <UploadFilled /> </el-icon
-              ><span>我的存档</span></span
-            >
+            <span class="custom-tabs-label"><el-icon>
+                <UploadFilled />
+              </el-icon><span>我的存档</span></span>
           </template>
           <WorldPage v-if="activePages[1]" />
         </el-tab-pane>
         <el-tab-pane name="mod">
           <template #label>
-            <span class="custom-tabs-label"
-              ><el-icon>
-                <Promotion /> </el-icon
-              ><span>我的模组</span></span
-            >
+            <span class="custom-tabs-label"><el-icon>
+                <Promotion />
+              </el-icon><span>我的模组</span></span>
           </template>
           <ModPage v-if="activePages[2]" />
         </el-tab-pane>
@@ -101,7 +95,7 @@ export default {
       modList: [],
       activePages: [true, false, false, false],
       headsize: Cfg.config.homestyle.headsize.post,
-      userInfo: Cfg.config.userInfo,
+      userInfo: Cfg.userInfo,
     }
   },
   created() {
@@ -134,12 +128,12 @@ export default {
       })
   },
   mounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0px'
+    Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.overflowY = 'auto'
   },
   unmounted() {
     console.log('卸载用户主页')
-    Cfg.config.homestyle.maincontainer.padding = '0px 18px'
+    Cfg.config.homestyle.maincontainer.padding = '0 1rem'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
   },
 }

@@ -1,7 +1,8 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header v-if="showheader" style="display: flex;height:1.5rem;margin-top:0.5rem;padding:0">
+      <el-header v-if="showheader" class="hide-scrollbar"
+        style="display: flex;height:2rem;margin-top:0.5rem;padding:0;overflow-x: auto;">
         <el-button type="primary">发布主题</el-button>
         <el-button v-for="item in cate_list" @click="active_cate_id = item.id">
           <el-icon>
@@ -44,6 +45,7 @@ import {
   watch,
   onMounted,
   onUpdated,
+  onUnmounted,
 } from 'vue'
 import type { Ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -71,8 +73,6 @@ export default {
         left: 5,
         rigth: 19,
       },
-      /** 是否显示tab栏 */
-      showheader: false
     })
 
     function refreshBbsList(id: number) {
@@ -96,6 +96,8 @@ export default {
       pageup(newValue)
     })
     onMounted(() => {
+      Cfg.config.homestyle.maincontainer.padding = '0 0.5rem'
+      console.log(Cfg.config.homestyle.maincontainer.padding);
       pageup(windowwidth.value)
       data.loadingCate = true
       Method.api_get('/cate/list').then((response) => {
@@ -113,6 +115,9 @@ export default {
       })
     })
 
+    onUnmounted(() => {
+      Cfg.config.homestyle.maincontainer.padding = '0 18px'
+    })
     onUpdated(() => {
       pageup(windowwidth.value)
     })
@@ -128,25 +133,25 @@ export default {
       // 打开帖子
       if (route.params.id) {
         if (width <= 720) {
-          data.showheader = false
+          Cfg.set.showheader = false
           data.col = {
             left: 0,
             rigth: 24,
           }
         } else if (width > 720 && width <= 900) {
-          data.showheader = false
+          Cfg.set.showheader = false
           data.col = {
             left: 0,
             rigth: 24,
           }
         } else if (width > 900 && width <= 1200) {
-          data.showheader = false
+          Cfg.set.showheader = false
           data.col = {
             left: 10,
             rigth: 14,
           }
         } else if (width > 1200) {
-          data.showheader = false
+          Cfg.set.showheader = false
           data.col = {
             left: 10,
             rigth: 14,
@@ -155,25 +160,25 @@ export default {
       } else {
         // 关闭帖子
         if (width <= 720) {
-          data.showheader = true
+          Cfg.set.showheader = true
           data.col = {
             left: 0,
             rigth: 24,
           }
         } else if (width > 720 && width <= 820) {
-          data.showheader = false
+          Cfg.set.showheader = false
           data.col = {
             left: 7,
             rigth: 16,
           }
         } else if (width > 820 && width <= 1200) {
-          data.showheader = false
+          Cfg.set.showheader = false
           data.col = {
             left: 6,
             rigth: 17,
           }
         } else if (width > 1200) {
-          data.showheader = false
+          Cfg.set.showheader = false
           data.col = {
             left: 5,
             rigth: 18,
@@ -185,6 +190,7 @@ export default {
 
     return {
       ...toRefs(data),
+      ...Cfg.set,
       refreshBbsList
     }
   },

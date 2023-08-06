@@ -1,24 +1,20 @@
 <template>
   <div v-if="set.ismobile">
-    <div
-      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      v-for="(x, index) in list"
-      :key="index"
-      :style="homestyle.postliststyle"
-    >
+    <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="(x, index) in list"
+      :key="index" :style="config.homestyle.postliststyle">
       <el-container style="padding: 0px">
         <el-aside width="30%" style="padding: 0px; word-wrap: break-word">
           {{ x.type_name }}
         </el-aside>
         <el-main style="padding: 0px; overflow-x: hidden">
-          <el-text>{{ x.name }}</el-text
-          ><br />
-          <el-text>{{ x.create_time }}</el-text
-          ><br />
+          <el-text>{{ x.name }}</el-text><br />
+          <el-text>{{ x.create_time }}</el-text><br />
           <el-row :gutter="5">
             <el-col :span="12">
               <el-text>
-                <el-icon> <Document /> </el-icon>{{ x.file_size }}
+                <el-icon>
+                  <Document />
+                </el-icon>{{ x.file_size }}
               </el-text>
             </el-col>
 
@@ -36,9 +32,7 @@
                     <el-dropdown-item>复制链接</el-dropdown-item>
                     <el-dropdown-item>下架</el-dropdown-item>
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)"
-                      >删除</el-dropdown-item
-                    >
+                    <el-dropdown-item divided @click="handleDelete(index)">删除</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -56,13 +50,7 @@
       <el-table-column prop="create_time" label="上传日期" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button
-            size="small"
-            link
-            type="danger"
-            @click="handleDelete(scope.$index)"
-            >删除</el-button
-          >
+          <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +66,7 @@ export default {
   name: 'WorldPage',
   data() {
     return {
-      ...Cfg.config,
+      ...Cfg,
       isLoading: false,
       list: [] as any[],
       activeItemIndex: -1,

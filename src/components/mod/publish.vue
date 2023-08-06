@@ -12,70 +12,35 @@
           <el-form-item label="模组简称*">
             <el-input v-model="mini_name" />
           </el-form-item>
-          <el-form-item label="模组元素*" >
-            <mod-flag
-              :flag="x.flag_name"
-              :active="x.active"
-              @click="x.active=!x.active"
-              v-for="x in mod_flag_list"
-            />
+          <el-form-item label="模组元素*">
+            <mod-flag :flag="x.flag_name" :active="x.active" @click="x.active = !x.active" v-for="x in mod_flag_list" />
           </el-form-item>
           <el-form-item label="游戏API*">
             <el-radio-group>
-              <el-checkbox
-                v-model="x.active"
-                :key="x"
-                :label="x.name"
-                v-for="x in api_version_list"
-              />
+              <el-checkbox v-model="x.active" :key="x" :label="x.name" v-for="x in api_version_list" />
             </el-radio-group>
           </el-form-item>
           <el-form-item label="游戏主体*">
             <el-radio-group>
-              <el-checkbox
-                v-model="x.active"
-                :key="x"
-                :label="x.name"
-                v-for="x in game_version_list"
-              />
+              <el-checkbox v-model="x.active" :key="x" :label="x.name" v-for="x in game_version_list" />
             </el-radio-group>
           </el-form-item>
           <el-form-item label="相关链接">
             <div class="flex v">
               <div class="flex" v-for="(x, i) in link" :key="x">
                 <el-select v-model="x.type" placeholder="选择渠道">
-                  <el-option
-                    :label="r.name"
-                    :value="r.id"
-                    v-for="r in mod_link_type"
-                  />
+                  <el-option :label="r.name" :value="r.id" v-for="r in mod_link_type" />
                 </el-select>
                 <el-input v-model="x.src" />
-                <el-button
-                  type="primary"
-                  icon="Minus"
-                  text
-                  @click="deleteLink(i)"
-                  :data-index="i"
-                  >删除</el-button
-                >
+                <el-button type="primary" icon="Minus" text @click="deleteLink(i)" :data-index="i">删除</el-button>
               </div>
               <div>
-                <el-button
-                  size="small"
-                  type="primary"
-                  text
-                  icon="Plus"
-                  @click="newLink"
-                  >添加链接</el-button
-                >
+                <el-button size="small" type="primary" text icon="Plus" @click="newLink">添加链接</el-button>
               </div>
             </div>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit" :loading="isCreating"
-              >创建</el-button
-            >
+            <el-button type="primary" @click="submit" :loading="isCreating">创建</el-button>
             <el-button plain>取消</el-button>
           </el-form-item>
         </el-tab-pane>
@@ -85,12 +50,7 @@
           </el-form-item>
           <el-form-item label="模组封面*">
             <el-input disabled v-model="cover" class="el-input" />
-            <el-upload
-              :action="uploadServer"
-              v-model="cover_list"
-              :show-file-list="false"
-              :on-success="uploadCover"
-            >
+            <el-upload :action="uploadServer" v-model="cover_list" :show-file-list="false" :on-success="uploadCover">
               <el-button type="primary">上传</el-button>
             </el-upload>
           </el-form-item>
@@ -103,69 +63,27 @@
                 <template #header>
                   <el-form-item label="需要条件*">
                     <el-input v-model="x.condition" placeholder=">=API1.5" />
-                    <el-button
-                      size="small"
-                      type="primary"
-                      text
-                      icon="Minus"
-                      @click="deleteRelation(i)"
-                      >删除本组</el-button
-                    >
+                    <el-button size="small" type="primary" text icon="Minus" @click="deleteRelation(i)">删除本组</el-button>
                   </el-form-item>
                 </template>
                 <div class="flex" v-for="(xx, ii) in x.list" :key="xx">
-                  <el-select
-                    remote
-                    :loading="remoteLoading"
-                    :remote-method="getModList"
-                    v-model="xx.package_id"
-                    filterable
-                    remote-show-suffix
-                    placeholder="选择资源ID"
-                  >
-                    <el-option
-                      :label="xxx.label"
-                      :key="xxx.value"
-                      :value="xxx.value"
-                      v-for="xxx in relate_mod_list"
-                    ></el-option>
+                  <el-select remote :loading="remoteLoading" :remote-method="getModList" v-model="xx.package_id"
+                    filterable remote-show-suffix placeholder="选择资源ID">
+                    <el-option :label="xxx.label" :key="xxx.value" :value="xxx.value"
+                      v-for="xxx in relate_mod_list"></el-option>
                   </el-select>
                   <el-select v-model="xx.type" placeholder="选择关系">
-                    <el-option
-                      :label="r.name"
-                      :value="r.id"
-                      v-for="r in relate_type_list"
-                    />
+                    <el-option :label="r.name" :value="r.id" v-for="r in relate_type_list" />
                   </el-select>
-                  <el-button
-                    type="primary"
-                    icon="Minus"
-                    text
-                    @click="deleteRelationDetail(i, ii)"
-                    :data-index="ii"
-                    >删除</el-button
-                  >
+                  <el-button type="primary" icon="Minus" text @click="deleteRelationDetail(i, ii)"
+                    :data-index="ii">删除</el-button>
                 </div>
                 <div>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    text
-                    icon="Plus"
-                    @click="newRelation(i)"
-                    >添加关系</el-button
-                  >
+                  <el-button size="small" type="primary" text icon="Plus" @click="newRelation(i)">添加关系</el-button>
                 </div>
               </el-card>
               <div>
-                <el-button
-                  size="small"
-                  type="primary"
-                  text
-                  icon="Plus"
-                  @click="newGroupRelation"
-                  >添加一组</el-button
-                >
+                <el-button size="small" type="primary" text icon="Plus" @click="newGroupRelation">添加一组</el-button>
               </div>
             </div>
           </el-form-item>
@@ -216,7 +134,7 @@ export default {
     }
   },
   methods: {
-    changeFlag(x:any){
+    changeFlag(x: any) {
       x.active = !x.active;
       console.log(x.active);
     },
@@ -311,7 +229,7 @@ export default {
           game_version,
         },
       },
-    } = Cfg.config
+    } = Cfg
     this.api_version_list = api_version
     this.game_version_list = game_version
     this.relate_type_list = relate_type

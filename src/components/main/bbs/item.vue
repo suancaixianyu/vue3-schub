@@ -2,16 +2,14 @@
   <div>
     <!-- 头部 -->
     <el-header style="height: 46px; padding: 0px">
-      <UserHead
-        :item="{
-          headurl: headUrl,
-          shape,
-          headsize,
-          nickname: item.author.nickname,
-          time: time,
-          role: item.author.role,
-        }"
-      />
+      <UserHead :item="{
+        headurl: headUrl,
+        shape,
+        headsize,
+        nickname: item.author.nickname,
+        time: time,
+        role: item.author.role,
+      }" />
     </el-header>
     <!-- 中部 -->
     <el-container>
@@ -24,12 +22,7 @@
         }}</el-text>
       </el-aside>
       <el-main style="padding: 0px; text-align: right">
-        <el-image
-          v-if="item.cover"
-          style="height: 80px"
-          :src="item.cover"
-          fit="cover"
-        />
+        <el-image v-if="item.cover" style="height: 80px" :src="item.cover" fit="cover" />
       </el-main>
     </el-container>
     <!-- 底部 -->
@@ -75,7 +68,7 @@ export default {
   },
   data() {
     return {
-      shape: Cfg.config.set.shape,
+      shape: Cfg.set.shape,
       headsize: Cfg.config.homestyle.headsize.post,
     }
   },

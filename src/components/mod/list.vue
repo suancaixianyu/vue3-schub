@@ -2,13 +2,8 @@
   <div class="tab-container">
     <el-header class="el-header" style="flex-wrap: wrap">
       <div class="filter-item">
-        <mod-flag
-            :flag="x.flag_name"
-            :active="x.id == activeFlagId"
-            :count="x.count"
-            v-for="x in mod_flag_list"
-            @click="activeFlagId = x.id"
-        />
+        <mod-flag :flag="x.flag_name" :active="x.id == activeFlagId" :count="x.count" v-for="x in mod_flag_list"
+          @click="activeFlagId = x.id" />
       </div>
     </el-header>
     <el-container class="el-container" v-loading="isLoading">
@@ -20,14 +15,9 @@
           <div class="left">
             <div class="name-line">
               <div class="flag-area">
-                <mod-flag
-                  class="flag"
-                  :flag="xx.flag_name"
-                  active
-                  v-for="xx in x.flag_list"
-                />
+                <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
               </div>
-              <div>[{{x.mini_name}}]{{ x.name }}({{x.en_name}})</div>
+              <div>[{{ x.mini_name }}]{{ x.name }}({{ x.en_name }})</div>
             </div>
             <div class="description-line">{{ x.description }}</div>
             <div class="btn-line">
@@ -48,11 +38,7 @@
         </div>
       </router-link>
     </el-container>
-    <el-pagination
-      layout="prev, pager, next, total"
-      :total="total"
-      v-model="page"
-    />
+    <el-pagination layout="prev, pager, next, total" :total="total" v-model="page" />
   </div>
 </template>
 
@@ -90,12 +76,12 @@ export default {
   },
   data() {
     return {
-      activeFlagId:0,
+      activeFlagId: 0,
       total: 0,
       page: 1,
       limit: 10,
       list: <any>[],
-      mod_flag_list:<any>[],
+      mod_flag_list: <any>[],
       search: '',
       isLoading: false,
     }
@@ -115,9 +101,9 @@ export default {
         if (res.code == 200) {
           this.total = res.sum.total
           let flagSum = <any>res.flag_sum;
-          flagSum.forEach((x:any)=>{
-            let f = this.mod_flag_list.find((xx:any)=>{return xx.id == x.flag_id;});
-            if(f!=null){
+          flagSum.forEach((x: any) => {
+            let f = this.mod_flag_list.find((xx: any) => { return xx.id == x.flag_id; });
+            if (f != null) {
               f.count = x.count;
             }
           });
@@ -138,10 +124,10 @@ export default {
           flag_list
         }
       }
-    } = Cfg.config
-    let mod_flag_list = <any>[{flag_name:'all',count:0,id:0}];
-    flag_list.forEach((x:any)=>{
-      mod_flag_list.push({flag_name:x.flag_name,count:0,id:x.id});
+    } = Cfg
+    let mod_flag_list = <any>[{ flag_name: 'all', count: 0, id: 0 }];
+    flag_list.forEach((x: any) => {
+      mod_flag_list.push({ flag_name: x.flag_name, count: 0, id: x.id });
     });
     this.mod_flag_list = mod_flag_list;
     this.pullList()
@@ -151,7 +137,7 @@ export default {
         this.pullList()
       },
     );
-    watch(()=>this.activeFlagId,()=>{
+    watch(() => this.activeFlagId, () => {
       this.pullList();
     })
   },
@@ -166,6 +152,7 @@ export default {
 
 .filter-item {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   margin: 4px 0px;

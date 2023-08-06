@@ -1,78 +1,41 @@
 <template>
   <el-row :gutter="24" class="row-bg" justify="center">
     <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister">
-      <el-form
-        label-position="top"
-        label-width="100px"
-        label="top"
-        :model="regitser"
-        style="max-width: 460px; margin: 0 auto"
-      >
+      <el-form label-position="top" label-width="100px" label="top" :model="regitser"
+        style="max-width: 460px; margin: 0 auto">
         <el-form-item></el-form-item>
 
         <el-form-item label="用户名">
-          <input
-            v-model="regitser.user"
-            type="text"
-            placeholder="用户名由英文字母与数字组成"
-            class="input input-bordered input-sm"
-            style="margin-right: 12px; width: 100%"
-          />
+          <input v-model="regitser.user" type="text" placeholder="用户名由英文字母与数字组成" class="input input-bordered input-sm"
+            style="margin-right: 12px; width: 100%" />
         </el-form-item>
 
         <el-form-item label="密码">
-          <input
-            v-model="regitser.pass"
-            type="password"
-            placeholder="输入密码"
-            class="input input-bordered input-sm"
-            style="margin-right: 12px; width: 100%"
-            show-password
-          />
+          <input v-model="regitser.pass" type="password" placeholder="输入密码" class="input input-bordered input-sm"
+            style="margin-right: 12px; width: 100%" show-password />
         </el-form-item>
 
         <el-form-item label="确认密码">
-          <input
-            v-model="regitser.repass"
-            type="password"
-            placeholder="再次输入密码"
-            class="input input-bordered input-sm"
-            style="margin-right: 12px; width: 100%"
-            show-password
-          />
+          <input v-model="regitser.repass" type="password" placeholder="再次输入密码" class="input input-bordered input-sm"
+            style="margin-right: 12px; width: 100%" show-password />
         </el-form-item>
 
         <el-form-item label="邮箱">
-          <input
-            v-model="regitser.email"
-            type="text"
-            placeholder="输入邮箱"
-            class="input input-bordered input-sm logininput"
-          />
+          <input v-model="regitser.email" type="text" placeholder="输入邮箱"
+            class="input input-bordered input-sm logininput" />
         </el-form-item>
 
         <el-form-item label="昵称">
-          <input
-            v-model="regitser.nickname"
-            maxlength="10"
-            type="text"
-            placeholder="昵称长度不能超过10"
-            class="input input-bordered input-sm logininput"
-          />
+          <input v-model="regitser.nickname" maxlength="10" type="text" placeholder="昵称长度不能超过10"
+            class="input input-bordered input-sm logininput" />
         </el-form-item>
         <el-form-item>
-          <el-button plain v-loading="loading" @click="submitLogin('register')"
-            >注册</el-button
-          >
+          <el-button plain v-loading="loading" @click="submitLogin('register')">注册</el-button>
           <el-button plain @click="goLogin()">去登录</el-button>
         </el-form-item>
       </el-form>
     </el-col>
-    <el-col
-      :span="col.body"
-      :style="{ textAlign: 'center' }"
-      v-if="isregister === false"
-    >
+    <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister === false">
       <el-form label="top">
         <el-form-item>
           <el-input v-model="loginconfig.user" placeholder="请输入用户名">
@@ -89,9 +52,7 @@
         <el-checkbox v-model="remember" label="记账账号" size="large" />
       </el-form-item>
       <el-form-item>
-        <el-button plain :loading="loading" @click="submitLogin('login')"
-          >登录</el-button
-        >
+        <el-button plain :loading="loading" @click="submitLogin('login')">登录</el-button>
         <el-button plain type="primary" @click="goRegister()">去注册</el-button>
       </el-form-item>
     </el-col>
@@ -140,7 +101,7 @@ export default {
   },
   methods: {
     submitLogin(type: string) {
-      let userInfo = Cfg.config.userInfo
+      let userInfo = Cfg.userInfo
 
       if (this.loading) return
 

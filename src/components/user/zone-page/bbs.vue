@@ -1,11 +1,7 @@
 <template>
   <div v-if="set.ismobile">
-    <div
-      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      v-for="(x, index) in list"
-      :key="index"
-      :style="homestyle.postliststyle"
-    >
+    <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="(x, index) in list"
+      :key="index" :style="homestyle.postliststyle">
       <el-container style="padding: 0px">
         <el-aside width="45%" style="padding: 0px; word-wrap: break-word">
           {{ x.title }}
@@ -14,13 +10,17 @@
           <el-row :gutter="5">
             <el-col :span="9">
               <el-text>
-                <el-icon> <View /> </el-icon>{{ x.views }}
+                <el-icon>
+                  <View />
+                </el-icon>{{ x.views }}
               </el-text>
             </el-col>
 
             <el-col :span="9">
               <el-text>
-                <el-icon> <ChatRound /> </el-icon>{{ x.comments }}
+                <el-icon>
+                  <ChatRound />
+                </el-icon>{{ x.comments }}
               </el-text>
             </el-col>
             <el-col :span="2"> </el-col>
@@ -37,9 +37,7 @@
                     <el-dropdown-item>复制链接</el-dropdown-item>
                     <el-dropdown-item>编辑</el-dropdown-item>
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)"
-                      >删除</el-dropdown-item
-                    >
+                    <el-dropdown-item divided @click="handleDelete(index)">删除</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -57,13 +55,7 @@
       <el-table-column prop="comments" label="评论" width="180" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button
-            size="small"
-            link
-            type="danger"
-            @click="handleDelete(scope.$index)"
-            >删除</el-button
-          >
+          <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,6 +71,7 @@ export default {
   data() {
     return {
       ...Cfg.config,
+      set: Cfg.set,
       isLoading: false,
       list: [] as any[],
       activeItemIndex: -1,

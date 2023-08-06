@@ -1,22 +1,12 @@
 <template>
   <div v-if="set.ismobile">
-    <div
-      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      :style="homestyle.postliststyle"
-    >
+    <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" :style="homestyle.postliststyle">
       <el-button type="primary" plain @click="showAddFile">添加文件</el-button>
     </div>
-    <div
-      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      v-for="x in list"
-      :key="x.id"
-      :style="homestyle.postliststyle"
-    >
+    <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="x in list" :key="x.id"
+      :style="homestyle.postliststyle">
       <el-container style="padding: 0px">
-        <el-aside
-          width="30%"
-          style="padding: 5px; word-wrap: break-word; overflow-y: hidden"
-        >
+        <el-aside width="30%" style="padding: 5px; word-wrap: break-word; overflow-y: hidden">
           {{ x.name }}
         </el-aside>
         <el-main class="container">
@@ -27,21 +17,11 @@
             <el-col :span="10">
               <el-text>
                 <el-icon>
-                  <svg
-                    t="1691047896779"
-                    class="icon"
-                    viewBox="0 0 1024 1024"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    p-id="3474"
-                    width="200"
-                    height="200"
-                  >
+                  <svg t="1691047896779" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="3474" width="200" height="200">
                     <path
                       d="M896 704c-17.695686 0-31.99914 14.303454-31.99914 31.99914l0 128L160.00086 863.99914l0-128c0-17.695686-14.336138-31.99914-32.00086-31.99914s-32.00086 14.303454-32.00086 31.99914l0 160.00086c0 17.695686 14.336138 31.99914 32.00086 31.99914l768 0c17.695686 0 32.00086-14.303454 32.00086-31.99914l0-160.00086C928.00086 718.303454 913.695686 704 896 704zM227.579 530.662l259.11 259.293c6.368 6.399 14.689 9.471 22.977 9.408 1.12 0.096 2.08 0.64 3.2 0.64 4.673 0 9.024-1.088 13.024-2.88 4.032-1.536 7.872-3.872 11.137-7.135l259.329-259.124c12.513-12.48 12.544-32.735 0.033-45.248-6.24-6.272-14.432-9.407-22.656-9.408-8.193 0-16.352 3.136-22.624 9.344l-206.24 206.162 0-563.713c0-17.696-14.336-31.999-32.001-31.999s-32.001 14.303-32.001 31.999l0 565.281-207.91-207.74c-6.241-6.272-14.496-9.44-22.688-9.44s-16.32 3.103-22.56 9.311c-12.575 12.449-12.607 32.737-0.127 45.248z"
-                      fill="#272636"
-                      p-id="3475"
-                    ></path>
+                      fill="#272636" p-id="3475"></path>
                   </svg>
                 </el-icon>
                 {{ x.downloads_num }}
@@ -59,9 +39,7 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="handleDelete(x.id, true)"
-                      >删除</el-dropdown-item
-                    >
+                    <el-dropdown-item @click="handleDelete(x.id, true)">删除</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -82,27 +60,14 @@
       <el-table-column prop="downloads_num" label="下载" width="180" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button
-            size="small"
-            link
-            type="danger"
-            @click="handleDelete(scope.$index, false)"
-            >删除</el-button
-          >
+          <el-button size="small" link type="danger" @click="handleDelete(scope.$index, false)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
-  <el-dialog
-    v-model="isDialogVisible"
-    width="60%"
-    align-center
-    :fullscreen="set.ismobile"
-  >
+  <el-dialog v-model="isDialogVisible" width="60%" align-center :fullscreen="set.ismobile">
     <template #title>
-      <span
-        >添加文件 <span style="color: #008ac5">{{ modName }}</span></span
-      >
+      <span>添加文件 <span style="color: #008ac5">{{ modName }}</span></span>
     </template>
     <template #footer>
       <span class="dialog-footer">
@@ -117,22 +82,10 @@
       <el-form class="el-form">
         <el-form-item label="文件选择*" v-if="inner_file_name == ''">
           <el-input disabled v-model="file_name" class="el-input" />
-          <el-progress
-            class="my-progress"
-            v-if="progress != 0"
-            :percentage="progress"
-            type="circle"
-            :show-text="false"
-            width="28"
-          />
-          <el-upload
-            :action="uploadFileSrc"
-            v-model="file_name"
-            :on-progress="onProgress"
-            :with-credentials="true"
-            :show-file-list="false"
-            :on-success="uploadFile"
-          >
+          <el-progress class="my-progress" v-if="progress != 0" :percentage="progress" type="circle" :show-text="false"
+            width="28" />
+          <el-upload :action="uploadFileSrc" v-model="file_name" :on-progress="onProgress" :with-credentials="true"
+            :show-file-list="false" :on-success="uploadFile">
             <el-button type="primary">上传</el-button>
           </el-upload>
         </el-form-item>
@@ -141,11 +94,7 @@
             <el-option :label="r.name" :value="r.id" v-for="r in type_list" />
           </el-select>
           <el-select v-model="inner_file_name" placeholder="选择文件">
-            <el-option
-              :label="r.name"
-              :value="r.file_id"
-              v-for="r in world_list"
-            />
+            <el-option :label="r.name" :value="r.file_id" v-for="r in world_list" />
           </el-select>
         </el-form-item>
         <el-form-item label="API版本*">
@@ -164,17 +113,9 @@
       </el-form>
     </el-container>
   </el-dialog>
-  <el-dialog
-    v-model="isDeleteDialogVisible"
-    title="提示"
-    width="30%"
-    align-center
-    :fullscreen="set.ismobile"
-  >
-    <span
-      >是否删除Mod文件
-      <span style="color: #008ac5">{{ modFileName }}</span></span
-    >
+  <el-dialog v-model="isDeleteDialogVisible" title="提示" width="30%" align-center :fullscreen="set.ismobile">
+    <span>是否删除Mod文件
+      <span style="color: #008ac5">{{ modFileName }}</span></span>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="isDeleteDialogVisible = false">取消</el-button>
@@ -198,7 +139,8 @@ export default {
   data() {
     let uploadServer = Method.getHostUrl('/Upload/Upload')
     return {
-      ...Cfg.config,
+      set: Cfg.set,
+      homestyle: Cfg.config.homestyle,
       type_list: <any>[
         { id: 1, name: '世界' },
         { id: 2, name: '方块材质' },
@@ -348,7 +290,7 @@ export default {
   },
   created() {
     this.isLoading = true
-    this.api_list = Cfg.config.userInfo.global_mod_data_list.api_version
+    this.api_list = Cfg.userInfo.global_mod_data_list.api_version
     this.refreshList()
     watch(
       () => this.inner_name,

@@ -1,8 +1,9 @@
 import { CSSProperties, reactive } from 'vue'
+import type { userInfoType, setType } from '@/apitypes'
 const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
-    padding: '0px 18px',
+    padding: '0 1rem',
     height: 'calc(100vh - 90px)',
     overflowY: 'hidden',
   },
@@ -12,7 +13,7 @@ const homestyle = reactive({
     padding: '12px 18px',
     justifyContent: 'center',
     margin: '10px auto',
-    width: '90%',
+    width: '88%',
     maxHeight: '200px',
     boxShadow: 'var(--el-box-shadow-light)',
     borderRadius: 'var(--rounded-btn)',
@@ -33,32 +34,30 @@ const set = reactive({
   showfooter: true,
   shape: 'square',
   ismobile: false,
+  showheader: false
 })
 
 let webstyle = reactive({
   webkit: {
     // 滚动条样式
-    'scrollbar-thumb-background':
-      'url("./src/assets/icon/mifengup.svg") center top no-repeat, url("./src/assets/icon/mifengbottom.svg") center bottom no-repeat',
-    'scrollbar-thumb-background-color': '',
-    'scrollbar-thumb-border': 'none',
-    'scrollbar-thumb-border-radius': '10px',
-    'scrollbar-thumb-background-size': '100%',
-    // 鼠标悬停效果
-    'scrollbar-thumb-background-hover': 'var(--scrollbar-thumb-background)',
-    'scrollbar-thumb-background-color-hover': '#F5F5F5',
-    'scrollbar-thumb-border-hover': 'none',
-    'scrollbar-thumb-border-radius-hover': '10px',
-    'scrollbar-thumb-background-size-hover': '100%',
-    // 滚动条框框样式
-    'scrollbar-width': '12px',
+    "webkit-scrollbar-thumb-background": "url('./src/assets/icon/mifengup.svg') center top no-repeat, url('./src/assets/icon/mifengbottom.svg') center bottom no-repeat",
+    "webkit-scrollbar-thumb-background-color": "",
+    "webkit-scrollbar-thumb-border": "none",
+    "webkit-scrollbar-thumb-border-radius": "10px",
+    "webkit-scrollbar-thumb-background-size": "100%",
+    "webkit-scrollbar-thumb-background-hover": "var(--webkit-scrollbar-thumb-background)",
+    "webkit-scrollbar-thumb-background-color-hover": "#F5F5F5",
+    "webkit-scrollbar-thumb-border-hover": "none",
+    "webkit-scrollbar-thumb-border-radius-hover": "10px",
+    "webkit-scrollbar-thumb-background-size-hover": "100%",
+    "webkit-scrollbar-width": "12px"
   },
   card: {
     'rounded-card': 'var(--rounded-btn)',
   },
 })
 
-const userInfo = reactive({
+const userInfo: userInfoType = reactive({
   global_mod_data_list: {
     game_version: [],
     api_version: [],
@@ -73,7 +72,7 @@ const userInfo = reactive({
 })
 
 class Cfg {
-  [config: string]: {
+  config: {
     /** 后端服务器地址 */
     server: string
     /** 上传图片接口 */
@@ -100,35 +99,13 @@ class Cfg {
         userindex: number
       }
     }
-    /** 设置 */
-    set: {
-      /** 是否显示抽屉菜单 */
-      menu: boolean
-      /** 是否显示底部栏 */
-      showfooter: boolean
-      /** 头像形状 */
-      shape: string
-      /** 是否为移动端 */
-      ismobile: boolean
-    }
     /** 全局样式 */
     webstyle: { [key: string]: { [key: string]: string } }
-    /** 用户信息 */
-    userInfo: {
-      global_mod_data_list: {
-        game_version: any //版本列表
-        api_version: any //api列表
-        relate_type: any //关系列表
-        link_type: any //链接类型列表
-        flag_list: any //标签列表
-      } //全局标签列表
-      role_list: any //全局角色列表
-      isLogin: boolean //是否已登录
-      isLoginDialogVisible: boolean //登陆窗口是否可见
-      id?: string //用户ID
-      data: { headurl?: string; nickname?: string; role: any } //用户信息
-    }
-  }
+  };
+  /** 用户信息 */
+  userInfo: userInfoType;
+  /** 设置 */
+  set: setType;
 
   constructor() {
     this.config = {
@@ -140,9 +117,13 @@ class Cfg {
       uploadimg: '/upload',
       /** 主页样式 */
       homestyle,
-      set,
-      userInfo,
       webstyle,
+    }
+    this.userInfo = {
+      ...userInfo
+    }
+    this.set = {
+      ...set
     }
   }
 }

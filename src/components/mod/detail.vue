@@ -9,29 +9,20 @@
         <div class="name">[{{ mini_name }}]{{ name }}</div>
         <div class="en-name">{{ en_name }}</div>
         <div class="flag-area">
-          <mod-flag
-            class="flag"
-            :flag="x.flag_name"
-            active
-            v-for="x in flag_list"
-          ></mod-flag>
+          <mod-flag class="flag" :flag="x.flag_name" active v-for="x in flag_list"></mod-flag>
         </div>
       </div>
     </div>
 
     <div class="extra-area" style="background-color: white; padding: 0px 10px">
       <div class="item">
-        <el-text
-          >支持的游戏版本:<el-tag v-for="x in game_list">{{
-            x.name
-          }}</el-tag></el-text
-        >
+        <el-text>支持的游戏版本:<el-tag v-for="x in game_list">{{
+          x.name
+        }}</el-tag></el-text>
       </div>
       <div class="item">
-        <el-text
-          >支持的API版本:
-          <el-tag v-for="x in api_list">{{ x.name }}</el-tag></el-text
-        >
+        <el-text>支持的API版本:
+          <el-tag v-for="x in api_list">{{ x.name }}</el-tag></el-text>
       </div>
       <div class="item">最后编辑: {{ last_modify }}</div>
       <div class="item">
@@ -51,19 +42,10 @@
         </el-tab-pane>
         <el-tab-pane label="Mod关系">
           <el-collapse v-model="activeRelation">
-            <el-collapse-item
-              v-for="(x, i) in relation_list"
-              :title="x.condition"
-              :name="i"
-            >
+            <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
               <div class="flex" v-for="xx in x.list">
                 <el-tag class="ml-2" type="success">{{ xx.type_name }}</el-tag>
-                <el-button
-                  type="primary"
-                  link
-                  @click="goModDetail(xx.package_id)"
-                  >{{ xx.package_name }}</el-button
-                >
+                <el-button type="primary" link @click="goModDetail(xx.package_id)">{{ xx.package_name }}</el-button>
               </div>
             </el-collapse-item>
           </el-collapse>
@@ -71,21 +53,11 @@
         <el-tab-pane label="Mod下载">
           <el-table :data="version_list" stripe style="width: 100%">
             <el-table-column prop="name" label="文件名" />
-            <el-table-column
-              prop="create_time_str"
-              label="创建时间"
-              width="180"
-            />
+            <el-table-column prop="create_time_str" label="创建时间" width="180" />
             <el-table-column prop="file_size" label="大小" width="180" />
             <el-table-column label="操作">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  link
-                  type="danger"
-                  @click="downLoad(scope.$index)"
-                  >下载</el-button
-                >
+                <el-button size="small" link type="danger" @click="downLoad(scope.$index)">下载</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -96,11 +68,7 @@
     <div class="update-area" style="padding: 0px 10px">
       <div class="tab">更新日志</div>
       <el-timeline v-if="version_list.length != 0">
-        <el-timeline-item
-          v-for="(x, index) in version_list"
-          :key="index"
-          :timestamp="x.time"
-        >
+        <el-timeline-item v-for="(x, index) in version_list" :key="index" :timestamp="x.time">
           {{ x.version }}
         </el-timeline-item>
       </el-timeline>
@@ -112,11 +80,7 @@
       <el-avatar class="img" :src="cover_src" />
       <div class="update-area">
         <div class="tab">更新日志</div>
-        <div
-          class="update-log"
-          v-if="version_list.length != 0"
-          v-for="x in version_list"
-        >
+        <div class="update-log" v-if="version_list.length != 0" v-for="x in version_list">
           <div class="version">{{ x.version }}</div>
           <div class="date">{{ x.time }}</div>
         </div>
@@ -135,12 +99,7 @@
         <div class="en-name">{{ en_name }}</div>
       </div>
       <div class="flag-area">
-        <mod-flag
-          class="flag"
-          :flag="x.flag_name"
-          active
-          v-for="x in flag_list"
-        ></mod-flag>
+        <mod-flag class="flag" :flag="x.flag_name" active v-for="x in flag_list"></mod-flag>
       </div>
       <div class="extra-area">
         <div class="item">
@@ -169,21 +128,12 @@
           </el-tab-pane>
           <el-tab-pane label="Mod关系">
             <el-collapse v-model="activeRelation">
-              <el-collapse-item
-                v-for="(x, i) in relation_list"
-                :title="x.condition"
-                :name="i"
-              >
+              <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
                 <div class="flex" v-for="xx in x.list">
                   <el-tag class="ml-2" type="success">{{
                     xx.type_name
                   }}</el-tag>
-                  <el-button
-                    type="primary"
-                    link
-                    @click="goModDetail(xx.package_id)"
-                    >{{ xx.package_name }}</el-button
-                  >
+                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{ xx.package_name }}</el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -191,21 +141,11 @@
           <el-tab-pane label="Mod下载">
             <el-table :data="version_list" stripe style="width: 100%">
               <el-table-column prop="name" label="文件名" />
-              <el-table-column
-                prop="create_time_str"
-                label="创建时间"
-                width="180"
-              />
+              <el-table-column prop="create_time_str" label="创建时间" width="180" />
               <el-table-column prop="file_size" label="大小" width="180" />
               <el-table-column label="操作">
                 <template #default="scope">
-                  <el-button
-                    size="small"
-                    link
-                    type="danger"
-                    @click="downLoad(scope.$index)"
-                    >下载</el-button
-                  >
+                  <el-button size="small" link type="danger" @click="downLoad(scope.$index)">下载</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -247,7 +187,7 @@ export default {
   components: { IconHot, IconDown, ModFlag },
   data() {
     return {
-      ...Cfg.config,
+      set: Cfg.set,
       activeRelation: [0] as any,
       isLoading: false,
       last_modify: '',
@@ -315,12 +255,12 @@ export default {
     },
   },
   mounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0px'
+    Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.height = 'auto'
     Cfg.config.homestyle.maincontainer.overflowY = ''
   },
   unmounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0px 12px'
+    Cfg.config.homestyle.maincontainer.padding = '0 1rem'
     Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
   },
@@ -340,12 +280,10 @@ export default {
   padding: 1rem;
   padding-top: 5rem;
   color: white;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0.8)
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.8));
 }
 
 .bj {
@@ -456,7 +394,7 @@ export default {
   padding: 2px 5px;
 }
 
-.status-area .item + .item {
+.status-area .item+.item {
   margin-left: 2px;
 }
 
