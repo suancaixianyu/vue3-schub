@@ -14,14 +14,14 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 /** 自定义全局方法 */
 import Method from './globalmethods'
 
-let app = createApp(App)
+const app = createApp(App)
 
 // 导入各种插件
 app.use(ElementPlus)
 app.use(router)
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component)
-}
+for (const key in ElementPlusIconsVue)
+  app.component(key, ElementPlusIconsVue[key])
+
 // 初始化页面样式
 Method.setwebstyle()
 // 注入全局方法和变量

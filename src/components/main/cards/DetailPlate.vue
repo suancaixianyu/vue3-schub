@@ -4,9 +4,9 @@
     <div v-if="set.ismobile">
       <el-container>
         <!-- 头部 -->
-        <el-header style="padding: 0px">
+        <el-header style="padding: 0">
           <!-- 顶部按钮 -->
-          <el-row :gutter="24" style="padding: 0px">
+          <el-row :gutter="24" style="padding: 0">
             <el-col :span="24" style="display: flex; justify-content: flex-end">
               <el-icon @click="flushed" :size="25" title="刷新" class="icon">
                 <Flushed />
@@ -31,7 +31,7 @@
           }" style="padding-left: 10px" />
         </el-header>
         <!-- 内容 -->
-        <el-main style="padding: 20px 0px">
+        <el-main style="padding: 20px 0">
           <!-- 帖子内容展示 -->
           <MdPreview editorId="preview-mobile" :modelValue="content.summary" class="bg-base-200" />
 
@@ -72,7 +72,7 @@
       <div class="common-layout">
         <el-container>
           <!-- 头部 -->
-          <el-header style="padding: 0px">
+          <el-header style="padding: 0">
             <!-- 顶部按钮 -->
             <el-row :gutter="24">
               <el-col :span="24" style="display: flex; justify-content: flex-end">

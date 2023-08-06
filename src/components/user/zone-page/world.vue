@@ -1,5 +1,6 @@
 <template>
   <div v-if="set.ismobile">
+<<<<<<< HEAD
     <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="(x, index) in list"
       :key="index" :style="config.homestyle.postliststyle">
       <el-container style="padding: 0px">
@@ -9,6 +10,23 @@
         <el-main style="padding: 0px; overflow-x: hidden">
           <el-text>{{ x.name }}</el-text><br />
           <el-text>{{ x.create_time }}</el-text><br />
+=======
+    <div
+      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
+      v-for="(x, index) in list"
+      :key="index"
+      :style="homestyle.postliststyle"
+    >
+      <el-container style="padding: 0">
+        <el-aside width="30%" style="padding: 0; word-wrap: break-word">
+          {{ x.type_name }}
+        </el-aside>
+        <el-main style="padding: 0; overflow-x: hidden">
+          <el-text>{{ x.name }}</el-text
+          ><br />
+          <el-text>{{ x.create_time }}</el-text
+          ><br />
+>>>>>>> b1ae9c8a3d9fe9fbc1a8e32c0b3c96dbfe45b935
           <el-row :gutter="5">
             <el-col :span="12">
               <el-text>
@@ -104,6 +122,6 @@ export default {
 }
 
 .numicon {
-  padding: 12px 0px;
+  padding: 12px 0;
 }
 </style>

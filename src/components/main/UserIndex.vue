@@ -133,7 +133,11 @@ export default {
   },
   unmounted() {
     console.log('卸载用户主页')
+<<<<<<< HEAD
     Cfg.config.homestyle.maincontainer.padding = '0 1rem'
+=======
+    Cfg.config.homestyle.maincontainer.padding = '0 18px'
+>>>>>>> b1ae9c8a3d9fe9fbc1a8e32c0b3c96dbfe45b935
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
   },
 }
@@ -142,7 +146,7 @@ export default {
 <style scoped>
 .el-tabs {
   flex: 1;
-  padding: 0px;
+  padding: 0;
 }
 
 .custom-tabs-label {

@@ -6,7 +6,7 @@
         <el-aside width="45%" style="padding: 0px; word-wrap: break-word">
           {{ x.title }}
         </el-aside>
-        <el-main style="padding: 0px; overflow-x: hidden">
+        <el-main style="padding: 0; overflow-x: hidden">
           <el-row :gutter="5">
             <el-col :span="9">
               <el-text>
@@ -108,6 +108,6 @@ export default {
 }
 
 .numicon {
-  padding: 12px 0px;
+  padding: 12px 0;
 }
 </style>

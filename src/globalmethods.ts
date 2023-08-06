@@ -51,7 +51,7 @@ class Method {
    * @param {number} time 时间戳
    */
   formatBbsTime(time: number) {
-    let time2: Date = new Date()
+    let time2: Date = new Date
     time = time * 1000
     let msg: string
     const diffMilliseconds = Math.abs(time2.getTime() - time)
@@ -419,4 +419,4 @@ class Method {
   }
 }
 
-export default new Method()
+export default new Method

@@ -11,7 +11,7 @@
             <el-image style="width: 100%; height: 100%" :src="x.cover_src" fit="cover" />
           </router-link>
         </el-aside>
-        <el-main style="padding: 0px 0px 0px 5px; overflow-x: hidden">
+        <el-main style="padding: 0 0 0 5px; overflow-x: hidden">
           <router-link :to="`/ModDetail/${x.id}`">
             <el-text>{{ x.name }}</el-text><br />
             <el-text>{{ x.create_time }}</el-text><br />
@@ -84,7 +84,7 @@
     <el-header class="el-header">
       <el-button type="primary" plain @click="goPublish">添加模组</el-button>
     </el-header>
-    <el-main style="padding: 0px; width: 100%">
+    <el-main style="padding: 0; width: 100%">
       <el-table :data="list" stripe style="width: 100%" v-loading="isLoading">
         <el-table-column prop="cover_src" label="封面" width="180">
           <template #default="scope">
@@ -209,6 +209,6 @@ export default {
 }
 
 .numicon {
-  padding: 12px 0px;
+  padding: 12px 0;
 }
 </style>

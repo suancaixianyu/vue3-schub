@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- 头部 -->
+<<<<<<< HEAD
     <el-header style="height: 46px; padding: 0px">
       <UserHead :item="{
         headurl: headUrl,
@@ -10,6 +11,19 @@
         time: time,
         role: item.author.role,
       }" />
+=======
+    <el-header style="height: 46px; padding: 0">
+      <UserHead
+        :item="{
+          headurl: headUrl,
+          shape,
+          headsize,
+          nickname: item.author.nickname,
+          time: time,
+          role: item.author.role,
+        }"
+      />
+>>>>>>> b1ae9c8a3d9fe9fbc1a8e32c0b3c96dbfe45b935
     </el-header>
     <!-- 中部 -->
     <el-container>
@@ -21,12 +35,22 @@
           item.summary
         }}</el-text>
       </el-aside>
+<<<<<<< HEAD
       <el-main style="padding: 0px; text-align: right">
         <el-image v-if="item.cover" style="height: 80px" :src="item.cover" fit="cover" />
+=======
+      <el-main style="padding: 0; text-align: right">
+        <el-image
+          v-if="item.cover"
+          style="height: 80px"
+          :src="item.cover"
+          fit="cover"
+        />
+>>>>>>> b1ae9c8a3d9fe9fbc1a8e32c0b3c96dbfe45b935
       </el-main>
     </el-container>
     <!-- 底部 -->
-    <el-footer style="text-align: left; padding: 0px; height: 25px">
+    <el-footer style="text-align: left; padding: 0; height: 25px">
       <ul class="category-counts">
         <li @click="doGood" v-loading="isDoGooding">
           <el-icon :size="22">

@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="extra-area" style="background-color: white; padding: 0px 10px">
+    <div class="extra-area" style="background-color: white; padding: 0 10px">
       <div class="item">
         <el-text>支持的游戏版本:<el-tag v-for="x in game_list">{{
           x.name
@@ -65,7 +65,7 @@
       </el-tabs>
     </div>
 
-    <div class="update-area" style="padding: 0px 10px">
+    <div class="update-area" style="padding: 0 10px">
       <div class="tab">更新日志</div>
       <el-timeline v-if="version_list.length != 0">
         <el-timeline-item v-for="(x, index) in version_list" :key="index" :timestamp="x.time">
@@ -260,7 +260,11 @@ export default {
     Cfg.config.homestyle.maincontainer.overflowY = ''
   },
   unmounted() {
+<<<<<<< HEAD
     Cfg.config.homestyle.maincontainer.padding = '0 1rem'
+=======
+    Cfg.config.homestyle.maincontainer.padding = '0 12px'
+>>>>>>> b1ae9c8a3d9fe9fbc1a8e32c0b3c96dbfe45b935
     Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
   },
