@@ -3,24 +3,10 @@
     <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" :style="homestyle.postliststyle">
       <el-button type="primary" plain @click="showAddFile">添加文件</el-button>
     </div>
-<<<<<<< HEAD
     <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="x in list" :key="x.id"
       :style="homestyle.postliststyle">
-      <el-container style="padding: 0px">
-        <el-aside width="30%" style="padding: 5px; word-wrap: break-word; overflow-y: hidden">
-=======
-    <div
-      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      v-for="x in list"
-      :key="x.id"
-      :style="homestyle.postliststyle"
-    >
       <el-container style="padding: 0">
-        <el-aside
-          width="30%"
-          style="padding: 5px; word-wrap: break-word; overflow-y: hidden"
-        >
->>>>>>> b1ae9c8a3d9fe9fbc1a8e32c0b3c96dbfe45b935
+        <el-aside width="30%" style="padding: 5px; word-wrap: break-word; overflow-y: hidden">
           {{ x.name }}
         </el-aside>
         <el-main class="container">

@@ -5,7 +5,7 @@
     </div>
     <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="x in list" :key="x.id"
       :style="homestyle.postliststyle">
-      <el-container style="padding: 0px">
+      <el-container style="padding: 0">
         <el-aside width="30%" style="padding: 5px; word-wrap: break-word; overflow-y: hidden">
           <router-link :to="`/ModDetail/${x.id}`">
             <el-image style="width: 100%; height: 100%" :src="x.cover_src" fit="cover" />

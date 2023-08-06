@@ -16,11 +16,15 @@ import Method from './globalmethods'
 
 const app = createApp(App)
 
+
 // 导入各种插件
 app.use(ElementPlus)
 app.use(router)
-for (const key in ElementPlusIconsVue)
-  app.component(key, ElementPlusIconsVue[key])
+
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 // 初始化页面样式
 Method.setwebstyle()

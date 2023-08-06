@@ -2,8 +2,8 @@
   <div v-if="set.ismobile">
     <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="(x, index) in list"
       :key="index" :style="homestyle.postliststyle">
-      <el-container style="padding: 0px">
-        <el-aside width="45%" style="padding: 0px; word-wrap: break-word">
+      <el-container style="padding: 0">
+        <el-aside width="45%" style="padding: 0; word-wrap: break-word">
           {{ x.title }}
         </el-aside>
         <el-main style="padding: 0; overflow-x: hidden">

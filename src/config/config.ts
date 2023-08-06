@@ -3,11 +3,7 @@ import type { userInfoType, setType } from '@/apitypes'
 const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
-<<<<<<< HEAD
     padding: '0 1rem',
-=======
-    padding: '0 18px',
->>>>>>> b1ae9c8a3d9fe9fbc1a8e32c0b3c96dbfe45b935
     height: 'calc(100vh - 90px)',
     overflowY: 'hidden',
   },
