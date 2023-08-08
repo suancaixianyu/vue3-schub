@@ -93,7 +93,6 @@ export default {
           x.create_time = Method.formatNormalTime(x.create_time)
         })
         this.list = res.data
-        ElMessage(`${this.set.ismobile}`)
       } else {
         ElMessage(res.msg)
       }

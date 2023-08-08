@@ -1,13 +1,43 @@
 <template>
   <div class="tab-container">
     <el-header class="el-header" style="flex-wrap: wrap">
-      <div class="filter-item">
+      <div class="filter-item hide-scrollbar" ref="flagContainer">
         <mod-flag :flag="x.flag_name" :active="x.id == activeFlagId" :count="x.count" v-for="x in mod_flag_list"
-          @click="activeFlagId = x.id" />
+          @click="onFlagClick(x.id)" />
       </div>
     </el-header>
     <el-container class="el-container" v-loading="isLoading">
-      <router-link :to="x.to_link" v-for="x in list">
+      <router-link v-if="set.ismobile" :to="x.to_link" v-for="x in list">
+        <div class="res-item">
+          <div class="right">
+            <img class="img" :src="x.cover_src" />
+          </div>
+          <div class="left">
+            <div class="flag-area hide-scrollbar">
+              <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
+            </div>
+            <div class="name-line">
+              <div>[{{ x.mini_name }}]{{ x.name }}({{ x.en_name }})</div>
+            </div>
+            <div class="description-line">{{ x.description }}</div>
+            <div class="btn-line">
+              <div class="item">
+                <icon-hot :size="18"></icon-hot>
+                <div class="hot">{{ x.views }}</div>
+              </div>
+              <div class="item">
+                <like-icon :size="24"></like-icon>
+                <div class="like">{{ x.likes }}</div>
+              </div>
+              <div class="item">
+                <icon-down :size="18"></icon-down>
+                <div class="down">{{ x.downloads }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </router-link>
+      <router-link v-else :to="x.to_link" v-for="x in list">
         <div class="res-item">
           <div class="right">
             <img class="img" :src="x.cover_src" />
@@ -37,6 +67,7 @@
           </div>
         </div>
       </router-link>
+
     </el-container>
     <el-pagination layout="prev, pager, next, total" :total="total" v-model="page" />
   </div>
@@ -76,17 +107,54 @@ export default {
   },
   data() {
     return {
+      set:Cfg.set,
       activeFlagId: 0,
       total: 0,
       page: 1,
       limit: 10,
       list: <any>[],
+      animateTimerId:<any>0,
       mod_flag_list: <any>[],
       search: '',
       isLoading: false,
     }
   },
   methods: {
+    onFlagClick(id:any){
+      let c = <HTMLDivElement>this.$refs.flagContainer;
+      this.activeFlagId = id;
+      let f = this.mod_flag_list.find((x:any)=>{return x.id == id;});
+      if(f != null){
+        let index = this.mod_flag_list.indexOf(f);
+        let e = c.children[index];
+        let cb = c.getBoundingClientRect();
+        let b = e.getBoundingClientRect();
+        let w = cb.right - cb.left;//滚动容器宽度
+        let wc = cb.left + (w / 2);//中心点位置
+        let w2 = b.right - b.left;//单项的宽度
+        let w2c = b.left + (w2 / 2);//中心点位置
+        let start = c.scrollLeft;
+        let end = c.scrollLeft + (w2c - wc);
+        let frameCount = 50;//0.1s
+        if(end > 0 ){
+          let each = (end - start) / frameCount;
+          let position = start;
+          let times = 0;
+          //逐渐滚动到这个位置实现
+          if(this.animateTimerId > 0){clearInterval(this.animateTimerId);}
+          this.animateTimerId = setInterval(()=>{
+            c.scrollLeft = position;
+            position += each;
+            times++;
+            if(times > frameCount){
+              clearInterval(this.animateTimerId)
+            }
+          },1)
+        }else{
+          c.scrollLeft = 0;
+        }
+      }
+     },
     pullList() {
       let payLoad = {
         page: this.page,
@@ -141,6 +209,11 @@ export default {
       this.pullList();
     })
   },
+  unmounted(){
+    if(this.animateTimerId > 0){
+      clearInterval(this.animateTimerId)
+    }
+  }
 }
 </script>
 <style scoped>
@@ -152,10 +225,10 @@ export default {
 
 .filter-item {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   margin: 4px 0;
+  overflow: auto;
 }
 
 .filter-item.active {
@@ -217,12 +290,14 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: hidden;
 }
 
 .res-item .right {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 64px;
 }
 
 .res-item .right .img {
@@ -252,5 +327,6 @@ export default {
 .res-item .flag-area {
   display: flex;
   flex-direction: row;
+  overflow: auto;
 }
 </style>

@@ -30,7 +30,7 @@
             class="input input-bordered input-sm logininput" />
         </el-form-item>
         <el-form-item>
-          <el-button plain v-loading="loading" @click="submitLogin('register')">注册</el-button>
+          <el-button plain :loading="loading" @click="submitLogin('register')">注册</el-button>
           <el-button plain @click="goLogin()">去登录</el-button>
         </el-form-item>
       </el-form>

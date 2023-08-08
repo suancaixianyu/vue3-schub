@@ -2,13 +2,13 @@
   <div v-loading="isLoading">
     <!-- 移动端 -->
     <div v-if="set.ismobile">
-      <el-container>
+      <el-container v-if="content!=null">
         <!-- 头部 -->
         <el-header style="padding: 0">
           <!-- 顶部按钮 -->
           <el-row :gutter="24" style="padding: 0">
             <el-col :span="24" style="display: flex; justify-content: flex-end">
-              <el-icon @click="flushed" :size="25" title="刷新" class="icon">
+              <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
                 <Flushed />
               </el-icon>
               <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
@@ -19,16 +19,7 @@
               </el-icon>
             </el-col>
           </el-row>
-          <UserHead :item="{
-            ...content.author,
-            time: content.time,
-            shape,
-            headsize,
-            style: {
-              flexDirection: 'row',
-              alignItems: 'center',
-            },
-          }" style="padding-left: 10px" />
+          <UserHead :item="userInfo" style="padding-left: 10px" />
         </el-header>
         <!-- 内容 -->
         <el-main style="padding: 20px 0">
@@ -59,7 +50,7 @@
             <!-- 回复列表 -->
             <div v-loading="isLoadingReply">
               <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                :previewid="index" @refreshEvent="refresh_reply_list" />
+                        :previewid="index" @refreshEvent="refresh_reply_list" />
             </div>
           </div>
         </el-main>
@@ -68,15 +59,15 @@
 
     <!-- pc页面 -->
     <div v-else class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
-      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px">
-      <div class="common-layout">
+         style="box-shadow: var(--el-box-shadow-light); margin-right: 28px">
+      <div v-if="content!=null" class="common-layout">
         <el-container>
           <!-- 头部 -->
           <el-header style="padding: 0">
             <!-- 顶部按钮 -->
             <el-row :gutter="24">
               <el-col :span="24" style="display: flex; justify-content: flex-end">
-                <el-icon @click="flushed" :size="25" title="刷新" class="icon">
+                <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
                   <Flushed />
                 </el-icon>
                 <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
@@ -87,18 +78,7 @@
                 </el-icon>
               </el-col>
             </el-row>
-            <UserHead :item="{
-              headurl: content.author.headurl,
-              nickname: content.author.nickname,
-              time: content.time,
-              role: content.author.role,
-              shape,
-              headsize,
-              style: {
-                flexDirection: 'row',
-                alignItems: 'center',
-              },
-            }" style="padding-left: 10px" />
+            <UserHead :item="userInfo" style="padding-left: 10px" />
           </el-header>
           <!-- 内容 -->
           <el-main>
@@ -128,7 +108,7 @@
               <!-- 回复列表 -->
               <div v-loading="isLoadingReply">
                 <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                  :previewid="index" @refreshEvent="refresh_reply_list" />
+                          :previewid="index" @refreshEvent="refresh_reply_list" />
               </div>
             </div>
           </el-main>
@@ -140,14 +120,12 @@
 
 <script lang="ts">
 // 帖子详情卡片
-import { reactive, toRefs, onUpdated, onBeforeMount, inject, watch } from 'vue'
+import { inject, watch } from 'vue'
 import type { Ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useRoute, useRouter } from 'vue-router'
 import Flushed from '@comps/icons/Flushed.vue'
 import UserHead from '@comps/main/bbs/UserHead.vue'
 import OneReply from '@comps/main/bbs/OneReply.vue'
-
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 
@@ -163,26 +141,20 @@ export default {
     MdPreview,
     OneReply,
   },
+  props:{
+    id: {type:Number}//帖子ID
+  },
   data() {
     return {
+      userInfo:<any>null,
       headsize: Cfg.config.homestyle.headsize.post,
       set: Cfg.set,
       shape: Cfg.set.shape,
-    }
-  },
-  setup() {
-    // const md = new MarkdownIt();
-    const route = useRoute()
-    const router = useRouter()
-    const data = reactive({
       isLoading: false,
       isReplying: false,
       replyType: 0, //0对帖子1对评论
       comments: '',
       size: 28,
-      chatid: route.params.chatid,
-      id: route.params.id,
-      url: route.fullPath,
       isLoadingReply: false,
       page: 1,
       limit: 10,
@@ -190,181 +162,148 @@ export default {
       sum: {
         total: 0,
       },
-      content: {
-        title: '标题',
-        likes: 666,
-        dislikes: 666,
-        comments: 123,
-        time: 1689087371 as number | string,
-        summary: '帖子完整内容',
-        author: {
-          nickname: '酸菜咸鱼',
-          headurl: 'https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160',
-          role: '管理员',
-        },
-      },
+      content: <any>null,
       reply_list: [] as any,
-    })
-
-    function refresh_item() {
-      data.isLoading = true
-      if (route.params.id == null) return
-      Method.api_get(`/bbs/item/${route.params.id}`)
-        .then((res: any) => {
-          data.isLoading = false
-          if (res.data.code === 200) {
-            let item = res.data.data
-            item.time = Method.formatBbsTime(item.time)
-            item.author.headurl = Method.getHostUrl(item.author.headurl)
-            data.content = item
-            /** 获取帖子的评论 */
-            refresh_reply_list()
-          } else {
+    }
+  },
+  methods:{
+    /**
+     * 刷新帖子详情
+     */
+    refresh_item() {
+      this.isLoading = true
+      Method.api_get(`/bbs/item/${this.id}`)
+          .then((res: any) => {
+            this.isLoading = false;
+            if (res.data.code === 200) {
+              let item = res.data.data;
+              item.time = Method.formatBbsTime(item.time);
+              item.author.headurl = Method.getHostUrl(item.author.headurl);
+              this.content = item;
+              this.userInfo = {
+                headurl: item.author.headurl,
+                nickname: item.author.nickname,
+                time: item.time,
+                role: item.author.role,
+                shape:this.shape,
+                headsize:this.headsize,
+                style: {
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                },
+              };
+              this.refresh_reply_list();
+            } else {
+              ElMessage({
+                type: 'error',
+                message: res.data.msg,
+              })
+            }
+          })
+          .catch((error: any) => {
+            this.isLoading = false
             ElMessage({
               type: 'error',
-              message: res.data.msg,
+              message: '详情获取失败，请点击刷新按钮重试',
             })
-          }
-        })
-        .catch((error: any) => {
-          data.isLoading = false
-          ElMessage({
-            type: 'error',
-            message: '详情获取失败，请点击刷新按钮重试',
+            console.error(error)
           })
-          console.error(error)
-        })
-    }
+    },
     /**
-     * 获取帖子的回复列表
+     * 刷新回复列表
      */
-    function refresh_reply_list() {
-      let { page, limit, sort } = data
-      data.isLoadingReply = true
-      Method.api_get(
-        `/bbs/reply_list/${route.params.id}?page=${page}&limit=${limit}&sort=${sort}`,
-      )
-        .then((res: any) => {
-          data.isLoading = false
-          let list = res.data.data
-          function formatList(l: any[]) {
-            l.forEach(
-              (xl: {
-                time: any
-                author: { headurl: string }
-                children: any
-              }) => {
-                xl.time = Method.formatBbsTime(xl.time)
-                xl.author.headurl = Method.getHostUrl(xl.author.headurl)
-                formatList(xl.children)
-              },
-            )
-          }
-          formatList(list)
-          data.reply_list = list
-          if (data.page === 1) {
-            data.sum.total = res.data.sum.total
-          }
-          data.isLoadingReply = false
-        })
-        .catch((error: { message: any }) => {
-          data.isLoading = false
-          ElMessage({
-            type: 'error',
-            message: '评论获取失败，请点击刷新按钮重试',
+    refresh_reply_list() {
+      let { page, limit, sort } = this
+      this.isLoadingReply = true
+      Method.api_get(`/bbs/reply_list/${this.id}?page=${page}&limit=${limit}&sort=${sort}`)
+          .then((res: any) => {
+            this.isLoading = false
+            let list = res.data.data
+            function formatList(l: any[]) {
+              l.forEach(
+                  (xl: {
+                    time: any
+                    author: { headurl: string }
+                    children: any
+                  }) => {
+                    xl.time = Method.formatBbsTime(xl.time)
+                    xl.author.headurl = Method.getHostUrl(xl.author.headurl)
+                    formatList(xl.children)
+                  },
+              )
+            }
+            formatList(list)
+            this.reply_list = list
+            if (this.page === 1) {
+              this.sum.total = res.data.sum.total
+            }
+            this.isLoadingReply = false
           })
-          console.error(error.message)
-        })
-    }
-
-    function sortByTime() {
-      data.sort = 0
-      data.page = 1
-      refresh_reply_list()
-    }
-    function sortByHot() {
-      data.sort = 1
-      data.page = 1
-      refresh_reply_list()
-    }
-    let windowwidth = inject<Ref<number>>('windowwidth') as Ref<number>
-
-    watch(windowwidth, (newValue) => {
-      pagewidth(newValue)
-    })
-    //监听路由数据变化
-    watch(
-      () => route.params,
-      () => {
-        refresh_item()
-      },
-      { immediate: true },
-    )
-
-    function pagewidth(width: number) {
+          .catch((error: { message: any }) => {
+            this.isLoading = false
+            ElMessage({
+              type: 'error',
+              message: '评论获取失败，请点击刷新按钮重试',
+            })
+            console.error(error.message)
+          })
+    },
+    sortByTime() {
+      this.sort = 0
+      this.page = 1
+      this.refresh_reply_list()
+    },
+    sortByHot() {
+      this.sort = 1
+      this.page = 1
+      this.refresh_reply_list()
+    },
+    pagewidth(width: number) {
       if (width <= 480) {
         Cfg.config.homestyle.maincontainer.overflowY = 'visible'
       } else {
         Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
       }
-    }
-    onUpdated(() => {
-      pagewidth(windowwidth.value)
-    })
-
-    onBeforeMount(() => {
-      pagewidth(windowwidth.value)
-    })
-    function flushed() {
-      router.replace({
-        path: route.path,
-        force: true,
-      })
-    }
-
-    function copytext() {
+    },
+    close() {
+      this.$emit('closeEvent');
+    },
+    copytext() {
       Method.copyText(window.location.href)
-    }
-
-    function close() {
-      router.push({ name: 'PostPage', params: { id: data.id } })
-    }
-
-    function formatTimestamp(timestamp: number) {
-      return Method.formatBbsTime(timestamp)
-    }
-
-    function doReply() {
-      if (data.comments === '') return ElMessage('评论内容不可为空')
-      data.isReplying = true
-      let bid = route.params.id
+    },
+    /**
+     * 回复帖子
+     */
+    doReply() {
+      if (this.comments === '') return ElMessage('评论内容不可为空')
+      this.isReplying = true
       Method.api_post(`/bbs/reply`, {
-        content: data.comments,
-        bid: bid,
+        content: this.comments,
+        bid: this.id,
       }).then((response: { data: { code: number } }) => {
-        data.isReplying = false
+        this.isReplying = false
         if (response.data.code == 200) {
-          data.isLoadingReply = true
-          data.comments = ''
-          refresh_reply_list() //刷新评论
+          this.isLoadingReply = true
+          this.comments = ''
+          this.refresh_reply_list() //刷新评论
           ElMessage('评论成功')
         } else {
           ElMessage('评论失败')
         }
       })
     }
-    return {
-      ...toRefs(data),
-      close,
-      copytext,
-      flushed,
-      sortByTime,
-      sortByHot,
-      doReply,
-      formatTimestamp,
-      refresh_reply_list,
-    }
   },
+
+  created(){
+    let windowwidth = inject<Ref<number>>('windowwidth') as Ref<number>
+    watch(windowwidth, (newValue) => {
+      this.pagewidth(newValue)
+    });
+    watch(()=>this.id,()=>{
+      this.refresh_item();
+    });
+    this.refresh_item();
+  }
 }
 </script>
 

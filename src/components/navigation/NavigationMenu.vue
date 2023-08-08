@@ -267,8 +267,8 @@ export default {
   },
   data() {
     return {
-      bailan: 0,
       ...Cfg,
+      bailan: 0,
       iconid: false,
       menumode: 'horizontal',
       showtext: false,

@@ -110,8 +110,8 @@ class Cfg {
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      //server: "http://localhost:8081",
-      server: '/xyapi',
+      server: "http://localhost:8081",
+      //server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
       // server: "https://schub.top",
       uploadimg: '/upload',
@@ -119,12 +119,8 @@ class Cfg {
       homestyle,
       webstyle,
     }
-    this.userInfo = {
-      ...userInfo
-    }
-    this.set = {
-      ...set
-    }
+    this.userInfo = userInfo;
+    this.set = set;
   }
 }
 

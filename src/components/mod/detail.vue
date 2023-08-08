@@ -36,7 +36,7 @@
           <div>{{ x.name }}</div>
         </a>
       </div>
-      <el-tabs class="el-tabs" type="border-card">
+      <el-tabs class="el-tabs" type="card">
         <el-tab-pane label="Mod介绍">
           {{ description }}
         </el-tab-pane>
@@ -81,7 +81,17 @@
       <div class="update-area">
         <div class="tab">更新日志</div>
         <div class="update-log" v-if="version_list.length != 0" v-for="x in version_list">
-          <div class="version">{{ x.version }}</div>
+          <el-popover
+              placement="top-start"
+              :title="x.version"
+              :width="512"
+              trigger="click"
+              :content="x.description"
+          >
+            <template #reference>
+              <div class="version">{{ x.version }}</div>
+            </template>
+          </el-popover>
           <div class="date">{{ x.time }}</div>
         </div>
         <div class="update-log" v-if="version_list.length == 0">
@@ -104,11 +114,11 @@
       <div class="extra-area">
         <div class="item">
           <div>支持的游戏版本:</div>
-          <div class="href" v-for="x in game_list">{{ x.name }}</div>
+          <el-tag v-for="x in game_list">{{ x.name }}</el-tag>
         </div>
         <div class="item">
           <div>支持的API版本:</div>
-          <div class="href" v-for="x in api_list">{{ x.name }}</div>
+          <el-tag v-for="x in api_list">{{ x.name }}</el-tag>
         </div>
         <div class="item">最后编辑: {{ last_modify }}</div>
         <div class="item">
@@ -122,7 +132,7 @@
             <div>{{ x.name }}</div>
           </a>
         </div>
-        <el-tabs class="el-tabs" type="border-card">
+        <el-tabs class="el-tabs"  type="card">
           <el-tab-pane label="Mod介绍">
             {{ description }}
           </el-tab-pane>

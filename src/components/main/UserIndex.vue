@@ -5,7 +5,7 @@
       <img class="img2" src="../../assets/image/wenben.png" />
       <div class="head-area">
         <el-avatar :size="headsize" :src="userInfo.data.headurl" />
-        <div class="nickname">{{ userInfo.data.nickname }}</div>
+        <div class="nickname" v-html="userInfo.data.nickname"></div>
         <UserRole :role="userInfo.data.role" />
       </div>
     </el-header>
@@ -56,7 +56,6 @@ import {
   UploadFilled,
   Promotion,
 } from '@element-plus/icons-vue'
-// import UserIndexPage from "@comps/user/zone-page/index.vue"
 import ModPage from '@comps/user/zone-page/mod.vue'
 import BbsPage from '@comps/user/zone-page/bbs.vue'
 import WorldPage from '@comps/user/zone-page/world.vue'
@@ -132,7 +131,6 @@ export default {
     Cfg.config.homestyle.maincontainer.overflowY = 'auto'
   },
   unmounted() {
-    console.log('卸载用户主页')
     Cfg.config.homestyle.maincontainer.padding = '0 1rem'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
   },

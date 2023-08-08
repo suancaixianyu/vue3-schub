@@ -130,13 +130,14 @@ export default {
   border-radius: 5px;
   line-height: initial;
   cursor: pointer;
-  margin: 0 5px;
+  margin: 5px 5px;
   transition: all 0.2s;
   fill: #909399;
   stroke: #909399;
 }
 
 .item .name {
+  width: max-content;
   user-select: none;
   padding-left: 5px;
 }

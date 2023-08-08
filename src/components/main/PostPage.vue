@@ -1,93 +1,60 @@
 <template>
-  <el-row :gutter="24" style="height:100% overflow-y: 'scroll'" class="row-bg" justify="center">
-    <el-col :span="col.postlist" style="padding: 4px 0">
-      <div class="window hide-scrollbar" :style="windowseype" ref="container">
-        <!-- 头部搜索框 -->
-        <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" :style="postliststyle"
-          style="height: 60px">
-          <el-row :gutter="24">
-            <el-col :span="24">
-              <input v-model="searchinput" type="search" placeholder="搜索" class="input input-bordered input-sm"
-                style="margin-right: 12px" :style="inputstyle" />
-              <button class="btn btn-sm" @click="search" style="margin: 0" title="搜索">
-                <el-icon>
-                  <Search />
-                </el-icon>
-                <el-text v-if="btn">搜索</el-text>
-              </button>
-              <samp style="margin: 6px"></samp>
-              <button class="btn btn-sm" style="margin: 0" title="发帖" @click="topublish">
-                <el-icon>
-                  <Edit />
-                </el-icon>
-                <el-text v-if="btn">发帖</el-text>
-              </button>
-            </el-col>
-            <el-col :span="24"></el-col>
-          </el-row>
-        </div>
-        <!-- 列表 -->
-        <div v-loading="isLoadingList" element-loading-text="加载中">
-          <ul v-infinite-scroll="loadmore" :infinite-scroll-distance="20" :infinite-scroll-immediate="false"
-            :infinite-scroll-disabled="disableloading">
-            <li>
-              <PostListPlate v-for="item in outcomeplate" :key="item.id" :item="item" :bbsid="chatid"
-                :st="{ postliststyle, shape }" />
-            </li>
-          </ul>
-        </div>
-        <!-- 底部分页 -->
-        <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-xs-only"
-          :style="postliststyle" style="height: 60px" v-if="showpagenum">
-          <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
-            @current-change="handleCurrentChange" style="justify-content: center">
-          </el-pagination>
-        </div>
-        <div style="text-align: center; cursor: pointer" @click="loadmore" v-html="txt"
-          class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact hidden-sm-and-up"></div>
+  <div class="bbs-window">
+    <!-- 头部搜索框 -->
+    <div class="card w-96 bg-base-100 shadow-xl card-compact search-header" :class="set.ismobile?'mobile':''">
+      <div class="container">
+        <input v-model="searchinput" type="search" placeholder="搜索" class="item input input-bordered input-sm"/>
+        <button class="btn btn-sm item" @click="search" title="搜索">
+          <el-icon>
+            <Search />
+          </el-icon>
+          <el-text v-if="btn">搜索</el-text>
+        </button>
       </div>
-    </el-col>
-
-    <el-col :span="col.detail" :style="colstype">
-      <router-view />
-    </el-col>
-  </el-row>
+    </div>
+    <!-- 列表 -->
+    <div class="bbs-list hide-scrollbar" ref="container" v-loading="isLoadingList" element-loading-text="加载中">
+      <div v-infinite-scroll="loadMore" :infinite-scroll-distance="20" :infinite-scroll-immediate="false" :infinite-scroll-disabled="disableloading">
+        <div v-for="item in plate">
+          <div class="card w-96 bg-base-100 shadow-xl card-compact item-header"  :class="set.ismobile?'mobile':''">
+            <BbsItem :item="item" @click="onItemClick(item)"></BbsItem>
+          </div>
+        </div>
+        <div class="load-more" v-if="set.ismobile">
+          <el-button :loading="isLoadingList" type="primary" @click="loadMore" v-html="txt"></el-button>
+        </div>
+      </div>
+    </div>
+    <div v-if="!set.ismobile" class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only">
+      <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
+                     @current-change="handleCurrentChange" style="justify-content: center">
+      </el-pagination>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import {
-  ref,
-  toRefs,
-  reactive,
-  inject,
-  provide,
-  watch,
-  onMounted,
-  onUpdated,
+  watch
 } from 'vue'
-import type { Ref } from 'vue'
 import { CSSProperties } from 'vue'
-import { useRoute, useRouter, } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
-
 import PostListPlate from './bbs/list.vue'
+import BbsItem from "@comps/main/bbs/item.vue";
 /** 帖子列表 */
 export default {
   name: 'PostPage',
   components: {
+    BbsItem,
     PostListPlate,
   },
   props: ['chatid'],
-  setup(props) {
-    const route = useRoute()
-    const router = useRouter()
-
-    const data = reactive({
-      txt: '加载更多',
+  data(){
+    return {
+      set:Cfg.set,
       disableloading: true, // 禁用加载
-      showpagenum: true, // 显示页码
       pagenum: 1, // 页码
       total: 125, // 总帖子数
       totalpages: 2, // 总页数
@@ -113,233 +80,96 @@ export default {
         /** 详情页宽度 */
         detail: 8,
       },
-      plate: <any>[],
-    })
-
-    /**指定页面加载 */
-    function handleCurrentChange(page: any) {
-      data.pagenum = page // 更新当前页码
-      listup(props.chatid, page, 'pc')
-    }
-    /**无限滚动加载 */
-    function loadmore() {
-      if (data.pagenum + 1 <= data.totalpages) {
-        data.pagenum++
-        listup(props.chatid, data.pagenum, 'move')
-        data.txt = '加载更多'
-      } else {
-        data.txt = '到底了~'
-      }
-    }
-
-    function listup(id: any, page: any, type: string) {
-      Method.api_get(`/bbs/list/${id}?page=${page}`)
-        .then((response: any) => {
-          data.isLoadingList = false
-          let obj = response.data
-          if (obj.code === 200) {
-            // 获取总帖子数量
-            data.total = obj.sum.total
-            let a = Math.floor(obj.sum.total / 10)
-            if (obj.sum.total % 10 > 0) ++a
-            data.totalpages = a
-            // 更新列表
-            if (type === 'pc') data.plate.length = 0
-            obj.data.forEach((el: any) => {
-              data.plate.push({
-                /** 帖子id */
-                id: el.id,
-                /** 帖子标题 */
-                title: el.title,
-                /** 内容摘要，全部内容 */
-                summary: el.summary,
-                /** 用户信息 */
-                author: el.author,
-                /** 图片列表 */
-                cover: el.cover,
-                /** 发帖时间 */
-                time: el.time,
-                /** 点赞 */
-                likes: el.likes,
-                /** 评论 */
-                comments: el.comments,
-              })
-            })
-            if (type === 'pc') {
-              const scrollElement = ref<HTMLDivElement | null>(null)
-              if (scrollElement.value) {
-                scrollElement.value.scrollTop = 0
-              }
-            }
-          }
-        })
-        .catch((error) => {
-          data.isLoadingList = false
-          ElMessage({
-            type: 'error',
-            message: '获取列表失败',
-          })
-          console.error(error)
-        })
-    }
-
-    let windowwidth = inject<Ref<number>>('windowwidth') as Ref<number>
-    watch(windowwidth, (newValue) => {
-      pageup(newValue)
-    })
-
-    onMounted(() => {
-      data.isLoadingList = true
-      pageup(windowwidth.value)
-      listup(props.chatid, 1, 'pc')
-    })
-
-    onUpdated(() => {
-      pageup(windowwidth.value)
-      listup(props.chatid, 1, 'pc')
-    })
-
-    /** 样式调整 */
-    function pageup(width: number) {
-      console.log(route.params)
-      if (width <= 720) {
-        Cfg.config.homestyle.maincontainer.height = 'auto'
-        data.windowseype.height = 'auto'
-        data.disableloading = false
-      } else {
-        Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
-        data.windowseype.height = 'calc(100vh - 100px)'
-
-        if (route.params.id) {
-          data.disableloading = false
-        } else {
-          data.disableloading = true
-        }
-      }
-      // 打开帖子
-      if (route.params.id) {
-        data.showpagenum = false
-
-        if (width <= 720) {
-          data.col = {
-            postlist: 0,
-            detail: 24,
-          }
-          data.btn = true
-          data.inputstyle = {
-            width: 'calc(100% - 104px)',
-          }
-        } else if (width > 720 && width <= 900) {
-          data.col = {
-            postlist: 0,
-            detail: 24,
-          }
-          data.btn = false
-          data.inputstyle = {
-            width: 'calc(100% - 104px)',
-          }
-        } else if (width > 900 && width <= 1200) {
-          data.col = {
-            postlist: 10,
-            detail: 14,
-
-          }
-          data.btn = true
-          data.inputstyle = {
-            width: 'calc(100% - 176px)',
-          }
-        } else if (width > 1200) {
-          console.log('打开帖子，大于1200')
-          data.col = {
-            postlist: 10,
-            detail: 14,
-          }
-          data.btn = true
-          data.inputstyle = {
-            width: 'calc(100% - 176px)',
-          }
-        }
-      } else {
-        // 关闭帖子
-        data.showpagenum = true
-        if (width <= 720) {
-          console.log('关闭帖子，小于720')
-          data.col = {
-            postlist: 24,
-            detail: 0,
-          }
-          data.btn = false
-          data.inputstyle = {
-            width: 'calc(100% - 104px)',
-          }
-        } else if (width > 720 && width <= 820) {
-          console.log('关闭帖子，大于720，小于820')
-          data.col = {
-            postlist: 24,
-            detail: 0,
-          }
-          data.btn = false
-          data.inputstyle = {
-            width: 'calc(100% - 104px)',
-          }
-        } else if (width > 820 && width <= 1200) {
-          console.log('关闭帖子，大于820，小于1200')
-          data.col = {
-            postlist: 24,
-            detail: 0,
-          }
-          data.btn = true
-          data.inputstyle = {
-            width: 'calc(100% - 176px)',
-          }
-        } else if (width > 1200) {
-          console.log('关闭帖子，大于1200')
-          data.col = {
-            postlist: 24,
-            detail: 0,
-          }
-          data.btn = true
-          data.inputstyle = {
-            width: 'calc(100% - 176px)',
-          }
-        }
-      }
-    }
-
-    /** 搜索结果 */
-    let outcomeplate = <any>ref(data.plate)
-    provide('outcomeplate', outcomeplate)
-
-    /** 搜索（本地） */
-    function search() {
-      outcomeplate.value = data.plate.filter(function (object: any) {
-        return (
-          object.title.includes(data.searchinput) ||
-          object.summary.includes(data.searchinput)
-        )
-      })
-    }
-
-    /** 发帖 */
-    function topublish() {
-      router.push({
-        path: `/publish/${props.chatid}`,
-      })
-    }
-
-    return {
-      outcomeplate,
-      ...toRefs(data),
-      search,
-      topublish,
-      handleCurrentChange,
-      loadmore,
+      plate: <any[]>[],
+      txt:'加载更多'
     }
   },
+  methods:{
+    onItemClick(item:any){
+      this.$emit('itemClickEvent',item);
+    },
+    /**指定页面加载 */
+    handleCurrentChange(page: any) {
+      this.pagenum = page // 更新当前页码
+      this.listUpdate(this.chatid, page)
+    },
+    /**无限滚动加载 */
+    loadMore() {
+      if (this.pagenum + 1 <= this.totalpages) {
+        this.pagenum++
+        this.listUpdate(this.chatid, this.pagenum, true)
+        this.txt = '加载更多'
+      } else {
+        this.txt = '到底了~'
+      }
+    },
+    /**
+     * 列表刷新
+     * @param id
+     * @param page
+     * @param appendMode true 追加数据 false 刷新数据
+     */
+    listUpdate(id: any, page: any, appendMode: boolean = false) {
+      Method.api_get(`/bbs/list/${id}?page=${page}`)
+          .then((response: any) => {
+            this.isLoadingList = false
+            let obj = response.data
+            if (obj.code === 200) {
+              const scrollElement = <any>this.$refs.container;
+              // 获取总帖子数量
+              this.total = obj.sum.total
+              let a = Math.ceil(obj.sum.total / 10)
+              this.totalpages = a
+              // 更新列表
+              if (appendMode){
+                let list = this.plate;
+                obj.data.forEach((el: any) => {
+                  list.push(el)
+                });
+                scrollElement.scrollTop = scrollElement.scrollHeight
+              }else{
+                let list = <any>[];
+                obj.data.forEach((el: any) => {
+                  list.push(el)
+                });
+                this.plate = list;
+                scrollElement.scrollTop = 0
+              }
+            }
+          })
+          .catch((error) => {
+            this.isLoadingList = false
+            ElMessage({
+              type: 'error',
+              message: '获取列表失败',
+            })
+            console.error(error)
+          })
+    },
+    /** 样式调整 */
+    pageup() {
+
+    },
+    /** 搜索（本地） */
+    search() {
+    }
+  },
+  created(){
+    watch(()=>this.chatid,()=>{
+      this.listUpdate(this.chatid, this.pagenum);
+    })
+    this.listUpdate(this.chatid, this.pagenum);
+  }
 }
 </script>
 
 <style scoped>
+.bbs-list{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
 .bbs-item {
   display: flex;
   padding: 12px 18px;
@@ -348,5 +178,52 @@ export default {
   width: 90%;
   max-height: 200px;
   box-shadow: var(--el-box-shadow-light);
+}
+.bbs-window{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.item-header{
+  display: flex;
+  flex-direction: column;
+  padding: 12px 18px;
+  margin: 10px 50px;
+  box-shadow: var(--el-box-shadow-light);
+  border-radius: var(--rounded-btn);
+}
+.item-header.mobile{
+  margin: 10px;
+}
+.search-header{
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  padding: 12px 18px;
+  margin: 10px 50px;
+  box-shadow: var(--el-box-shadow-light);
+  border-radius: var(--rounded-btn);
+}
+.search-header.mobile{
+  margin: 10px;
+}
+.search-header .container{
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+.search-header .container .input{
+  overflow: hidden;
+  flex: 1;
+}
+.search-header .container .item{
+  margin: 0 6px;
+}
+.load-more{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10px;
 }
 </style>
