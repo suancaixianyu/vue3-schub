@@ -9,8 +9,8 @@
     <el-container class="el-container" v-loading="isLoading">
       <router-link v-if="set.ismobile" :to="x.to_link" v-for="x in list">
         <div class="res-item">
-          <div class="right">
-            <img class="img" :src="x.cover_src" />
+          <div class="right" v-if="x.cover_src">
+            <el-image style="width: 128px;height: 96px;" :src="x.cover_src" fit="contain" />
           </div>
           <div class="left">
             <div class="flag-area hide-scrollbar">
@@ -39,8 +39,8 @@
       </router-link>
       <router-link v-else :to="x.to_link" v-for="x in list">
         <div class="res-item">
-          <div class="right">
-            <img class="img" :src="x.cover_src" />
+          <div class="right" v-if="x.cover_src">
+            <el-image style="width: 128px;height: 96px;" :src="x.cover_src" fit="contain" />
           </div>
           <div class="left">
             <div class="name-line">
@@ -107,24 +107,24 @@ export default {
   },
   data() {
     return {
-      set:Cfg.set,
+      set: Cfg.set,
       activeFlagId: 0,
       total: 0,
       page: 1,
       limit: 10,
       list: <any>[],
-      animateTimerId:<any>0,
+      animateTimerId: <any>0,
       mod_flag_list: <any>[],
       search: '',
       isLoading: false,
     }
   },
   methods: {
-    onFlagClick(id:any){
+    onFlagClick(id: any) {
       let c = <HTMLDivElement>this.$refs.flagContainer;
       this.activeFlagId = id;
-      let f = this.mod_flag_list.find((x:any)=>{return x.id == id;});
-      if(f != null){
+      let f = this.mod_flag_list.find((x: any) => { return x.id == id; });
+      if (f != null) {
         let index = this.mod_flag_list.indexOf(f);
         let e = c.children[index];
         let cb = c.getBoundingClientRect();
@@ -136,25 +136,25 @@ export default {
         let start = c.scrollLeft;
         let end = c.scrollLeft + (w2c - wc);
         let frameCount = 50;//0.1s
-        if(end > 0 ){
+        if (end > 0) {
           let each = (end - start) / frameCount;
           let position = start;
           let times = 0;
           //逐渐滚动到这个位置实现
-          if(this.animateTimerId > 0){clearInterval(this.animateTimerId);}
-          this.animateTimerId = setInterval(()=>{
+          if (this.animateTimerId > 0) { clearInterval(this.animateTimerId); }
+          this.animateTimerId = setInterval(() => {
             c.scrollLeft = position;
             position += each;
             times++;
-            if(times > frameCount){
+            if (times > frameCount) {
               clearInterval(this.animateTimerId)
             }
-          },1)
-        }else{
+          }, 1)
+        } else {
           c.scrollLeft = 0;
         }
       }
-     },
+    },
     pullList() {
       let payLoad = {
         page: this.page,
@@ -209,8 +209,8 @@ export default {
       this.pullList();
     })
   },
-  unmounted(){
-    if(this.animateTimerId > 0){
+  unmounted() {
+    if (this.animateTimerId > 0) {
       clearInterval(this.animateTimerId)
     }
   }
@@ -297,7 +297,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 64px;
 }
 
 .res-item .right .img {

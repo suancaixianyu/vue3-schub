@@ -27,10 +27,17 @@
         <div>资源作者/开发团队:</div>
         <div>无</div>
       </div>
-      <div class="item">相关链接:</div>
-      <div class="item">
+      <div class="item" v-if="link_list.length > 0">相关链接:</div>
+      <div class="item" v-if="link_list.length > 0">
         <a class="link" :href="x.src" v-for="x in link_list">
-          <icon-down></icon-down>
+          <icon-down v-if="x.id == 1"></icon-down>
+          <icon-github v-if="x.id == 2"></icon-github>
+          <icon-cloud-store fill="#f8574c" v-if="x.id == 3"></icon-cloud-store>
+          <icon-cloud-store v-if="x.id == 4"></icon-cloud-store>
+          <icon-server v-if="x.id == 5"></icon-server>
+          <el-icon v-if="x.id == 6" size="26">
+            <Share />
+          </el-icon>
           <div v-html="x.name"></div>
         </a>
       </div>
@@ -58,30 +65,26 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+        <el-tab-pane label="更新日志">
+          <el-timeline v-if="version_list.length != 0">
+            <el-timeline-item v-for="(activity, index) in version_list" :key="index" :timestamp="activity.time">
+              {{ activity.description }}
+            </el-timeline-item>
+          </el-timeline>
+          <div class="update-log" v-else>暂无更新日志</div>
+        </el-tab-pane>
       </el-tabs>
     </div>
 
-    <div class="update-area" style="padding: 0 10px">
-      <div class="tab">更新日志</div>
-      <el-timeline v-if="version_list.length != 0">
-        <el-timeline-item v-for="(x, index) in version_list" :key="index" :timestamp="x.time" v-html="x.version"></el-timeline-item>
-      </el-timeline>
-      <div class="update-log" v-else>暂无更新日志</div>
-    </div>
   </div>
+
   <el-container class="el-container" v-loading="isLoading" v-else>
     <div class="panel-left">
       <el-avatar class="img" :src="cover_src" />
       <div class="update-area">
         <div class="tab">更新日志</div>
         <div class="update-log" v-if="version_list.length != 0" v-for="x in version_list">
-          <el-popover
-              placement="top-start"
-              :title="x.version"
-              :width="512"
-              trigger="click"
-              :content="x.description"
-          >
+          <el-popover placement="top-start" :title="x.version" :width="512" trigger="click" :content="x.description">
             <template #reference>
               <div class="version" v-html="x.version"></div>
             </template>
@@ -127,11 +130,13 @@
             <icon-cloud-store fill="#f8574c" v-if="x.id == 3"></icon-cloud-store>
             <icon-cloud-store v-if="x.id == 4"></icon-cloud-store>
             <icon-server v-if="x.id == 5"></icon-server>
-            <el-icon v-if="x.id == 6" size="26"><Share /></el-icon>
+            <el-icon v-if="x.id == 6" size="26">
+              <Share />
+            </el-icon>
             <div v-html="x.name"></div>
           </a>
         </div>
-        <el-tabs class="el-tabs"  type="card">
+        <el-tabs class="el-tabs" type="card">
           <el-tab-pane label="资源介绍" v-html="description"></el-tab-pane>
           <el-tab-pane label="资源关系">
             <el-collapse v-model="activeRelation">
@@ -166,7 +171,7 @@
           <div>名扬天下</div>
         </div>
         <div class="rate-info">
-          <el-rate v-model="modRate" disabled/>
+          <el-rate v-model="modRate" disabled />
           <div>总浏览:{{ views }}</div>
           <div>总点赞:{{ likes }}</div>
         </div>
@@ -187,12 +192,12 @@ import IconCloudStore from "@comps/icons/common/cloudStore.vue";
 import IconServer from "@comps/icons/mod/server.vue";
 export default {
   name: 'modDetail',
-  components: {IconServer, IconCloudStore, IconGithub, IconHot, IconDown, ModFlag },
+  components: { IconServer, IconCloudStore, IconGithub, IconHot, IconDown, ModFlag },
   data() {
     return {
       set: Cfg.set,
       activeRelation: <any>[0],
-      modRate:5,
+      modRate: 5,
       isLoading: false,
       last_modify: '',
       cover_src: '',

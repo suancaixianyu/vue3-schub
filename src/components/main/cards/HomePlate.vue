@@ -1,7 +1,7 @@
 <template>
   <el-container v-if="set.ismobile">
     <el-col class="el-main v">
-      <div class="cate-list mobile">
+      <div class="cate-list mobile" v-if="!isBbsView">
         <el-button type="info" @click="topicPublish">发布主题</el-button>
         <div class="list" v-loading="loadingCate">
           <el-button :class="active_cate_id == item.id ? 'active' : ''" v-for="item in cate_list"
@@ -14,8 +14,12 @@
         </div>
       </div>
       <!-- 帖子列表 -->
-      <div class="bbs-list mobile">
+      <div class="bbs-list mobile" v-if="!isBbsView">
         <PostPage @itemClickEvent="onBbsItemClick" :chatid="active_cate_id" />
+      </div>
+      <div :class="isBbsView ? 'active' : ''">
+        <DetailPlate v-if="isBbsView" @closeEvent="onBbsItemClose" :id="activeBbsItem.id" :item="activeBbsItem">
+        </DetailPlate>
       </div>
     </el-col>
   </el-container>
@@ -292,4 +296,5 @@ export default {
 
 .el-main {
   padding: 0
-}</style>
+}
+</style>

@@ -55,7 +55,8 @@
           </el-form-item>
           <el-form-item label="资源封面*">
             <el-input disabled v-model="cover" class="el-input" />
-            <el-upload :action="uploadServer" v-model="cover_list" :with-credentials="true" :show-file-list="false" :on-success="uploadCover">
+            <el-upload :action="uploadServer" v-model="cover_list" :with-credentials="true" :show-file-list="false"
+              :on-success="uploadCover">
               <el-button type="primary">上传</el-button>
             </el-upload>
           </el-form-item>
@@ -185,16 +186,16 @@ export default {
       let activeApiId = <any>[];
       let activeGameId = <any>[];
       let activeServerId = <any>[];
-      this.mod_flag_list.forEach((x:any) => {
+      this.mod_flag_list.forEach((x: any) => {
         if (x.active) activeFlagId.push(x.id)
       })
-      this.game_version_list.forEach((x:any) => {
+      this.game_version_list.forEach((x: any) => {
         if (x.active) activeGameId.push(x.id)
       })
-      this.api_version_list.forEach((x:any) => {
+      this.api_version_list.forEach((x: any) => {
         if (x.active) activeApiId.push(x.id)
       })
-      this.server_version_list.forEach((x:any) => {
+      this.server_version_list.forEach((x: any) => {
         if (x.active) activeServerId.push(x.id)
       })
 
@@ -243,6 +244,12 @@ export default {
     this.mod_link_type = link_type
     this.mod_flag_list = flag_list
     this.server_version_list = server_version_list
+  },
+  mounted() {
+    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+  },
+  unmounted() {
+    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
   },
 }
 </script>
