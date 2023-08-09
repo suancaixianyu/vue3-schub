@@ -111,8 +111,8 @@ class Cfg {
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-      server: "http://localhost:8081",
-      // server: '/xyapi',
+      //server: "http://localhost:8081",
+       server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
       // server: "https://schub.top",
       uploadServer: '/Upload/Upload',
