@@ -61,10 +61,8 @@
         <el-form-item>
           <el-input v-model="loginconfig.captcha_code">
             <template #prepend>验证码</template>
-            <template #suffix>
-              <img :src="codeSrc" @click="refreshCode">
-            </template>
           </el-input>
+          <img :src="codeSrc" @click="refreshCode">
         </el-form-item>
       </el-form>
       <el-form-item>
@@ -91,8 +89,8 @@ export default {
   data() {
     let src = Method.getHostUrl('/captcha');
     return {
-      baseCodeSrc:src,
-      codeSrc:'',
+      baseCodeSrc: src,
+      codeSrc: '',
       remember: false,
       loading: false,
       isregister: true,
@@ -102,12 +100,12 @@ export default {
         repass: '',
         email: '',
         nickname: '',
-        captcha_code:''
+        captcha_code: ''
       },
       loginconfig: {
         user: '',
         pass: '',
-        captcha_code:''
+        captcha_code: ''
       },
       windowseype: {
         display: 'flex',
@@ -124,8 +122,8 @@ export default {
     }
   },
   methods: {
-    refreshCode(){
-      this.codeSrc = this.baseCodeSrc + '?t='+(new Date().getTime());
+    refreshCode() {
+      this.codeSrc = this.baseCodeSrc + '?t=' + (new Date().getTime());
     },
     submitLogin(type: string) {
       let userInfo = Cfg.userInfo

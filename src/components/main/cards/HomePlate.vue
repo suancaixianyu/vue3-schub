@@ -4,7 +4,8 @@
       <div class="cate-list mobile">
         <el-button type="info" @click="topicPublish">发布主题</el-button>
         <div class="list" v-loading="loadingCate">
-          <el-button :class="active_cate_id == item.id?'active':''" v-for="item in cate_list" @click="active_cate_id = item.id">
+          <el-button :class="active_cate_id == item.id ? 'active' : ''" v-for="item in cate_list"
+            @click="active_cate_id = item.id">
             <el-icon>
               <ChatDotSquare />
             </el-icon>
@@ -21,27 +22,28 @@
   <el-container v-else>
     <el-main>
       <!-- 板块列表 -->
-      <div class="cate-list" :class="isBbsView?'':'active'">
+      <div class="cate-list" :class="isBbsView ? '' : 'active'">
         <div class="cate-item">
           <el-button type="info" @click="topicPublish">发布主题</el-button>
         </div>
         <div class="container" v-loading="loadingCate">
           <div class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
-               @click="refreshBbsList(item.id)">
+            @click="refreshBbsList(item.id)">
             <el-icon>
-              <ChatDotSquare/>
+              <ChatDotSquare />
             </el-icon>
             <div class="name">{{ item.name }}</div>
           </div>
         </div>
       </div>
       <!-- 帖子列表 -->
-      <div class="bbs-list" :class="isBbsView?'item-active':'item-detach'">
+      <div class="bbs-list" :class="isBbsView ? 'item-active' : 'item-detach'">
         <PostPage @itemClickEvent="onBbsItemClick" :chatid="active_cate_id" />
       </div>
       <!--帖子详情-->
-      <div class="bbs-detail" :class="isBbsView?'active':''">
-        <DetailPlate v-if="isBbsView"  @closeEvent="onBbsItemClose" :id="activeBbsItem.id" :item="activeBbsItem" ></DetailPlate>
+      <div class="bbs-detail" :class="isBbsView ? 'active' : ''">
+        <DetailPlate v-if="isBbsView" @closeEvent="onBbsItemClose" :id="activeBbsItem.id" :item="activeBbsItem">
+        </DetailPlate>
       </div>
     </el-main>
   </el-container>
@@ -55,16 +57,16 @@ import PostPage from '@comps/main/PostPage.vue'
 import BbsItem from "@comps/main/bbs/item.vue";
 import DetailPlate from "@comps/main/cards/DetailPlate.vue";
 import "./HomePlate.ts"
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 //主页卡片，经典
 export default {
   name: 'HomePlate',
-  components: {DetailPlate, BbsItem, LikeIcon, PostPage },
-  data(){
+  components: { DetailPlate, BbsItem, LikeIcon, PostPage },
+  data() {
     return {
-      set:Cfg.set,
-      isBbsView:false,
-      activeBbsItem:<any>null,
+      set: Cfg.set,
+      isBbsView: false,
+      activeBbsItem: <any>null,
       headsize: Cfg.config.homestyle.headsize.post,
       bbs_list: [] as any,
       cate_list: <cateItem[]>[],
@@ -74,19 +76,19 @@ export default {
       page: 1
     }
   },
-  methods:{
-    topicPublish(){
-      if(this.active_cate_id > 0){
+  methods: {
+    topicPublish() {
+      if (this.active_cate_id > 0) {
         this.$router.push(`/publish/${this.active_cate_id}`)
-      }else{
+      } else {
         ElMessage('请先选择一个板块');
       }
     },
-    onBbsItemClose(){
+    onBbsItemClose() {
       this.isBbsView = false;
       this.activeBbsItem = null;
     },
-    onBbsItemClick(item:any){
+    onBbsItemClick(item: any) {
       this.isBbsView = true;
       this.activeBbsItem = item;
     },
@@ -94,19 +96,19 @@ export default {
       this.active_cate_id = id
       this.loadingBbs = true
       Method.api_get(`/bbs/list/${this.active_cate_id}?page=${this.page}`).then(
-          (response2) => {
-            this.loadingBbs = false
-            let res2 = response2.data
-            res2.data.forEach((xx: any) => {
-              xx.url = `/left/${this.active_cate_id}/${xx.id}`
-            })
-            if (res2.code == 200) {
-              this.bbs_list = res2.data
-            }
-          },
+        (response2) => {
+          this.loadingBbs = false
+          let res2 = response2.data
+          res2.data.forEach((xx: any) => {
+            xx.url = `/left/${this.active_cate_id}/${xx.id}`
+          })
+          if (res2.code == 200) {
+            this.bbs_list = res2.data
+          }
+        },
       )
     },
-    refreshCateList(){
+    refreshCateList() {
       this.loadingCate = true
       Method.api_get('/cate/list').then((response) => {
         let res = response.data
@@ -115,7 +117,7 @@ export default {
           x.url = `/left/${x.id}`
         })
         let list = [];
-        list.push({id:0,name:'全部板块'});
+        list.push({ id: 0, name: '全部板块' });
         if (res.code == 200) {
           list = list.concat(res.data)
           this.cate_list = list
@@ -126,38 +128,47 @@ export default {
       })
     }
   },
-  created(){
+  created() {
     this.refreshCateList();
   },
-  mounted(){
+  mounted() {
     Cfg.config.homestyle.maincontainer.padding = '0 0.5rem';
   },
-  unmounted(){
-    Cfg.config.homestyle.maincontainer.padding = '0 18px';
+  unmounted() {
+    Cfg.config.homestyle.maincontainer.padding = '0 1rem';
   }
 }
 </script>
 <style scoped>
-.el-main{
+.el-main {
   display: flex;
   flex-direction: row;
 }
-.el-main.v{
+
+.el-main.v {
   display: flex;
   flex-direction: column;
 }
-.el-col{transition: all .3s}
-.cate-list,.bbs-list,.bbs-detail{
+
+.el-col {
+  transition: all .3s
+}
+
+.cate-list,
+.bbs-list,
+.bbs-detail {
   transition: all .3s;
   display: flex;
   flex-direction: column;
 }
-.cate-list{
+
+.cate-list {
   width: 0%;
   padding: 0 10px;
   overflow: hidden;
 }
-.cate-list.mobile{
+
+.cate-list.mobile {
   width: auto;
   display: flex;
   overflow: hidden;
@@ -165,16 +176,19 @@ export default {
   padding: 10px;
   height: 50px;
 }
-.cate-list.mobile .el-button{
+
+.cate-list.mobile .el-button {
   width: max-content;
 }
-.cate-list .el-button.active{
+
+.cate-list .el-button.active {
   color: var(--el-button-hover-text-color);
   border-color: var(--el-button-hover-border-color);
   background-color: var(--el-button-hover-bg-color);
   outline: 0;
 }
-.cate-list.mobile .list{
+
+.cate-list.mobile .list {
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
@@ -183,31 +197,39 @@ export default {
   height: inherit;
   margin-left: 10px;
 }
-.cate-list.active{
+
+.cate-list.active {
   width: 230px;
 }
-.cate-list .container{
+
+.cate-list .container {
   min-width: 230px;
   overflow: hidden;
   padding: 0 10px;
 }
-.bbs-list{
+
+.bbs-list {
   overflow: hidden;
 }
-.bbs-list.mobile{
+
+.bbs-list.mobile {
   flex: 1;
 }
-.bbs-list.item-active{
+
+.bbs-list.item-active {
   width: 35%;
 }
-.bbs-list.item-detach{
+
+.bbs-list.item-detach {
   width: 50%;
 }
-.bbs-detail{
+
+.bbs-detail {
   overflow: hidden;
   width: 0%;
 }
-.bbs-detail.active{
+
+.bbs-detail.active {
   width: 65%;
 }
 
@@ -270,5 +292,4 @@ export default {
 
 .el-main {
   padding: 0
-}
-</style>
+}</style>

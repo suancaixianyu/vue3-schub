@@ -40,17 +40,17 @@ const set = reactive({
 let webstyle = reactive({
   webkit: {
     // 滚动条样式
-    "webkit-scrollbar-thumb-background": "url('./src/assets/icon/mifengup.svg') center top no-repeat, url('./src/assets/icon/mifengbottom.svg') center bottom no-repeat",
-    "webkit-scrollbar-thumb-background-color": "",
-    "webkit-scrollbar-thumb-border": "none",
-    "webkit-scrollbar-thumb-border-radius": "10px",
-    "webkit-scrollbar-thumb-background-size": "100%",
-    "webkit-scrollbar-thumb-background-hover": "var(--webkit-scrollbar-thumb-background)",
-    "webkit-scrollbar-thumb-background-color-hover": "#F5F5F5",
-    "webkit-scrollbar-thumb-border-hover": "none",
-    "webkit-scrollbar-thumb-border-radius-hover": "10px",
-    "webkit-scrollbar-thumb-background-size-hover": "100%",
-    "webkit-scrollbar-width": "12px"
+    "scrollbar-thumb-background": "url('./src/assets/icon/mifengup.svg') center top no-repeat, url('./src/assets/icon/mifengbottom.svg') center bottom no-repeat",
+    "scrollbar-thumb-background-color": "",
+    "scrollbar-thumb-border": "none",
+    "scrollbar-thumb-border-radius": "10px",
+    "scrollbar-thumb-background-size": "100%",
+    "scrollbar-thumb-background-hover": "var(--scrollbar-thumb-background)",
+    "scrollbar-thumb-background-color-hover": "#F5F5F5",
+    "scrollbar-thumb-border-hover": "none",
+    "scrollbar-thumb-border-radius-hover": "10px",
+    "scrollbar-thumb-background-size-hover": "100%",
+    "scrollbar-width": "12px"
   },
   card: {
     'rounded-card': 'var(--rounded-btn)',
@@ -64,12 +64,12 @@ const userInfo: userInfoType = reactive({
     relate_type: [],
     link_type: [],
     flag_list: [],
-    server_version_list:[]
+    server_version_list: []
   },
   role_list: [],
   isLogin: false,
   isLoginDialogVisible: false,
-  data: { role: '', nickname: '', headurl: '',id: 0 },
+  data: { role: '', nickname: '', headurl: '', id: 0 },
 })
 
 class Cfg {
@@ -112,9 +112,9 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       //server: "http://localhost:8081",
-       server: '/xyapi',
+      //  server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
-      // server: "https://schub.top",
+      server: "https://schub.top",
       uploadServer: '/Upload/Upload',
       /** 主页样式 */
       homestyle,
