@@ -1,10 +1,10 @@
 <template>
-  <el-container  v-if="set.ismobile">
+  <el-container v-if="set.ismobile">
     <el-col class="el-main v">
       <div class="cate-list mobile">
         <el-button type="info" @click="topicPublish">发布主题</el-button>
-        <div class="list">
-          <el-button v-for="item in cate_list" @click="active_cate_id = item.id">
+        <div class="list" v-loading="loadingCate">
+          <el-button :class="active_cate_id == item.id?'active':''" v-for="item in cate_list" @click="active_cate_id = item.id">
             <el-icon>
               <ChatDotSquare />
             </el-icon>
@@ -25,11 +25,11 @@
         <div class="cate-item">
           <el-button type="info" @click="topicPublish">发布主题</el-button>
         </div>
-        <div class="container">
+        <div class="container" v-loading="loadingCate">
           <div class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
                @click="refreshBbsList(item.id)">
             <el-icon>
-              <ChatDotSquare />
+              <ChatDotSquare/>
             </el-icon>
             <div class="name">{{ item.name }}</div>
           </div>
@@ -48,18 +48,14 @@
 </template>
 
 <script lang="ts">
-import {
-  inject,
-  watch
-} from 'vue'
-import type { Ref } from 'vue'
 import Cfg from '@/config/config'
 import Method from '@/globalmethods.ts'
 import LikeIcon from '@comps/icons/Like.vue'
 import PostPage from '@comps/main/PostPage.vue'
 import BbsItem from "@comps/main/bbs/item.vue";
 import DetailPlate from "@comps/main/cards/DetailPlate.vue";
-
+import "./HomePlate.ts"
+import {ElMessage} from "element-plus";
 //主页卡片，经典
 export default {
   name: 'HomePlate',
@@ -71,21 +67,20 @@ export default {
       activeBbsItem:<any>null,
       headsize: Cfg.config.homestyle.headsize.post,
       bbs_list: [] as any,
-      cate_list: [] as any,
+      cate_list: <cateItem[]>[],
       loadingCate: false,
       loadingBbs: false,
       active_cate_id: 1,
-      page: 1,
-      col: {
-        left: 5,
-        rigth: 19,
-      }
+      page: 1
     }
   },
   methods:{
     topicPublish(){
-      console.log(122)
-      this.$router.push(`/publish/${this.active_cate_id}`)
+      if(this.active_cate_id > 0){
+        this.$router.push(`/publish/${this.active_cate_id}`)
+      }else{
+        ElMessage('请先选择一个板块');
+      }
     },
     onBbsItemClose(){
       this.isBbsView = false;
@@ -119,79 +114,19 @@ export default {
         res.data.forEach((x: any) => {
           x.url = `/left/${x.id}`
         })
+        let list = [];
+        list.push({id:0,name:'全部板块'});
         if (res.code == 200) {
-          this.cate_list = res.data
+          list = list.concat(res.data)
+          this.cate_list = list
         }
         if (res.data.length > 0) {
-          this.active_cate_id = res.data[0].id
+          this.active_cate_id = list[0].id
         }
       })
-    },
-    pageup(width: number) {
-      let route = this.$route;
-      // 打开帖子
-      if (route.params.id) {
-        if (width <= 720) {
-          this.set.showheader = false
-          this.col = {
-            left: 0,
-            rigth: 24,
-          }
-        } else if (width > 720 && width <= 900) {
-          this.set.showheader = false
-          this.col = {
-            left: 0,
-            rigth: 24,
-          }
-        } else if (width > 900 && width <= 1200) {
-          this.set.showheader = false
-          this.col = {
-            left: 10,
-            rigth: 14,
-          }
-        } else if (width > 1200) {
-          this.set.showheader = false
-          this.col = {
-            left: 10,
-            rigth: 14,
-          }
-        }
-      } else {
-        // 关闭帖子
-        if (width <= 720) {
-          this.set.showheader = true
-          this.col = {
-            left: 0,
-            rigth: 24,
-          }
-        } else if (width > 720 && width <= 820) {
-          this.set.showheader = false
-          this.col = {
-            left: 7,
-            rigth: 16,
-          }
-        } else if (width > 820 && width <= 1200) {
-          this.set.showheader = false
-          this.col = {
-            left: 6,
-            rigth: 17,
-          }
-        } else if (width > 1200) {
-          this.set.showheader = false
-          this.col = {
-            left: 5,
-            rigth: 18,
-          }
-        }
-      }
     }
   },
   created(){
-    let windowwidth = inject<Ref<number>>('windowwidth') as Ref<number>
-    watch(windowwidth, (newValue) => {
-      this.pageup(newValue)
-    })
-    this.pageup(windowwidth.value)
     this.refreshCateList();
   },
   mounted(){
@@ -232,6 +167,12 @@ export default {
 }
 .cate-list.mobile .el-button{
   width: max-content;
+}
+.cate-list .el-button.active{
+  color: var(--el-button-hover-text-color);
+  border-color: var(--el-button-hover-border-color);
+  background-color: var(--el-button-hover-bg-color);
+  outline: 0;
 }
 .cate-list.mobile .list{
   overflow-x: auto;

@@ -64,19 +64,20 @@ const userInfo: userInfoType = reactive({
     relate_type: [],
     link_type: [],
     flag_list: [],
+    server_version_list:[]
   },
   role_list: [],
   isLogin: false,
   isLoginDialogVisible: false,
-  data: { role: '', nickname: '', headurl: '' },
+  data: { role: '', nickname: '', headurl: '',id: 0 },
 })
 
 class Cfg {
   config: {
     /** 后端服务器地址 */
     server: string
-    /** 上传图片接口 */
-    uploadimg: string
+    /** 上传文件接口 */
+    uploadServer: string
     /** 主页样式 */
     homestyle: {
       /** 内容样式 */
@@ -111,10 +112,10 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       server: "http://localhost:8081",
-      //server: '/xyapi',
+      // server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
       // server: "https://schub.top",
-      uploadimg: '/upload',
+      uploadServer: '/Upload/Upload',
       /** 主页样式 */
       homestyle,
       webstyle,

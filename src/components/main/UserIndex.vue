@@ -4,7 +4,9 @@
       <img class="img" src="../../assets/image/headbj.png" />
       <img class="img2" src="../../assets/image/wenben.png" />
       <div class="head-area">
-        <el-avatar :size="headsize" :src="userInfo.data.headurl" />
+        <el-upload :action="uploadServer" v-model="cover_list" :with-credentials="true" :show-file-list="false" :on-success="uploadCover">
+          <el-avatar :size="headsize" :src="userInfo.data.headurl" />
+        </el-upload>
         <div class="nickname" v-html="userInfo.data.nickname"></div>
         <UserRole :role="userInfo.data.role" />
       </div>
@@ -39,7 +41,7 @@
           <template #label>
             <span class="custom-tabs-label"><el-icon>
                 <Promotion />
-              </el-icon><span>我的模组</span></span>
+              </el-icon><span>我的资源</span></span>
           </template>
           <ModPage v-if="activePages[2]" />
         </el-tab-pane>
@@ -71,7 +73,6 @@ export default {
     UserRole,
     Promotion,
     House,
-    // UserIndexPage,
     ChatLineSquare,
     UploadFilled,
     ModPage,
@@ -79,13 +80,18 @@ export default {
     BbsPage,
   },
   methods: {
+    uploadCover(e: any) {
+      Cfg.userInfo.data.headurl = Method.getHostUrl(e.data.src)
+    },
     onTabChange(e: any) {
       this.activePages[e.index] = true
       this.activeTab = e.index
     },
   },
   data() {
+    let {userInfo,config:{uploadServer, homestyle:{headsize:{post}}}} = Cfg;
     return {
+      uploadServer:uploadServer,
       activeTab: 0,
       isSelf: false,
       isLoading: false,
@@ -93,8 +99,8 @@ export default {
       worldList: [],
       modList: [],
       activePages: [true, false, false, false],
-      headsize: Cfg.config.homestyle.headsize.post,
-      userInfo: Cfg.userInfo,
+      headsize: post,
+      userInfo:userInfo
     }
   },
   created() {
@@ -102,7 +108,7 @@ export default {
     let userInfo = this.userInfo
     this.isLoading = true
     this.isSelf = userInfo.id === route.params.id
-    Method.api_get(`/user/zone/1`)
+    Method.api_get(`/user/zone/${this.userInfo.data.id}`)
       .then((response: any) => {
         let res = response.data
         this.isLoading = false

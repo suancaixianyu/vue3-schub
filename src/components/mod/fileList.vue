@@ -54,6 +54,8 @@
       <el-button type="primary" plain @click="showAddFile">添加文件</el-button>
     </el-header>
     <el-table :data="list" stripe style="width: 100%">
+      <el-table-column prop="version" label="版本" />
+      <el-table-column prop="description" label="描述" />
       <el-table-column prop="name" label="文件名" />
       <el-table-column prop="create_time" label="创建时间" width="180" />
       <el-table-column prop="file_size" label="大小" width="180" />

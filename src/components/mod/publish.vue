@@ -3,17 +3,17 @@
     <el-form class="el-form">
       <el-tabs type="border-card" v-model="activeTab" class="demo-tabs">
         <el-tab-pane label="基本信息" name="base">
-          <el-form-item label="模组名称*">
+          <el-form-item label="资源元素*">
+            <mod-flag :flag="x.flag_name" :active="x.active" @click="x.active = !x.active" v-for="x in mod_flag_list" />
+          </el-form-item>
+          <el-form-item label="资源名称*">
             <el-input v-model="name" />
           </el-form-item>
           <el-form-item label="英文名称*">
             <el-input v-model="en_name" />
           </el-form-item>
-          <el-form-item label="模组简称*">
+          <el-form-item label="资源简称*">
             <el-input v-model="mini_name" />
-          </el-form-item>
-          <el-form-item label="模组元素*">
-            <mod-flag :flag="x.flag_name" :active="x.active" @click="x.active = !x.active" v-for="x in mod_flag_list" />
           </el-form-item>
           <el-form-item label="游戏API*">
             <el-radio-group>
@@ -23,6 +23,11 @@
           <el-form-item label="游戏主体*">
             <el-radio-group>
               <el-checkbox v-model="x.active" :key="x" :label="x.name" v-for="x in game_version_list" />
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="服务器版本*" v-if="mod_flag_list[9].active">
+            <el-radio-group>
+              <el-checkbox v-model="x.active" :key="x" :label="x.name" v-for="x in server_version_list" />
             </el-radio-group>
           </el-form-item>
           <el-form-item label="相关链接">
@@ -45,19 +50,19 @@
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="扩展信息" name="extra">
-          <el-form-item label="模组包名*">
+          <el-form-item label="资源包名*">
             <el-input v-model="package_id" />
           </el-form-item>
-          <el-form-item label="模组封面*">
+          <el-form-item label="资源封面*">
             <el-input disabled v-model="cover" class="el-input" />
-            <el-upload :action="uploadServer" v-model="cover_list" :show-file-list="false" :on-success="uploadCover">
+            <el-upload :action="uploadServer" v-model="cover_list" :with-credentials="true" :show-file-list="false" :on-success="uploadCover">
               <el-button type="primary">上传</el-button>
             </el-upload>
           </el-form-item>
-          <el-form-item label="模组介绍*">
+          <el-form-item label="资源介绍*">
             <el-input v-model="desc" type="textarea" />
           </el-form-item>
-          <el-form-item label="模组关系*">
+          <el-form-item label="资源关系*">
             <div class="flex v">
               <el-card v-for="(x, i) in relation" :key="x">
                 <template #header>
@@ -108,9 +113,8 @@ export default {
     ModFlag,
   },
   data() {
-    let uploadServer = Method.getHostUrl('/Upload/Upload')
     return {
-      uploadServer: uploadServer,
+      uploadServer: Method.getHostUrl(Cfg.config.uploadServer),
       cover_list: [],
       en_name: '',
       mini_name: '',
@@ -120,24 +124,21 @@ export default {
       name: '',
       packageName: '',
       desc: '',
-      mod_flag_list: [] as any[],
-      mod_link_type: [] as any[],
-      relate_type_list: [] as any[],
-      game_version_list: [] as any[],
-      api_version_list: [] as any[],
-      relation: [] as any[],
-      link: [] as any[],
-      activeFlags: [] as boolean[],
+      mod_flag_list: <any>[],
+      mod_link_type: <any>[],
+      relate_type_list: <any>[],
+      game_version_list: <any>[],
+      api_version_list: <any>[],
+      server_version_list: <any>[],
+      relation: <any>[],
+      link: <any>[],
+      activeFlags: <boolean[]>[],
       package_id: '',
       remoteLoading: false,
-      relate_mod_list: [] as modItem[],
+      relate_mod_list: <modItem[]>[],
     }
   },
   methods: {
-    changeFlag(x: any) {
-      x.active = !x.active;
-      console.log(x.active);
-    },
     getModList(query?: string) {
       let payLoad = {
         page: 1,
@@ -180,17 +181,21 @@ export default {
       this.relation[index].list.splice(index2, 1)
     },
     submit() {
-      let activeFlagId = [] as any[]
-      let activeApiId = [] as any[]
-      let activeGameId = [] as any[]
-      this.mod_flag_list.forEach((x) => {
+      let activeFlagId = <any>[];
+      let activeApiId = <any>[];
+      let activeGameId = <any>[];
+      let activeServerId = <any>[];
+      this.mod_flag_list.forEach((x:any) => {
         if (x.active) activeFlagId.push(x.id)
       })
-      this.game_version_list.forEach((x) => {
+      this.game_version_list.forEach((x:any) => {
         if (x.active) activeGameId.push(x.id)
       })
-      this.api_version_list.forEach((x) => {
+      this.api_version_list.forEach((x:any) => {
         if (x.active) activeApiId.push(x.id)
+      })
+      this.server_version_list.forEach((x:any) => {
+        if (x.active) activeServerId.push(x.id)
       })
 
       let payLoad = {
@@ -203,6 +208,7 @@ export default {
         relation: JSON.stringify(this.relation),
         api_version: JSON.stringify(activeApiId),
         game_version: JSON.stringify(activeGameId),
+        server_version: JSON.stringify(activeServerId),
         flag: JSON.stringify(activeFlagId),
         package_id: this.package_id,
       }
@@ -227,6 +233,7 @@ export default {
           relate_type,
           api_version,
           game_version,
+          server_version_list
         },
       },
     } = Cfg
@@ -235,6 +242,7 @@ export default {
     this.relate_type_list = relate_type
     this.mod_link_type = link_type
     this.mod_flag_list = flag_list
+    this.server_version_list = server_version_list
   },
 }
 </script>

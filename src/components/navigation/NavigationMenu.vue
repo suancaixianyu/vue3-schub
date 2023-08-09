@@ -3,19 +3,27 @@
   <div class="navbar bg-base-100" style="padding: 0 8px; height: 64px">
     <!-- 宽屏logo -->
     <div class="flex-1 hidden-xs-only">
-      <router-link class="btn btn-ghost normal-case text-xl" to="/">
+      <router-link v-if="isRootPath" class="btn btn-ghost normal-case text-xl" to="/">
         <ScLogo />
         <div class="site-title">SC中文社区</div>
       </router-link>
+      <div v-else @click="goBack" class="btn btn-ghost normal-case text-xl">
+        <el-icon><ArrowLeftBold /></el-icon>
+        返回
+      </div>
     </div>
 
     <!-- 窄屏折叠logo，菜单 -->
     <div class="hidden-sm-and-up" v-if="set.menu">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content">
+      <div class="drawer-content" v-if="isRootPath">
         <label for="my-drawer" tabindex="0" class="btn btn-ghost btn-circle">
           <ScLogo />
         </label>
+      </div>
+      <div v-else @click="goBack" class="btn btn-ghost normal-case text-xl">
+        <el-icon><ArrowLeftBold /></el-icon>
+        返回
       </div>
       <!-- 抽屉菜单 -->
       <div class="drawer-side">
@@ -256,7 +264,7 @@ import ScLogo from '@comps/icons/ScLogo.vue'
 import ScMod from '@comps/icons/ScMod.vue'
 import UserLogin from '@comps/main/UserLogin.vue'
 import { ElMessage } from 'element-plus'
-import { ref } from 'vue'
+import {ref, watch} from 'vue'
 import type { Ref } from 'vue'
 export default {
   name: 'NavigationMenu',
@@ -275,11 +283,15 @@ export default {
       headsize: 38,
       iconsize: 55,
       ellipsis: false,
+      isRootPath: true,
       circleUrl:
         'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
     }
   },
   methods: {
+    goBack(){
+      this.$router.back();
+    },
     loginOut() {
       Method.api_get('/user/loginOut')
         .then((res: any) => {
@@ -289,6 +301,7 @@ export default {
               message: res.data.msg,
             })
             this.userInfo.isLogin = false
+            this.$router.push({path:'/'});
           }
         })
         .catch((error) => {
@@ -338,7 +351,11 @@ export default {
   },
   created() {
     //刷新页面重新获取用户信息
-    Method.getInformation()
+    Method.getInformation();
+    watch(()=>this.$router.currentRoute.value.fullPath,(v)=>{
+      if(v == '/' || v == '') this.isRootPath = true;
+      else this.isRootPath = false;
+    })
   },
   setup() {
     const toggleInput: Ref<HTMLElement | null> = ref(null)

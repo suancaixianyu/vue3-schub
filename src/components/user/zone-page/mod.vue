@@ -82,7 +82,7 @@
   </div>
   <div class="tab-container" v-else>
     <el-header class="el-header">
-      <el-button type="primary" plain @click="goPublish">添加模组</el-button>
+      <el-button type="primary" plain @click="goPublish">添加资源</el-button>
     </el-header>
     <el-main style="padding: 0; width: 100%">
       <el-table :data="list" stripe style="width: 100%" v-loading="isLoading">
@@ -96,10 +96,18 @@
         <el-table-column prop="views_num" label="浏览" />
         <el-table-column prop="downloads_num" label="下载" />
         <el-table-column prop="likes_num" label="点赞" />
+        <el-table-column label="状态">
+          <template #default="scope">
+            <el-tag size="small" v-if="list[scope.$index].stat == 0">删除</el-tag>
+            <el-tag size="small" v-if="list[scope.$index].stat == 1">正常</el-tag>
+            <el-tag size="small" v-if="list[scope.$index].stat == 2">审核中</el-tag>
+            <el-tag size="small" v-if="list[scope.$index].stat == 3">审核未通过</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
             <el-button size="small" link @click="copytext(list[scope.$index].id)">复制链接</el-button>
-            <el-button size="small" link @click="manageFileList(scope.$index, false)">文件列表</el-button>
+            <el-button size="small"  type="success" link @click="manageFileList(scope.$index, false)">文件列表</el-button>
             <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
           </template>
         </el-table-column>
@@ -107,7 +115,8 @@
     </el-main>
   </div>
   <el-dialog v-model="isDialogVisible" title="提示" width="30%" :fullscreen="set.ismobile" align-center>
-    <span>是否删除Mod <span style="color: #008ac5">{{ modName }}</span></span>
+    <div>是否删除Mod <span style="color: #008ac5">{{ modName }}</span>?</div>
+    <el-text type="danger">注意：其下所有文件也会被删除!!!!</el-text>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="isDialogVisible = false">取消</el-button>
@@ -145,7 +154,7 @@ export default {
     deleteMod() {
       this.isDeleting = true
       let item = this.list[this.activeItemIndex]
-      Method.api_get(`/mod/delete/${item.id}`).then((response) => {
+      Method.api_post(`/mod/delete/${item.id}`,{type:0}).then((response) => {
         let res = response.data
         this.isDeleting = false
         this.isDialogVisible = false
@@ -176,7 +185,7 @@ export default {
     },
     refreshList() {
       this.isLoading = true
-      Method.api_get(`/user/my_mod_list/1`).then((response: any) => {
+      Method.api_get(`/user/my_mod_list/${Cfg.userInfo.data.id}`).then((response: any) => {
         let res = response.data
         this.isLoading = false
         if (res.code == 200) {

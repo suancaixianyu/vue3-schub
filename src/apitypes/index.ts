@@ -35,6 +35,8 @@ export interface userInfoType {
     link_type: any
     /** 标签列表 */
     flag_list: any
+    /** 服务器版本列表 */
+    server_version_list: any
   }
   /** 全局角色列表 */
   role_list: any
@@ -45,7 +47,7 @@ export interface userInfoType {
   /** 用户ID */
   id?: string
   /** 用户信息 */
-  data: { headurl?: string; nickname?: string; role: any }
+  data: { headurl?: string; nickname?: string; role: any,id:number }
 }
 
 export interface setType {

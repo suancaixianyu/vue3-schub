@@ -16,41 +16,37 @@
 
     <div class="extra-area" style="background-color: white; padding: 0 10px">
       <div class="item">
-        <el-text>支持的游戏版本:<el-tag v-for="x in game_list">{{
-          x.name
-        }}</el-tag></el-text>
+        <el-text>支持的游戏版本:<el-tag v-for="x in game_list" v-html="x.name"></el-tag></el-text>
       </div>
       <div class="item">
         <el-text>支持的API版本:
-          <el-tag v-for="x in api_list">{{ x.name }}</el-tag></el-text>
+          <el-tag v-for="x in api_list" v-html="x.name"></el-tag></el-text>
       </div>
       <div class="item">最后编辑: {{ last_modify }}</div>
       <div class="item">
-        <div>Mod作者/开发团队:</div>
+        <div>资源作者/开发团队:</div>
         <div>无</div>
       </div>
       <div class="item">相关链接:</div>
       <div class="item">
         <a class="link" :href="x.src" v-for="x in link_list">
           <icon-down></icon-down>
-          <div>{{ x.name }}</div>
+          <div v-html="x.name"></div>
         </a>
       </div>
       <el-tabs class="el-tabs" type="card">
-        <el-tab-pane label="Mod介绍">
-          {{ description }}
-        </el-tab-pane>
-        <el-tab-pane label="Mod关系">
+        <el-tab-pane label="资源介绍" v-html="description"></el-tab-pane>
+        <el-tab-pane label="资源关系">
           <el-collapse v-model="activeRelation">
             <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
               <div class="flex" v-for="xx in x.list">
-                <el-tag class="ml-2" type="success">{{ xx.type_name }}</el-tag>
-                <el-button type="primary" link @click="goModDetail(xx.package_id)">{{ xx.package_name }}</el-button>
+                <el-tag class="ml-2" type="success" v-html="xx.type_name"></el-tag>
+                <el-button type="primary" link @click="goModDetail(xx.package_id)" v-html="xx.package_name"></el-button>
               </div>
             </el-collapse-item>
           </el-collapse>
         </el-tab-pane>
-        <el-tab-pane label="Mod下载">
+        <el-tab-pane label="资源下载">
           <el-table :data="version_list" stripe style="width: 100%">
             <el-table-column prop="name" label="文件名" />
             <el-table-column prop="create_time_str" label="创建时间" width="180" />
@@ -68,9 +64,7 @@
     <div class="update-area" style="padding: 0 10px">
       <div class="tab">更新日志</div>
       <el-timeline v-if="version_list.length != 0">
-        <el-timeline-item v-for="(x, index) in version_list" :key="index" :timestamp="x.time">
-          {{ x.version }}
-        </el-timeline-item>
+        <el-timeline-item v-for="(x, index) in version_list" :key="index" :timestamp="x.time" v-html="x.version"></el-timeline-item>
       </el-timeline>
       <div class="update-log" v-else>暂无更新日志</div>
     </div>
@@ -89,10 +83,10 @@
               :content="x.description"
           >
             <template #reference>
-              <div class="version">{{ x.version }}</div>
+              <div class="version" v-html="x.version"></div>
             </template>
           </el-popover>
-          <div class="date">{{ x.time }}</div>
+          <div class="date" v-html="x.time"></div>
         </div>
         <div class="update-log" v-if="version_list.length == 0">
           暂无更新日志
@@ -114,11 +108,11 @@
       <div class="extra-area">
         <div class="item">
           <div>支持的游戏版本:</div>
-          <el-tag v-for="x in game_list">{{ x.name }}</el-tag>
+          <el-tag v-for="x in game_list" v-html="x.name"></el-tag>
         </div>
         <div class="item">
           <div>支持的API版本:</div>
-          <el-tag v-for="x in api_list">{{ x.name }}</el-tag>
+          <el-tag v-for="x in api_list" v-html="x.name"></el-tag>
         </div>
         <div class="item">最后编辑: {{ last_modify }}</div>
         <div class="item">
@@ -128,28 +122,30 @@
         <div class="item">相关链接:</div>
         <div class="item">
           <a class="link" :href="x.src" v-for="x in link_list">
-            <icon-down></icon-down>
-            <div>{{ x.name }}</div>
+            <icon-down v-if="x.id == 1"></icon-down>
+            <icon-github v-if="x.id == 2"></icon-github>
+            <icon-cloud-store fill="#f8574c" v-if="x.id == 3"></icon-cloud-store>
+            <icon-cloud-store v-if="x.id == 4"></icon-cloud-store>
+            <icon-server v-if="x.id == 5"></icon-server>
+            <el-icon v-if="x.id == 6" size="26"><Share /></el-icon>
+            <div v-html="x.name"></div>
           </a>
         </div>
         <el-tabs class="el-tabs"  type="card">
-          <el-tab-pane label="Mod介绍">
-            {{ description }}
-          </el-tab-pane>
-          <el-tab-pane label="Mod关系">
+          <el-tab-pane label="资源介绍" v-html="description"></el-tab-pane>
+          <el-tab-pane label="资源关系">
             <el-collapse v-model="activeRelation">
               <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
                 <div class="flex" v-for="xx in x.list">
-                  <el-tag class="ml-2" type="success">{{
-                    xx.type_name
-                  }}</el-tag>
-                  <el-button type="primary" link @click="goModDetail(xx.package_id)">{{ xx.package_name }}</el-button>
+                  <el-tag class="ml-2" type="success" v-html="xx.type_name"></el-tag>
+                  <el-button type="primary" link @click="goModDetail(xx.package_id)" v-html="xx.package_name"></el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
           </el-tab-pane>
-          <el-tab-pane label="Mod下载">
+          <el-tab-pane label="资源下载">
             <el-table :data="version_list" stripe style="width: 100%">
+              <el-table-column prop="version" label="版本" />
               <el-table-column prop="name" label="文件名" />
               <el-table-column prop="create_time_str" label="创建时间" width="180" />
               <el-table-column prop="file_size" label="大小" width="180" />
@@ -170,13 +166,7 @@
           <div>名扬天下</div>
         </div>
         <div class="rate-info">
-          <div class="rate-line">
-            <icon-hot :size="20"></icon-hot>
-            <icon-hot :size="20"></icon-hot>
-            <icon-hot :size="20"></icon-hot>
-            <icon-hot :size="20"></icon-hot>
-            <icon-hot :size="20"></icon-hot>
-          </div>
+          <el-rate v-model="modRate" disabled/>
           <div>总浏览:{{ views }}</div>
           <div>总点赞:{{ likes }}</div>
         </div>
@@ -192,13 +182,17 @@ import IconHot from '@comps/icons/common/hot.vue'
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 import { watch } from 'vue'
+import IconGithub from "@comps/icons/common/github.vue";
+import IconCloudStore from "@comps/icons/common/cloudStore.vue";
+import IconServer from "@comps/icons/mod/server.vue";
 export default {
   name: 'modDetail',
-  components: { IconHot, IconDown, ModFlag },
+  components: {IconServer, IconCloudStore, IconGithub, IconHot, IconDown, ModFlag },
   data() {
     return {
       set: Cfg.set,
-      activeRelation: [0] as any,
+      activeRelation: <any>[0],
+      modRate:5,
       isLoading: false,
       last_modify: '',
       cover_src: '',
@@ -208,12 +202,12 @@ export default {
       id: 1,
       last_modify_time: 0,
       likes: 0,
-      version_list: [] as any,
-      flag_list: [] as any,
-      link_list: [] as any,
-      game_list: [] as any,
-      api_list: [] as any,
-      relation_list: [] as any,
+      version_list: <any>[],
+      flag_list: <any>[],
+      link_list: <any>[],
+      game_list: <any>[],
+      api_list: <any>[],
+      relation_list: <any>[],
       name: '',
       views: 0,
       mini_name: '',
@@ -244,6 +238,7 @@ export default {
             x.file_size = Method.getFileSize(x.size)
           })
           this.relation_list = Method.decodeRelationList(res.data.relation)
+          this.modRate = modInfo.rate;
           this.cover_src = modInfo.cover_src
           this.create_time = modInfo.create_time
           this.description = modInfo.description

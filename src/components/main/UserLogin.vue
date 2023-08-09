@@ -4,30 +4,41 @@
       <el-form label-position="top" label-width="100px" label="top" :model="regitser"
         style="max-width: 460px; margin: 0 auto">
         <el-form-item></el-form-item>
-
-        <el-form-item label="用户名">
-          <input v-model="regitser.user" type="text" placeholder="用户名由英文字母与数字组成" class="input input-bordered input-sm"
-            style="margin-right: 12px; width: 100%" />
+        <el-form-item>
+          <el-input v-model="regitser.user" placeholder="用户名由英文字母与数字组成">
+            <template #prepend>用户&emsp;名</template>
+          </el-input>
         </el-form-item>
 
-        <el-form-item label="密码">
-          <input v-model="regitser.pass" type="password" placeholder="输入密码" class="input input-bordered input-sm"
-            style="margin-right: 12px; width: 100%" show-password />
+        <el-form-item>
+          <el-input v-model="regitser.pass" placeholder="输入密码">
+            <template #prepend>密&emsp;&emsp;码</template>
+          </el-input>
         </el-form-item>
 
-        <el-form-item label="确认密码">
-          <input v-model="regitser.repass" type="password" placeholder="再次输入密码" class="input input-bordered input-sm"
-            style="margin-right: 12px; width: 100%" show-password />
+        <el-form-item>
+          <el-input v-model="regitser.repass" placeholder="再次输入密码">
+            <template #prepend>确认密码</template>
+          </el-input>
         </el-form-item>
 
-        <el-form-item label="邮箱">
-          <input v-model="regitser.email" type="text" placeholder="输入邮箱"
-            class="input input-bordered input-sm logininput" />
+        <el-form-item>
+          <el-input v-model="regitser.email" placeholder="输入邮箱">
+            <template #prepend>邮&emsp;&emsp;箱</template>
+          </el-input>
         </el-form-item>
-
-        <el-form-item label="昵称">
-          <input v-model="regitser.nickname" maxlength="10" type="text" placeholder="昵称长度不能超过10"
-            class="input input-bordered input-sm logininput" />
+        <el-form-item>
+          <el-input v-model="regitser.nickname" placeholder="昵称长度不能超过10">
+            <template #prepend>昵&emsp;&emsp;称</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="regitser.captcha_code">
+            <template #prepend>验证&emsp;码</template>
+            <template #suffix>
+              <img :src="codeSrc" @click="refreshCode">
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item>
           <el-button plain :loading="loading" @click="submitLogin('register')">注册</el-button>
@@ -45,6 +56,14 @@
         <el-form-item>
           <el-input v-model="loginconfig.pass" placeholder="请输入密码">
             <template #prepend>密&emsp;码</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="loginconfig.captcha_code">
+            <template #prepend>验证码</template>
+            <template #suffix>
+              <img :src="codeSrc" @click="refreshCode">
+            </template>
           </el-input>
         </el-form-item>
       </el-form>
@@ -70,7 +89,10 @@ import { ElMessage } from 'element-plus'
 export default {
   name: 'UserLogin',
   data() {
+    let src = Method.getHostUrl('/captcha');
     return {
+      baseCodeSrc:src,
+      codeSrc:'',
       remember: false,
       loading: false,
       isregister: true,
@@ -80,10 +102,12 @@ export default {
         repass: '',
         email: '',
         nickname: '',
+        captcha_code:''
       },
       loginconfig: {
         user: '',
         pass: '',
+        captcha_code:''
       },
       windowseype: {
         display: 'flex',
@@ -100,6 +124,9 @@ export default {
     }
   },
   methods: {
+    refreshCode(){
+      this.codeSrc = this.baseCodeSrc + '?t='+(new Date().getTime());
+    },
     submitLogin(type: string) {
       let userInfo = Cfg.userInfo
 
@@ -117,11 +144,11 @@ export default {
       this.loading = true
       Method.api_post(url, configdata)
         .then((response) => {
+          this.loading = false
           if (response.data.code === 200) {
             if (type == 'login') {
               Method.api_get(infourl).then((response2: any) => {
                 if (response2.data.code == 200) {
-                  this.loading = false
                   if (this.remember) {
                     Method.localSet('loginInfo', {
                       user: this.loginconfig.user,
@@ -171,6 +198,7 @@ export default {
       user: '',
       pass: '',
     })
+    this.refreshCode();
     if (loginInfo.remember) {
       this.loginconfig.user = loginInfo.user
       this.loginconfig.pass = loginInfo.pass

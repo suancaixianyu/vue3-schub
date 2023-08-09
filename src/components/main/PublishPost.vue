@@ -17,11 +17,15 @@
         </div>
       </el-form-item>
       <el-form-item label="封面链接">
-        <el-input v-model="config.cover_src" />
+        <div class="title-line">
+          <el-input disabled class="my-input" v-model="config.cover_src" />
+          <el-upload :action="uploadServer" v-model="config.cover_src" :with-credentials="true" :show-file-list="false" :on-success="uploadCover">
+            <el-button type="primary">上传</el-button>
+          </el-upload>
+        </div>
       </el-form-item>
     </el-form>
-    <input type="file" id="as" />
-    <MdEditor :editorId="previewid" v-model="config.content" style="height: 72vh" @onUploadImg="UploadImage" />
+    <MdEditor :editorId="previewid" :preview="!set.ismobile" v-model="config.content" style="height: 72vh" @onUploadImg="UploadImage" />
   </el-container>
 </template>
 
@@ -34,7 +38,7 @@ import { useRoute, useRouter } from 'vue-router'
 /** md编辑器 */
 import 'md-editor-v3/lib/style.css'
 
-// import Cfg from "@/config/config"
+import Cfg from "@/config/config"
 
 import Method from '@/globalmethods'
 import { api } from '@/apitypes'
@@ -46,31 +50,34 @@ export default {
   data() {
     return {
       previewid: 'preview-set',
+      uploadServer:Method.getHostUrl(Cfg.config.uploadServer),
       isPublishing: false,
+      set:Cfg.set,
       config: {
         title: '',
         content: '',
         cate_id: '',
-        cover_src: 'https://q.qlogo.cn/g?b=qq&nk=3501869534&s=160',
+        cover_src: '',
       },
     }
   },
   methods: {
+    uploadCover(e: any) {
+      this.config.cover_src = Method.getHostUrl(e.data.src)
+    },
     /**
      * 上传图片
      */
     UploadImage(file: any) {
       ElMessage('上传中...')
       // 执行图片上传的逻辑
-      const formdata = new FormData
-      formdata.append('file', file[0], file[0].name)
-      Method.api_post('/Upload/Upload', formdata)
+      const formData = new FormData
+      formData.append('file', file[0], file[0].name)
+      Method.api_post(Cfg.config.uploadServer, formData)
         .then((response) => {
           let obj = response.data as api
           if (obj.code === 200) {
-            this.$data.config.content += `![](${Method.getHostUrl(
-              obj.data.src,
-            )})`
+            this.$data.config.content += `![](${Method.getHostUrl(obj.data.src)})`
             ElMessage({
               type: 'success',
               message: '上传成功',

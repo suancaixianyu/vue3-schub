@@ -60,6 +60,18 @@
       </el-table-column>
     </el-table>
   </div>
+
+  <el-dialog v-model="isDialogVisible" title="提示" width="30%" :fullscreen="set.ismobile" align-center>
+    <span>是否删除帖子[ID:{{activeItem.id}}] <span style="color: #008ac5">{{ activeItem.title }}</span></span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="isDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="deleteBbs" :loading="isDeleting">
+          确认
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script lang="ts">
 import Method from '@/globalmethods.ts'
@@ -72,31 +84,51 @@ export default {
     return {
       ...Cfg.config,
       set: Cfg.set,
+      isDeleting:false,
+      isDialogVisible:false,
       isLoading: false,
-      list: [] as any[],
-      activeItemIndex: -1,
+      list: <any>[],
+      activeItem: <any>null,
     }
   },
   methods: {
     handleDelete(index: number) {
-      this.activeItemIndex = index
-      ElMessage('暂不支持')
+      this.activeItem = this.list[index];
+      this.isDialogVisible = true;
     },
+    deleteBbs(){
+      let payLoad = {
+        id: this.activeItem.id
+      };
+      this.isDeleting = true;
+      Method.api_post(`/bbs/del`,payLoad).then((response: any) => {
+        let res = response.data
+        this.isDeleting = false
+        ElMessage(res.msg)
+        if (res.code == 200) {
+          this.isDialogVisible = false;
+          this.refreshList();
+        }
+      })
+    },
+    refreshList(){
+      this.isLoading = true
+      Method.api_get(`/user/my_bbs_list/${Cfg.userInfo.data.id}`).then((response: any) => {
+        let res = response.data
+        this.isLoading = false
+        if (res.code == 200) {
+          res.data.forEach((x: any) => {
+            x.create_time = Method.formatNormalTime(x.create_time)
+          })
+          this.list = res.data
+        } else {
+          ElMessage(res.msg)
+        }
+      })
+    }
   },
   created() {
-    this.isLoading = true
-    Method.api_get(`/user/my_bbs_list/1`).then((response: any) => {
-      let res = response.data
-      this.isLoading = false
-      if (res.code == 200) {
-        res.data.forEach((x: any) => {
-          x.create_time = Method.formatNormalTime(x.create_time)
-        })
-        this.list = res.data
-      } else {
-        ElMessage(res.msg)
-      }
-    })
+    this.refreshList();
   },
 }
 </script>

@@ -80,7 +80,7 @@ export default {
   },
   created() {
     this.isLoading = true
-    Method.api_get(`/user/my_world_list/1`).then((response: any) => {
+    Method.api_get(`/user/my_world_list/${Cfg.userInfo.data.id}`).then((response: any) => {
       let res = response.data
       this.isLoading = false
       if (res.code == 200) {

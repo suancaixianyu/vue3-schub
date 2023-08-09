@@ -38,15 +38,6 @@ class Method {
   }
 
   /**
-   * post方法请求图床api
-   * @param {string} path 请求路径
-   * @param {object} data 请求体
-   */
-  uploadimg(path: string, data: object) {
-    return axios.post(`${Cfg.config.uploadimg}${path}`, data)
-  }
-
-  /**
    * 格式化时间戳 -> xx时间前
    * @param {number} time 时间戳
    */
@@ -187,6 +178,7 @@ class Method {
    * @param e 资源相对路径
    */
   getHostUrl(e: string): string {
+    if(e==null)return '';
     if (e.indexOf('http://') != -1 || e.indexOf('https://') != -1) return e
     if (e.indexOf('./') == -1) {
       return Cfg.config.server + e
@@ -261,7 +253,7 @@ class Method {
       })
       if (f != null) {
         arr2[1] = /^(http|https):\/\//.test(arr2[1]) ? arr2[1] : 'http://' + arr2[1];
-        result.push({ name: f.name, src: arr2[1] })
+        result.push({id:f.id, name: f.name, src: arr2[1] })
       }
     })
     return result
@@ -310,7 +302,6 @@ class Method {
         result.push({ name: f.name })
       }
     })
-    console.log(linkStr)
     return result
   }
   /**
@@ -361,16 +352,18 @@ class Method {
     this.api_get('/mod/global_data_list').then((response) => {
       let roleRes = response.data
       if (roleRes.code == 200) {
-        userInfo.global_mod_data_list = roleRes.data //全局角色列表缓存
+        userInfo.global_mod_data_list = roleRes.data //全局标签数据缓存
       }
     })
-    this.api_get('/user/info').then((response2: any) => {
-      let res = response2.data
+    this.api_get('/user/info').then((response2) => {
+      let res = response2.data;
       if (res.code == 200) {
-        userInfo.isLogin = true
-        userInfo.isLoginDialogVisible = false
-        res.data.headurl = this.getHostUrl(res.data.headurl)
-        userInfo.data = res.data
+        let q = userInfo;
+        res.data.headurl = this.getHostUrl(res.data.headurl);
+        q.isLogin = true;
+        q.isLoginDialogVisible = false;
+        q.data = res.data;
+        Cfg.userInfo = q;
       }
     })
   }
