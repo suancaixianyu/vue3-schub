@@ -4,7 +4,7 @@
       <img class="img" src="../../assets/image/headbj.png" />
       <img class="img2" src="../../assets/image/wenben.png" />
       <div class="head-area">
-        <el-upload :action="uploadServer" v-model="cover_list" :with-credentials="true" :show-file-list="false" :on-success="uploadCover">
+        <el-upload :action="uploadServer" v-model="userInfo.data.headurl" :with-credentials="true" :show-file-list="false" :on-success="uploadCover">
           <el-avatar :size="headsize" :src="userInfo.data.headurl" />
         </el-upload>
         <div class="nickname" v-html="userInfo.data.nickname"></div>
@@ -95,10 +95,10 @@ export default {
       activeTab: 0,
       isSelf: false,
       isLoading: false,
-      bbsList: [],
-      worldList: [],
-      modList: [],
-      activePages: [true, false, false, false],
+      bbsList: <any>[],
+      worldList: <any>[],
+      modList: <any>[],
+      activePages: <boolean[]>[true, false, false, false],
       headsize: post,
       userInfo:userInfo
     }
