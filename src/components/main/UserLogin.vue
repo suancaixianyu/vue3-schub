@@ -34,9 +34,9 @@
         </el-form-item>
         <el-form-item>
           <el-input v-model="regitser.captcha_code">
-            <template #prepend>验证&emsp;码</template>
-            <img :src="codeSrc" @click="refreshCode">
+            <template #prepend>验证码</template>
           </el-input>
+          <img :src="codeSrc" @click="refreshCode">
         </el-form-item>
         <el-form-item>
           <el-button plain :loading="loading" @click="submitLogin('register')">注册</el-button>
@@ -170,6 +170,7 @@ export default {
               message: response.data.msg,
               type: 'error',
             })
+            this.refreshCode()
           }
         })
         .catch((error) => {
