@@ -178,6 +178,7 @@ export default {
           res.data.forEach((x: any) => {
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
+            if (x.cover_src) x.cover_src = Method.getHostUrl(x.cover_src)
           })
           if (this.page == 1) this.list = res.data
           else this.list = this.list.concat(res.data)

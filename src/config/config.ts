@@ -76,8 +76,6 @@ class Cfg {
   config: {
     /** 后端服务器地址 */
     server: string
-    /** 上传文件接口 */
-    uploadServer: string
     /** 主页样式 */
     homestyle: {
       /** 内容样式 */
@@ -112,10 +110,9 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       //server: "http://localhost:8081",
-      server: '/xyapi',
+      // server: '/xyapi',
       //server: "http://suancaixianyu.cn:8000",
-      // server: "https://schub.top",
-      uploadServer: '/Upload/Upload',
+      server: "https://schub.top",
       /** 主页样式 */
       homestyle,
       webstyle,

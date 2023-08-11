@@ -19,13 +19,15 @@
       <el-form-item label="封面链接">
         <div class="title-line">
           <el-input disabled class="my-input" v-model="config.cover_src" />
-          <el-upload :action="uploadServer" v-model="config.cover_src" :with-credentials="true" :show-file-list="false" :on-success="uploadCover">
+          <el-upload :action="uploadServer" v-model="config.cover_src" :with-credentials="true" :show-file-list="false"
+            :on-success="uploadCover">
             <el-button type="primary">上传</el-button>
           </el-upload>
         </div>
       </el-form-item>
     </el-form>
-    <MdEditor :editorId="previewid" :preview="!set.ismobile" v-model="config.content" style="height: 72vh" @onUploadImg="UploadImage" />
+    <MdEditor :editorId="previewid" :preview="!set.ismobile" v-model="config.content" style="height: 72vh"
+      @onUploadImg="UploadImage" />
   </el-container>
 </template>
 
@@ -50,9 +52,9 @@ export default {
   data() {
     return {
       previewid: 'preview-set',
-      uploadServer:Method.getHostUrl(Cfg.config.uploadServer),
+      uploadServer: `${Cfg.config.server}/Upload/Upload`,
       isPublishing: false,
-      set:Cfg.set,
+      set: Cfg.set,
       config: {
         title: '',
         content: '',
@@ -63,7 +65,7 @@ export default {
   },
   methods: {
     uploadCover(e: any) {
-      this.config.cover_src = Method.getHostUrl(e.data.src)
+      this.config.cover_src = e.data.src
     },
     /**
      * 上传图片
@@ -73,7 +75,7 @@ export default {
       // 执行图片上传的逻辑
       const formData = new FormData
       formData.append('file', file[0], file[0].name)
-      Method.api_post(Cfg.config.uploadServer, formData)
+      Method.api_post(`${Cfg.config.server}/Upload/Upload`, formData)
         .then((response) => {
           let obj = response.data as api
           if (obj.code === 200) {

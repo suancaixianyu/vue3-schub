@@ -157,7 +157,7 @@ export default {
     restart() {
       Method.localSet('webstyle', {})
       Method.setwebstyle()
-      ElMessage('重置成功')
+      ElMessage('重置成功，刷新页面生效')
     },
     sizepost() {
       this.headsize.post = Number(this.headsize.post)
@@ -168,7 +168,7 @@ export default {
     setstyle() {
       Method.localSet('webstyle', Cfg.config.webstyle)
       Method.setwebstyle()
-      ElMessage('设置成功成功')
+      ElMessage('设置成功')
     },
     setconfiguration() {
       this.dialogFormVisible = false

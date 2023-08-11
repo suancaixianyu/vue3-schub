@@ -107,7 +107,7 @@
         <el-table-column label="操作">
           <template #default="scope">
             <el-button size="small" link @click="copytext(list[scope.$index].id)">复制链接</el-button>
-            <el-button size="small"  type="success" link @click="manageFileList(scope.$index, false)">文件列表</el-button>
+            <el-button size="small" type="success" link @click="manageFileList(scope.$index, false)">文件列表</el-button>
             <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
           </template>
         </el-table-column>
@@ -154,7 +154,7 @@ export default {
     deleteMod() {
       this.isDeleting = true
       let item = this.list[this.activeItemIndex]
-      Method.api_post(`/mod/delete/${item.id}`,{type:0}).then((response) => {
+      Method.api_post(`/mod/delete/${item.id}`, { type: 0 }).then((response) => {
         let res = response.data
         this.isDeleting = false
         this.isDialogVisible = false
@@ -194,6 +194,7 @@ export default {
             x.downloads_num = Method.getNumber(x.downloads)
             x.views_num = Method.getNumber(x.views)
             x.likes_num = Method.getNumber(x.likes)
+            x.cover_src = Method.getHostUrl(x.cover_src)
           })
           this.list = res.data
         } else {

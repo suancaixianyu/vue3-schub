@@ -1,17 +1,9 @@
 <template>
   <div class="bbs-window">
     <!-- 头部搜索框 -->
-    <div
-      class="card w-96 bg-base-100 shadow-xl card-compact search-header"
-      :class="set.ismobile ? 'mobile' : ''"
-    >
+    <div class="card w-96 bg-base-100 shadow-xl card-compact search-header" :class="set.ismobile ? 'mobile' : ''">
       <div class="container">
-        <input
-          v-model="searchKey"
-          type="search"
-          placeholder="搜索"
-          class="item input input-bordered input-sm"
-        />
+        <input v-model="searchKey" type="search" placeholder="搜索" class="item input input-bordered input-sm" />
         <button class="btn btn-sm item" @click="search" title="搜索">
           <el-icon>
             <Search />
@@ -22,38 +14,21 @@
     </div>
     <!-- 列表 -->
     <div style="overflow:auto;" class="hide-scrollbar" v-loading="isLoadingList">
-      <div class="bbs-list"  ref="container" element-loading-text="加载中">
-        <div v-for="item in plate" v-if="plate.length>0">
-          <div
-              class="card w-96 bg-base-100 shadow-xl card-compact item-header"
-              :class="set.ismobile ? 'mobile' : ''"
-          >
-            <BbsItem :item="item" @click="onItemClick(item)"></BbsItem>
+      <div class="bbs-list" ref="container" element-loading-text="加载中">
+        <div v-for="item in plate" v-if="plate.length > 0">
+          <div class="card w-96 bg-base-100 shadow-xl card-compact item-header" :class="set.ismobile ? 'mobile' : ''">
+            <BbsItem :item="item" @click="onItemClick(item), console.log(item)"></BbsItem>
           </div>
         </div>
         <el-empty v-else description="没有数据" :image-size="200" />
         <div class="load-more" v-if="set.ismobile">
-          <el-button
-              type="primary"
-              @click="loadMore"
-              v-html="txt"
-              v-loading="isLoadingMore"
-          ></el-button>
+          <el-button type="primary" @click="loadMore" v-html="txt" v-loading="isLoadingMore"></el-button>
         </div>
       </div>
     </div>
-    <div
-      v-if="!set.ismobile"
-      class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only"
-    >
-      <el-pagination
-        :current-page="pagenum"
-        :page-size="10"
-        :pager-count="5"
-        :total="total"
-        @current-change="handleCurrentChange"
-        style="justify-content: center"
-      >
+    <div v-if="!set.ismobile" class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only">
+      <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
+        @current-change="handleCurrentChange" style="justify-content: center">
       </el-pagination>
     </div>
   </div>
@@ -116,10 +91,10 @@ export default {
       this.txt = '加载更多';
       this.isLoadingList = true;
       let payLoad = {
-        page:this.pagenum,
-        search:this.searchKey
+        page: this.pagenum,
+        search: this.searchKey
       };
-      Method.api_post(`/bbs/list/${this.chatid}`,payLoad)
+      Method.api_post(`/bbs/list/${this.chatid}`, payLoad)
         .then((response: any) => {
           let obj = response.data;
           this.isLoadingMore = false;
@@ -157,7 +132,7 @@ export default {
         })
     },
     /** 样式调整 */
-    pageup() {},
+    pageup() { },
     /** 搜索（本地） */
     search() {
       this.pagenum = 1;
@@ -184,6 +159,7 @@ export default {
   flex: 1;
   overflow: auto;
 }
+
 .bbs-item {
   display: flex;
   padding: 12px 18px;
@@ -193,12 +169,14 @@ export default {
   max-height: 200px;
   box-shadow: var(--el-box-shadow-light);
 }
+
 .bbs-window {
   display: flex;
   flex-direction: column;
   flex: 1;
   overflow: hidden;
 }
+
 .item-header {
   display: flex;
   flex-direction: column;
@@ -207,9 +185,11 @@ export default {
   box-shadow: var(--el-box-shadow-light);
   border-radius: var(--rounded-btn);
 }
+
 .item-header.mobile {
   margin: 10px;
 }
+
 .search-header {
   height: 60px;
   display: flex;
@@ -219,21 +199,26 @@ export default {
   box-shadow: var(--el-box-shadow-light);
   border-radius: var(--rounded-btn);
 }
+
 .search-header.mobile {
   margin: 10px;
 }
+
 .search-header .container {
   display: flex;
   flex-direction: row;
   flex: 1;
 }
+
 .search-header .container .input {
   overflow: hidden;
   flex: 1;
 }
+
 .search-header .container .item {
   margin: 0 6px;
 }
+
 .load-more {
   display: flex;
   flex-direction: row;

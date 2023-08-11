@@ -4,19 +4,29 @@
       <div class="cate-list mobile" v-if="!isBbsView">
         <el-button type="info" @click="topicPublish">发布主题</el-button>
         <div class="list" v-loading="loadingCate">
-          <el-button :class="active_cate_id == item.id ? 'active' : ''" v-for="item in cate_list"
+          <!-- <el-button :class="active_cate_id == item.id ? 'active' : ''" v-for="item in cate_list"
             @click="active_cate_id = item.id">
             <el-icon>
               <ChatDotSquare />
             </el-icon>
             <div class="name">{{ item.name }}</div>
-          </el-button>
+          </el-button> -->
+          <router-link v-for="item in cate_list" :class="active_cate_id == item.id ? 'active' : ''"
+            :to="`/postlist/${item.id}`" @click="active_cate_id = item.id">
+            <el-button>
+              <el-icon>
+                <ChatDotSquare />
+              </el-icon>
+              <div class="name">{{ item.name }}</div>
+            </el-button>
+          </router-link>
         </div>
       </div>
       <!-- 帖子列表 -->
       <div class="bbs-list mobile" v-if="!isBbsView">
         <PostPage @itemClickEvent="onBbsItemClick" :chatid="active_cate_id" />
       </div>
+      <!--帖子详情-->
       <div :class="isBbsView ? 'active' : ''">
         <DetailPlate v-if="isBbsView" @closeEvent="onBbsItemClose" :id="activeBbsItem.id" :item="activeBbsItem">
         </DetailPlate>
@@ -31,13 +41,20 @@
           <el-button type="info" @click="topicPublish">发布主题</el-button>
         </div>
         <div class="container" v-loading="loadingCate">
-          <div class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
+          <!-- <div class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
             @click="refreshBbsList(item.id)">
             <el-icon>
               <ChatDotSquare />
             </el-icon>
             <div class="name">{{ item.name }}</div>
-          </div>
+          </div> -->
+          <router-link class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
+            @click="active_cate_id = item.id" :to="`/postlist/${item.id}`">
+            <el-icon>
+              <ChatDotSquare />
+            </el-icon>
+            <div class="name">{{ item.name }}</div>
+          </router-link>
         </div>
       </div>
       <!-- 帖子列表 -->
@@ -62,6 +79,7 @@ import BbsItem from "@comps/main/bbs/item.vue";
 import DetailPlate from "@comps/main/cards/DetailPlate.vue";
 import "./HomePlate.ts"
 import { ElMessage } from "element-plus";
+import { useRoute, useRouter } from 'vue-router';
 //主页卡片，经典
 export default {
   name: 'HomePlate',
@@ -91,10 +109,17 @@ export default {
     onBbsItemClose() {
       this.isBbsView = false;
       this.activeBbsItem = null;
+      const router = useRouter()
+      router.back()
     },
     onBbsItemClick(item: any) {
       this.isBbsView = true;
       this.activeBbsItem = item;
+      const router = useRouter()
+      const route = useRoute();
+      router.push(`${route.path}/${item.id}`)
+      console.log(`${route.path}/${item.id}`);
+
     },
     refreshBbsList(id: number) {
       this.active_cate_id = id
@@ -126,14 +151,17 @@ export default {
           list = list.concat(res.data)
           this.cate_list = list
         }
-        if (res.data.length > 0) {
-          this.active_cate_id = list[0].id
+        const route = useRoute();
+        if (route.params.postlist && route.params.chatid) {
+          if (res.data.length > 0) {
+            this.active_cate_id = list[0].id
+          }
         }
       })
     }
   },
   created() {
-    this.refreshCateList();
+    this.refreshCateList()
   },
   mounted() {
     Cfg.config.homestyle.maincontainer.padding = '0 0.5rem';

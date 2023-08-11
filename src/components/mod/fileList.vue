@@ -139,7 +139,6 @@ export default {
   name: 'ModFiles',
   components: { ModFlag },
   data() {
-    let uploadServer = Method.getHostUrl('/Upload/Upload')
     return {
       set: Cfg.set,
       homestyle: Cfg.config.homestyle,
@@ -161,7 +160,7 @@ export default {
       modFileName: '',
       file_name: '',
       file_id: 0,
-      uploadFileSrc: uploadServer,
+      uploadFileSrc: `${Cfg.config.server}/Upload/Upload`,
       world_list: <any>[],
       inner_name: '',
       inner_file_name: '',

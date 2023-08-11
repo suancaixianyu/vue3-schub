@@ -3,23 +3,9 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   /** 主页 */
   {
-    path: '/',
+    path: '/:postlist?/:chatid?/:id?',
     name: 'PlateBox',
     component: () => import('@comps/main/cards/HomePlate.vue'),
-    children: [
-      /** 帖子列表 */
-      {
-        path: 'postlist/:chatid',
-        name: 'PostPage',
-        children: [
-          {
-            name: 'xiangqing',
-            path: ':id',
-            component: () => import('@comps/main/cards/DetailPlate.vue'),
-          },
-        ],
-      },
-    ]
   },
 
   /** 用户主页 */

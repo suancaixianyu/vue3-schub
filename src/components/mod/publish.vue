@@ -115,7 +115,7 @@ export default {
   },
   data() {
     return {
-      uploadServer: Method.getHostUrl(Cfg.config.uploadServer),
+      uploadServer: `${Cfg.config.server}/Upload/Upload`,
       cover_list: [],
       en_name: '',
       mini_name: '',
@@ -160,7 +160,7 @@ export default {
       })
     },
     uploadCover(e: any) {
-      this.cover = Method.getHostUrl(e.data.src)
+      this.cover = e.data.src
     },
     newLink() {
       this.link.push({ src: '', type: '' })

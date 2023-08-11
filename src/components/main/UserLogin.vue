@@ -35,9 +35,7 @@
         <el-form-item>
           <el-input v-model="regitser.captcha_code">
             <template #prepend>验证&emsp;码</template>
-            <template #suffix>
-              <img :src="codeSrc" @click="refreshCode">
-            </template>
+            <img :src="codeSrc" @click="refreshCode">
           </el-input>
         </el-form-item>
         <el-form-item>
