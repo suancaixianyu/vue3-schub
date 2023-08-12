@@ -1,5 +1,5 @@
 <template>
-  <div v-if="set.ismobile" class="bbs-list mobile">
+  <div v-if="set.ismobile" class="bbs-list mobile" :style="{ display: showlist }">
     <PostPage />
   </div>
   <div v-else class="bbs-list" :class="isBbsView ? 'item-active' : 'item-detach'">
@@ -22,22 +22,23 @@ export default {
   data() {
     return {
       isBbsView: false,
-      set: Cfg.set
+      set: Cfg.set,
+      showlist: ''
     }
   },
   components: {
     PostPage
   },
   mounted() {
-    console.log('华仔');
-
     watch(
       () => this.$route.params,
       () => {
         if (this.$route.params.id) {
           this.isBbsView = true
+          this.showlist = 'none'
         } else {
           this.isBbsView = false
+          this.showlist = ''
         }
       },
       { immediate: true }
@@ -74,7 +75,7 @@ export default {
 }
 
 .bbs-list.item-active {
-  width: 35%;
+  width: 50%;
 }
 
 .bbs-list.item-detach {
@@ -91,7 +92,7 @@ export default {
 }
 
 .bbs-list.item-active {
-  width: 35%;
+  width: 50%;
 }
 
 .cate-list.active {

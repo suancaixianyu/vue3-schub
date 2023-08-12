@@ -235,7 +235,7 @@ export default {
 }
 
 .bbs-list.item-active {
-  width: 35%;
+  width: 50%;
 }
 
 .bbs-list.item-detach {

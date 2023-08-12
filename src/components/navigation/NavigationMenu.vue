@@ -8,7 +8,9 @@
         <div class="site-title">SC中文社区</div>
       </router-link>
       <div v-else @click="goBack" class="btn btn-ghost normal-case text-xl">
-        <el-icon><ArrowLeftBold /></el-icon>
+        <el-icon>
+          <ArrowLeftBold />
+        </el-icon>
         返回
       </div>
     </div>
@@ -22,7 +24,9 @@
         </label>
       </div>
       <div v-else @click="goBack" class="btn btn-ghost normal-case text-xl">
-        <el-icon><ArrowLeftBold /></el-icon>
+        <el-icon>
+          <ArrowLeftBold />
+        </el-icon>
         返回
       </div>
       <!-- 抽屉菜单 -->
@@ -264,7 +268,7 @@ import ScLogo from '@comps/icons/ScLogo.vue'
 import ScMod from '@comps/icons/ScMod.vue'
 import UserLogin from '@comps/main/UserLogin.vue'
 import { ElMessage } from 'element-plus'
-import {ref, watch} from 'vue'
+import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 export default {
   name: 'NavigationMenu',
@@ -289,7 +293,7 @@ export default {
     }
   },
   methods: {
-    goBack(){
+    goBack() {
       this.$router.back();
     },
     loginOut() {
@@ -301,7 +305,7 @@ export default {
               message: res.data.msg,
             })
             this.userInfo.isLogin = false
-            this.$router.push({path:'/'});
+            this.$router.push({ path: '/' });
           }
         })
         .catch((error) => {
@@ -352,9 +356,19 @@ export default {
   created() {
     //刷新页面重新获取用户信息
     Method.getInformation();
-    watch(()=>this.$router.currentRoute.value.fullPath,(v)=>{
-      if(v == '/' || v == '') this.isRootPath = true;
-      else this.isRootPath = false;
+    watch(() => this.$router.currentRoute.value.fullPath, (v) => {
+      console.log('---', v);
+
+      if (/\w+\/\d+/.test(v)) {
+        if (/cate\/\d+\/\d+/.test(v)) {
+          this.isRootPath = false
+        } else {
+          this.isRootPath = true
+        }
+      }
+      else {
+        this.isRootPath = true
+      }
     })
   },
   setup() {

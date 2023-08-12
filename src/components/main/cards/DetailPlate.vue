@@ -300,10 +300,19 @@ export default {
       this.pagewidth(newValue)
     });
     watch(() => this.$route.params.id, () => {
-      this.refresh_item();
+      if (this.$route.params.id) {
+        this.refresh_item();
+      }
     });
     this.refresh_item();
-  }
+  },
+  mounted() {
+    Cfg.config.homestyle.maincontainer.height = 'auto'
+
+  },
+  unmounted() {
+    Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
+  },
 }
 </script>
 
