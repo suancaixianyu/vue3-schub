@@ -19,6 +19,7 @@
               </el-icon>
             </el-col>
           </el-row>
+          <h2>{{ content.title }}</h2>
           <UserHead :item="userInfo" style="padding-left: 10px" />
         </el-header>
         <!-- 内容 -->

@@ -44,6 +44,12 @@
           <el-text>滚动条：css样式</el-text>
         </el-radio-group>
         <hr />
+        <el-form-item label="::-scrollbar">
+          <el-text>宽度: var(--scrollbar-width)</el-text>&ensp;
+          <el-text>手机端一般看不见滚动条，请将此项设置为0</el-text>
+          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
+            v-model="webstyle.webkit['scrollbar-width']" @keyup.enter="setstyle" />
+        </el-form-item>
 
         <el-form-item label="::-scrollbar-thumb">
           <el-text>背景: var(--scrollbar-thumb-background)</el-text>
@@ -71,13 +77,6 @@
           <el-text>圆角: var(--scrollbar-thumb-border-radius)</el-text>
           <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
             v-model="webstyle.webkit['scrollbar-thumb-border-radius']" />
-        </el-form-item>
-        <hr />
-        <el-form-item label="::-scrollbar">
-          <el-text>宽度: var(--scrollbar-width)</el-text>&ensp;
-          <el-text>手机端一般看不见滚动条，请将此项设置为0</el-text>
-          <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
-            v-model="webstyle.webkit['scrollbar-width']" @keyup.enter="setstyle" />
         </el-form-item>
       </el-form>
 

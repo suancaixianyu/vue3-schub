@@ -146,7 +146,7 @@ export default {
     watch(
       () => this.$route.params.cateid,
       () => {
-        this.listUpdate()
+        if (this.$route.params.cateid) this.listUpdate();
         this.path = <string>this.$route.params.cateid
       },
       { immediate: true }

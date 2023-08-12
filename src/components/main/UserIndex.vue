@@ -178,7 +178,7 @@ export default {
   top: 15%;
   left: 50%;
   transform: translateX(-50%);
-  height: 38%;
+  height: 35%;
   object-fit: cover;
 }
 
