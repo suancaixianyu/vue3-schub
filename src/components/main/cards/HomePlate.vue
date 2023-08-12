@@ -12,7 +12,7 @@
             <div class="name">{{ item.name }}</div>
           </el-button> -->
           <router-link v-for="item in cate_list" :class="active_cate_id == item.id ? 'active' : ''"
-            :to="`/cate/${item.id}`" @click="active_cate_id = item.id">
+            :to="`/postlist/${item.id}`" @click="active_cate_id = item.id">
             <el-button>
               <el-icon>
                 <ChatDotSquare />
@@ -42,7 +42,7 @@
             <div class="name">{{ item.name }}</div>
           </div> -->
           <router-link class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
-            @click="active_cate_id = item.id" :to="`/cate/${item.id}`">
+            @click="active_cate_id = item.id" :to="`/postlist/${item.id}`">
             <el-icon>
               <ChatDotSquare />
             </el-icon>
@@ -140,7 +140,7 @@ export default {
       this.isBbsView = true
     }
     if (!this.$route.params.cateid) {
-      this.$router.replace('/cate/0')
+      this.$router.replace('/postlist/0')
     }
     Cfg.config.homestyle.maincontainer.padding = '0 0.5rem';
   },

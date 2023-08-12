@@ -17,7 +17,7 @@
       <div class="bbs-list" ref="container" element-loading-text="加载中">
         <div v-for="item in plate" v-if="plate.length > 0">
           <div class="card w-96 bg-base-100 shadow-xl card-compact item-header" :class="set.ismobile ? 'mobile' : ''">
-            <router-link :to="`/cate/${path}/${item.id}`">
+            <router-link :to="`/postlist/${path}/${item.id}`">
               <BbsItem :item="item" @click="onItemClick(item), console.log(item)"></BbsItem>
             </router-link>
           </div>

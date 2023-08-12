@@ -360,7 +360,7 @@ export default {
       console.log('---', v);
 
       if (/\w+\/\d+/.test(v)) {
-        if (/cate\/\d+\/\d+/.test(v)) {
+        if (/postlist\/\d+\/\d+/.test(v)) {
           this.isRootPath = false
         } else {
           this.isRootPath = true

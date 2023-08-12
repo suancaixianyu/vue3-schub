@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@comps/main/cards/HomePlate.vue'),
     children: [
       {
-        path: 'cate/:cateid',
+        path: 'postlist/:cateid',
         name: 'PostPage',
         component: () => import('@comps/main/cards/HomeLeft.vue'),
         children: [
