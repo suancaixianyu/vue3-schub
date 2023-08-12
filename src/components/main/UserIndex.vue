@@ -10,18 +10,15 @@
         </el-upload>
         <div class="nickname" v-html="userInfo.data.nickname"></div>
         <UserRole :role="userInfo.data.role" />
+        <div style="color: #fff;">
+          <el-icon :size="20">
+            <Edit />
+          </el-icon>
+        </div>
       </div>
     </el-header>
     <el-header class="zone-head-container btn-area">
       <el-tabs class="el-tabs" model-value="bbs" @tab-click="onTabChange">
-        <!-- <el-tab-pane name="index">
-          <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <House />
-              </el-icon><span>主页</span></span>
-          </template>
-          <UserIndexPage :bbs="bbsList" :mod="modList" :world="worldList" v-if="activePages[0]" />
-        </el-tab-pane> -->
         <el-tab-pane name="bbs">
           <template #label>
             <span class="custom-tabs-label"><el-icon>
@@ -90,7 +87,7 @@ export default {
     },
   },
   data() {
-    let { userInfo, config: { server, homestyle: { headsize: { post } } } } = Cfg;
+    let { userInfo, config: { server, homestyle: { headsize: { userindex } } } } = Cfg;
     return {
       uploadServer: `${server}/Upload/Upload`,
       activeTab: 0,
@@ -100,7 +97,7 @@ export default {
       worldList: <any>[],
       modList: <any>[],
       activePages: <boolean[]>[true, false, false, false],
-      headsize: post,
+      headsize: userindex,
       userInfo: userInfo
     }
   },

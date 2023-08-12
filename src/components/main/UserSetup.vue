@@ -21,7 +21,7 @@
         <hr />
         <el-form-item label="预览">
           帖子&emsp;<el-avatar :shape="set.shape" :size="headsize.post" :src="userhead" />
-          &emsp;&emsp; 用户中心&emsp;<el-avatar :shape="set.shape" :size="headsize.userindex" :src="userhead" />
+          &emsp;&emsp; 用户中心&emsp;<el-avatar shape="circle" :size="headsize.userindex" :src="userhead" />
         </el-form-item>
 
         <el-form-item label="头像形状">
@@ -35,7 +35,7 @@
           <el-input type="number" v-model="headsize.post" @blur="sizepost" />
         </el-form-item>
         <el-form-item label="用户主头像页大小">
-          <el-input type="number" v-model="headsize.userindex" @blur="sizeuser" @keyup.enter="setstyle" />
+          <el-input type="number" v-model="headsize.userindex" @blur="sizeuser" />
         </el-form-item>
       </el-form>
 
@@ -48,7 +48,7 @@
           <el-text>宽度: var(--scrollbar-width)</el-text>&ensp;
           <el-text>手机端一般看不见滚动条，请将此项设置为0</el-text>
           <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
-            v-model="webstyle.webkit['scrollbar-width']" @keyup.enter="setstyle" />
+            v-model="webstyle.webkit['scrollbar-width']" />
         </el-form-item>
 
         <el-form-item label="::-scrollbar-thumb">
@@ -88,7 +88,7 @@
         <el-form-item label="圆角">
           <el-text>圆角: var(--rounded-card)</el-text>
           <el-input class="bg-base-200" type="text" placeholder="输入文本" style="width: 100%"
-            v-model="webstyle.card['rounded-card']" @keyup.enter="setstyle" />
+            v-model="webstyle.card['rounded-card']" />
         </el-form-item>
       </el-form>
 
@@ -165,7 +165,18 @@ export default {
       this.headsize.userindex = Number(this.headsize.userindex)
     },
     setstyle() {
+      /** css设置 */
       Method.localSet('webstyle', Cfg.config.webstyle)
+      /** 其他设置 */
+      Method.localSet('websetup', {
+        menu: this.set.menu,
+        headsize: {
+          post: this.headsize.post,
+          userindex: this.headsize.userindex
+        },
+        shape: this.set.shape
+      })
+      /** 应用 */
       Method.setwebstyle()
       ElMessage('设置成功')
     },

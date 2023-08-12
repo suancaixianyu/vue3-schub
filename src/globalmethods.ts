@@ -178,7 +178,7 @@ class Method {
    * @param e 资源相对路径
    */
   getHostUrl(e: string): string {
-    if(e==null)return '';
+    if (e == null) return '';
     if (e.indexOf('http://') != -1 || e.indexOf('https://') != -1) return e
     if (e.indexOf('./') == -1) {
       return Cfg.config.server + e
@@ -253,7 +253,7 @@ class Method {
       })
       if (f != null) {
         arr2[1] = /^(http|https):\/\//.test(arr2[1]) ? arr2[1] : 'http://' + arr2[1];
-        result.push({id:f.id, name: f.name, src: arr2[1] })
+        result.push({ id: f.id, name: f.name, src: arr2[1] })
       }
     })
     return result
@@ -373,22 +373,30 @@ class Method {
    */
   setwebstyle() {
     let data = this.localGet('webstyle', {})
-    console.log(data)
     if (data.webkit) {
       console.log('加载本地设置', data)
       for (let key in Cfg.config.webstyle) {
         Cfg.config.webstyle[key] = data[key]
       }
     }
-
+    /** css样式 */
     for (let key in Cfg.config.webstyle) {
       for (let b in Cfg.config.webstyle[key]) {
-        console.log(key, b, Cfg.config.webstyle[key][b])
+        // console.log(key, b, Cfg.config.webstyle[key][b])
         document.documentElement.style.setProperty(
           `--${b}`,
           Cfg.config.webstyle[key][b],
         )
       }
+    }
+    /** 配置 */
+    let websetup = this.localGet('websetup', {})
+    console.log(websetup);
+
+    if (websetup.headsize) {
+      Cfg.set.menu = websetup.menu
+      Cfg.set.shape = websetup.shape
+      Cfg.config.homestyle.headsize = websetup.headsize
     }
   }
 
