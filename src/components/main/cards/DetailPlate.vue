@@ -2,7 +2,7 @@
   <div v-loading="isLoading">
     <!-- 移动端 -->
     <div v-if="set.ismobile">
-      <el-container v-if="content!=null">
+      <el-container v-if="content != null">
         <!-- 头部 -->
         <el-header style="padding: 0">
           <!-- 顶部按钮 -->
@@ -50,7 +50,7 @@
             <!-- 回复列表 -->
             <div v-loading="isLoadingReply">
               <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                        :previewid="index" @refreshEvent="refresh_reply_list" />
+                :previewid="index" @refreshEvent="refresh_reply_list" />
             </div>
           </div>
         </el-main>
@@ -59,8 +59,8 @@
 
     <!-- pc页面 -->
     <div v-else class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
-         style="box-shadow: var(--el-box-shadow-light); margin-right: 28px">
-      <div v-if="content!=null" class="common-layout">
+      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px">
+      <div v-if="content != null" class="common-layout">
         <el-container>
           <!-- 头部 -->
           <el-header style="padding: 0">
@@ -108,7 +108,7 @@
               <!-- 回复列表 -->
               <div v-loading="isLoadingReply">
                 <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                          :previewid="index" @refreshEvent="refresh_reply_list" />
+                  :previewid="index" @refreshEvent="refresh_reply_list" />
               </div>
             </div>
           </el-main>
@@ -141,12 +141,12 @@ export default {
     MdPreview,
     OneReply,
   },
-  props:{
-    id: {type:Number}//帖子ID
-  },
+  // props:{
+  //   id: {type:Number}//帖子ID
+  // },
   data() {
     return {
-      userInfo:<any>null,
+      userInfo: <any>null,
       headsize: Cfg.config.homestyle.headsize.post,
       set: Cfg.set,
       shape: Cfg.set.shape,
@@ -166,48 +166,48 @@ export default {
       reply_list: [] as any,
     }
   },
-  methods:{
+  methods: {
     /**
      * 刷新帖子详情
      */
     refresh_item() {
       this.isLoading = true
-      Method.api_get(`/bbs/item/${this.id}`)
-          .then((res: any) => {
-            this.isLoading = false;
-            if (res.data.code === 200) {
-              let item = res.data.data;
-              item.time = Method.formatBbsTime(item.time);
-              item.author.headurl = Method.getHostUrl(item.author.headurl);
-              this.content = item;
-              this.userInfo = {
-                headurl: item.author.headurl,
-                nickname: item.author.nickname,
-                time: item.time,
-                role: item.author.role,
-                shape:this.shape,
-                headsize:this.headsize,
-                style: {
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                },
-              };
-              this.refresh_reply_list();
-            } else {
-              ElMessage({
-                type: 'error',
-                message: res.data.msg,
-              })
-            }
-          })
-          .catch((error: any) => {
-            this.isLoading = false
+      Method.api_get(`/bbs/item/${this.$route.params.id}`)
+        .then((res: any) => {
+          this.isLoading = false;
+          if (res.data.code === 200) {
+            let item = res.data.data;
+            item.time = Method.formatBbsTime(item.time);
+            item.author.headurl = Method.getHostUrl(item.author.headurl);
+            this.content = item;
+            this.userInfo = {
+              headurl: item.author.headurl,
+              nickname: item.author.nickname,
+              time: item.time,
+              role: item.author.role,
+              shape: this.shape,
+              headsize: this.headsize,
+              style: {
+                flexDirection: 'row',
+                alignItems: 'center',
+              },
+            };
+            this.refresh_reply_list();
+          } else {
             ElMessage({
               type: 'error',
-              message: '详情获取失败，请点击刷新按钮重试',
+              message: res.data.msg,
             })
-            console.error(error)
+          }
+        })
+        .catch((error: any) => {
+          this.isLoading = false
+          ElMessage({
+            type: 'error',
+            message: '详情获取失败，请点击刷新按钮重试',
           })
+          console.error(error)
+        })
     },
     /**
      * 刷新回复列表
@@ -215,38 +215,38 @@ export default {
     refresh_reply_list() {
       let { page, limit, sort } = this
       this.isLoadingReply = true
-      Method.api_get(`/bbs/reply_list/${this.id}?page=${page}&limit=${limit}&sort=${sort}`)
-          .then((res: any) => {
-            this.isLoading = false
-            let list = res.data.data
-            function formatList(l: any[]) {
-              l.forEach(
-                  (xl: {
-                    time: any
-                    author: { headurl: string }
-                    children: any
-                  }) => {
-                    xl.time = Method.formatBbsTime(xl.time)
-                    xl.author.headurl = Method.getHostUrl(xl.author.headurl)
-                    formatList(xl.children)
-                  },
-              )
-            }
-            formatList(list)
-            this.reply_list = list
-            if (this.page === 1) {
-              this.sum.total = res.data.sum.total
-            }
-            this.isLoadingReply = false
+      Method.api_get(`/bbs/reply_list/${this.$route.params.id}?page=${page}&limit=${limit}&sort=${sort}`)
+        .then((res: any) => {
+          this.isLoading = false
+          let list = res.data.data
+          function formatList(l: any[]) {
+            l.forEach(
+              (xl: {
+                time: any
+                author: { headurl: string }
+                children: any
+              }) => {
+                xl.time = Method.formatBbsTime(xl.time)
+                xl.author.headurl = Method.getHostUrl(xl.author.headurl)
+                formatList(xl.children)
+              },
+            )
+          }
+          formatList(list)
+          this.reply_list = list
+          if (this.page === 1) {
+            this.sum.total = res.data.sum.total
+          }
+          this.isLoadingReply = false
+        })
+        .catch((error: { message: any }) => {
+          this.isLoading = false
+          ElMessage({
+            type: 'error',
+            message: '评论获取失败，请点击刷新按钮重试',
           })
-          .catch((error: { message: any }) => {
-            this.isLoading = false
-            ElMessage({
-              type: 'error',
-              message: '评论获取失败，请点击刷新按钮重试',
-            })
-            console.error(error.message)
-          })
+          console.error(error.message)
+        })
     },
     sortByTime() {
       this.sort = 0
@@ -266,7 +266,7 @@ export default {
       }
     },
     close() {
-      this.$emit('closeEvent');
+      this.$router.back();
     },
     copytext() {
       Method.copyText(window.location.href)
@@ -279,7 +279,7 @@ export default {
       this.isReplying = true
       Method.api_post(`/bbs/reply`, {
         content: this.comments,
-        bid: this.id,
+        bid: this.$route.params.id,
       }).then((response: { data: { code: number } }) => {
         this.isReplying = false
         if (response.data.code == 200) {
@@ -294,12 +294,12 @@ export default {
     }
   },
 
-  created(){
+  created() {
     let windowwidth = inject<Ref<number>>('windowwidth') as Ref<number>
     watch(windowwidth, (newValue) => {
       this.pagewidth(newValue)
     });
-    watch(()=>this.id,()=>{
+    watch(() => this.$route.params.id, () => {
       this.refresh_item();
     });
     this.refresh_item();

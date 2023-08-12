@@ -17,7 +17,9 @@
       <div class="bbs-list" ref="container" element-loading-text="加载中">
         <div v-for="item in plate" v-if="plate.length > 0">
           <div class="card w-96 bg-base-100 shadow-xl card-compact item-header" :class="set.ismobile ? 'mobile' : ''">
-            <BbsItem :item="item" @click="onItemClick(item), console.log(item)"></BbsItem>
+            <router-link :to="`/cate/${path}/${item.id}`">
+              <BbsItem :item="item" @click="onItemClick(item), console.log(item)"></BbsItem>
+            </router-link>
           </div>
         </div>
         <el-empty v-else description="没有数据" :image-size="200" />
@@ -26,7 +28,8 @@
         </div>
       </div>
     </div>
-    <div v-if="!set.ismobile" class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only">
+    <div v-if="!set.ismobile && total > 10"
+      class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only">
       <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
         @current-change="handleCurrentChange" style="justify-content: center">
       </el-pagination>
@@ -35,12 +38,12 @@
 </template>
 
 <script lang="ts">
-import { watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 import PostListPlate from './bbs/list.vue'
 import BbsItem from '@comps/main/bbs/item.vue'
+import { watch } from "vue";
 
 /** 帖子列表 */
 export default {
@@ -49,7 +52,6 @@ export default {
     BbsItem,
     PostListPlate,
   },
-  props: ['chatid'],
   data() {
     return {
       set: Cfg.set,
@@ -62,6 +64,7 @@ export default {
       searchKey: '',
       plate: <any[]>[],
       txt: '加载更多',
+      path: ''
     }
   },
   methods: {
@@ -94,7 +97,7 @@ export default {
         page: this.pagenum,
         search: this.searchKey
       };
-      Method.api_post(`/bbs/list/${this.chatid}`, payLoad)
+      Method.api_post(`/bbs/list/${this.$route.params.cateid}`, payLoad)
         .then((response: any) => {
           let obj = response.data;
           this.isLoadingMore = false;
@@ -131,24 +134,24 @@ export default {
           console.error(error)
         })
     },
-    /** 样式调整 */
-    pageup() { },
     /** 搜索（本地） */
     search() {
       this.pagenum = 1;
       this.listUpdate();
     },
   },
-  created() {
-    watch(
-      () => this.chatid,
-      () => {
-        this.pagenum = 1;
-        this.listUpdate()
-      },
-    )
+  mounted() {
+    this.pagenum = 1;
     this.listUpdate()
-  },
+    watch(
+      () => this.$route.params.cateid,
+      () => {
+        this.listUpdate()
+        this.path = <string>this.$route.params.cateid
+      },
+      { immediate: true }
+    )
+  }
 }
 </script>
 

@@ -12,7 +12,7 @@
             <div class="name">{{ item.name }}</div>
           </el-button> -->
           <router-link v-for="item in cate_list" :class="active_cate_id == item.id ? 'active' : ''"
-            :to="`/postlist/${item.id}`" @click="active_cate_id = item.id">
+            :to="`/cate/${item.id}`" @click="active_cate_id = item.id">
             <el-button>
               <el-icon>
                 <ChatDotSquare />
@@ -23,14 +23,7 @@
         </div>
       </div>
       <!-- 帖子列表 -->
-      <div class="bbs-list mobile" v-if="!isBbsView">
-        <PostPage @itemClickEvent="onBbsItemClick" :chatid="active_cate_id" />
-      </div>
-      <!--帖子详情-->
-      <div :class="isBbsView ? 'active' : ''">
-        <DetailPlate v-if="isBbsView" @closeEvent="onBbsItemClose" :id="activeBbsItem.id" :item="activeBbsItem">
-        </DetailPlate>
-      </div>
+      <router-view />
     </el-col>
   </el-container>
   <el-container v-else>
@@ -49,7 +42,7 @@
             <div class="name">{{ item.name }}</div>
           </div> -->
           <router-link class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
-            @click="active_cate_id = item.id" :to="`/postlist/${item.id}`">
+            @click="active_cate_id = item.id" :to="`/cate/${item.id}`">
             <el-icon>
               <ChatDotSquare />
             </el-icon>
@@ -58,14 +51,7 @@
         </div>
       </div>
       <!-- 帖子列表 -->
-      <div class="bbs-list" :class="isBbsView ? 'item-active' : 'item-detach'">
-        <PostPage @itemClickEvent="onBbsItemClick" :chatid="active_cate_id" />
-      </div>
-      <!--帖子详情-->
-      <div class="bbs-detail" :class="isBbsView ? 'active' : ''">
-        <DetailPlate v-if="isBbsView" @closeEvent="onBbsItemClose" :id="activeBbsItem.id" :item="activeBbsItem">
-        </DetailPlate>
-      </div>
+      <router-view />
     </el-main>
   </el-container>
 </template>
@@ -77,10 +63,9 @@ import LikeIcon from '@comps/icons/Like.vue'
 import PostPage from '@comps/main/PostPage.vue'
 import BbsItem from "@comps/main/bbs/item.vue";
 import DetailPlate from "@comps/main/cards/DetailPlate.vue";
+import type { api } from "@/apitypes";
 import "./HomePlate.ts"
 import { ElMessage } from "element-plus";
-import { useRoute, useRouter } from 'vue-router';
-//主页卡片，经典
 export default {
   name: 'HomePlate',
   components: { DetailPlate, BbsItem, LikeIcon, PostPage },
@@ -94,11 +79,13 @@ export default {
       cate_list: <cateItem[]>[],
       loadingCate: false,
       loadingBbs: false,
-      active_cate_id: 1,
+      /**当前板块id */
+      active_cate_id: 0,
       page: 1
     }
   },
   methods: {
+    /** 发布帖子 */
     topicPublish() {
       if (this.active_cate_id > 0) {
         this.$router.push(`/publish/${this.active_cate_id}`)
@@ -106,57 +93,41 @@ export default {
         ElMessage('请先选择一个板块');
       }
     },
-    onBbsItemClose() {
-      this.isBbsView = false;
-      this.activeBbsItem = null;
-      const router = useRouter()
-      router.back()
-    },
-    onBbsItemClick(item: any) {
-      this.isBbsView = true;
-      this.activeBbsItem = item;
-      const router = useRouter()
-      const route = useRoute();
-      router.push(`${route.path}/${item.id}`)
-      console.log(`${route.path}/${item.id}`);
 
-    },
-    refreshBbsList(id: number) {
-      this.active_cate_id = id
-      this.loadingBbs = true
-      Method.api_get(`/bbs/list/${this.active_cate_id}?page=${this.page}`).then(
-        (response2) => {
-          this.loadingBbs = false
-          let res2 = response2.data
-          res2.data.forEach((xx: any) => {
-            xx.url = `/left/${this.active_cate_id}/${xx.id}`
-          })
-          if (res2.code == 200) {
-            this.bbs_list = res2.data
-          }
-        },
-      )
-    },
+    /** 初始化板块列表 */
     refreshCateList() {
       this.loadingCate = true
       Method.api_get('/cate/list').then((response) => {
-        let res = response.data
+        let res: api = response.data
         this.loadingCate = false
-        res.data.forEach((x: any) => {
-          x.url = `/left/${x.id}`
-        })
-        let list = [];
-        list.push({ id: 0, name: '全部板块' });
-        if (res.code == 200) {
-          list = list.concat(res.data)
-          this.cate_list = list
-        }
-        const route = useRoute();
-        if (route.params.postlist && route.params.chatid) {
-          if (res.data.length > 0) {
-            this.active_cate_id = list[0].id
+        if (res.code != 200) {
+          ElMessage({
+            type: 'error',
+            message: res.msg
+          })
+        } else {
+          let list = [];
+          list.push({ id: 0, name: '全部板块' });
+          if (res.code == 200) {
+            list = list.concat(res.data)
+            this.cate_list = list
+          }
+          console.log(this.$route.params.cateid);
+
+          if (this.$route.params.cateid) {
+            this.active_cate_id = Number(this.$route.params.cateid)
+          } else {
+            if (res.data.length > 0) {
+              this.active_cate_id = list[0].id
+            }
           }
         }
+      }).catch(() => {
+        this.loadingCate = false
+        ElMessage({
+          type: 'error',
+          message: '请求出错'
+        })
       })
     }
   },
@@ -164,7 +135,22 @@ export default {
     this.refreshCateList()
   },
   mounted() {
+    console.log(this.$route.params.cateid);
+    if (this.$route.params.cateid && this.$route.params.id) {
+      this.isBbsView = true
+    }
+    if (!this.$route.params.cateid) {
+      this.$router.replace('/cate/0')
+    }
     Cfg.config.homestyle.maincontainer.padding = '0 0.5rem';
+  },
+  updated() {
+    if (this.$route.params.id) {
+      this.isBbsView = true
+    } else {
+      this.isBbsView = false
+    }
+
   },
   unmounted() {
     Cfg.config.homestyle.maincontainer.padding = '0 1rem';
