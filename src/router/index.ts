@@ -70,6 +70,12 @@ const routes: RouteRecordRaw[] = [
     name: 'ModFiles',
     component: () => import('@comps/mod/fileList.vue'),
   },
+  /**文件列表**/
+  {
+    path: '/Admin',
+    name: 'Admin',
+    component: () => import('@comps/admin/index.vue'),
+  },
 ]
 
 const router = createRouter({

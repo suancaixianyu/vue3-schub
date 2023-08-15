@@ -248,6 +248,11 @@
                 </router-link>
               </li>
               <li>
+                <router-link to="/admin">
+                  <a href="javascript:;">后台管理</a>
+                </router-link>
+              </li>
+              <li>
                 <a @click="loginOut">退出登陆</a>
               </li>
             </ul>

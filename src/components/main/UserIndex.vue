@@ -96,7 +96,7 @@ export default {
       bbsList: <any>[],
       worldList: <any>[],
       modList: <any>[],
-      activePages: <boolean[]>[true, false, false, false],
+      activePages: <boolean[]>[false, false, false, false],
       headsize: userindex,
       userInfo: userInfo
     }
@@ -109,6 +109,7 @@ export default {
     Method.api_get(`/user/zone/${this.userInfo.data.id}`)
       .then((response: any) => {
         let res = response.data
+        this.activePages[0] = true;
         this.isLoading = false
         if (res.code == 200) {
           res.data.bbs.forEach((x: any) => {
