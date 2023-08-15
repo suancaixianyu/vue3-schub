@@ -267,7 +267,7 @@ export default {
   mounted() {
     Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.height = 'auto'
-    Cfg.config.homestyle.maincontainer.overflowY = ''
+    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
   },
   unmounted() {
     Cfg.config.homestyle.maincontainer.padding = '0 1rem'

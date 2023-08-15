@@ -87,11 +87,70 @@
       </div>
     </div>
 
+
+    <details class="dropdown mb-32" v-else>
+      <summary class="m-1 btn">
+        <ScLogo />
+      </summary>
+      <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
+        style="box-shadow: var(--el-box-shadow-light);border: none;width: 10rem;border-radius: var(--rounded-btn)">
+        <li>
+          <!-- 返回主页 -->
+          <router-link to="/">
+            <el-icon :size="28" style="padding: 0 2px">
+              <House />
+            </el-icon>
+            <el-text>主页</el-text>
+          </router-link>
+        </li>
+        <li>
+          <div>
+            <el-icon :size="28" style="padding: 0 2px">
+              <Message />
+            </el-icon>
+            <el-text>消息</el-text>
+          </div>
+        </li>
+        <li>
+          <div @click="handleLiClick">
+            <input ref="toggleInput" checked type="checkbox" class="toggle toggle-sm" data-toggle-theme="dark,light"
+              data-act-class="ACTIVECLASS" v-model="iconid" />
+            <el-text>
+              <el-icon v-if="iconid">
+                <Moon />
+              </el-icon>
+              <el-icon v-if="iconid === false">
+                <Sunny />
+              </el-icon>切换主题
+            </el-text>
+          </div>
+        </li>
+        <li>
+          <router-link to="/setup">
+            <el-icon :size="28" style="padding: 0 2px">
+              <setting />
+            </el-icon>
+            <span>设置</span>
+          </router-link>
+        </li>
+        <li>
+          <details class="dropdown mb-32">
+            <summary class="m-1">外部工具</summary>
+            <ul class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52">
+              <li><a href="http://suancaixianyu.cn/sss">简谱转换</a></li>
+              <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </details>
+
     <!-- 弹窗菜单 -->
-    <div class="dropdown hidden-sm-and-up bg-base-100" v-else>
-      <label tabindex="0" class="btn btn-ghost btn-circle">
+    <div class="dropdown hidden-sm-and-up bg-base-100" v-if="false">
+      <label tabindex="0" class="btn btn-ghost btn-circle dropdown mb-32">
         <ScLogo />
       </label>
+
       <el-menu default-active="2" class="el-menu-vertical-demo dropdown-content bg-base-100" style="
           border: none;
           z-index: 20;
@@ -245,11 +304,6 @@
               <li>
                 <router-link to="/user">
                   <a href="javascript:;">个人中心</a>
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/admin">
-                  <a href="javascript:;">后台管理</a>
                 </router-link>
               </li>
               <li>

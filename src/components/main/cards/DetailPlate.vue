@@ -121,8 +121,7 @@
 
 <script lang="ts">
 // 帖子详情卡片
-import { inject, watch } from 'vue'
-import type { Ref } from 'vue'
+import { watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import Flushed from '@comps/icons/Flushed.vue'
 import UserHead from '@comps/main/bbs/UserHead.vue'
@@ -259,13 +258,6 @@ export default {
       this.page = 1
       this.refresh_reply_list()
     },
-    pagewidth(width: number) {
-      if (width <= 480) {
-        Cfg.config.homestyle.maincontainer.overflowY = 'visible'
-      } else {
-        Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
-      }
-    },
     close() {
       this.$router.back();
     },
@@ -296,9 +288,8 @@ export default {
   },
 
   created() {
-    let windowwidth = inject<Ref<number>>('windowwidth') as Ref<number>
-    watch(windowwidth, (newValue) => {
-      this.pagewidth(newValue)
+    watch(() => Cfg.set.ismobile, (ismobile) => {
+      Cfg.config.homestyle.maincontainer.height = ismobile ? 'auto' : 'calc(100vh - 90px)'
     });
     watch(() => this.$route.params.id, () => {
       if (this.$route.params.id) {
@@ -306,14 +297,7 @@ export default {
       }
     });
     this.refresh_item();
-  },
-  mounted() {
-    Cfg.config.homestyle.maincontainer.height = 'auto'
-
-  },
-  unmounted() {
-    Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
-  },
+  }
 }
 </script>
 

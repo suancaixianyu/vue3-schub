@@ -34,7 +34,6 @@
 <script lang="ts">
 import { ElMessage } from 'element-plus'
 import { MdEditor } from 'md-editor-v3'
-import 'md-editor-v3/lib/style.css'
 import { useRoute, useRouter } from 'vue-router'
 
 /** md编辑器 */
@@ -75,7 +74,7 @@ export default {
       // 执行图片上传的逻辑
       const formData = new FormData
       formData.append('file', file[0], file[0].name)
-      Method.api_post(`${Cfg.config.server}/Upload/Upload`, formData)
+      Method.api_post(`/Upload/Upload`, formData)
         .then((response) => {
           let obj = response.data as api
           if (obj.code === 200) {

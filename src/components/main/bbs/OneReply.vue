@@ -13,7 +13,6 @@
         <div class="time">{{ x.time }}</div>
         <LikeIcon @click="doGood" class="label"></LikeIcon>
         <div class="label amount">{{ likes }}</div>
-        <LikeIcon @click="initClick" class="label"></LikeIcon>
         <div class="label" @click="readyReply">回复</div>
       </div>
       <!-- 二级评论 -->
