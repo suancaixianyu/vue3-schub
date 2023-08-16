@@ -28,11 +28,15 @@ const routes: RouteRecordRaw[] = [
     name: 'UserIndex',
     component: () => import('@comps/main/UserIndex.vue'),
   },
-
   {
-    path: '/setup',
+    path: '/usersetup',
     name: 'UserSetup',
     component: () => import('@comps/main/UserSetup.vue'),
+  },
+  {
+    path: '/setup',
+    name: 'WebSetup',
+    component: () => import('@comps/main/WebSetup.vue'),
   },
   /** 登录和注册 */
   {

@@ -87,16 +87,17 @@
       </div>
     </div>
 
-
-    <details class="dropdown mb-32" v-else>
-      <summary class="m-1 btn">
+    <!-- 弹窗菜单 -->
+    <details class="dropdown mb-32 hidden-sm-and-up rounded-box" ref="menu" @click="menuClick('menu', true)" v-else>
+      <summary class="m-1 btn bg-base-100 btn-ghost">
         <ScLogo />
       </summary>
       <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
-        style="box-shadow: var(--el-box-shadow-light);border: none;width: 10rem;border-radius: var(--rounded-btn)">
+        style="box-shadow: var(--el-box-shadow-light);border: none;width: 10rem;border-radius: var(--rounded-btn)"
+        @mouseleave="menuClick('menu')">
         <li>
           <!-- 返回主页 -->
-          <router-link to="/">
+          <router-link to="/" @click="menuClick('menu')">
             <el-icon :size="28" style="padding: 0 2px">
               <House />
             </el-icon>
@@ -126,7 +127,7 @@
           </div>
         </li>
         <li>
-          <router-link to="/setup">
+          <router-link to="/setup" @click="menuClick('tool')">
             <el-icon :size="28" style="padding: 0 2px">
               <setting />
             </el-icon>
@@ -136,7 +137,7 @@
         <li>
           <details class="dropdown mb-32">
             <summary class="m-1">外部工具</summary>
-            <ul class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52">
+            <ul class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52" @click="menuClick('menu')">
               <li><a href="http://suancaixianyu.cn/sss">简谱转换</a></li>
               <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
             </ul>
@@ -145,17 +146,14 @@
       </ul>
     </details>
 
-    <!-- 弹窗菜单 -->
+    <!-- 弹窗菜单2 -->
     <div class="dropdown hidden-sm-and-up bg-base-100" v-if="false">
       <label tabindex="0" class="btn btn-ghost btn-circle dropdown mb-32">
         <ScLogo />
       </label>
 
-      <el-menu default-active="2" class="el-menu-vertical-demo dropdown-content bg-base-100" style="
-          border: none;
-          z-index: 20;
-          box-shadow: var(--el-box-shadow-light);
-        " @open="true">
+      <el-menu default-active="2" class="el-menu-vertical-demo dropdown-content bg-base-100"
+        style="border: none;z-index: 20;box-shadow: var(--el-box-shadow-light);" @open="true">
         <!-- 返回主页 -->
         <router-link to="/">
           <el-menu-item index="1">
@@ -234,26 +232,21 @@
           </div>
         </li>
         <!-- 工具 -->
-        <li class="hidden-xs-only">
-          <div class="dropdown dropdown-bottom dropdown-end dropdown-hover" style="z-index: 20">
-            <label tabindex="0" style="display: flex; justify-items: center">
-              <el-icon :size="26">
+        <li class="hidden-xs-only" @click="menuClick('tool', true)">
+          <details class="dropdown mb-32 rounded-box" ref="tool">
+            <summary class="m-1 btn bg-base-100 btn-ghost"><el-icon :size="26">
                 <svg t="1691074075906" class="icon" viewBox="0 0 1024 1024" version="1.1"
                   xmlns="http://www.w3.org/2000/svg" p-id="5561" width="200" height="200" style="margin: 0">
                   <path
                     d="M817.87 556.31h-63.58v-66.24A42.27 42.27 0 0 0 712 447.8h-84.81a42.27 42.27 0 0 0-42.27 42.27v66.24H436.57v-66.24a42.27 42.27 0 0 0-42.27-42.27h-84.83a42.27 42.27 0 0 0-42.27 42.27v66.24h-61.83A22.39 22.39 0 0 0 183 578.7a22.39 22.39 0 0 0 22.39 22.39h61.81v65.55a42.27 42.27 0 0 0 42.27 42.27h84.83a42.27 42.27 0 0 0 42.27-42.27v-65.55h148.36v65.55a42.27 42.27 0 0 0 42.27 42.27H712a42.27 42.27 0 0 0 42.27-42.27v-65.55h63.58a22.39 22.39 0 0 0 22.39-22.39 22.39 22.39 0 0 0-22.37-22.39z m-438.64 95.26h-54.69V505.14h54.69z m317.72 0h-54.69V505.14H697z"
                     p-id="5562"></path>
                   <path
-                    d="M823 202.58h-90.81v-63.09a71.88 71.88 0 0 0-71.88-71.88H363.19a71.88 71.88 0 0 0-71.88 71.88v63.08h-90.12A137.17 137.17 0 0 0 64 339.75v479a137.17 137.17 0 0 0 137.19 137.14H823a137.17 137.17 0 0 0 137.19-137.17v-479A137.17 137.17 0 0 0 823 202.58z m-474.36-54.1A23.52 23.52 0 0 1 372.17 125h279.16a23.52 23.52 0 0 1 23.52 23.52v54.1h-326.2z m554.23 673.31a76.76 76.76 0 0 1-76.76 76.76h-628a76.76 76.76 0 0 1-76.76-76.76V336.67a76.76 76.76 0 0 1 76.76-76.76h628a76.76 76.76 0 0 1 76.76 76.76z"
+                    d="M823 202.58h-90.81v-63.09a71.88 71.88 0  0 0-71.88-71.88H363.19a71.88 71.88 0 0 0-71.88 71.88v63.08h-90.12A137.17 137.17 0 0 0 64 339.75v479a137.17 137.17 0 0 0 137.19 137.14H823a137.17 137.17 0 0 0 137.19-137.17v-479A137.17 137.17 0 0 0 823 202.58z m-474.36-54.1A23.52 23.52 0 0 1 372.17 125h279.16a23.52 23.52 0 0 1 23.52 23.52v54.1h-326.2z m554.23 673.31a76.76 76.76 0 0 1-76.76 76.76h-628a76.76 76.76 0 0 1-76.76-76.76V336.67a76.76 76.76 0 0 1 76.76-76.76h628a76.76 76.76 0 0 1 76.76 76.76z"
                     p-id="5563"></path>
                 </svg>
-              </el-icon>
-            </label>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52" style="
-                border: none;
-                width: 10rem;
-                box-shadow: var(--el-box-shadow-light);
-              ">
+              </el-icon></summary>
+            <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52" @click="menuClick('tools')"
+              style="width:10rem" @mouseleave="menuClick('tool')">
               <li>
                 <a href="http://suancaixianyu.cn/sss">简谱转换</a>
               </li>
@@ -269,7 +262,7 @@
                 </router-link>
               </li>
             </ul>
-          </div>
+          </details>
         </li>
         <!-- 主题切换 -->
         <li class="hidden-xs-only" @click="bailanle">
@@ -295,12 +288,12 @@
               <UserFilled />
             </el-icon>
           </div>
-          <div class="dropdown dropdown-bottom dropdown-end dropdown-hover" v-else>
-            <label tabindex="0">
+          <details class="dropdown mb-32 dropdown-end" ref="user" @click="menuClick('user', true)" v-else>
+            <summary class="m-1 btn bg-base-100 btn-ghost">
               <el-avatar :src="userInfo.data.headurl" :shape="set.shape" :size="32" />
-            </label>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-              style="width: 10rem; box-shadow: var(--el-box-shadow-light)">
+            </summary>
+            <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52" @click="menuClick('user')"
+              style="width: 10rem; box-shadow: var(--el-box-shadow-light)" @mouseleave="menuClick('user')">
               <li>
                 <router-link to="/user">
                   <a href="javascript:;">个人中心</a>
@@ -310,7 +303,7 @@
                 <a @click="loginOut">退出登陆</a>
               </li>
             </ul>
-          </div>
+          </details>
         </li>
       </ul>
     </div>
@@ -347,6 +340,7 @@ export default {
       iconsize: 55,
       ellipsis: false,
       isRootPath: true,
+      isopen: false,
       circleUrl:
         'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
     }
@@ -432,13 +426,38 @@ export default {
   },
   setup() {
     const toggleInput: Ref<HTMLElement | null> = ref(null)
+
+
+    const menu: { [key: string]: Ref } = {
+      user: ref(null) as Ref<HTMLElement | null>,
+      tool: ref(null) as Ref<HTMLElement | null>,
+      menu: ref(null) as Ref<HTMLElement | null>,
+    }
+
     const handleLiClick = () => {
       toggleInput.value!.click()
     }
+    function menuClick(type: string, isopen?: boolean) {
+      if (menu[type].value) {
+        Object.keys(menu).forEach(el => {
+          if (isopen) {
+            if (type !== el && menu[el].value) {
+              console.log(menu[el].value)
+              menu[el].value.removeAttribute('open')
+            }
+          } else {
+            menu[el].value.removeAttribute('open')
+          }
+
+        })
+      }
+    }
 
     return {
+      ...menu,
       toggleInput,
       handleLiClick,
+      menuClick
     }
   },
 }

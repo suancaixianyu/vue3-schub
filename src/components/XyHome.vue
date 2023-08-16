@@ -71,6 +71,10 @@ export default {
 </script>
 
 <style>
+.pointer {
+  cursor: pointer
+}
+
 .drawer-side {
   z-index: 114514;
 }

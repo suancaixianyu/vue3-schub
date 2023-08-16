@@ -11,9 +11,11 @@
         <div class="nickname" v-html="userInfo.data.nickname"></div>
         <UserRole :role="userInfo.data.role" />
         <div style="color: #fff;">
-          <el-icon :size="20">
-            <Edit />
-          </el-icon>
+          <router-link to="/usersetup">
+            <el-icon :size="18" class="pointer">
+              <EditPen />
+            </el-icon>
+          </router-link>
         </div>
       </div>
     </el-header>
