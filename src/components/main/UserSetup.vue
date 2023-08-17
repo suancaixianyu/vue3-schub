@@ -9,12 +9,12 @@
           <el-text>基础资料</el-text>
         </el-radio-group>
         <hr />
+        <el-form-item></el-form-item>
         <el-form-item label="昵称">
-          小小怪
+          <el-input v-model="config.nickname" placeholder="昵称" />
+          <el-button @click="tj"> 提交 </el-button>
         </el-form-item>
-        <el-form-item label="个性签名">
-          噢噢噢噢噢
-        </el-form-item>
+        <el-form-item label="个性签名"> 噢噢噢噢噢 </el-form-item>
       </el-form>
     </el-col>
 
@@ -23,8 +23,42 @@
 </template>
 
 <script lang="ts">
+import { api } from '@/apitypes'
+import Cfg from '@/config/config'
+import Method from '@/globalmethods'
+import { ElMessage } from 'element-plus'
 export default {
-  name: 'UserSetup'
+  name: 'UserSetup',
+  data() {
+    let { role, nickname, headurl, id } = Cfg.userInfo.data
+    return {
+      id,
+      headurl,
+      role,
+      config: {
+        nickname,
+      },
+    }
+  },
+  methods: {
+    tj() {
+      Method.api_post('/user/edit', this.config).then((res) => {
+        let obj = res.data as api
+        if (obj.code === 200) {
+          ElMessage({
+            type: 'success',
+            message: obj.msg,
+          })
+          Method.getInformation()
+        } else {
+          ElMessage({
+            type: 'error',
+            message: obj.msg,
+          })
+        }
+      })
+    },
+  },
 }
 </script>
 

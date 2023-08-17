@@ -11,8 +11,12 @@
             </el-icon>
             <div class="name">{{ item.name }}</div>
           </el-button> -->
-          <router-link v-for="item in cate_list" :class="active_cate_id == item.id ? 'active' : ''"
-            :to="`/postlist/${item.id}`" @click="active_cate_id = item.id">
+          <router-link
+            v-for="item in cate_list"
+            :class="active_cate_id == item.id ? 'active' : ''"
+            :to="`/postlist/${item.id}`"
+            @click="active_cate_id = item.id"
+          >
             <el-button>
               <el-icon>
                 <ChatDotSquare />
@@ -41,8 +45,13 @@
             </el-icon>
             <div class="name">{{ item.name }}</div>
           </div> -->
-          <router-link class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
-            @click="active_cate_id = item.id" :to="`/postlist/${item.id}`">
+          <router-link
+            class="cate-item"
+            :class="item.id == active_cate_id ? 'active' : ''"
+            v-for="item in cate_list"
+            @click="active_cate_id = item.id"
+            :to="`/postlist/${item.id}`"
+          >
             <el-icon>
               <ChatDotSquare />
             </el-icon>
@@ -61,11 +70,11 @@ import Cfg from '@/config/config'
 import Method from '@/globalmethods.ts'
 import LikeIcon from '@comps/icons/Like.vue'
 import PostPage from '@comps/main/PostPage.vue'
-import BbsItem from "@comps/main/bbs/item.vue";
-import DetailPlate from "@comps/main/cards/DetailPlate.vue";
-import type { api } from "@/apitypes";
-import "./HomePlate.ts"
-import { ElMessage } from "element-plus";
+import BbsItem from '@comps/main/bbs/item.vue'
+import DetailPlate from '@comps/main/cards/DetailPlate.vue'
+import type { api } from '@/apitypes'
+import '@/apitypes/HomePlate.ts'
+import { ElMessage } from 'element-plus'
 export default {
   name: 'HomePlate',
   components: { DetailPlate, BbsItem, LikeIcon, PostPage },
@@ -81,7 +90,7 @@ export default {
       loadingBbs: false,
       /**当前板块id */
       active_cate_id: 0,
-      page: 1
+      page: 1,
     }
   },
   methods: {
@@ -90,59 +99,61 @@ export default {
       if (this.active_cate_id > 0) {
         this.$router.push(`/publish/${this.active_cate_id}`)
       } else {
-        ElMessage('请先选择一个板块');
+        ElMessage('请先选择一个板块')
       }
     },
 
     /** 初始化板块列表 */
     refreshCateList() {
       this.loadingCate = true
-      Method.api_get('/cate/list').then((response) => {
-        let res: api = response.data
-        this.loadingCate = false
-        if (res.code != 200) {
-          ElMessage({
-            type: 'error',
-            message: res.msg
-          })
-        } else {
-          let list = [];
-          list.push({ id: 0, name: '全部板块' });
-          if (res.code == 200) {
-            list = list.concat(res.data)
-            this.cate_list = list
-          }
-          console.log(this.$route.params.cateid);
-
-          if (this.$route.params.cateid) {
-            this.active_cate_id = Number(this.$route.params.cateid)
+      Method.api_get('/cate/list')
+        .then((response) => {
+          let res: api = response.data
+          this.loadingCate = false
+          if (res.code != 200) {
+            ElMessage({
+              type: 'error',
+              message: res.msg,
+            })
           } else {
-            if (res.data.length > 0) {
-              this.active_cate_id = list[0].id
+            let list = []
+            list.push({ id: 0, name: '全部板块' })
+            if (res.code == 200) {
+              list = list.concat(res.data)
+              this.cate_list = list
+            }
+            console.log(this.$route.params.cateid)
+
+            if (this.$route.params.cateid) {
+              this.active_cate_id = Number(this.$route.params.cateid)
+            } else {
+              if (res.data.length > 0) {
+                this.active_cate_id = list[0].id
+              }
             }
           }
-        }
-      }).catch(() => {
-        this.loadingCate = false
-        ElMessage({
-          type: 'error',
-          message: '请求出错'
         })
-      })
-    }
+        .catch(() => {
+          this.loadingCate = false
+          ElMessage({
+            type: 'error',
+            message: '请求出错',
+          })
+        })
+    },
   },
   created() {
     this.refreshCateList()
   },
   mounted() {
-    console.log(this.$route.params.cateid);
+    console.log(this.$route.params.cateid)
     if (this.$route.params.cateid && this.$route.params.id) {
       this.isBbsView = true
     }
     if (!this.$route.params.cateid) {
       this.$router.replace('/postlist/0')
     }
-    Cfg.config.homestyle.maincontainer.padding = '0 0.5rem';
+    Cfg.config.homestyle.maincontainer.padding = '0 0.5rem'
   },
   updated() {
     if (this.$route.params.id) {
@@ -150,11 +161,10 @@ export default {
     } else {
       this.isBbsView = false
     }
-
   },
   unmounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0 1rem';
-  }
+    Cfg.config.homestyle.maincontainer.padding = '0 1rem'
+  },
 }
 </script>
 <style scoped>
@@ -169,13 +179,13 @@ export default {
 }
 
 .el-col {
-  transition: all .3s
+  transition: all 0.3s;
 }
 
 .cate-list,
 .bbs-list,
 .bbs-detail {
-  transition: all .3s;
+  transition: all 0.3s;
   display: flex;
   flex-direction: column;
 }
@@ -309,6 +319,6 @@ export default {
 }
 
 .el-main {
-  padding: 0
+  padding: 0;
 }
 </style>

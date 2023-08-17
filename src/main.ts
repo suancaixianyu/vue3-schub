@@ -28,11 +28,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 // 初始化页面样式
 Method.setwebstyle()
-// 注入全局方法和变量
-// app.provide('global', {
-//   Method,
-//   Cfg,
-// })
+Method.getInformation()
 
 // 指定容器
 app.mount('#app')
