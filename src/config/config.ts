@@ -69,7 +69,7 @@ const userInfo: userInfoType = reactive({
   role_list: [],
   isLogin: false,
   isLoginDialogVisible: false,
-  data: { role: '', nickname: '', headurl: '', id: 0 },
+  data: { role: '', nickname: '', headurl: '', id: 0, signature: '' },
 })
 
 class Cfg {

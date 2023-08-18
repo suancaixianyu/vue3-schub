@@ -28,7 +28,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 // 初始化页面样式
 Method.setwebstyle()
-Method.getInformation()
 
 // 指定容器
 app.mount('#app')

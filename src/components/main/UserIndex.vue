@@ -4,13 +4,18 @@
       <img class="img" src="../../assets/image/headbj.png" />
       <img class="img2" src="../../assets/image/wenben.png" />
       <div class="head-area">
-        <el-upload :action="uploadServer" v-model="userInfo.data.headurl" :with-credentials="true" :show-file-list="false"
-          :on-success="uploadCover">
+        <el-upload
+          :action="uploadServer"
+          v-model="userInfo.data.headurl"
+          :with-credentials="true"
+          :show-file-list="false"
+          :on-success="uploadCover"
+        >
           <el-avatar :size="headsize" :src="userInfo.data.headurl" />
         </el-upload>
         <div class="nickname" v-html="userInfo.data.nickname"></div>
         <UserRole :role="userInfo.data.role" />
-        <div style="color: #fff;">
+        <div style="color: #fff">
           <router-link to="/usersetup">
             <el-icon :size="18" class="pointer">
               <EditPen />
@@ -23,25 +28,26 @@
       <el-tabs class="el-tabs" model-value="bbs" @tab-click="onTabChange">
         <el-tab-pane name="bbs">
           <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <ChatLineSquare />
-              </el-icon><span>我的帖子</span></span>
+            <span class="custom-tabs-label"
+              ><el-icon> <ChatLineSquare /> </el-icon
+              ><span>我的帖子</span></span
+            >
           </template>
           <BbsPage v-if="activePages[0]" />
         </el-tab-pane>
         <el-tab-pane name="world">
           <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <UploadFilled />
-              </el-icon><span>我的存档</span></span>
+            <span class="custom-tabs-label"
+              ><el-icon> <UploadFilled /> </el-icon><span>我的存档</span></span
+            >
           </template>
           <WorldPage v-if="activePages[1]" />
         </el-tab-pane>
         <el-tab-pane name="mod">
           <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <Promotion />
-              </el-icon><span>我的资源</span></span>
+            <span class="custom-tabs-label"
+              ><el-icon> <Promotion /> </el-icon><span>我的资源</span></span
+            >
           </template>
           <ModPage v-if="activePages[2]" />
         </el-tab-pane>
@@ -66,6 +72,7 @@ import { useRoute } from 'vue-router'
 import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import UserRole from '@comps/user/roleList.vue'
+import { api } from '@/apitypes'
 
 export default {
   name: 'UserIndex',
@@ -82,6 +89,28 @@ export default {
   methods: {
     uploadCover(e: any) {
       Cfg.userInfo.data.headurl = Method.getHostUrl(e.data.src)
+      Method.api_post('/user/edit', { avatar: e.data.src })
+        .then((res) => {
+          let obj = res.data as api
+          if (obj.code === 200) {
+            ElMessage({
+              type: 'success',
+              message: obj.msg,
+            })
+            Method.getInformation()
+          } else {
+            ElMessage({
+              type: 'error',
+              message: obj.msg,
+            })
+          }
+        })
+        .catch((err) => {
+          ElMessage({
+            type: 'error',
+            message: '请求错误：' + err.message,
+          })
+        })
     },
     onTabChange(e: any) {
       this.activePages[e.index] = true
@@ -89,7 +118,15 @@ export default {
     },
   },
   data() {
-    let { userInfo, config: { server, homestyle: { headsize: { userindex } } } } = Cfg;
+    let {
+      userInfo,
+      config: {
+        server,
+        homestyle: {
+          headsize: { userindex },
+        },
+      },
+    } = Cfg
     return {
       uploadServer: `${server}/Upload/Upload`,
       activeTab: 0,
@@ -100,18 +137,17 @@ export default {
       modList: <any>[],
       activePages: <boolean[]>[false, false, false, false],
       headsize: userindex,
-      userInfo: userInfo
+      userInfo: userInfo,
     }
   },
   created() {
     let route = useRoute()
-    let userInfo = this.userInfo
     this.isLoading = true
-    this.isSelf = userInfo.id === route.params.id
+    this.isSelf = this.userInfo.id === route.params.id
     Method.api_get(`/user/zone/${this.userInfo.data.id}`)
       .then((response: any) => {
-        let res = response.data
-        this.activePages[0] = true;
+        let res = response.data as api
+        this.activePages[0] = true
         this.isLoading = false
         if (res.code == 200) {
           res.data.bbs.forEach((x: any) => {

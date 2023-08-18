@@ -8,13 +8,26 @@
         <el-radio-group label="label position">
           <el-text>基础资料</el-text>
         </el-radio-group>
-        <hr />
+        <el-divider style="margin: 0" />
         <el-form-item></el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="config.nickname" placeholder="昵称" />
+        </el-form-item>
+        <el-form-item label="个性签名">
+          <el-input v-model="config.signature" placeholder="个性签名" />
+        </el-form-item>
+        <el-form-item label="">
           <el-button @click="tj"> 提交 </el-button>
         </el-form-item>
-        <el-form-item label="个性签名"> 噢噢噢噢噢 </el-form-item>
+      </el-form>
+
+      <el-form label-position="left" label-width="100px" @submit.prevent>
+        <el-radio-group label="label position">
+          <el-text>账号安全</el-text>
+        </el-radio-group>
+        <el-divider style="margin: 0" />
+        <el-form-item></el-form-item>
+        <el-form-item label="重置密码"> </el-form-item>
       </el-form>
     </el-col>
 
@@ -30,33 +43,38 @@ import { ElMessage } from 'element-plus'
 export default {
   name: 'UserSetup',
   data() {
-    let { role, nickname, headurl, id } = Cfg.userInfo.data
     return {
-      id,
-      headurl,
-      role,
       config: {
-        nickname,
+        nickname: Cfg.userInfo.data.nickname,
+        signature: Cfg.userInfo.data.signature,
       },
     }
   },
   methods: {
     tj() {
-      Method.api_post('/user/edit', this.config).then((res) => {
-        let obj = res.data as api
-        if (obj.code === 200) {
-          ElMessage({
-            type: 'success',
-            message: obj.msg,
-          })
-          Method.getInformation()
-        } else {
+      Method.api_post('/user/edit', this.config)
+        .then((res) => {
+          let obj = res.data as api
+          if (obj.code === 200) {
+            ElMessage({
+              type: 'success',
+              message: obj.msg,
+            })
+            Method.getInformation()
+          } else {
+            ElMessage({
+              type: 'error',
+              message: obj.msg,
+            })
+          }
+        })
+        .catch((err) => {
+          console.log(err)
           ElMessage({
             type: 'error',
-            message: obj.msg,
+            message: '请求错误：' + err.message,
           })
-        }
-      })
+        })
     },
   },
 }

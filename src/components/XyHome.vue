@@ -1,27 +1,41 @@
 <template>
-  <div class="common-layout bg-base-100" data-theme="light">
-    <el-container :style="container">
-      <el-header :style="container" style="z-index: 20">
-        <el-affix :offset="0">
-          <NavigationMenu />
-        </el-affix>
-      </el-header>
+  <el-config-provider :locale="locale" :button="button">
+    <div class="common-layout bg-base-100" data-theme="light">
+      <el-container :style="container">
+        <el-header :style="container" style="z-index: 20">
+          <el-affix :offset="0">
+            <NavigationMenu />
+          </el-affix>
+        </el-header>
 
-      <el-main :style="maincontainer">
-        <router-view></router-view>
-      </el-main>
-      <el-footer v-if="set.showfooter" :style="container" style="height: 30px">
-      </el-footer>
-    </el-container>
-  </div>
+        <el-main :style="maincontainer">
+          <router-view></router-view>
+        </el-main>
+        <el-footer
+          v-if="set.showfooter"
+          :style="container"
+          style="height: 30px"
+        >
+        </el-footer>
+      </el-container>
+    </div>
+  </el-config-provider>
 </template>
 
 <script lang="ts">
 import 'element-plus/theme-chalk/display.css'
-import { provide, ref, onMounted } from 'vue'
+import { provide, ref, reactive, onMounted, computed } from 'vue'
 import Cfg from '@/config/config'
-/** 顶部导航栏 */
 import NavigationMenu from '@comps/navigation/NavigationMenu.vue'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+
+import en from 'element-plus/dist/locale/en.mjs'
+
+const language = ref('zh-cn')
+const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
+const button = reactive({
+  autoInsertSpace: true,
+})
 
 /** 页面主体框架 */
 export default {
@@ -65,25 +79,14 @@ export default {
     return {
       ...Cfg.config.homestyle,
       set: Cfg.set,
+      locale,
+      button,
     }
   },
 }
 </script>
 
 <style>
-.pointer {
-  cursor: pointer
-}
-
-.drawer-side {
-  z-index: 114514;
-}
-
-/** tag标签左右加空格 */
-.el-tag {
-  margin: 0 5px;
-}
-
 /* 添加 class="hide-scrollbar" 使用 */
 /* 隐藏滚动条样式 */
 .hide-scrollbar::-webkit-scrollbar {
