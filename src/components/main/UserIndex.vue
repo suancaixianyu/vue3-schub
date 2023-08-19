@@ -14,6 +14,7 @@
           <el-avatar :size="headsize" :src="userInfo.data.headurl" />
         </el-upload>
         <div class="nickname" v-html="userInfo.data.nickname"></div>
+
         <UserRole :role="userInfo.data.role" />
         <div style="color: #fff">
           <router-link to="/usersetup">
@@ -22,6 +23,7 @@
             </el-icon>
           </router-link>
         </div>
+        <div v-html="userInfo.data.nickname"></div>
       </div>
     </el-header>
     <el-header class="zone-head-container btn-area">

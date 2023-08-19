@@ -1,24 +1,82 @@
 <template>
-  <el-row :gutter="24" class="row-bg" justify="center">
-    <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister">
-      <el-form label-position="top" label-width="100px" label="top" :model="regitser"
-        style="max-width: 460px; margin: 0 auto">
+  <el-row :gutter="24" class="row-bg" justify="center" v-if="page">
+    <el-col :span="col.body" :style="{ textAlign: 'center' }">
+      <el-form
+        label-position="top"
+        label-width="100px"
+        label="top"
+        title="修改密码"
+        :model="editPass"
+        style="max-width: 460px; margin: 0 auto"
+      >
         <el-form-item></el-form-item>
+
         <el-form-item>
-          <el-input v-model="regitser.user" placeholder="用户名由英文字母与数字组成">
-            <template #prepend>用户&emsp;名</template>
+          <el-input
+            v-model="editPass.oldPass"
+            type="password"
+            show-password
+            placeholder="输入密码"
+          >
+            <template #prepend>旧&ensp;密&ensp;码</template>
           </el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-input v-model="regitser.pass" placeholder="输入密码">
-            <template #prepend>密&emsp;&emsp;码</template>
+          <el-input
+            v-model="editPass.newPass"
+            type="password"
+            show-password
+            placeholder="输入密码"
+          >
+            <template #prepend>新&ensp;密&ensp;码</template>
           </el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-input v-model="regitser.repass" placeholder="再次输入密码">
+          <el-input
+            v-model="editPass.rePass"
+            type="password"
+            show-password
+            placeholder="再次输入密码"
+          >
             <template #prepend>确认密码</template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-input v-model="editPass.code">
+            <template #prepend>验&ensp;证&ensp;码</template>
+          </el-input>
+          <img :src="codeSrc" @click="refreshCode" />
+        </el-form-item>
+        <el-form-item>
+          <el-button plain :loading="loading" @click="edit"> 修改 </el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
+  </el-row>
+
+  <el-row :gutter="24" class="row-bg" justify="center" v-else>
+    <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister">
+      <el-form
+        label-position="top"
+        label-width="100px"
+        label="top"
+        title="注册"
+        :model="regitser"
+        style="max-width: 460px; margin: 0 auto"
+      >
+        <el-form-item></el-form-item>
+
+        <el-form-item>
+          <el-input
+            v-model="regitser.nickname"
+            placeholder="昵称长度不能超过10"
+            maxlength="10"
+            show-word-limit
+          >
+            <template #prepend>昵&emsp;&emsp;称</template>
           </el-input>
         </el-form-item>
 
@@ -27,47 +85,75 @@
             <template #prepend>邮&emsp;&emsp;箱</template>
           </el-input>
         </el-form-item>
+
         <el-form-item>
-          <el-input v-model="regitser.nickname" placeholder="昵称长度不能超过10">
-            <template #prepend>昵&emsp;&emsp;称</template>
+          <el-input
+            v-model="regitser.pass"
+            type="password"
+            show-password
+            placeholder="输入密码"
+          >
+            <template #prepend>密&emsp;&emsp;码</template>
           </el-input>
         </el-form-item>
+
+        <el-form-item>
+          <el-input
+            v-model="regitser.repass"
+            type="password"
+            show-password
+            placeholder="再次输入密码"
+          >
+            <template #prepend>确认密码</template>
+          </el-input>
+        </el-form-item>
+
         <el-form-item>
           <el-input v-model="regitser.captcha_code">
-            <template #prepend>验证码</template>
+            <template #prepend>验&ensp;证&ensp;码</template>
           </el-input>
-          <img :src="codeSrc" @click="refreshCode">
+          <img :src="codeSrc" @click="refreshCode" />
         </el-form-item>
         <el-form-item>
-          <el-button plain :loading="loading" @click="submitLogin('register')">注册</el-button>
+          <el-button plain :loading="loading" @click="submitLogin('register')"
+            >注册</el-button
+          >
           <el-button plain @click="goLogin()">去登录</el-button>
         </el-form-item>
       </el-form>
     </el-col>
-    <el-col :span="col.body" :style="{ textAlign: 'center' }" v-if="isregister === false">
+
+    <el-col :span="col.body" :style="{ textAlign: 'center' }" v-else>
       <el-form label="top">
         <el-form-item>
-          <el-input v-model="loginconfig.user" placeholder="请输入用户名">
+          <el-input v-model="loginconfig.user" placeholder="请输入邮箱">
             <template #prepend>用户名</template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="loginconfig.pass" placeholder="请输入密码">
+          <el-input
+            v-model="loginconfig.pass"
+            type="password"
+            show-password
+            placeholder="请输入密码"
+          >
             <template #prepend>密&emsp;码</template>
           </el-input>
         </el-form-item>
         <el-form-item>
           <el-input v-model="loginconfig.captcha_code">
-            <template #prepend>验证码</template>
+            <template #prepend>验&ensp;证&ensp;码</template>
           </el-input>
-          <img :src="codeSrc" @click="refreshCode">
+          <img :src="codeSrc" @click="refreshCode" />
         </el-form-item>
       </el-form>
       <el-form-item>
         <el-checkbox v-model="remember" label="记账账号" size="large" />
       </el-form-item>
       <el-form-item>
-        <el-button plain :loading="loading" @click="submitLogin('login')">登录</el-button>
+        <el-button plain :loading="loading" @click="submitLogin('login')"
+          >登录</el-button
+        >
         <el-button plain type="primary" @click="goRegister()">去注册</el-button>
       </el-form-item>
     </el-col>
@@ -81,29 +167,44 @@ import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 
 import { ElMessage } from 'element-plus'
+import { api } from '@/apitypes'
 
 export default {
   name: 'UserLogin',
+  props: {
+    page: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
-    let src = Method.getHostUrl('/captcha');
+    let src = Method.getHostUrl('/captcha')
     return {
       baseCodeSrc: src,
       codeSrc: '',
       remember: false,
       loading: false,
       isregister: true,
+      userInfo: Cfg.userInfo,
       regitser: {
         user: '',
         pass: '',
         repass: '',
         email: '',
         nickname: '',
-        captcha_code: ''
+        captcha_code: '',
       },
       loginconfig: {
         user: '',
         pass: '',
-        captcha_code: ''
+        captcha_code: '',
+      },
+      editPass: {
+        uid: Cfg.userInfo.data.id,
+        oldPass: '',
+        newPass: '',
+        rePass: '',
+        code: '',
       },
       windowseype: {
         display: 'flex',
@@ -120,8 +221,34 @@ export default {
     }
   },
   methods: {
+    edit() {
+      Method.api_post('/user/editPass', this.editPass)
+        .then((res) => {
+          let obj = res.data as api
+          if (obj.code === 200) {
+            ElMessage({
+              type: 'success',
+              message: '修改成功',
+            })
+            Method.getInformation()
+            this.$emit('childEvent')
+          } else {
+            ElMessage({
+              type: 'error',
+              message: obj.msg,
+            })
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          ElMessage({
+            type: 'error',
+            message: '请求错误：' + err.message,
+          })
+        })
+    },
     refreshCode() {
-      this.codeSrc = this.baseCodeSrc + '?t=' + (new Date().getTime());
+      this.codeSrc = this.baseCodeSrc + '?t=' + new Date().getTime()
     },
     submitLogin(type: string) {
       let userInfo = Cfg.userInfo
@@ -182,9 +309,11 @@ export default {
         })
     },
     goRegister() {
+      this.$emit('childEvent')
       this.isregister = true
     },
     goLogin() {
+      this.$emit('childEvent')
       this.isregister = false
     },
   },
@@ -195,7 +324,7 @@ export default {
       user: '',
       pass: '',
     })
-    this.refreshCode();
+    this.refreshCode()
     if (loginInfo.remember) {
       this.loginconfig.user = loginInfo.user
       this.loginconfig.pass = loginInfo.pass

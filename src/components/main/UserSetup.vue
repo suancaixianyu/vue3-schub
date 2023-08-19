@@ -17,7 +17,7 @@
           <el-input v-model="config.signature" placeholder="个性签名" />
         </el-form-item>
         <el-form-item label="">
-          <el-button @click="tj"> 提交 </el-button>
+          <el-button @click="edit"> 提交 </el-button>
         </el-form-item>
       </el-form>
 
@@ -27,12 +27,17 @@
         </el-radio-group>
         <el-divider style="margin: 0" />
         <el-form-item></el-form-item>
-        <el-form-item label="重置密码"> </el-form-item>
+        <el-form-item>
+          <el-button @click="page = true">重置密码</el-button>
+        </el-form-item>
       </el-form>
     </el-col>
 
     <el-col :xs="0" :sm="2" :md="3" :lg="5" :xl="5" />
   </el-row>
+  <el-dialog v-model="page" :draggable="true" :fullscreen="set.ismobile">
+    <UserLogin :page="true" @childEvent="offdialog" />
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -40,10 +45,16 @@ import { api } from '@/apitypes'
 import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import { ElMessage } from 'element-plus'
+import UserLogin from '@comps/main/UserLogin.vue'
 export default {
   name: 'UserSetup',
+  components: {
+    UserLogin,
+  },
   data() {
     return {
+      page: false,
+      ...Cfg,
       config: {
         nickname: Cfg.userInfo.data.nickname,
         signature: Cfg.userInfo.data.signature,
@@ -51,14 +62,17 @@ export default {
     }
   },
   methods: {
-    tj() {
+    offdialog() {
+      this.page = false
+    },
+    edit() {
       Method.api_post('/user/edit', this.config)
         .then((res) => {
           let obj = res.data as api
           if (obj.code === 200) {
             ElMessage({
               type: 'success',
-              message: obj.msg,
+              message: '设置成功',
             })
             Method.getInformation()
           } else {

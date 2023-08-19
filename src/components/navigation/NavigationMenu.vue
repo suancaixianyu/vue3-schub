@@ -407,10 +407,11 @@
     </div>
     <el-dialog
       v-model="userInfo.isLoginDialogVisible"
+      :title="title"
       :draggable="true"
       :fullscreen="set.ismobile"
     >
-      <UserLogin />
+      <UserLogin @childEvent="settitle" />
     </el-dialog>
   </div>
 </template>
@@ -433,6 +434,7 @@ export default {
   },
   data() {
     return {
+      title: '登录',
       ...Cfg,
       bailan: 0,
       iconid: false,
@@ -448,6 +450,10 @@ export default {
     }
   },
   methods: {
+    settitle() {
+      if (this.title == '登录') this.title = '注册'
+      else this.title = '登录'
+    },
     goBack() {
       this.$router.back()
     },
