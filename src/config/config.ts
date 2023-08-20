@@ -40,13 +40,13 @@ const set = reactive({
 let webstyle = reactive({
   webkit: {
     // 滚动条样式
-    "scrollbar-thumb-background": "url('./src/assets/icon/mifengup.svg') center top no-repeat, url('./src/assets/icon/mifengbottom.svg') center bottom no-repeat",
-    "scrollbar-thumb-background-color": "",
+    "scrollbar-thumb-background": "url('/icon/mifengup.svg') center top no-repeat, url('/icon/mifengbottom.svg') center bottom no-repeat",
+    "scrollbar-thumb-background-color": "#F2F2F2",
     "scrollbar-thumb-border": "none",
     "scrollbar-thumb-border-radius": "10px",
     "scrollbar-thumb-background-size": "100%",
     "scrollbar-thumb-background-hover": "var(--scrollbar-thumb-background)",
-    "scrollbar-thumb-background-color-hover": "#F5F5F5",
+    "scrollbar-thumb-background-color-hover": "#BDBDBD",
     "scrollbar-thumb-border-hover": "none",
     "scrollbar-thumb-border-radius-hover": "10px",
     "scrollbar-thumb-background-size-hover": "100%",

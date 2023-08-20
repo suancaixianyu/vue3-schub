@@ -2,9 +2,9 @@
   <el-container style="height: 100%" v-loading="isLoading">
     <el-header
       class="zone-head-container bj"
-      style="background-image: url(../src/assets/image/headbj.png)"
+      :style="{ backgroundImage: 'url(/image/headbj.png)' }"
     >
-      <img class="img2" src="../../assets/image/wenben.png" />
+      <img class="img2" src="/image/wenben.png" />
       <div class="head-area">
         <el-container>
           <el-aside :width="`${headsize * 1.2}px`">
@@ -19,8 +19,8 @@
             </el-upload>
           </el-aside>
           <el-main class="padding-0" style="overflow-x: hidden">
-            <el-row :gutter="10">
-              <el-col :span="10">
+            <el-row :gutter="20">
+              <el-col :span="20">
                 <el-text class="nickname">{{ userInfo.data.nickname }}</el-text>
                 <UserRole :role="userInfo.data.role" />
                 <el-text>
@@ -31,10 +31,10 @@
                   </router-link>
                 </el-text>
               </el-col>
-              <el-col :span="18">
-                <el-text class="signature"
-                  >个性签名：{{ userInfo.data.signature }}</el-text
-                >
+              <el-col :span="20">
+                <el-text class="signature">{{
+                  userInfo.data.signature
+                }}</el-text>
               </el-col>
             </el-row>
           </el-main>

@@ -361,9 +361,14 @@ export default {
     watch(
       () => Cfg.set.ismobile,
       (ismobile) => {
+        console.log(ismobile)
+
         Cfg.config.homestyle.maincontainer.height = ismobile
           ? 'auto'
           : 'calc(100vh - 90px)'
+        Cfg.config.homestyle.maincontainer.overflowY = ismobile
+          ? 'auto'
+          : 'hidden'
       },
     )
     watch(
