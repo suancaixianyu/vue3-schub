@@ -357,20 +357,16 @@ export default {
     },
   },
 
-  created() {
-    watch(
-      () => Cfg.set.ismobile,
-      (ismobile) => {
-        console.log(ismobile)
+  updated() {
+    Cfg.config.homestyle.maincontainer.height = Cfg.set.ismobile
+      ? 'auto'
+      : 'calc(100vh - 90px)'
+    Cfg.config.homestyle.maincontainer.overflowY = Cfg.set.ismobile
+      ? 'auto'
+      : 'hidden'
+  },
 
-        Cfg.config.homestyle.maincontainer.height = ismobile
-          ? 'auto'
-          : 'calc(100vh - 90px)'
-        Cfg.config.homestyle.maincontainer.overflowY = ismobile
-          ? 'auto'
-          : 'hidden'
-      },
-    )
+  created() {
     watch(
       () => this.$route.params.id,
       () => {

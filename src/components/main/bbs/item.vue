@@ -24,13 +24,8 @@
             item.summary
           }}</el-text>
         </el-aside>
-        <el-main style="padding: 0; text-align: right">
-          <el-image
-            v-if="item.cover"
-            style="height: 80px"
-            :src="item.cover"
-            fit="cover"
-          />
+        <el-main style="padding: 0; text-align: right" v-if="item.cover">
+          <el-image style="height: 80px" :src="item.cover" fit="cover" />
         </el-main>
       </el-container>
     </router-link>

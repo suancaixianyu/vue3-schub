@@ -140,7 +140,7 @@ export default {
 
             // 格式化数据
             obj.data.forEach((el: any) => {
-              el.cover = Method.getHostUrl(el.cover)
+              el.cover = el.cover ? Method.getHostUrl(el.cover) : ''
             })
 
             // 更新列表
