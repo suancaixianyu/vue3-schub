@@ -1,26 +1,26 @@
 <template>
   <div v-if="set.ismobile">
-    <div class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact" v-for="(x, index) in list"
-      :key="index" :style="homestyle.postliststyle">
+    <div
+      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
+      v-for="(x, index) in list"
+      :key="index"
+      :style="homestyle.postliststyle"
+    >
       <el-container style="padding: 0">
         <el-aside width="45%" style="padding: 0; word-wrap: break-word">
-          {{ x.title }}
+          <el-text class="title"> {{ x.title }}</el-text>
         </el-aside>
         <el-main style="padding: 0; overflow-x: hidden">
           <el-row :gutter="5">
             <el-col :span="9">
               <el-text>
-                <el-icon>
-                  <View />
-                </el-icon>{{ x.views }}
+                <el-icon> <View /> </el-icon>{{ x.views }}
               </el-text>
             </el-col>
 
             <el-col :span="9">
               <el-text>
-                <el-icon>
-                  <ChatRound />
-                </el-icon>{{ x.comments }}
+                <el-icon> <ChatRound /> </el-icon>{{ x.comments }}
               </el-text>
             </el-col>
             <el-col :span="2"> </el-col>
@@ -37,7 +37,9 @@
                     <el-dropdown-item>复制链接</el-dropdown-item>
                     <el-dropdown-item>编辑</el-dropdown-item>
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)">删除</el-dropdown-item>
+                    <el-dropdown-item divided @click="handleDelete(index)"
+                      >删除</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -55,14 +57,29 @@
       <el-table-column prop="comments" label="评论" width="180" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+          <el-button
+            size="small"
+            link
+            type="danger"
+            @click="handleDelete(scope.$index)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
   </div>
 
-  <el-dialog v-model="isDialogVisible" title="提示" width="30%" :fullscreen="set.ismobile" align-center>
-    <span>是否删除帖子[ID:{{activeItem.id}}] <span style="color: #008ac5">{{ activeItem.title }}</span></span>
+  <el-dialog
+    v-model="isDialogVisible"
+    title="提示"
+    width="30%"
+    :fullscreen="set.ismobile"
+    align-center
+  >
+    <span
+      >是否删除帖子[ID:{{ activeItem.id }}]
+      <span style="color: #008ac5">{{ activeItem.title }}</span></span
+    >
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="isDialogVisible = false">取消</el-button>
@@ -84,8 +101,8 @@ export default {
     return {
       ...Cfg.config,
       set: Cfg.set,
-      isDeleting:false,
-      isDialogVisible:false,
+      isDeleting: false,
+      isDialogVisible: false,
       isLoading: false,
       list: <any>[],
       activeItem: <any>null,
@@ -93,47 +110,58 @@ export default {
   },
   methods: {
     handleDelete(index: number) {
-      this.activeItem = this.list[index];
-      this.isDialogVisible = true;
+      this.activeItem = this.list[index]
+      this.isDialogVisible = true
     },
-    deleteBbs(){
+    deleteBbs() {
       let payLoad = {
-        id: this.activeItem.id
-      };
-      this.isDeleting = true;
-      Method.api_post(`/bbs/del`,payLoad).then((response: any) => {
+        id: this.activeItem.id,
+      }
+      this.isDeleting = true
+      Method.api_post(`/bbs/del`, payLoad).then((response: any) => {
         let res = response.data
         this.isDeleting = false
         ElMessage(res.msg)
         if (res.code == 200) {
-          this.isDialogVisible = false;
-          this.refreshList();
+          this.isDialogVisible = false
+          this.refreshList()
         }
       })
     },
-    refreshList(){
+    refreshList() {
       this.isLoading = true
-      Method.api_get(`/user/my_bbs_list/${Cfg.userInfo.data.id}`).then((response: any) => {
-        let res = response.data
-        this.isLoading = false
-        if (res.code == 200) {
-          res.data.forEach((x: any) => {
-            x.create_time = Method.formatNormalTime(x.create_time)
-          })
-          this.list = res.data
-        } else {
-          ElMessage(res.msg)
-        }
-      })
-    }
+      Method.api_get(`/user/my_bbs_list/${Cfg.userInfo.data.id}`).then(
+        (response: any) => {
+          let res = response.data
+          this.isLoading = false
+          if (res.code == 200) {
+            res.data.forEach((x: any) => {
+              x.create_time = Method.formatNormalTime(x.create_time)
+              x.title =
+                x.title.length > 20 ? `${x.title.substring(0, 15)}...` : x.title
+            })
+            this.list = res.data
+          } else {
+            ElMessage(res.msg)
+          }
+        },
+      )
+    },
   },
   created() {
-    this.refreshList();
+    this.refreshList()
   },
 }
 </script>
 
 <style scoped>
+.title {
+  display: block;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .el-icon {
   margin-right: 5px;
 }

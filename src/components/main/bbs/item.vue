@@ -2,29 +2,38 @@
   <div>
     <!-- 头部 -->
     <el-header style="height: 46px; padding: 0">
-      <UserHead :item="{
-        headurl: headUrl,
-        shape,
-        headsize,
-        nickname: item.author.nickname,
-        time: time,
-        role: item.author.role,
-      }" />
+      <UserHead
+        :item="{
+          headurl: headUrl,
+          shape,
+          headsize,
+          nickname: item.author.nickname,
+          time: time,
+          role: item.author.role,
+        }"
+      />
     </el-header>
     <!-- 中部 -->
-    <el-container>
-      <el-aside width="70%">
-        <el-text class="mx-1 time" size="large" tag="b">{{
-          item.title
-        }}</el-text>
-        <el-text class="mx-1 time" style="text-align: left">{{
-          item.summary
-        }}</el-text>
-      </el-aside>
-      <el-main style="padding: 0; text-align: right">
-        <el-image v-if="item.cover" style="height: 80px" :src="item.cover" fit="cover" />
-      </el-main>
-    </el-container>
+    <router-link :to="`/postlist/${path}/${item.id}`">
+      <el-container>
+        <el-aside width="70%">
+          <el-text class="mx-1 time title" size="large" tag="b">{{
+            item.title
+          }}</el-text>
+          <el-text class="mx-1 time" style="text-align: left">{{
+            item.summary
+          }}</el-text>
+        </el-aside>
+        <el-main style="padding: 0; text-align: right">
+          <el-image
+            v-if="item.cover"
+            style="height: 80px"
+            :src="item.cover"
+            fit="cover"
+          />
+        </el-main>
+      </el-container>
+    </router-link>
     <!-- 底部 -->
     <el-footer style="text-align: left; padding: 0; height: 25px">
       <ul class="category-counts">
@@ -34,12 +43,14 @@
           </el-icon>
           <p>{{ goodNum }}</p>
         </li>
-        <li>
-          <el-icon :size="18" style="margin-right: 5px">
-            <ChatDotSquare />
-          </el-icon>
-          <p>{{ item.comments }}</p>
-        </li>
+        <router-link :to="`/postlist/${path}/${item.id}`">
+          <li>
+            <el-icon :size="18" style="margin-right: 5px">
+              <ChatDotSquare />
+            </el-icon>
+            <p>{{ item.comments }}</p>
+          </li>
+        </router-link>
       </ul>
     </el-footer>
   </div>
@@ -53,19 +64,16 @@ import { api } from '@/apitypes'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
 import Method from '@/globalmethods'
+import { MdPreview } from 'md-editor-v3'
 
 export default {
   name: 'BbsItem',
   components: {
     LikeIcon,
     UserHead,
+    MdPreview,
   },
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: ['item', 'path'],
   data() {
     return {
       shape: Cfg.set.shape,
@@ -106,5 +114,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+.title {
+  display: block;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

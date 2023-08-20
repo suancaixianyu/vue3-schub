@@ -1,9 +1,17 @@
 <template>
   <div class="bbs-window">
     <!-- 头部搜索框 -->
-    <div class="card w-96 bg-base-100 shadow-xl card-compact search-header" :class="set.ismobile ? 'mobile' : ''">
+    <div
+      class="card w-96 bg-base-100 shadow-xl card-compact search-header"
+      :class="set.ismobile ? 'mobile' : ''"
+    >
       <div class="container">
-        <input v-model="searchKey" type="search" placeholder="搜索" class="item input input-bordered input-sm" />
+        <input
+          v-model="searchKey"
+          type="search"
+          placeholder="搜索"
+          class="item input input-bordered input-sm"
+        />
         <button class="btn btn-sm item" @click="search" title="搜索">
           <el-icon>
             <Search />
@@ -13,25 +21,47 @@
       </div>
     </div>
     <!-- 列表 -->
-    <div style="overflow:auto;" class="hide-scrollbar" v-loading="isLoadingList">
+    <div
+      style="overflow: auto"
+      class="hide-scrollbar"
+      v-loading="isLoadingList"
+    >
       <div class="bbs-list" ref="container" element-loading-text="加载中">
         <div v-for="item in plate" v-if="plate.length > 0">
-          <div class="card w-96 bg-base-100 shadow-xl card-compact item-header" :class="set.ismobile ? 'mobile' : ''">
-            <router-link :to="`/postlist/${path}/${item.id}`">
-              <BbsItem :item="item" @click="onItemClick(item), console.log(item)"></BbsItem>
-            </router-link>
+          <div
+            class="card w-96 bg-base-100 shadow-xl card-compact item-header"
+            :class="set.ismobile ? 'mobile' : ''"
+          >
+            <BbsItem
+              :item="item"
+              :path="path"
+              @click="onItemClick(item), console.log(item)"
+            ></BbsItem>
           </div>
         </div>
         <el-empty v-else description="没有数据" :image-size="200" />
         <div class="load-more" v-if="set.ismobile">
-          <el-button type="primary" @click="loadMore" v-html="txt" v-loading="isLoadingMore"></el-button>
+          <el-button
+            type="primary"
+            @click="loadMore"
+            v-html="txt"
+            v-loading="isLoadingMore"
+          ></el-button>
         </div>
       </div>
     </div>
-    <div v-if="!set.ismobile && total > 10"
-      class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only">
-      <el-pagination :current-page="pagenum" :page-size="10" :pager-count="5" :total="total"
-        @current-change="handleCurrentChange" style="justify-content: center">
+    <div
+      v-if="!set.ismobile && total > 10"
+      class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only"
+    >
+      <el-pagination
+        :current-page="pagenum"
+        :page-size="10"
+        :pager-count="5"
+        :total="total"
+        @current-change="handleCurrentChange"
+        style="justify-content: center"
+      >
       </el-pagination>
     </div>
   </div>
@@ -43,7 +73,7 @@ import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 import PostListPlate from './bbs/list.vue'
 import BbsItem from '@comps/main/bbs/item.vue'
-import { watch } from "vue";
+import { watch } from 'vue'
 
 /** 帖子列表 */
 export default {
@@ -64,7 +94,7 @@ export default {
       searchKey: '',
       plate: <any[]>[],
       txt: '加载更多',
-      path: ''
+      path: '',
     }
   },
   methods: {
@@ -79,7 +109,7 @@ export default {
     /**无限滚动加载 */
     loadMore() {
       if (this.pagenum + 1 <= this.totalpages) {
-        this.isLoadingMore = true;
+        this.isLoadingMore = true
         this.pagenum++
         this.listUpdate(true)
       } else {
@@ -91,22 +121,28 @@ export default {
      * @param appendMode true 追加数据 false 刷新数据
      */
     listUpdate(appendMode: boolean = false) {
-      this.txt = '加载更多';
-      this.isLoadingList = true;
+      this.txt = '加载更多'
+      this.isLoadingList = true
       let payLoad = {
         page: this.pagenum,
-        search: this.searchKey
-      };
+        search: this.searchKey,
+      }
       Method.api_post(`/bbs/list/${this.$route.params.cateid}`, payLoad)
         .then((response: any) => {
-          let obj = response.data;
-          this.isLoadingMore = false;
-          this.isLoadingList = false;
+          let obj = response.data
+          this.isLoadingMore = false
+          this.isLoadingList = false
           if (obj.code === 200) {
             const scrollElement = <any>this.$refs.container
             // 获取总帖子数量
             this.total = obj.sum.total
             this.totalpages = Math.ceil(obj.sum.total / 10)
+
+            // 格式化数据
+            obj.data.forEach((el: any) => {
+              el.cover = Method.getHostUrl(el.cover)
+            })
+
             // 更新列表
             if (appendMode) {
               let list = this.plate
@@ -125,8 +161,8 @@ export default {
           }
         })
         .catch((error) => {
-          this.isLoadingMore = false;
-          this.isLoadingList = false;
+          this.isLoadingMore = false
+          this.isLoadingList = false
           ElMessage({
             type: 'error',
             message: '获取列表失败',
@@ -136,22 +172,22 @@ export default {
     },
     /** 搜索（本地） */
     search() {
-      this.pagenum = 1;
-      this.listUpdate();
+      this.pagenum = 1
+      this.listUpdate()
     },
   },
   mounted() {
-    this.pagenum = 1;
+    this.pagenum = 1
     this.listUpdate()
     watch(
       () => this.$route.params.cateid,
       () => {
-        if (this.$route.params.cateid) this.listUpdate();
+        if (this.$route.params.cateid) this.listUpdate()
         this.path = <string>this.$route.params.cateid
       },
-      { immediate: true }
+      { immediate: true },
     )
-  }
+  },
 }
 </script>
 

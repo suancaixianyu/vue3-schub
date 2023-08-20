@@ -19,9 +19,10 @@
       </div>
     </div>
 
-    <!-- 窄屏折叠logo，菜单 -->
+    <!-- 窄屏折叠logo，抽屉菜单 -->
     <div class="hidden-sm-and-up" v-if="set.menu">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+
       <div class="drawer-content" v-if="isRootPath">
         <label for="my-drawer" tabindex="0" class="btn btn-ghost btn-circle">
           <ScLogo />
@@ -57,8 +58,6 @@
               <el-text>消息</el-text>
             </div>
           </li>
-
-          <hr />
           <li @click="handleLiClick">
             <div>
               <input
@@ -106,6 +105,7 @@
       ref="menu"
       @click="menuClick('menu', true)"
       v-else
+      @mouseleave="menuClick('menu')"
     >
       <summary class="m-1 btn bg-base-100 btn-ghost">
         <ScLogo />
@@ -118,7 +118,6 @@
           width: 10rem;
           border-radius: var(--rounded-btn);
         "
-        @mouseleave="menuClick('menu')"
       >
         <li>
           <!-- 返回主页 -->
@@ -178,87 +177,6 @@
         </li>
       </ul>
     </details>
-
-    <!-- 弹窗菜单2 -->
-    <div class="dropdown hidden-sm-and-up bg-base-100" v-if="false">
-      <label tabindex="0" class="btn btn-ghost btn-circle dropdown mb-32">
-        <ScLogo />
-      </label>
-
-      <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo dropdown-content bg-base-100"
-        style="
-          border: none;
-          z-index: 20;
-          box-shadow: var(--el-box-shadow-light);
-        "
-        @open="true"
-      >
-        <!-- 返回主页 -->
-        <router-link to="/">
-          <el-menu-item index="1">
-            <div>
-              <el-icon :size="28" style="padding: 0 2px">
-                <House />
-              </el-icon>
-              <el-text>主页</el-text>
-            </div>
-          </el-menu-item>
-        </router-link>
-        <!-- 消息 -->
-        <el-menu-item index="2" @click="bailanle">
-          <div>
-            <el-icon :size="28" style="padding: 0 2px">
-              <Message />
-            </el-icon>
-            <el-text>消息</el-text>
-          </div>
-          <span class="indicator-item badge">5</span>
-        </el-menu-item>
-        <!-- 主题切换 -->
-        <el-menu-item
-          index="3"
-          style="align-items: center"
-          @click="handleLiClick"
-        >
-          <input
-            ref="toggleInput"
-            checked
-            type="checkbox"
-            class="toggle toggle-sm"
-            data-toggle-theme="dark,light"
-            data-act-class="ACTIVECLASS"
-            v-model="iconid"
-            @click="bailanle"
-          />
-          <el-text>
-            <el-icon v-if="iconid">
-              <Moon />
-            </el-icon>
-            <el-icon v-if="iconid === false"> <Sunny /> </el-icon>切换主题
-          </el-text>
-        </el-menu-item>
-        <!-- 设置 -->
-        <el-menu-item index="5">
-          <router-link to="/setup">
-            <el-icon :size="28" style="padding: 0 2px">
-              <setting />
-            </el-icon>
-            <span>设置</span>
-          </router-link>
-        </el-menu-item>
-        <!-- 工具 -->
-        <el-menu-item-group title="外部工具" index="4" style="text-align: left">
-          <el-menu-item index="4-1">
-            <a href="http://suancaixianyu.cn/sss">简谱转换</a>
-          </el-menu-item>
-          <el-menu-item index="4-2">
-            <a href="https://suancaixianyu.com/gpt">白嫖gpt</a>
-          </el-menu-item>
-        </el-menu-item-group>
-      </el-menu>
-    </div>
 
     <!-- 分割元素 -->
     <div class="flex-grow" />
@@ -379,7 +297,7 @@
             @click="menuClick('user', true)"
             v-else
           >
-            <summary class="m-1 btn bg-base-100 btn-ghost">
+            <summary class="m-1 btn-ghost">
               <el-avatar
                 :src="userInfo.data.headurl"
                 :shape="set.shape"
@@ -387,7 +305,7 @@
               />
             </summary>
             <ul
-              class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
+              class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52"
               @click="menuClick('user')"
               style="width: 10rem; box-shadow: var(--el-box-shadow-light)"
               @mouseleave="menuClick('user')"

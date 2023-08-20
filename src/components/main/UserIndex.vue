@@ -1,31 +1,47 @@
 <template>
   <el-container style="height: 100%" v-loading="isLoading">
-    <el-header class="zone-head-container">
-      <img class="img" src="../../assets/image/headbj.png" />
+    <el-header
+      class="zone-head-container bj"
+      style="background-image: url(../src/assets/image/headbj.png)"
+    >
       <img class="img2" src="../../assets/image/wenben.png" />
       <div class="head-area">
-        <el-upload
-          :action="uploadServer"
-          v-model="userInfo.data.headurl"
-          :with-credentials="true"
-          :show-file-list="false"
-          :on-success="uploadCover"
-        >
-          <el-avatar :size="headsize" :src="userInfo.data.headurl" />
-        </el-upload>
-        <div class="nickname" v-html="userInfo.data.nickname"></div>
-
-        <UserRole :role="userInfo.data.role" />
-        <div style="color: #fff">
-          <router-link to="/usersetup">
-            <el-icon :size="18" class="pointer">
-              <EditPen />
-            </el-icon>
-          </router-link>
-        </div>
-        <div v-html="userInfo.data.nickname"></div>
+        <el-container>
+          <el-aside :width="`${headsize * 1.2}px`">
+            <el-upload
+              :action="uploadServer"
+              v-model="userInfo.data.headurl"
+              :with-credentials="true"
+              :show-file-list="false"
+              :on-success="uploadCover"
+            >
+              <el-avatar :size="headsize" :src="userInfo.data.headurl" />
+            </el-upload>
+          </el-aside>
+          <el-main class="padding-0" style="overflow-x: hidden">
+            <el-row :gutter="10">
+              <el-col :span="10">
+                <el-text class="nickname">{{ userInfo.data.nickname }}</el-text>
+                <UserRole :role="userInfo.data.role" />
+                <el-text>
+                  <router-link to="/usersetup">
+                    <el-icon :size="18" class="pointer" style="color: #fff">
+                      <EditPen />
+                    </el-icon>
+                  </router-link>
+                </el-text>
+              </el-col>
+              <el-col :span="18">
+                <el-text class="signature"
+                  >个性签名：{{ userInfo.data.signature }}</el-text
+                >
+              </el-col>
+            </el-row>
+          </el-main>
+        </el-container>
       </div>
     </el-header>
+
     <el-header class="zone-head-container btn-area">
       <el-tabs class="el-tabs" model-value="bbs" @tab-click="onTabChange">
         <el-tab-pane name="bbs">
@@ -183,6 +199,19 @@ export default {
 </script>
 
 <style scoped>
+.padding-0 {
+  padding: 0;
+}
+.bj {
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.signature {
+  margin: 0 12px;
+  color: #fff;
+}
+
 .el-tabs {
   flex: 1;
   padding: 0;
@@ -236,7 +265,7 @@ export default {
   z-index: 1;
 }
 
-.head-area .nickname {
+.nickname {
   margin: 0 12px;
   font-size: 18px;
   font-weight: bold;

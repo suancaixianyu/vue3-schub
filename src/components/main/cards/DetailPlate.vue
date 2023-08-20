@@ -2,41 +2,53 @@
   <div v-loading="isLoading">
     <!-- 移动端 -->
     <div v-if="set.ismobile">
-      <el-container v-if="content != null">
-        <!-- 头部 -->
-        <el-header style="padding: 0">
-          <!-- 顶部按钮 -->
-          <el-row :gutter="24" style="padding: 0">
-            <el-col :span="24" style="display: flex; justify-content: flex-end">
-              <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
-                <Flushed />
-              </el-icon>
-              <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
-                <Link />
-              </el-icon>
-              <el-icon @click="close" :size="25" title="关闭" class="icon">
-                <Close />
-              </el-icon>
-            </el-col>
-          </el-row>
-          <h2>{{ content.title }}</h2>
+      <!-- 顶部按钮 -->
+      <el-row :gutter="24" style="padding: 0" v-if="content != null">
+        <el-col :span="16">
+          <el-text class="mx-1 time title" size="large" tag="b">
+            {{ content.title }}
+          </el-text>
+        </el-col>
+        <el-col :span="8" style="display: flex; justify-content: flex-end">
+          <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
+            <Flushed />
+          </el-icon>
+          <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
+            <Link />
+          </el-icon>
+          <el-icon @click="close" :size="25" title="关闭" class="icon">
+            <Close />
+          </el-icon>
+        </el-col>
+        <el-col :span="24">
           <UserHead :item="userInfo" style="padding-left: 10px" />
-        </el-header>
-        <!-- 内容 -->
-        <el-main style="padding: 20px 0">
+        </el-col>
+        <el-col :span="24">
           <!-- 帖子内容展示 -->
-          <MdPreview editorId="preview-mobile" :modelValue="content.summary" class="bg-base-200" />
+          <MdPreview
+            editorId="preview-mobile"
+            :modelValue="content.summary"
+            class="bg-base-200"
+          />
 
           <!-- 分割线 -->
           <label class="plate-label">
             <div class="large">评论</div>
             <div class="small">{{ sum.total }}</div>
             <div class="space"></div>
-            <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">
+            <div
+              class="filter"
+              :class="{ active: sort == 0 }"
+              @click="sortByTime"
+            >
               最新
             </div>
             <div class="filter">|</div>
-            <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">
+            <div
+              class="filter"
+              :class="{ active: sort == 1 }"
+              @click="sortByHot"
+            >
               最热
             </div>
           </label>
@@ -44,76 +56,131 @@
           <div class="reply-body">
             <!-- 发表评论 -->
             <div class="post-area">
-              <el-avatar :src="content.author.headurl" :shape="shape" :size="headsize" style="margin-right: 12px" />
-              <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
-              <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
+              <el-avatar
+                :src="content.author.headurl"
+                :shape="shape"
+                :size="headsize"
+                style="margin-right: 12px"
+              />
+              <el-input
+                v-model="comments"
+                autosize
+                type="textarea"
+                placeholder="发表评论"
+              />
+              <el-button icon="Edit" :loading="isReplying" @click="doReply"
+                >发表</el-button
+              >
             </div>
             <!-- 回复列表 -->
             <div v-loading="isLoadingReply">
-              <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                :previewid="index" @refreshEvent="refresh_reply_list" />
+              <OneReply
+                v-for="(x, index) in reply_list"
+                :key="x"
+                :x="{ ...x }"
+                :shape="shape"
+                :size="headsize"
+                :previewid="index"
+                @refreshEvent="refresh_reply_list"
+              />
             </div>
           </div>
-        </el-main>
-      </el-container>
+        </el-col>
+      </el-row>
     </div>
 
     <!-- pc页面 -->
-    <div v-else class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
-      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px">
+    <div
+      v-else
+      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact plate-body"
+      style="box-shadow: var(--el-box-shadow-light); margin-right: 28px"
+    >
       <div v-if="content != null" class="common-layout">
-        <el-container>
-          <!-- 头部 -->
-          <el-header style="padding: 0">
-            <!-- 顶部按钮 -->
-            <el-row :gutter="24">
-              <el-col :span="24" style="display: flex; justify-content: flex-end">
-                <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
-                  <Flushed />
-                </el-icon>
-                <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
-                  <Link />
-                </el-icon>
-                <el-icon @click="close" :size="25" title="关闭" class="icon">
-                  <Close />
-                </el-icon>
-              </el-col>
-            </el-row>
+        <el-row :gutter="24" style="padding: 0" v-if="content != null">
+          <el-col :span="16">
+            <el-text class="mx-1 time title" size="large" tag="b">
+              {{ content.title }}
+            </el-text>
+          </el-col>
+          <el-col :span="8" style="display: flex; justify-content: flex-end">
+            <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
+              <Flushed />
+            </el-icon>
+            <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
+              <Link />
+            </el-icon>
+            <el-icon @click="close" :size="25" title="关闭" class="icon">
+              <Close />
+            </el-icon>
+          </el-col>
+          <el-col :span="24">
             <UserHead :item="userInfo" style="padding-left: 10px" />
-          </el-header>
-          <!-- 内容 -->
-          <el-main>
+          </el-col>
+          <el-col :span="24">
             <!-- 帖子内容展示 -->
-            <MdPreview editorId="preview-pc" :modelValue="content.summary" class="bg-base-100" />
+            <MdPreview
+              editorId="preview-mobile"
+              :modelValue="content.summary"
+              class="bg-base-200"
+            />
+
             <!-- 分割线 -->
             <label class="plate-label">
               <div class="large">评论</div>
               <div class="small">{{ sum.total }}</div>
               <div class="space"></div>
-              <div class="filter" :class="{ active: sort == 0 }" @click="sortByTime">
+              <div
+                class="filter"
+                :class="{ active: sort == 0 }"
+                @click="sortByTime"
+              >
                 最新
               </div>
               <div class="filter">|</div>
-              <div class="filter" :class="{ active: sort == 1 }" @click="sortByHot">
+              <div
+                class="filter"
+                :class="{ active: sort == 1 }"
+                @click="sortByHot"
+              >
                 最热
               </div>
             </label>
             <!-- 个人评论区 -->
             <div class="reply-body">
               <!-- 发表评论 -->
-              <div class="post-area">
-                <el-avatar :src="content.author.headurl" :shape="shape" :size="headsize" style="margin-right: 12px" />
-                <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
-                <el-button icon="Edit" :loading="isReplying" @click="doReply">发表</el-button>
-              </div>
+              <el-row :gutter="24">
+                <el-col :span="2">
+                  <el-avatar :src="headurl" :shape="shape" :size="headsize" />
+                </el-col>
+                <el-col :span="19">
+                  <el-input
+                    v-model="comments"
+                    autosize
+                    type="textarea"
+                    placeholder="发表评论"
+                  />
+                </el-col>
+                <el-col :span="3">
+                  <el-button icon="Edit" :loading="isReplying" @click="doReply">
+                    发表
+                  </el-button>
+                </el-col>
+              </el-row>
               <!-- 回复列表 -->
               <div v-loading="isLoadingReply">
-                <OneReply v-for="(x, index) in reply_list" :key="x" :x="{ ...x }" :shape="shape" :size="headsize"
-                  :previewid="index" @refreshEvent="refresh_reply_list" />
+                <OneReply
+                  v-for="(x, index) in reply_list"
+                  :key="x"
+                  :x="{ ...x }"
+                  :shape="shape"
+                  :size="headsize"
+                  :previewid="index"
+                  @refreshEvent="refresh_reply_list"
+                />
               </div>
             </div>
-          </el-main>
-        </el-container>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
@@ -146,6 +213,7 @@ export default {
   // },
   data() {
     return {
+      headurl: Cfg.userInfo.data.headurl,
       userInfo: <any>null,
       headsize: Cfg.config.homestyle.headsize.post,
       set: Cfg.set,
@@ -174,12 +242,12 @@ export default {
       this.isLoading = true
       Method.api_get(`/bbs/item/${this.$route.params.id}`)
         .then((res: any) => {
-          this.isLoading = false;
+          this.isLoading = false
           if (res.data.code === 200) {
-            let item = res.data.data;
-            item.time = Method.formatBbsTime(item.time);
-            item.author.headurl = Method.getHostUrl(item.author.headurl);
-            this.content = item;
+            let item = res.data.data
+            item.time = Method.formatBbsTime(item.time)
+            item.author.headurl = Method.getHostUrl(item.author.headurl)
+            this.content = item
             this.userInfo = {
               headurl: item.author.headurl,
               nickname: item.author.nickname,
@@ -191,8 +259,8 @@ export default {
                 flexDirection: 'row',
                 alignItems: 'center',
               },
-            };
-            this.refresh_reply_list();
+            }
+            this.refresh_reply_list()
           } else {
             ElMessage({
               type: 'error',
@@ -215,7 +283,9 @@ export default {
     refresh_reply_list() {
       let { page, limit, sort } = this
       this.isLoadingReply = true
-      Method.api_get(`/bbs/reply_list/${this.$route.params.id}?page=${page}&limit=${limit}&sort=${sort}`)
+      Method.api_get(
+        `/bbs/reply_list/${this.$route.params.id}?page=${page}&limit=${limit}&sort=${sort}`,
+      )
         .then((res: any) => {
           this.isLoading = false
           let list = res.data.data
@@ -259,7 +329,7 @@ export default {
       this.refresh_reply_list()
     },
     close() {
-      this.$router.back();
+      this.$router.back()
     },
     copytext() {
       Method.copyText(window.location.href)
@@ -284,20 +354,28 @@ export default {
           ElMessage('评论失败')
         }
       })
-    }
+    },
   },
 
   created() {
-    watch(() => Cfg.set.ismobile, (ismobile) => {
-      Cfg.config.homestyle.maincontainer.height = ismobile ? 'auto' : 'calc(100vh - 90px)'
-    });
-    watch(() => this.$route.params.id, () => {
-      if (this.$route.params.id) {
-        this.refresh_item();
-      }
-    });
-    this.refresh_item();
-  }
+    watch(
+      () => Cfg.set.ismobile,
+      (ismobile) => {
+        Cfg.config.homestyle.maincontainer.height = ismobile
+          ? 'auto'
+          : 'calc(100vh - 90px)'
+      },
+    )
+    watch(
+      () => this.$route.params.id,
+      () => {
+        if (this.$route.params.id) {
+          this.refresh_item()
+        }
+      },
+    )
+    this.refresh_item()
+  },
 }
 </script>
 
