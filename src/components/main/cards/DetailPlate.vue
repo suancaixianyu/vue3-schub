@@ -198,7 +198,6 @@ import Cfg from '@/config/config'
 
 import { MdPreview } from 'md-editor-v3'
 /** md编辑器 */
-import 'md-editor-v3/lib/preview.css'
 
 export default {
   name: 'DetailPlate',
@@ -360,7 +359,7 @@ export default {
   updated() {
     Cfg.config.homestyle.maincontainer.height = Cfg.set.ismobile
       ? 'auto'
-      : 'calc(100vh - 90px)'
+      : 'calc(100vh - 6rem)'
     Cfg.config.homestyle.maincontainer.overflowY = Cfg.set.ismobile
       ? 'auto'
       : 'hidden'

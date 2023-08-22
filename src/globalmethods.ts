@@ -118,6 +118,42 @@ class Method {
     }
   }
 
+  getStat(number: number): object {
+    let obj = {
+      name: '',
+      type: ''
+    }
+    switch (number) {
+      case 0:
+        obj = {
+          name: '已删除',
+          type: 'danger'
+        }
+        break;
+      case 1:
+        obj = {
+          name: '正常',
+          type: ''
+        }
+        break;
+      case 2:
+        obj = {
+          name: '审核中',
+          type: 'info'
+        }
+        break;
+      case 3:
+        obj = {
+          name: '审核未通过',
+          type: 'warning'
+        }
+        break;
+      default:
+        break;
+    }
+    return obj
+  }
+
   fixTimePre(str: number) {
     if (str < 10) return '0' + str
     else return str
@@ -418,6 +454,37 @@ class Method {
         message: `复制失败：${error.message}`,
       })
     }
+  }
+
+  /**
+     * 上传图片
+     */
+  async UploadImage(file: any): Promise<string | undefined> {
+    ElMessage('上传中...')
+    // 执行图片上传的逻辑
+    const formData = new FormData()
+    let url = ''
+    formData.append('file', file[0], file[0].name)
+    this.api_post(`/Upload/Upload`, formData)
+      .then((response) => {
+        let obj = response.data
+        if (obj.code === 200) {
+          ElMessage({
+            type: 'success',
+            message: '上传成功',
+          })
+          url = `![](${this.getHostUrl(obj.data.src)})`
+        }
+      })
+      .catch((error) => {
+        ElMessage({
+          type: 'error',
+          message: '上传失败',
+        })
+        console.log('error', error)
+        url = ''
+      })
+    return url
   }
 }
 

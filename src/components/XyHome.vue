@@ -14,8 +14,10 @@
         <el-footer
           v-if="set.showfooter"
           :style="container"
-          style="height: 30px"
+          class="home-footer"
+          style="height: 2rem"
         >
+          <el-text>这里是底部栏</el-text>
         </el-footer>
       </el-container>
     </div>
@@ -87,6 +89,11 @@ export default {
 </script>
 
 <style>
+.home-footer {
+  display: flex;
+  justify-content: center;
+}
+
 /* 添加 class="hide-scrollbar" 使用 */
 /* 隐藏滚动条样式 */
 .hide-scrollbar::-webkit-scrollbar {
