@@ -73,7 +73,7 @@ import PostPage from '@comps/main/PostPage.vue'
 import BbsItem from '@comps/main/bbs/item.vue'
 import DetailPlate from '@comps/main/cards/DetailPlate.vue'
 import type { api } from '@/apitypes'
-import '@/apitypes/HomePlate.ts'
+import '@/components/admin/index.ts'
 import { ElMessage } from 'element-plus'
 export default {
   name: 'HomePlate',
@@ -116,8 +116,8 @@ export default {
               message: res.msg,
             })
           } else {
-            let list = []
-            list.push({ id: 0, name: '全部板块' })
+            let list = <cateItem[]>[]
+            list.push(<cateItem>{ id: 0, name: '全部板块' })
             if (res.code == 200) {
               list = list.concat(res.data)
               this.cate_list = list

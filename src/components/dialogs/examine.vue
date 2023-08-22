@@ -28,7 +28,7 @@ import config from '@/config/config.ts'
 import {watch} from "vue";
 export default {
   name: 'dialogExamine',
-  emits: ['update:visible'],
+  emits: ['update:visible','submit'],
   props: {
     title: String,
     loading: Boolean,
@@ -45,10 +45,10 @@ export default {
   },
   methods: {
     doInject() {
-      this.$emit('submit',{reason:this.reason,result:false})
+      this.$emit("submit",{reason:this.reason,result:false})
     },
     doSuccess() {
-      this.$emit('submit',{reason:this.reason,result:true})
+      this.$emit("submit",{reason:this.reason,result:true})
     }
   },
   mounted() {

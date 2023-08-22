@@ -376,7 +376,7 @@ class Method {
   /**
    * 刷新页面重新获取用户信息
    */
-   getInformation(callback:any) {
+   getInformation(callback:any=null) {
     let { userInfo } = Cfg
     //刷新页面重新获取用户信息
     this.api_get('/user/role_list').then((response) => {

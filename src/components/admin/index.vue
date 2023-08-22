@@ -698,7 +698,7 @@ export default {
         }
       })
     },
-    refreshItem(activeTab: number) {
+    refreshItem(activeTab: string) {
       let v = parseInt(activeTab)
       switch (v) {
         case 1:
@@ -736,7 +736,7 @@ export default {
     )
     watch(
       () => this.page,
-      (v) => {
+      () => {
         this.refreshItem(this.activeTab)
       },
     )

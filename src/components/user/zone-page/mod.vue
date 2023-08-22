@@ -30,8 +30,8 @@
             <el-text>
               {{ x.name }}
             </el-text>
-            <el-tag size="small" :type="x.stat.type">
-              {{ x.stat.name }}
+            <el-tag size="small" :type="x.stat_data.type">
+              {{ x.stat_data.name }}
             </el-tag>
             <br />
             <el-text>
@@ -128,7 +128,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="name" label="名称" width="180" />
-        <el-table-column prop="create_time" label="上传日期" />
+        <el-table-column prop="create_time_str" label="上传日期" />
         <el-table-column prop="views_num" label="浏览" />
         <el-table-column prop="downloads_num" label="下载" />
         <el-table-column prop="likes_num" label="点赞" />
@@ -164,8 +164,8 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column 操作">
-          <template #default="scopelabel="">
+        <el-table-column label="操作">
+          <template #default="scope">
             <el-button
               size="small"
               link
@@ -228,6 +228,8 @@ import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
 import Like from '@comps/icons/Like.vue'
+import {watch} from "vue";
+import "@/components/admin/index.ts"
 
 export default {
   name: 'ModPage',
@@ -239,7 +241,7 @@ export default {
       ...Cfg.config,
       set: Cfg.set,
       isLoading: false,
-      list: [] as any,
+      list: <modItem[]>[],
       modName: '',
       isDialogVisible: false,
       activeItemIndex: -1,
@@ -259,7 +261,7 @@ export default {
       console.log(item.id)
       Method.api_get(`/mod/delete/${item.id}`)
         .then((response) => {
-          let res = response.data as api
+          let res = <res>response.data;
           this.isDeleting = false
           this.isDialogVisible = false
           if (res.code == 200) {
@@ -312,13 +314,13 @@ export default {
           this.isLoading = false
           if (res.code == 200) {
             if(this.page == 1)this.total = res.sum;
-            res.data.forEach((x: any) => {
-              x.create_time = Method.formatNormalTime(x.create_time)
+            res.data.forEach((x: modItem) => {
+              x.create_time_str = Method.formatNormalTime(x.create_time)
               x.downloads_num = Method.getNumber(x.downloads)
               x.views_num = Method.getNumber(x.views)
               x.likes_num = Method.getNumber(x.likes)
               x.cover_src = Method.getHostUrl(x.cover_src)
-              x.stat = Method.getStat(x.stat)
+              x.stat_data = Method.getStat(x.stat)
             })
             this.list = res.data
           } else {

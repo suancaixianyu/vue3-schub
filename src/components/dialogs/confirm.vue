@@ -22,7 +22,7 @@ import config from '@/config/config.ts'
 import {watch} from "vue";
 export default {
   name: 'dialogConfirm',
-  emits: ['update:visible'],
+  emits: ['update:visible','submit'],
   props: {
     title: String,
     loading: Boolean,
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     doSubmit() {
-      this.$emit('submit')
+      this.$emit("submit",{});
     },
   },
   mounted() {

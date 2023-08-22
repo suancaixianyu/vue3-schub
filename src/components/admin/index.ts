@@ -17,11 +17,28 @@ interface modItem{
     uid:number
     stat:number
     reason:string
+    stat_data:any
+    create_time:number
+    create_time_str:string
+    downloads:number
+    downloads_num:string
+    views:number
+    views_num:string
+    likes:number
+    likes_num:string
+    cover_src:string
 }
 interface roleItem{
-    id:string
+    id:number
+    /** 头衔名称 **/
     name:string
     stat:number
+    /** 参考el-tag的color属性 **/
+    color:string
+    /** 参考el-tag的type属性 **/
+    type:string
+    /** 参考el-tag的effect属性 **/
+    effect:string
 }
 interface bbsItem{
     id:number
@@ -48,4 +65,9 @@ interface serverInfo{
     member:number
     bbs:number
     mod:number
+}
+interface cateItem{
+    id:number
+    name:string
+    stat:number
 }

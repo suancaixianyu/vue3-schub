@@ -436,6 +436,8 @@ export default {
     },
   },
   created() {
+    //刷新页面重新获取用户信息
+    Method.getInformation()
     watch(
       () => this.$router.currentRoute.value.fullPath,
       (v) => {
