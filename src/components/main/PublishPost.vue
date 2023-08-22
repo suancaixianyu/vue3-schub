@@ -35,6 +35,7 @@
             :with-credentials="true"
             :show-file-list="false"
             :on-success="uploadCover"
+            accept="image/png, image/jpeg"
           >
             <el-button type="primary">上传</el-button>
           </el-upload>

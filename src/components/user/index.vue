@@ -14,6 +14,7 @@
               :with-credentials="true"
               :show-file-list="false"
               :on-success="uploadCover"
+              accept="image/png, image/jpeg"
             >
               <el-avatar :size="headsize" :src="userInfo.data.headurl" />
             </el-upload>

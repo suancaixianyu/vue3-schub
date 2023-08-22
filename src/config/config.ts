@@ -4,7 +4,7 @@ const homestyle = reactive({
   /** 内容样式 */
   maincontainer: {
     padding: '0 1rem',
-    height: 'calc(100vh - 90px)',
+    height: 'calc(100vh - 6rem)',
     overflowY: 'hidden',
   },
   /** 卡片样式 */

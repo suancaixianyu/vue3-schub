@@ -2,19 +2,38 @@
   <div class="tab-container">
     <el-header class="el-header" style="flex-wrap: wrap">
       <div class="filter-item hide-scrollbar" ref="flagContainer">
-        <mod-flag :flag="x.flag_name" :active="x.id == activeFlagId" :count="x.count" v-for="x in mod_flag_list"
-          @click="onFlagClick(x.id)" />
+        <mod-flag
+          :flag="x.flag_name"
+          :active="x.id == activeFlagId"
+          :count="x.count"
+          v-for="x in mod_flag_list"
+          @click="onFlagClick(x.id)"
+        />
       </div>
     </el-header>
     <el-container class="el-container" v-loading="isLoading">
-      <router-link v-if="set.ismobile" :to="x.to_link" v-for="x in list">
+      <router-link
+        v-if="set.ismobile"
+        :to="x.to_link"
+        v-for="x in list"
+        style="margin: 0.5rem"
+      >
         <div class="res-item">
           <div class="right" v-if="x.cover_src">
-            <el-image style="width: 128px;height: 96px;" :src="x.cover_src" fit="contain" />
+            <el-image
+              style="width: 128px; height: 96px"
+              :src="x.cover_src"
+              fit="contain"
+            />
           </div>
           <div class="left">
             <div class="flag-area hide-scrollbar">
-              <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
+              <mod-flag
+                class="flag"
+                :flag="xx.flag_name"
+                active
+                v-for="xx in x.flag_list"
+              />
             </div>
             <div class="name-line">
               <div>[{{ x.mini_name }}]{{ x.name }}({{ x.en_name }})</div>
@@ -37,17 +56,28 @@
           </div>
         </div>
       </router-link>
-      <router-link v-else :to="x.to_link" v-for="x in list">
+      <router-link
+        v-else
+        :to="x.to_link"
+        v-for="x in list"
+        style="margin: 0.5rem"
+      >
         <div class="res-item">
           <div class="right" v-if="x.cover_src">
-            <el-image style="width: 128px;height: 96px;" :src="x.cover_src" fit="contain" />
+            <el-image
+              style="width: 128px; height: 96px"
+              :src="x.cover_src"
+              fit="contain"
+            />
           </div>
           <div class="left">
             <div class="name-line">
-              <div class="flag-area">
-                <mod-flag class="flag" :flag="xx.flag_name" active v-for="xx in x.flag_list" />
-              </div>
-              <div>[{{ x.mini_name }}]{{ x.name }}({{ x.en_name }})</div>
+              <mod-flag
+                class="flag"
+                :flag="xx.flag_name"
+                active
+                v-for="xx in x.flag_list"
+              />[{{ x.mini_name }}]{{ x.name }}({{ x.en_name }})
             </div>
             <div class="description-line">{{ x.description }}</div>
             <div class="btn-line">
@@ -67,9 +97,12 @@
           </div>
         </div>
       </router-link>
-
     </el-container>
-    <el-pagination layout="prev, pager, next, total" :total="total" v-model="page" />
+    <el-pagination
+      layout="prev, pager, next, total"
+      :total="total"
+      v-model="page"
+    />
   </div>
 </template>
 
@@ -88,7 +121,7 @@ import LikeIcon from '@comps/icons/Like.vue'
 import IconDown from '@comps/icons/common/down.vue'
 import Method from '@/globalmethods'
 import { watch } from 'vue'
-import Cfg from "@/config/config.ts";
+import Cfg from '@/config/config.ts'
 export default {
   name: 'ModList',
   components: {
@@ -121,37 +154,41 @@ export default {
   },
   methods: {
     onFlagClick(id: any) {
-      let c = <HTMLDivElement>this.$refs.flagContainer;
-      this.activeFlagId = id;
-      let f = this.mod_flag_list.find((x: any) => { return x.id == id; });
+      let c = <HTMLDivElement>this.$refs.flagContainer
+      this.activeFlagId = id
+      let f = this.mod_flag_list.find((x: any) => {
+        return x.id == id
+      })
       if (f != null) {
-        let index = this.mod_flag_list.indexOf(f);
-        let e = c.children[index];
-        let cb = c.getBoundingClientRect();
-        let b = e.getBoundingClientRect();
-        let w = cb.right - cb.left;//滚动容器宽度
-        let wc = cb.left + (w / 2);//中心点位置
-        let w2 = b.right - b.left;//单项的宽度
-        let w2c = b.left + (w2 / 2);//中心点位置
-        let start = c.scrollLeft;
-        let end = c.scrollLeft + (w2c - wc);
-        let frameCount = 50;//0.1s
+        let index = this.mod_flag_list.indexOf(f)
+        let e = c.children[index]
+        let cb = c.getBoundingClientRect()
+        let b = e.getBoundingClientRect()
+        let w = cb.right - cb.left //滚动容器宽度
+        let wc = cb.left + w / 2 //中心点位置
+        let w2 = b.right - b.left //单项的宽度
+        let w2c = b.left + w2 / 2 //中心点位置
+        let start = c.scrollLeft
+        let end = c.scrollLeft + (w2c - wc)
+        let frameCount = 50 //0.1s
         if (end > 0) {
-          let each = (end - start) / frameCount;
-          let position = start;
-          let times = 0;
+          let each = (end - start) / frameCount
+          let position = start
+          let times = 0
           //逐渐滚动到这个位置实现
-          if (this.animateTimerId > 0) { clearInterval(this.animateTimerId); }
+          if (this.animateTimerId > 0) {
+            clearInterval(this.animateTimerId)
+          }
           this.animateTimerId = setInterval(() => {
-            c.scrollLeft = position;
-            position += each;
-            times++;
+            c.scrollLeft = position
+            position += each
+            times++
             if (times > frameCount) {
               clearInterval(this.animateTimerId)
             }
           }, 1)
         } else {
-          c.scrollLeft = 0;
+          c.scrollLeft = 0
         }
       }
     },
@@ -168,13 +205,15 @@ export default {
         this.isLoading = false
         if (res.code == 200) {
           this.total = res.sum.total
-          let flagSum = <any>res.flag_sum;
+          let flagSum = <any>res.flag_sum
           flagSum.forEach((x: any) => {
-            let f = this.mod_flag_list.find((xx: any) => { return xx.id == x.flag_id; });
+            let f = this.mod_flag_list.find((xx: any) => {
+              return xx.id == x.flag_id
+            })
             if (f != null) {
-              f.count = x.count;
+              f.count = x.count
             }
-          });
+          })
           res.data.forEach((x: any) => {
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
@@ -189,32 +228,38 @@ export default {
   created() {
     let {
       userInfo: {
-        global_mod_data_list: {
-          flag_list
-        }
-      }
+        global_mod_data_list: { flag_list },
+      },
     } = Cfg
-    let mod_flag_list = <any>[{ flag_name: 'all', count: 0, id: 0 }];
+    let mod_flag_list = <any>[{ flag_name: 'all', count: 0, id: 0 }]
     flag_list.forEach((x: any) => {
-      mod_flag_list.push({ flag_name: x.flag_name, count: 0, id: x.id });
-    });
-    this.mod_flag_list = mod_flag_list;
+      mod_flag_list.push({ flag_name: x.flag_name, count: 0, id: x.id })
+    })
+    this.mod_flag_list = mod_flag_list
     this.pullList()
     watch(
       () => this.page,
       () => {
         this.pullList()
       },
-    );
-    watch(() => this.activeFlagId, () => {
-      this.pullList();
-    })
+    )
+    watch(
+      () => this.activeFlagId,
+      () => {
+        this.pullList()
+      },
+    )
   },
   unmounted() {
     if (this.animateTimerId > 0) {
       clearInterval(this.animateTimerId)
     }
-  }
+    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+  },
+  mounted() {
+    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    Cfg.set.showfooter = true
+  },
 }
 </script>
 <style scoped>
@@ -257,10 +302,9 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: row;
-  margin: 10px;
   border: 1px solid #eee;
   border-radius: 5px;
-  padding: 10px;
+  padding: 0.5rem;
 }
 
 .res-item .name-line {

@@ -53,7 +53,13 @@
         </a>
       </div>
       <el-tabs class="el-tabs" type="card">
-        <el-tab-pane label="资源介绍" v-html="description"></el-tab-pane>
+        <el-tab-pane label="资源介绍">
+          <MdPreview
+            editorId="preview-mobile"
+            :modelValue="description"
+            class="bg-base-200"
+          />
+        </el-tab-pane>
         <el-tab-pane label="资源关系">
           <el-collapse v-model="activeRelation">
             <el-collapse-item
@@ -192,7 +198,13 @@
           </a>
         </div>
         <el-tabs class="el-tabs" type="card">
-          <el-tab-pane label="资源介绍" v-html="description"></el-tab-pane>
+          <el-tab-pane label="资源介绍">
+            <MdPreview
+              editorId="preview-mobile"
+              :modelValue="description"
+              class="bg-base-200"
+            />
+          </el-tab-pane>
           <el-tab-pane label="资源关系">
             <el-collapse v-model="activeRelation">
               <el-collapse-item
@@ -269,6 +281,9 @@ import IconGithub from '@comps/icons/common/github.vue'
 import IconCloudStore from '@comps/icons/common/cloudStore.vue'
 import IconServer from '@comps/icons/mod/server.vue'
 import { ElMessage } from 'element-plus'
+import { MdPreview } from 'md-editor-v3'
+/** md编辑器 */
+import 'md-editor-v3/lib/style.css'
 import { api } from '@/apitypes'
 export default {
   name: 'modDetail',
@@ -279,6 +294,7 @@ export default {
     IconHot,
     IconDown,
     ModFlag,
+    MdPreview,
   },
   data() {
     return {
@@ -368,11 +384,13 @@ export default {
     Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.height = 'auto'
     Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    Cfg.set.showfooter = false
   },
   unmounted() {
     Cfg.config.homestyle.maincontainer.padding = '0 1rem'
-    Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
+    Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 6rem)'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+    Cfg.set.showfooter = true
   },
   created() {
     watch(

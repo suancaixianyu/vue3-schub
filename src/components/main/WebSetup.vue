@@ -212,7 +212,7 @@ export default {
     })
     onUnmounted(() => {
       Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
-      Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
+      Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 2rem)'
       Cfg.set.showfooter = true
     })
     return {
