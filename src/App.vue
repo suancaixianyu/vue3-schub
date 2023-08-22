@@ -1,16 +1,31 @@
 <template>
-  <XyHome />
+  <XyHome v-if = "isInitialized" />
+  <el-container class="el-container" v-else v-loading="true" element-loading-text="初始化数据">
+  </el-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import XyHome from '@comps/XyHome.vue'
+import Method from "./globalmethods.ts";
+export default {
+  name: 'App',
+  components: { XyHome },
+  data() {
+    return {
+      isInitialized: false,
+    }
+  },
+  mounted() {
+    //数据加载完成后才显示XyHome
+    Method.getInformation(()=>{
+      this.isInitialized = true;
+    })
+  }
+}
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+<style scoped>
+.el-container{
+  width: 100%;
+  height: 100%;
 }
 </style>

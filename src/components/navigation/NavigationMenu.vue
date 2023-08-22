@@ -339,7 +339,7 @@ import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import ScLogo from '@comps/icons/ScLogo.vue'
 import ScMod from '@comps/icons/ScMod.vue'
-import UserLogin from '@comps/main/UserLogin.vue'
+import UserLogin from '@comps/user/login.vue'
 import { ElMessage } from 'element-plus'
 import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
@@ -436,8 +436,6 @@ export default {
     },
   },
   created() {
-    //刷新页面重新获取用户信息
-    Method.getInformation()
     watch(
       () => this.$router.currentRoute.value.fullPath,
       (v) => {

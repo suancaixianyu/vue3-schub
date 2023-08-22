@@ -340,7 +340,7 @@ class Method {
   /**
    * 刷新页面重新获取用户信息
    */
-  async getInformation() {
+   getInformation(callback:any) {
     let { userInfo } = Cfg
     //刷新页面重新获取用户信息
     this.api_get('/user/role_list').then((response) => {
@@ -364,7 +364,7 @@ class Method {
         q.isLoginDialogVisible = false;
         q.data = res.data;
         Cfg.userInfo = q;
-        console.log(res);
+        if(callback!=null)callback();
       }
     })
   }

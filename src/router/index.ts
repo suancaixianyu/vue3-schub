@@ -26,12 +26,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/user',
     name: 'UserIndex',
-    component: () => import('@comps/main/UserIndex.vue'),
+    component: () => import('@comps/user/index.vue'),
   },
   {
     path: '/usersetup',
     name: 'UserSetup',
-    component: () => import('@comps/main/UserSetup.vue'),
+    component: () => import('@comps/user/setup.vue'),
   },
   {
     path: '/setup',
@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login/:register?',
     name: 'UserLogin',
-    component: () => import('@comps/main/UserLogin.vue'),
+    component: () => import('@comps/user/login.vue'),
   },
   /** 发帖 */
   {

@@ -42,10 +42,10 @@
 
 <script lang="ts">
 import { api } from '@/apitypes'
-import Cfg from '@/config/config'
-import Method from '@/globalmethods'
+import Cfg from '@/config/config.ts'
+import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
-import UserLogin from '@comps/main/UserLogin.vue'
+import UserLogin from '@comps/user/login.vue'
 export default {
   name: 'UserSetup',
   components: {

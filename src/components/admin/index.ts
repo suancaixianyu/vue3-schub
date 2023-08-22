@@ -6,6 +6,7 @@ interface memberItem{
     last_login_time:number
     last_login_ip:string
     money:number
+    stat:number
     email:string
 }
 interface modItem{
@@ -15,10 +16,12 @@ interface modItem{
     user_name:string
     uid:number
     stat:number
+    reason:string
 }
 interface roleItem{
     id:string
     name:string
+    stat:number
 }
 interface bbsItem{
     id:number
@@ -34,4 +37,15 @@ interface siteConfig{
 interface siteSaveConfig{
     id:number
     value:string
+}
+interface res{
+    code:number
+    msg:string
+    data:any
+    sum:number
+}
+interface serverInfo{
+    member:number
+    bbs:number
+    mod:number
 }

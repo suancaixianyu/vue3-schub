@@ -67,6 +67,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        class="el-pagination"
+        v-model:current-page="page"
+        background
+        :page-size="limit"
+        :pager-count="8"
+        layout="prev, pager, next"
+        :total="total"
+    />
   </div>
 
   <el-dialog
@@ -94,6 +103,7 @@
 import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
+import {watch} from "vue";
 
 export default {
   name: 'BbsPage',
@@ -106,6 +116,9 @@ export default {
       isLoading: false,
       list: <any>[],
       activeItem: <any>null,
+      page:1,
+      limit:10,
+      total:0
     }
   },
   methods: {
@@ -130,11 +143,16 @@ export default {
     },
     refreshList() {
       this.isLoading = true
-      Method.api_get(`/user/my_bbs_list/${Cfg.userInfo.data.id}`).then(
+      let payLoad = {
+        page:this.page,
+        limit:this.limit
+      };
+      Method.api_post(`/user/my_bbs_list/${Cfg.userInfo.data.id}`,payLoad).then(
         (response: any) => {
-          let res = response.data
+          let res = <res>response.data
           this.isLoading = false
           if (res.code == 200) {
+            if(this.page == 1)this.total = res.sum;
             res.data.forEach((x: any) => {
               x.create_time = Method.formatNormalTime(x.create_time)
               x.title =
@@ -148,8 +166,11 @@ export default {
       )
     },
   },
-  created() {
-    this.refreshList()
+  mounted() {
+    this.refreshList();
+    watch(()=>this.page,()=>{
+      this.refreshList();
+    })
   },
 }
 </script>

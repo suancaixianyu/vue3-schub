@@ -163,8 +163,8 @@
 <script lang="ts">
 // 登录与注册（找回密码，更换邮箱等操作都 可以 在此页）
 import { useRoute } from 'vue-router'
-import Cfg from '@/config/config'
-import Method from '@/globalmethods'
+import Cfg from '@/config/config.ts'
+import Method from '@/globalmethods.ts'
 
 import { ElMessage } from 'element-plus'
 import { api } from '@/apitypes'
@@ -224,7 +224,7 @@ export default {
     edit() {
       Method.api_post('/user/editPass', this.editPass)
         .then((res) => {
-          let obj = res.data as api
+          let obj = <api>res.data
           if (obj.code === 200) {
             ElMessage({
               type: 'success',

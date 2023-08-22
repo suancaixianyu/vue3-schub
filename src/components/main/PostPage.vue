@@ -177,11 +177,10 @@ export default {
     },
   },
   mounted() {
-    this.pagenum = 1
-    this.listUpdate()
     watch(
       () => this.$route.params.cateid,
       () => {
+        this.pagenum = 1
         if (this.$route.params.cateid) this.listUpdate()
         this.path = <string>this.$route.params.cateid
       },
