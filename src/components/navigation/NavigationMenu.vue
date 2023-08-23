@@ -297,7 +297,18 @@
             @click="menuClick('user', true)"
             v-else
           >
-            <summary class="m-1 btn-ghost">
+            <summary
+              class="m-1 btn-ghost"
+              v-if="set.ismobile"
+              @mouseleave="menuClick('user')"
+            >
+              <el-avatar
+                :src="userInfo.data.headurl"
+                :shape="set.shape"
+                :size="32"
+              />
+            </summary>
+            <summary class="m-1 btn-ghost" v-else>
               <el-avatar
                 :src="userInfo.data.headurl"
                 :shape="set.shape"
@@ -307,8 +318,8 @@
             <ul
               class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52"
               @click="menuClick('user')"
-              style="width: 10rem; box-shadow: var(--el-box-shadow-light)"
               @mouseleave="menuClick('user')"
+              style="width: 10rem; box-shadow: var(--el-box-shadow-light)"
             >
               <li>
                 <router-link to="/user">

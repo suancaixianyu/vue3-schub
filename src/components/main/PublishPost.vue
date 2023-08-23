@@ -56,14 +56,11 @@
 import { ElMessage } from 'element-plus'
 import { MdEditor } from 'md-editor-v3'
 import { useRoute, useRouter } from 'vue-router'
-
 /** md编辑器 */
 import 'md-editor-v3/lib/style.css'
-
 import Cfg from '@/config/config'
-
 import Method from '@/globalmethods'
-import { api } from '@/apitypes'
+
 export default {
   name: 'PublishPost',
   components: {
@@ -90,31 +87,11 @@ export default {
     /**
      * 上传图片
      */
-    UploadImage(file: any) {
-      ElMessage('上传中...')
-      // 执行图片上传的逻辑
-      const formData = new FormData()
-      formData.append('file', file[0], file[0].name)
-      Method.api_post(`/Upload/Upload`, formData)
-        .then((response) => {
-          let obj = response.data as api
-          if (obj.code === 200) {
-            this.$data.config.content += `![](${Method.getHostUrl(
-              obj.data.src,
-            )})`
-            ElMessage({
-              type: 'success',
-              message: '上传成功',
-            })
-          }
-        })
-        .catch((error) => {
-          ElMessage({
-            type: 'error',
-            message: '上传失败',
-          })
-          console.log('error', error)
-        })
+    async UploadImage(file: any) {
+      let url = await Method.UploadImage(file)
+      if (url) {
+        this.config.content += url
+      }
     },
     /**
      * 提交帖子

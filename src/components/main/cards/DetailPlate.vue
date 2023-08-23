@@ -13,7 +13,7 @@
           <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
             <Flushed />
           </el-icon>
-          <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
+          <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
             <Link />
           </el-icon>
           <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -55,23 +55,24 @@
           <!-- 个人评论区 -->
           <div class="reply-body">
             <!-- 发表评论 -->
-            <div class="post-area">
-              <el-avatar
-                :src="content.author.headurl"
-                :shape="shape"
-                :size="headsize"
-                style="margin-right: 12px"
-              />
-              <el-input
-                v-model="comments"
-                autosize
-                type="textarea"
-                placeholder="发表评论"
-              />
-              <el-button icon="Edit" :loading="isReplying" @click="doReply"
-                >发表</el-button
-              >
-            </div>
+            <el-row :gutter="24">
+              <el-col :span="3" style="padding: 0">
+                <el-avatar :src="headurl" :shape="shape" :size="headsize" />
+              </el-col>
+              <el-col :span="14" style="padding: 0">
+                <el-input
+                  v-model="comments"
+                  autosize
+                  type="textarea"
+                  placeholder="发表评论"
+                />
+              </el-col>
+              <el-col :span="3" style="padding: 0">
+                <el-button icon="Edit" :loading="isReplying" @click="doReply">
+                  发表
+                </el-button>
+              </el-col>
+            </el-row>
             <!-- 回复列表 -->
             <div v-loading="isLoadingReply">
               <OneReply
@@ -106,7 +107,7 @@
             <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
               <Flushed />
             </el-icon>
-            <el-icon @click="copytext" :size="25" title="复制链接" class="icon">
+            <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
               <Link />
             </el-icon>
             <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -363,6 +364,7 @@ export default {
     Cfg.config.homestyle.maincontainer.overflowY = Cfg.set.ismobile
       ? 'auto'
       : 'hidden'
+    Cfg.set.showfooter = Cfg.set.ismobile ? false : true
   },
 
   created() {

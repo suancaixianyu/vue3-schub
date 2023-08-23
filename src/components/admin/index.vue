@@ -45,8 +45,9 @@
                   link
                   type="danger"
                   @click="showLockItem(1, scope.$index)"
-                  v-html="member_list[scope.$index].stat == 0 ? '解锁' : '锁定'"
-                ></el-button>
+                >
+                  {{ member_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -92,8 +93,9 @@
                   link
                   type="danger"
                   @click="showLockItem(2, scope.$index)"
-                  v-html="bbs_list[scope.$index].stat == 0 ? '解锁' : '锁定'"
-                ></el-button>
+                >
+                  {{ bbs_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -123,12 +125,35 @@
             <el-table-column prop="create_time" label="发布时间" width="180" />
             <el-table-column prop="stat" label="状态" width="180">
               <template #default="scope">
-                <el-tag size="small" v-if="mod_list[scope.$index].stat == 0" type="warning">删除</el-tag>
-                <el-tag size="small" v-if="mod_list[scope.$index].stat == 1">正常</el-tag>
-                <el-tag size="small" v-if="mod_list[scope.$index].stat == 2" type="info">审核中</el-tag>
-                <el-popover placement="top-start" title="原因" :width="200" trigger="hover" :content="mod_list[scope.$index].reason">
+                <el-tag
+                  size="small"
+                  v-if="mod_list[scope.$index].stat == 0"
+                  type="warning"
+                  >删除</el-tag
+                >
+                <el-tag size="small" v-if="mod_list[scope.$index].stat == 1"
+                  >正常</el-tag
+                >
+                <el-tag
+                  size="small"
+                  v-if="mod_list[scope.$index].stat == 2"
+                  type="info"
+                  >审核中</el-tag
+                >
+                <el-popover
+                  placement="top-start"
+                  title="原因"
+                  :width="200"
+                  trigger="hover"
+                  :content="mod_list[scope.$index].reason"
+                >
                   <template #reference>
-                    <el-tag size="small" v-if="mod_list[scope.$index].stat == 3" type="danger">审核未通过</el-tag>
+                    <el-tag
+                      size="small"
+                      v-if="mod_list[scope.$index].stat == 3"
+                      type="danger"
+                      >审核未通过</el-tag
+                    >
                   </template>
                 </el-popover>
               </template>
@@ -147,8 +172,9 @@
                   link
                   type="danger"
                   @click="showLockItem(3, scope.$index)"
-                  v-html="mod_list[scope.$index].stat == 0 ? '解锁' : '锁定'"
-                ></el-button>
+                >
+                  {{ mod_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -177,7 +203,12 @@
             <el-table-column prop="name" label="名称" width="180" />
             <el-table-column label="预览" width="180">
               <template #default="scope">
-                <el-tag :color="role_list[scope.$index].color" :type="role_list[scope.$index].type" :effect="role_list[scope.$index].effect" v-html="role_list[scope.$index].name"></el-tag>
+                <el-tag
+                  :color="role_list[scope.$index].color"
+                  :type="role_list[scope.$index].type"
+                  :effect="role_list[scope.$index].effect"
+                  v-html="role_list[scope.$index].name"
+                ></el-tag>
               </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right">
@@ -187,8 +218,9 @@
                   link
                   type="danger"
                   @click="showLockItem(4, scope.$index)"
-                  v-html="role_list[scope.$index].stat == 0 ? '解锁' : '锁定'"
-                ></el-button>
+                >
+                  {{ role_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -220,8 +252,9 @@
                   link
                   type="danger"
                   @click="showLockItem(5, scope.$index)"
-                  v-html="cate_list[scope.$index].stat == 0 ? '解锁' : '锁定'"
-                ></el-button>
+                >
+                  {{ cate_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -312,7 +345,13 @@
     </span>
   </dialog-confirm>
   <!--审核资源弹窗-->
-  <dialog-examine title="审核" :visible="dialogShow.examineMod" @submit="examineMod" :loading-inject="isInjecting" :loading-success="isPassing"></dialog-examine>
+  <dialog-examine
+    title="审核"
+    :visible="dialogShow.examineMod"
+    @submit="examineMod"
+    :loading-inject="isInjecting"
+    :loading-success="isPassing"
+  ></dialog-examine>
   <!--添加头衔弹窗-->
   <el-dialog
     v-model="dialogShow.addRole"
@@ -381,11 +420,11 @@ import { watch } from 'vue'
 import UserRole from '@comps/user/roleList.vue'
 import { ElMessage } from 'element-plus'
 import DialogConfirm from '@comps/dialogs/confirm.vue'
-import DialogExamine from "@comps/dialogs/examine.vue";
+import DialogExamine from '@comps/dialogs/examine.vue'
 
 export default {
   name: 'Admin',
-  components: {DialogExamine, DialogConfirm, UserRole },
+  components: { DialogExamine, DialogConfirm, UserRole },
   data() {
     return {
       set: Cfg.set,
@@ -396,7 +435,7 @@ export default {
         lockMod: false,
         lockRole: false,
         lockCate: false,
-        examineMod: false
+        examineMod: false,
       },
       gameConfig: {
         name: '',
@@ -408,7 +447,7 @@ export default {
         effect: 'plain',
       },
       activeTab: '1',
-      taskTimerId:0,
+      taskTimerId: 0,
       page: 1,
       limit: 10,
       total: 0,
@@ -422,8 +461,8 @@ export default {
       isLoadingData: false,
       isLockAccountDialogVisible: false,
       isLocking: false,
-      isInjecting:false,
-      isPassing:false,
+      isInjecting: false,
+      isPassing: false,
       member_list: <memberItem[]>[],
       mod_list: <modItem[]>[],
       bbs_list: <bbsItem[]>[],
@@ -462,48 +501,52 @@ export default {
       this.dialogShow.addRole = true
       this.activeItem.role = this.role_list[index]
     },
-    showExamineMode(index:number){
-      this.activeItem.mod = this.mod_list[index];
-      this.dialogShow.examineMod = true;
+    showExamineMode(index: number) {
+      this.activeItem.mod = this.mod_list[index]
+      this.dialogShow.examineMod = true
     },
-    examineMod(e:any){
-      this.isInjecting = !e.result;
-      this.isPassing = e.result;
-      let stat = e.result?1:3;
-      Method.api_post("/admin/examine_mod",{id:this.activeItem.mod.id,stat:stat,reason:e.reason}).then(response=>{
-        this.isPassing = false;
-        this.isInjecting = false;
-        let res = <res>response.data;
-        if(res.code==200){
-          this.dialogShow.examineMod = false;
-          if(e.result){
-            ElMessage("已审核通过");
-          }else{
-            ElMessage("已拒绝通过");
+    examineMod(e: any) {
+      this.isInjecting = !e.result
+      this.isPassing = e.result
+      let stat = e.result ? 1 : 3
+      Method.api_post('/admin/examine_mod', {
+        id: this.activeItem.mod.id,
+        stat: stat,
+        reason: e.reason,
+      }).then((response) => {
+        this.isPassing = false
+        this.isInjecting = false
+        let res = <res>response.data
+        if (res.code == 200) {
+          this.dialogShow.examineMod = false
+          if (e.result) {
+            ElMessage('已审核通过')
+          } else {
+            ElMessage('已拒绝通过')
           }
-          this.refreshModList();
+          this.refreshModList()
         }
       })
     },
     addRole() {
-      this.isLocking = true;
-      Method.api_post("/admin/add_role",this.roleConfig).then(response=>{
-        let res = response.data;
-        this.isLocking = false;
-        if(res.code == 200){
+      this.isLocking = true
+      Method.api_post('/admin/add_role', this.roleConfig).then((response) => {
+        let res = response.data
+        this.isLocking = false
+        if (res.code == 200) {
           this.roleConfig = {
             name: '预览',
             color: '',
             type: '',
-            effect: 'plain'
-          };
-          this.dialogShow.addRole = false;
-          this.refreshRoleList();
-          ElMessage("添加成功");
-        }else{
-          ElMessage(res.msg);
+            effect: 'plain',
+          }
+          this.dialogShow.addRole = false
+          this.refreshRoleList()
+          ElMessage('添加成功')
+        } else {
+          ElMessage(res.msg)
         }
-      });
+      })
     },
     lockItem(type: number) {
       this.isLocking = true
@@ -723,10 +766,11 @@ export default {
           this.refreshConfigList()
           break
       }
-    }
+    },
   },
   mounted() {
     this.refreshServerInfo()
+    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
     watch(
       () => this.activeTab,
       (v) => {
@@ -742,8 +786,11 @@ export default {
     )
   },
   created() {
-    this.taskTimerId = 0;
-  }
+    this.taskTimerId = 0
+  },
+  unmounted() {
+    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+  },
 }
 </script>
 <style scoped>
