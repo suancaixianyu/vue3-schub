@@ -94,6 +94,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        class="el-pagination"
+        v-model:current-page="page"
+        background
+        :page-size="limit"
+        :pager-count="8"
+        layout="prev, pager, next"
+        :total="total"
+    />
   </div>
   <el-dialog
     v-model="isDialogVisible"
@@ -114,7 +123,6 @@
         </el-button>
       </span>
     </template>
-
     <el-container class="el-container">
       <el-form class="el-form">
         <el-form-item label="文件选择*" v-if="inner_file_name == ''">
@@ -227,6 +235,9 @@ export default {
       version: '',
       isDeleting: false,
       progress: 0,
+      page:1,
+      limit:10,
+      total:0
     }
   },
   methods: {
@@ -332,10 +343,15 @@ export default {
     },
     refreshList() {
       let modId = this.$route.params.id
-      Method.api_get(`/mod/file_list/${modId}`).then((response: any) => {
+      let payLoad = {
+        page:this.page,
+        limit:this.limit
+      };
+      Method.api_post(`/mod/file_list/${modId}`,payLoad).then((response: any) => {
         let res = response.data
         this.isLoading = false
         if (res.code == 200) {
+          if(this.page == 1) this.total = res.sum;
           res.data.forEach((x: any) => {
             x.create_time = Method.formatNormalTime(x.create_time)
             x.file_size = Method.getFileSize(x.size)
@@ -348,7 +364,7 @@ export default {
       })
     },
   },
-  created() {
+  mounted() {
     this.isLoading = true
     this.api_list = Cfg.userInfo.global_mod_data_list.api_version
     this.refreshList()
@@ -356,8 +372,11 @@ export default {
       () => this.inner_name,
       () => {
         this.refreshDocList()
-      },
+      }
     )
+    watch(()=>this.page,()=>{
+      this.refreshList();
+    })
   },
 }
 </script>

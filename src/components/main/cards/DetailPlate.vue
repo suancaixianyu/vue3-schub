@@ -330,7 +330,7 @@ export default {
     close() {
       this.$router.back()
     },
-    copytext() {
+    copyText() {
       Method.copyText(window.location.href)
     },
     /**

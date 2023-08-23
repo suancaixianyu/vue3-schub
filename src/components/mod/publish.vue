@@ -50,6 +50,40 @@
               />
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="作者/团队">
+            <div class="flex v">
+              <div class="flex" v-for="(x, i) in mod_author" :key="x">
+                <el-avatar :src="x.avatar" style="padding: 0 5px" shape="circle"></el-avatar>
+                <el-select :automatic-dropdown="true" v-model="x.type" :loading="isLoading" placeholder="搜索昵称以选择作者" @focus="authorFocus(x)" remote filterable @change="authorChange" :remote-method="searchUser">
+                  <el-option
+                      :label="r.nickname"
+                      :value="r.id"
+                      :key="r.id"
+                      v-for="r in mod_author_list"
+                  />
+                </el-select>
+                <el-input v-model="x.staff" placeholder="请输入职位名称"/>
+                <el-button
+                    type="primary"
+                    icon="Minus"
+                    text
+                    @click="deleteAuthor(i)"
+                    :data-index="i"
+                >删除</el-button
+                >
+              </div>
+              <div>
+                <el-button
+                    size="small"
+                    type="primary"
+                    text
+                    icon="Plus"
+                    @click="newAuthor"
+                >添加作者</el-button
+                >
+              </div>
+            </div>
+          </el-form-item>
           <el-form-item label="相关链接">
             <div class="flex v">
               <div class="flex" v-for="(x, i) in link" :key="x">
@@ -60,7 +94,7 @@
                     v-for="r in mod_link_type"
                   />
                 </el-select>
-                <el-input v-model="x.src" />
+                <el-input placeholder="请输入链接/url" v-model="x.src" />
                 <el-button
                   type="primary"
                   icon="Minus"
@@ -225,6 +259,10 @@ export default {
       desc: '',
       mod_flag_list: <any>[],
       mod_link_type: <any>[],
+      mod_author:<any>[],
+      isLoading:false,
+      activeAuthor:<any>null,
+      mod_author_list:<any>[],
       relate_type_list: <any>[],
       game_version_list: <any>[],
       api_version_list: <any>[],
@@ -266,6 +304,12 @@ export default {
     deleteLink(e: number) {
       this.link.splice(e, 1)
     },
+    newAuthor() {
+      this.mod_author.push({ uid: '', staff: '',avatar:'' })
+    },
+    deleteAuthor(e: number) {
+      this.mod_author.splice(e, 1)
+    },
     newGroupRelation() {
       this.getModList()
       this.relation.push({ condition: '', list: [] })
@@ -278,6 +322,27 @@ export default {
     },
     deleteRelationDetail(index: number, index2: number) {
       this.relation[index].list.splice(index2, 1)
+    },
+    authorFocus(e:any){
+      this.activeAuthor = e;
+    },
+    authorChange(e:any){
+      let id = e;
+      let item = this.mod_author_list.find((x:any)=>{return x.id == id;});
+      if(item!=null) {
+        this.activeAuthor.avatar = item.avatar;
+        this.activeAuthor.id = item.id;
+      }
+    },
+    searchUser(e:any){
+      this.isLoading = true;
+      Method.api_post('/mod/search_user',{key:e}).then(response=>{
+        let res = <res>response.data;
+        this.isLoading = false;
+        if(res.code==200){
+          this.mod_author_list = res.data;
+        }
+      });
     },
     submit() {
       let activeFlagId = <any>[]
@@ -308,6 +373,7 @@ export default {
         api_version: JSON.stringify(activeApiId),
         game_version: JSON.stringify(activeGameId),
         server_version: JSON.stringify(activeServerId),
+        mod_author:JSON.stringify(this.mod_author),
         flag: JSON.stringify(activeFlagId),
         package_id: this.package_id,
       }
@@ -324,13 +390,13 @@ export default {
     },
     async UploadImage(file: any) {
       let url = await Method.UploadImage(file)
-      console.log(url)
       if (url) {
         this.desc += url
       }
     },
   },
-  created() {
+  mounted() {
+    this.searchUser('');
     let {
       userInfo: {
         global_mod_data_list: {
@@ -349,8 +415,6 @@ export default {
     this.mod_link_type = link_type
     this.mod_flag_list = flag_list
     this.server_version_list = server_version_list
-  },
-  mounted() {
     Cfg.config.homestyle.maincontainer.overflowY = 'auto'
   },
   unmounted() {

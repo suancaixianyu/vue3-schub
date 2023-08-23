@@ -178,7 +178,13 @@
         <div class="item">最后编辑: {{ last_modify }}</div>
         <div class="item">
           <div>Mod作者/开发团队:</div>
-          <div>无</div>
+          <el-row class="author-item" v-for="x in author_list">
+            <el-avatar shape="circle" :src="x.avatar"></el-avatar>
+            <div class="nickname">
+              <div v-html="x.nickname"></div>
+              <div v-html="x.staff" class="staff"></div>
+            </div>
+          </el-row>
         </div>
         <div class="item">相关链接:</div>
         <div class="item">
@@ -316,6 +322,7 @@ export default {
       game_list: <any>[],
       api_list: <any>[],
       relation_list: <any>[],
+      author_list:<any>[],
       name: '',
       views: 0,
       mini_name: '',
@@ -346,6 +353,7 @@ export default {
               x.create_time_str = Method.formatBbsTime(x.create_time)
               x.file_size = Method.getFileSize(x.size)
             })
+            this.author_list = res.data.author_list;
             this.relation_list = Method.decodeRelationList(res.data.relation)
             this.modRate = modInfo.rate
             this.cover_src = Method.getHostUrl(modInfo.cover_src)
@@ -381,6 +389,13 @@ export default {
     },
   },
   mounted() {
+    this.reloadPageData()
+    watch(
+        () => this.$route.params.id,
+        () => {
+          this.reloadPageData()
+        },
+    )
     Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.height = 'auto'
     Cfg.config.homestyle.maincontainer.overflowY = 'auto'
@@ -391,16 +406,7 @@ export default {
     Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 6rem)'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
     Cfg.set.showfooter = true
-  },
-  created() {
-    watch(
-      () => this.$route.params.id,
-      () => {
-        this.reloadPageData()
-      },
-    )
-    this.reloadPageData()
-  },
+  }
 }
 </script>
 <style scoped>
@@ -618,5 +624,24 @@ export default {
   align-items: center;
   flex: 1;
   flex-direction: row;
+}
+.author-item{
+  margin: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding:5px 10px;
+  background: #eee;
+}
+.author-item .nickname{
+  padding-left: 10px;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.author-item .nickname .staff{
+  color: #333;
+  font-weight: bold;
 }
 </style>

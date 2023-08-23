@@ -249,6 +249,7 @@ class Method {
    * @param flag_list_str
    */
   decodeFlagList(flag_list_str: string) {
+    if(flag_list_str==null)return [];
     let {
       userInfo: {
         global_mod_data_list: { flag_list },

@@ -8,7 +8,7 @@
     </div>
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      v-for="x in list"
+      v-for="(x,index) in list"
       :key="x.id"
       :style="homestyle.postliststyle"
     >
@@ -62,23 +62,11 @@
             <el-col :span="10">
               <el-text>
                 <el-icon :size="16" class="icons">
-                  <svg
-                    t="1691047896779"
-                    class="icon"
-                    viewBox="0 0 1024 1024"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    p-id="3474"
-                    width="200"
-                    height="200"
-                  >
-                    <path
-                      d="M896 704c-17.695686 0-31.99914 14.303454-31.99914 31.99914l0 128L160.00086 863.99914l0-128c0-17.695686-14.336138-31.99914-32.00086-31.99914s-32.00086 14.303454-32.00086 31.99914l0 160.00086c0 17.695686 14.336138 31.99914 32.00086 31.99914l768 0c17.695686 0 32.00086-14.303454 32.00086-31.99914l0-160.00086C928.00086 718.303454 913.695686 704 896 704zM227.579 530.662l259.11 259.293c6.368 6.399 14.689 9.471 22.977 9.408 1.12 0.096 2.08 0.64 3.2 0.64 4.673 0 9.024-1.088 13.024-2.88 4.032-1.536 7.872-3.872 11.137-7.135l259.329-259.124c12.513-12.48 12.544-32.735 0.033-45.248-6.24-6.272-14.432-9.407-22.656-9.408-8.193 0-16.352 3.136-22.624 9.344l-206.24 206.162 0-563.713c0-17.696-14.336-31.999-32.001-31.999s-32.001 14.303-32.001 31.999l0 565.281-207.91-207.74c-6.241-6.272-14.496-9.44-22.688-9.44s-16.32 3.103-22.56 9.311c-12.575 12.449-12.607 32.737-0.127 45.248z"
-                      fill="#272636"
-                      p-id="3475"
-                    ></path>
-                  </svg> </el-icon
-                >{{ x.downloads_num }}
+                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+                    <path d="M896 704c-17.695686 0-31.99914 14.303454-31.99914 31.99914l0 128L160.00086 863.99914l0-128c0-17.695686-14.336138-31.99914-32.00086-31.99914s-32.00086 14.303454-32.00086 31.99914l0 160.00086c0 17.695686 14.336138 31.99914 32.00086 31.99914l768 0c17.695686 0 32.00086-14.303454 32.00086-31.99914l0-160.00086C928.00086 718.303454 913.695686 704 896 704zM227.579 530.662l259.11 259.293c6.368 6.399 14.689 9.471 22.977 9.408 1.12 0.096 2.08 0.64 3.2 0.64 4.673 0 9.024-1.088 13.024-2.88 4.032-1.536 7.872-3.872 11.137-7.135l259.329-259.124c12.513-12.48 12.544-32.735 0.033-45.248-6.24-6.272-14.432-9.407-22.656-9.408-8.193 0-16.352 3.136-22.624 9.344l-206.24 206.162 0-563.713c0-17.696-14.336-31.999-32.001-31.999s-32.001 14.303-32.001 31.999l0 565.281-207.91-207.74c-6.241-6.272-14.496-9.44-22.688-9.44s-16.32 3.103-22.56 9.311c-12.575 12.449-12.607 32.737-0.127 45.248z" fill="#272636"></path>
+                  </svg>
+                </el-icon>
+                {{ x.downloads_num }}
               </el-text>
             </el-col>
 
@@ -93,14 +81,14 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="copytext(x.id)"
+                    <el-dropdown-item @click="copyText(index)"
                       >复制链接</el-dropdown-item
                     >
-                    <el-dropdown-item @click="manageFileList(x.id, true)"
+                    <el-dropdown-item @click="manageFileList(index)"
                       >文件列表</el-dropdown-item
                     >
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(x.id)"
+                    <el-dropdown-item divided @click="handleDelete(index)"
                       >删除</el-dropdown-item
                     >
                   </el-dropdown-menu>
@@ -169,14 +157,14 @@
             <el-button
               size="small"
               link
-              @click="copytext(list[scope.$index].id)"
+              @click="copyText(scope.$index)"
               >复制链接</el-button
             >
             <el-button
               size="small"
               type="success"
               link
-              @click="manageFileList(scope.$index, false)"
+              @click="manageFileList(scope.$index)"
               >文件列表</el-button
             >
             <el-button
@@ -252,8 +240,9 @@ export default {
     }
   },
   methods: {
-    copytext(id: any) {
-      Method.copyText(`${window.location.origin}/ModDetail/${id}`)
+    copyText(index: number) {
+      let item = this.list[index];
+      Method.copyText(`${window.location.origin}/ModDetail/${item.id}`)
     },
     deleteMod() {
       this.isDeleting = true
@@ -285,14 +274,10 @@ export default {
         })
       this.refreshList()
     },
-    manageFileList(index: number, isModId: boolean) {
-      if (isModId) {
-        this.$router.push(`/ModFiles/${index}`)
-      } else {
-        this.activeItemIndex = index
-        let modId = this.list[index].id
-        this.$router.push(`/ModFiles/${modId}`)
-      }
+    manageFileList(index: number) {
+      this.activeItemIndex = index
+      let modId = this.list[index].id
+      this.$router.push(`/ModFiles/${modId}`)
     },
     handleDelete(index: number) {
       this.activeItemIndex = index
@@ -347,11 +332,9 @@ export default {
   padding-top: 20px;
   border-bottom: 1px solid #eee;
 }
-
 .el-icon {
   margin-right: 5px;
 }
-
 .numicon {
   padding: 12px 0;
 }

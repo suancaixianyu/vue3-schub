@@ -93,7 +93,9 @@ export default {
   display: flex;
   justify-content: center;
 }
-
+.common-layout{
+  height: 100%;
+}
 /* 添加 class="hide-scrollbar" 使用 */
 /* 隐藏滚动条样式 */
 .hide-scrollbar::-webkit-scrollbar {
