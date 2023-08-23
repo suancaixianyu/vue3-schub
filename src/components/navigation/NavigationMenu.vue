@@ -436,13 +436,10 @@ export default {
     },
   },
   created() {
-    //刷新页面重新获取用户信息
-    Method.getInformation()
     watch(
       () => this.$router.currentRoute.value.fullPath,
       (v) => {
         console.log('---', v)
-
         if (/\w+\/\d+/.test(v)) {
           if (/postlist\/\d+\/\d+/.test(v)) {
             this.isRootPath = false

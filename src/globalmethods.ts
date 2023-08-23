@@ -400,8 +400,8 @@ class Method {
         q.isLoginDialogVisible = false;
         q.data = res.data;
         Cfg.userInfo = q;
-        if(callback!=null)callback();
       }
+      if(callback!=null)callback();
     })
   }
 
