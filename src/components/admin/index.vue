@@ -78,7 +78,10 @@
             <el-table-column prop="create_time" label="发布时间" width="180" />
             <el-table-column prop="stat" label="状态" width="180">
               <template #default="scope">
-                <el-tag size="small" v-if="bbs_list[scope.$index].stat == 0"
+                <el-tag
+                  size="small"
+                  v-if="bbs_list[scope.$index].stat == 0"
+                  type="danger"
                   >删除</el-tag
                 >
                 <el-tag size="small" v-if="bbs_list[scope.$index].stat == 1"
@@ -91,7 +94,9 @@
                 <el-button
                   size="small"
                   link
-                  type="danger"
+                  :type="
+                    bbs_list[scope.$index].stat == 0 ? 'primary' : 'danger'
+                  "
                   @click="showLockItem(2, scope.$index)"
                 >
                   {{ bbs_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
@@ -127,19 +132,11 @@
               <template #default="scope">
                 <el-tag
                   size="small"
-                  v-if="mod_list[scope.$index].stat == 0"
-                  type="warning"
-                  >删除</el-tag
+                  :type="mod_list[scope.$index].stat_data.type"
+                  v-if="mod_list[scope.$index].stat !== 3"
                 >
-                <el-tag size="small" v-if="mod_list[scope.$index].stat == 1"
-                  >正常</el-tag
-                >
-                <el-tag
-                  size="small"
-                  v-if="mod_list[scope.$index].stat == 2"
-                  type="info"
-                  >审核中</el-tag
-                >
+                  {{ mod_list[scope.$index].stat_data.name }}
+                </el-tag>
                 <el-popover
                   placement="top-start"
                   title="原因"
@@ -163,7 +160,7 @@
                 <el-button
                   size="small"
                   link
-                  type="danger"
+                  type="primary"
                   @click="showExamineMode(scope.$index)"
                   >审核</el-button
                 >
@@ -593,6 +590,7 @@ export default {
               break
             case 3:
               this.activeItem.mod.stat = res.data.stat
+              this.activeItem.mod.stat_data = Method.getStat(res.data.stat)
               this.dialogShow.lockMod = false
               break
             case 4:
@@ -652,9 +650,18 @@ export default {
       }
       Method.api_post('/admin/mod_list', payLoad).then((response) => {
         this.isLoadingData = false
-        let res = response.data
+        let res = response.data as res
         if (res.code == 200) {
           if (this.page == 1) this.total = res.sum
+          res.data.forEach((x: modItem) => {
+            x.create_time = Method.formatNormalTime(<number>x.create_time)
+            x.last_modify_time = Method.formatNormalTime(
+              <number>x.last_modify_time,
+            )
+            x.likes = Method.getNumber(<number>x.likes)
+            x.downloads = Method.getNumber(<number>x.downloads)
+            x.stat_data = Method.getStat(x.stat)
+          })
           this.mod_list = res.data
         }
       })

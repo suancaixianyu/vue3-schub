@@ -295,20 +295,38 @@
             class="dropdown mb-32 dropdown-end"
             ref="user"
             @click="menuClick('user', true)"
-            v-else
+            v-else-if="set.ismobile"
           >
-            <summary
-              class="m-1 btn-ghost"
-              v-if="set.ismobile"
-              @mouseleave="menuClick('user')"
-            >
+            <summary class="m-1 btn-ghost" @mouseleave="menuClick('user')">
               <el-avatar
                 :src="userInfo.data.headurl"
                 :shape="set.shape"
                 :size="32"
               />
             </summary>
-            <summary class="m-1 btn-ghost" v-else>
+            <ul
+              class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52"
+              @click="menuClick('user')"
+              @mouseleave="menuClick('user')"
+              style="width: 10rem; box-shadow: var(--el-box-shadow-light)"
+            >
+              <li>
+                <router-link to="/user">
+                  <a href="javascript:;">个人中心</a>
+                </router-link>
+              </li>
+              <li>
+                <a @click="loginOut">退出登陆</a>
+              </li>
+            </ul>
+          </details>
+          <details
+            class="dropdown mb-32 dropdown-end"
+            ref="user"
+            @click="menuClick('user', true)"
+            v-else
+          >
+            <summary class="m-1 btn-ghost">
               <el-avatar
                 :src="userInfo.data.headurl"
                 :shape="set.shape"

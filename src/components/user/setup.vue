@@ -10,6 +10,13 @@
         </el-radio-group>
         <el-divider style="margin: 0" />
         <el-form-item></el-form-item>
+        <el-form-item label="使用QQ头像">
+          <el-input
+            v-model="config.avatar"
+            placeholder="输入QQ账号"
+            type="number"
+          />
+        </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="config.nickname" placeholder="昵称" />
         </el-form-item>
@@ -58,6 +65,7 @@ export default {
       config: {
         nickname: Cfg.userInfo.data.nickname,
         signature: Cfg.userInfo.data.signature,
+        avatar: '',
       },
     }
   },
@@ -66,6 +74,11 @@ export default {
       this.page = false
     },
     edit() {
+      if (this.config.avatar) {
+        this.config.avatar = `http://q.qlogo.cn/headimg_dl?dst_uin=${this.config.avatar}&spec=640`
+      } else {
+        this.config.avatar = Cfg.userInfo.data.headurl as string
+      }
       Method.api_post('/user/edit', this.config)
         .then((res) => {
           let obj = res.data as api

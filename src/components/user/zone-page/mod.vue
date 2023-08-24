@@ -8,7 +8,7 @@
     </div>
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      v-for="(x,index) in list"
+      v-for="(x, index) in list"
       :key="x.id"
       :style="homestyle.postliststyle"
     >
@@ -46,7 +46,7 @@
                 <el-icon :size="16" class="icons">
                   <View />
                 </el-icon>
-                {{ x.views_num }}
+                {{ x.views }}
               </el-text>
             </el-col>
 
@@ -55,18 +55,26 @@
                 <el-icon :size="16" class="icons">
                   <Like />
                 </el-icon>
-                {{ x.likes_num }}
+                {{ x.likes }}
               </el-text>
             </el-col>
 
             <el-col :span="10">
               <el-text>
                 <el-icon :size="16" class="icons">
-                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
-                    <path d="M896 704c-17.695686 0-31.99914 14.303454-31.99914 31.99914l0 128L160.00086 863.99914l0-128c0-17.695686-14.336138-31.99914-32.00086-31.99914s-32.00086 14.303454-32.00086 31.99914l0 160.00086c0 17.695686 14.336138 31.99914 32.00086 31.99914l768 0c17.695686 0 32.00086-14.303454 32.00086-31.99914l0-160.00086C928.00086 718.303454 913.695686 704 896 704zM227.579 530.662l259.11 259.293c6.368 6.399 14.689 9.471 22.977 9.408 1.12 0.096 2.08 0.64 3.2 0.64 4.673 0 9.024-1.088 13.024-2.88 4.032-1.536 7.872-3.872 11.137-7.135l259.329-259.124c12.513-12.48 12.544-32.735 0.033-45.248-6.24-6.272-14.432-9.407-22.656-9.408-8.193 0-16.352 3.136-22.624 9.344l-206.24 206.162 0-563.713c0-17.696-14.336-31.999-32.001-31.999s-32.001 14.303-32.001 31.999l0 565.281-207.91-207.74c-6.241-6.272-14.496-9.44-22.688-9.44s-16.32 3.103-22.56 9.311c-12.575 12.449-12.607 32.737-0.127 45.248z" fill="#272636"></path>
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="200"
+                    height="200"
+                  >
+                    <path
+                      d="M896 704c-17.695686 0-31.99914 14.303454-31.99914 31.99914l0 128L160.00086 863.99914l0-128c0-17.695686-14.336138-31.99914-32.00086-31.99914s-32.00086 14.303454-32.00086 31.99914l0 160.00086c0 17.695686 14.336138 31.99914 32.00086 31.99914l768 0c17.695686 0 32.00086-14.303454 32.00086-31.99914l0-160.00086C928.00086 718.303454 913.695686 704 896 704zM227.579 530.662l259.11 259.293c6.368 6.399 14.689 9.471 22.977 9.408 1.12 0.096 2.08 0.64 3.2 0.64 4.673 0 9.024-1.088 13.024-2.88 4.032-1.536 7.872-3.872 11.137-7.135l259.329-259.124c12.513-12.48 12.544-32.735 0.033-45.248-6.24-6.272-14.432-9.407-22.656-9.408-8.193 0-16.352 3.136-22.624 9.344l-206.24 206.162 0-563.713c0-17.696-14.336-31.999-32.001-31.999s-32.001 14.303-32.001 31.999l0 565.281-207.91-207.74c-6.241-6.272-14.496-9.44-22.688-9.44s-16.32 3.103-22.56 9.311c-12.575 12.449-12.607 32.737-0.127 45.248z"
+                      fill="#272636"
+                    ></path>
                   </svg>
                 </el-icon>
-                {{ x.downloads_num }}
+                {{ x.downloads }}
               </el-text>
             </el-col>
 
@@ -117,23 +125,14 @@
         </el-table-column>
         <el-table-column prop="name" label="名称" width="180" />
         <el-table-column prop="create_time_str" label="上传日期" />
-        <el-table-column prop="views_num" label="浏览" />
-        <el-table-column prop="downloads_num" label="下载" />
-        <el-table-column prop="likes_num" label="点赞" />
+        <el-table-column prop="views" label="浏览" />
+        <el-table-column prop="downloads" label="下载" />
+        <el-table-column prop="likes" label="点赞" />
         <el-table-column label="状态">
           <template #default="scope">
-            <el-tag
-              size="small"
-              v-if="list[scope.$index].stat == 0"
-              type="warning"
-              >删除</el-tag
-            >
-            <el-tag size="small" v-if="list[scope.$index].stat == 1"
-              >正常</el-tag
-            >
-            <el-tag size="small" v-if="list[scope.$index].stat == 2" type="info"
-              >审核中</el-tag
-            >
+            <el-tag size="small" :type="list[scope.$index].stat_data.type">
+              {{ list[scope.$index].stat_data.name }}
+            </el-tag>
             <el-popover
               placement="top-start"
               title="原因"
@@ -154,10 +153,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button
-              size="small"
-              link
-              @click="copyText(scope.$index)"
+            <el-button size="small" link @click="copyText(scope.$index)"
               >复制链接</el-button
             >
             <el-button
@@ -178,13 +174,13 @@
         </el-table-column>
       </el-table>
       <el-pagination
-          class="el-pagination"
-          v-model:current-page="page"
-          background
-          :page-size="limit"
-          :pager-count="8"
-          layout="prev, pager, next"
-          :total="total"
+        class="el-pagination"
+        v-model:current-page="page"
+        background
+        :page-size="limit"
+        :pager-count="8"
+        layout="prev, pager, next"
+        :total="total"
       />
     </el-main>
   </div>
@@ -216,8 +212,8 @@ import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
 import Like from '@comps/icons/Like.vue'
-import {watch} from "vue";
-import "@/components/admin/index.ts"
+import { watch } from 'vue'
+import '@/components/admin/index.ts'
 
 export default {
   name: 'ModPage',
@@ -234,14 +230,14 @@ export default {
       isDialogVisible: false,
       activeItemIndex: -1,
       isDeleting: false,
-      page:1,
-      limit:10,
-      total:0
+      page: 1,
+      limit: 10,
+      total: 0,
     }
   },
   methods: {
     copyText(index: number) {
-      let item = this.list[index];
+      let item = this.list[index]
       Method.copyText(`${window.location.origin}/ModDetail/${item.id}`)
     },
     deleteMod() {
@@ -250,7 +246,7 @@ export default {
       console.log(item.id)
       Method.api_get(`/mod/delete/${item.id}`)
         .then((response) => {
-          let res = <res>response.data;
+          let res = <res>response.data
           this.isDeleting = false
           this.isDialogVisible = false
           if (res.code == 200) {
@@ -288,39 +284,43 @@ export default {
       this.$router.push({ name: 'ModPublish' })
     },
     refreshList() {
-      this.isLoading = true;
+      this.isLoading = true
       let payLoad = {
-        page:this.page,
-        limit:this.limit
-      };
-      Method.api_post(`/user/my_mod_list/${Cfg.userInfo.data.id}`,payLoad).then(
-        (response: any) => {
-          let res = response.data
-          this.isLoading = false
-          if (res.code == 200) {
-            if(this.page == 1)this.total = res.sum;
-            res.data.forEach((x: modItem) => {
-              x.create_time_str = Method.formatNormalTime(x.create_time)
-              x.downloads_num = Method.getNumber(x.downloads)
-              x.views_num = Method.getNumber(x.views)
-              x.likes_num = Method.getNumber(x.likes)
-              x.cover_src = Method.getHostUrl(x.cover_src)
-              x.stat_data = Method.getStat(x.stat)
-            })
-            this.list = res.data
-          } else {
-            ElMessage(res.msg)
-          }
-        },
-      )
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post(
+        `/user/my_mod_list/${Cfg.userInfo.data.id}`,
+        payLoad,
+      ).then((response: any) => {
+        let res = response.data
+        this.isLoading = false
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          res.data.forEach((x: modItem) => {
+            x.create_time_str = Method.formatNormalTime(<number>x.create_time)
+            x.downloads = Method.getNumber(<number>x.downloads)
+            x.views = Method.getNumber(<number>x.views)
+            x.likes = Method.getNumber(<number>x.likes)
+            x.cover_src = Method.getHostUrl(x.cover_src)
+            x.stat_data = Method.getStat(<number>x.stat)
+          })
+          this.list = res.data
+        } else {
+          ElMessage(res.msg)
+        }
+      })
     },
   },
   mounted() {
-    this.refreshList();
-    watch(()=>this.page,()=>{
-      this.refreshList();
-    })
-  }
+    this.refreshList()
+    watch(
+      () => this.page,
+      () => {
+        this.refreshList()
+      },
+    )
+  },
 }
 </script>
 <style scoped>

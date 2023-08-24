@@ -118,7 +118,11 @@ class Method {
     }
   }
 
-  getStat(number: number): object {
+  /**
+   * 格式化标签id，mod状态
+   * @param number id
+   */
+  getStat(number: number): { name: string; type: string } {
     let obj = {
       name: '',
       type: ''
@@ -126,7 +130,7 @@ class Method {
     switch (number) {
       case 0:
         obj = {
-          name: '已删除',
+          name: '已锁定',
           type: 'danger'
         }
         break;
@@ -184,6 +188,7 @@ class Method {
     return format.replace(/([YmdHis])/g, (_, char) => pad(formatMap[char]))
   }
 
+  /** 格式化时间 Y-m-d H:i:s */
   formatNormalTime(time: number, format = 'Y-m-d H:i:s'): string {
     const date = new Date(time * 1000)
     return this.myDate(date, format)
@@ -249,7 +254,7 @@ class Method {
    * @param flag_list_str
    */
   decodeFlagList(flag_list_str: string) {
-    if(flag_list_str==null)return [];
+    if (flag_list_str == null) return [];
     let {
       userInfo: {
         global_mod_data_list: { flag_list },
@@ -377,7 +382,7 @@ class Method {
   /**
    * 刷新页面重新获取用户信息
    */
-   getInformation(callback:any=null) {
+  getInformation(callback: any = null) {
     let { userInfo } = Cfg
     //刷新页面重新获取用户信息
     this.api_get('/user/role_list').then((response) => {
@@ -402,7 +407,7 @@ class Method {
         q.data = res.data;
         Cfg.userInfo = q;
       }
-      if(callback!=null)callback();
+      if (callback != null) callback();
     })
   }
 
