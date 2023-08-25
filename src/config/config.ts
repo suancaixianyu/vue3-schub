@@ -110,9 +110,9 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       // server: "http://localhost:8081",
-      // server: '/xyapi',
+      server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
-      server: "https://schub.top",
+      // server: "https://schub.top",
       /** 主页样式 */
       homestyle,
       webstyle,

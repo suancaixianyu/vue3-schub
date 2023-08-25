@@ -2,9 +2,15 @@
   <el-container style="height: 100%" v-loading="isLoading">
     <el-header
       class="zone-head-container bj"
-      :style="{ backgroundImage: 'url(/image/headbj.png)' }"
+      :style="{
+        backgroundImage:
+          'url(https://pic.imgdb.cn/item/64e8cf2e661c6c8e5411e1e4.png)',
+      }"
     >
-      <img class="img2" src="/image/wenben.png" />
+      <img
+        class="img2"
+        src="https://pic.imgdb.cn/item/64e8cf5d661c6c8e5411e646.png"
+      />
       <div class="head-area">
         <el-container>
           <el-aside :width="`${headsize * 1.2}px`">

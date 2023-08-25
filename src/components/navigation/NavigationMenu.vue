@@ -128,7 +128,7 @@
             <el-text>主页</el-text>
           </router-link>
         </li>
-        <li>
+        <li @click="bailanle">
           <div>
             <el-icon :size="28" style="padding: 0 2px">
               <Message />
@@ -139,6 +139,7 @@
         <li>
           <div @click="handleLiClick">
             <input
+              @click="bailanle"
               ref="toggleInput"
               checked
               type="checkbox"
@@ -156,7 +157,7 @@
           </div>
         </li>
         <li>
-          <router-link to="/setup" @click="menuClick('tool')">
+          <router-link to="/setup" @click="menuClick('menu')">
             <el-icon :size="28" style="padding: 0 2px">
               <setting />
             </el-icon>
@@ -232,7 +233,7 @@
             </summary>
             <ul
               class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
-              @click="menuClick('tools')"
+              @click="menuClick('tool')"
               style="width: 10rem"
               @mouseleave="menuClick('tool')"
             >
@@ -297,7 +298,7 @@
             @click="menuClick('user', true)"
             v-else-if="set.ismobile"
           >
-            <summary class="m-1 btn-ghost" @mouseleave="menuClick('user')">
+            <summary class="m-1 btn-ghost">
               <el-avatar
                 :src="userInfo.data.headurl"
                 :shape="set.shape"
