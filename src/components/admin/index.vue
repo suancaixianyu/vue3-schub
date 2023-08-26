@@ -1,0 +1,810 @@
+<template>
+  <div class="container">
+    <el-tabs type="border-card" v-model="activeTab">
+      <el-tab-pane label="网站管理" name="1">
+        <el-row>
+          <el-col :span="6">
+            <el-statistic title="注册用户数" :value="serverInfo.member" />
+          </el-col>
+          <el-col :span="6">
+            <el-statistic title="帖子数" :value="serverInfo.bbs" />
+          </el-col>
+          <el-col :span="6">
+            <el-statistic title="总资源数" :value="serverInfo.mod" />
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+      <el-tab-pane label="账号管理" name="2">
+        <div>
+          <el-table
+            :data="member_list"
+            stripe
+            style="width: 100%"
+            v-loading="isLoadingData"
+          >
+            <el-table-column prop="id" width="60" label="ID" />
+            <el-table-column prop="account" label="账号" width="120" />
+            <el-table-column prop="nickname" label="昵称" width="120" />
+            <el-table-column prop="reg_time" label="注册时间" width="120" />
+            <el-table-column
+              prop="last_login_time"
+              label="最后登陆时间"
+              width="120"
+            />
+            <el-table-column
+              prop="last_login_ip"
+              label="最后登陆IP"
+              width="120"
+            />
+            <el-table-column prop="money" label="积分" width="80" />
+            <el-table-column prop="email" label="邮箱" width="120" />
+            <el-table-column label="操作" fixed="right">
+              <template #default="scope">
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(1, scope.$index)"
+                >
+                  {{ member_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            class="el-pagination"
+            v-model:current-page="page"
+            background
+            :page-size="limit"
+            :pager-count="8"
+            layout="prev, pager, next"
+            :total="total"
+          />
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="帖子管理" name="3">
+        <div>
+          <el-table
+            :data="bbs_list"
+            stripe
+            style="width: 100%"
+            v-loading="isLoadingData"
+          >
+            <el-table-column prop="id" width="80" label="ID" />
+            <el-table-column prop="name" label="标题" width="180" />
+            <el-table-column prop="content" label="内容" width="180" />
+            <el-table-column prop="uid" label="发布者ID" width="180" />
+            <el-table-column prop="cate_id" label="板块ID" width="180" />
+            <el-table-column prop="create_time" label="发布时间" width="180" />
+            <el-table-column prop="stat" label="状态" width="180">
+              <template #default="scope">
+                <el-tag
+                  size="small"
+                  v-if="bbs_list[scope.$index].stat == 0"
+                  type="danger"
+                  >删除</el-tag
+                >
+                <el-tag size="small" v-if="bbs_list[scope.$index].stat == 1"
+                  >正常</el-tag
+                >
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" fixed="right">
+              <template #default="scope">
+                <el-button
+                  size="small"
+                  link
+                  :type="
+                    bbs_list[scope.$index].stat == 0 ? 'primary' : 'danger'
+                  "
+                  @click="showLockItem(2, scope.$index)"
+                >
+                  {{ bbs_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            class="el-pagination"
+            v-model:current-page="page"
+            background
+            :page-size="limit"
+            :pager-count="8"
+            layout="prev, pager, next"
+            :total="total"
+          />
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="资源管理" name="4">
+        <div>
+          <el-table
+            :data="mod_list"
+            stripe
+            style="width: 100%"
+            v-loading="isLoadingData"
+          >
+            <el-table-column prop="id" width="80" label="ID" />
+            <el-table-column prop="name" label="资源名称" width="180" />
+            <el-table-column prop="description" label="资源简介" width="180" />
+            <el-table-column prop="uid" label="发布者ID" width="180" />
+            <el-table-column prop="create_time" label="发布时间" width="180" />
+            <el-table-column prop="stat" label="状态" width="180">
+              <template #default="scope">
+                <el-tag
+                  size="small"
+                  :type="mod_list[scope.$index].stat_data.type"
+                  v-if="mod_list[scope.$index].stat !== 3"
+                >
+                  {{ mod_list[scope.$index].stat_data.name }}
+                </el-tag>
+                <el-popover
+                  placement="top-start"
+                  title="原因"
+                  :width="200"
+                  trigger="hover"
+                  :content="mod_list[scope.$index].reason"
+                >
+                  <template #reference>
+                    <el-tag
+                      size="small"
+                      v-if="mod_list[scope.$index].stat == 3"
+                      type="danger"
+                      >审核未通过</el-tag
+                    >
+                  </template>
+                </el-popover>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" fixed="right">
+              <template #default="scope">
+                <el-button
+                  size="small"
+                  link
+                  type="primary"
+                  @click="showExamineMode(scope.$index)"
+                  >审核</el-button
+                >
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(3, scope.$index)"
+                >
+                  {{ mod_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            class="el-pagination"
+            background
+            :page-size="limit"
+            :pager-count="8"
+            layout="prev, pager, next"
+            :total="total"
+          />
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="头衔列表管理" name="5">
+        <div>
+          <el-button type="primary" plain @click="showAddRole"
+            >添加头衔</el-button
+          >
+          <el-table
+            :data="role_list"
+            stripe
+            style="width: 100%"
+            v-loading="isLoadingData"
+          >
+            <el-table-column prop="id" width="80" label="ID" />
+            <el-table-column prop="name" label="名称" width="180" />
+            <el-table-column label="预览" width="180">
+              <template #default="scope">
+                <el-tag
+                  :color="role_list[scope.$index].color"
+                  :type="role_list[scope.$index].type"
+                  :effect="role_list[scope.$index].effect"
+                  v-html="role_list[scope.$index].name"
+                ></el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" fixed="right">
+              <template #default="scope">
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(4, scope.$index)"
+                >
+                  {{ role_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            class="el-pagination"
+            v-model:current-page="page"
+            background
+            :page-size="limit"
+            :pager-count="8"
+            layout="prev, pager, next"
+            :total="total"
+          />
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="板块列表管理" name="6">
+        <div>
+          <el-table
+            :data="cate_list"
+            stripe
+            style="width: 100%"
+            v-loading="isLoadingData"
+          >
+            <el-table-column prop="id" width="80" label="ID" />
+            <el-table-column prop="name" label="名称" width="180" />
+            <el-table-column label="操作" fixed="right">
+              <template #default="scope">
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(5, scope.$index)"
+                >
+                  {{ cate_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            class="el-pagination"
+            v-model:current-page="page"
+            background
+            :page-size="limit"
+            :pager-count="8"
+            layout="prev, pager, next"
+            :total="total"
+          />
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="游戏内置内容管理" name="7">
+        <el-form label-width="120px">
+          <el-form-item :label="x.comments" v-for="x in site_config_list">
+            <el-input type="textarea" v-model="x.value" />
+          </el-form-item>
+          <el-form-item>
+            <el-button @click="saveSiteConfig" :loading="isLocking"
+              >保存配置</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+
+  <!--锁定账号弹窗-->
+  <dialog-confirm
+    title="提示"
+    v-model:visible="dialogShow.lockAccount"
+    :loading="isLocking"
+    @submit="lockItem(1)"
+  >
+    <span>
+      <span>是否锁定账号[ID:{{ activeItem.member.id }}]</span>
+      <span style="color: #008ac5">{{ activeItem.member.account }}</span>
+    </span>
+  </dialog-confirm>
+  <!--锁定资源弹窗-->
+  <dialog-confirm
+    title="提示"
+    v-model:visible="dialogShow.lockMod"
+    :loading="isLocking"
+    @submit="lockItem(3)"
+  >
+    <span>
+      <span>是否锁定资源[ID:{{ activeItem.mod.id }}]</span>
+      <span style="color: #008ac5">{{ activeItem.mod.name }}</span>
+    </span>
+  </dialog-confirm>
+  <!--锁定帖子弹窗-->
+  <dialog-confirm
+    title="提示"
+    v-model:visible="dialogShow.lockBbs"
+    :loading="isLocking"
+    @submit="lockItem(2)"
+  >
+    <span>
+      <span>是否锁定帖子[ID:{{ activeItem.bbs.id }}]</span>
+      <span style="color: #008ac5">{{ activeItem.bbs.title }}</span>
+    </span>
+  </dialog-confirm>
+  <!--停用板块弹窗-->
+  <dialog-confirm
+    title="提示"
+    v-model:visible="dialogShow.lockCate"
+    :loading="isLocking"
+    @submit="lockItem(5)"
+  >
+    <span>
+      <span>是否停用板块[ID:{{ activeItem.cate.id }}]</span>
+      <span style="color: #008ac5">{{ activeItem.cate.name }}</span>
+    </span>
+  </dialog-confirm>
+  <!--停用头衔弹窗-->
+  <dialog-confirm
+    title="提示"
+    v-model:visible="dialogShow.lockRole"
+    :loading="isLocking"
+    @submit="lockItem(4)"
+  >
+    <span>
+      <span>是否停用头衔[ID:{{ activeItem.role.id }}]</span>
+      <span style="color: #008ac5">{{ activeItem.role.name }}</span>
+    </span>
+  </dialog-confirm>
+  <!--审核资源弹窗-->
+  <dialog-examine
+    title="审核"
+    :visible="dialogShow.examineMod"
+    @submit="examineMod"
+    :loading-inject="isInjecting"
+    :loading-success="isPassing"
+  ></dialog-examine>
+  <!--添加头衔弹窗-->
+  <el-dialog
+    v-model="dialogShow.addRole"
+    title="添加头衔"
+    width="30%"
+    :fullscreen="set.ismobile"
+    align-center
+  >
+    <el-form>
+      <el-form-item label="预览">
+        <el-tag
+          :effect="roleConfig.effect"
+          :type="roleConfig.type"
+          :color="roleConfig.color"
+          v-html="roleConfig.name"
+        ></el-tag>
+      </el-form-item>
+      <el-form-item label="名称">
+        <el-input v-model="roleConfig.name"></el-input>
+      </el-form-item>
+      <el-form-item label="颜色">
+        <el-color-picker v-model="roleConfig.color" show-alpha />
+      </el-form-item>
+      <el-form-item label="类型">
+        <el-select v-model="roleConfig.type" placeholder="请选择">
+          <el-option label="默认" value="" />
+          <el-option label="success" value="success" />
+          <el-option label="info" value="info" />
+          <el-option label="warning" value="warning" />
+          <el-option label="danger" value="danger" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="效果">
+        <el-select v-model="roleConfig.effect" placeholder="请选择">
+          <el-option label="dark" value="dark" />
+          <el-option label="light" value="light" />
+          <el-option label="plain" value="plain" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="权限(未实现)">
+        <el-checkbox-group>
+          <el-checkbox label="后台可见" name="type" />
+          <el-checkbox label="网站配置" name="type" />
+          <el-checkbox label="头衔修改" name="type" />
+          <el-checkbox label="审核资源" name="type" />
+          <el-checkbox label="重置账号密码" name="type" />
+          <el-checkbox label="账号列表操作" name="type" />
+          <el-checkbox label="资源列表操作" name="type" />
+          <el-checkbox label="帖子列表操作" name="type" />
+          <el-checkbox label="板块列表操作" name="type" />
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="addRole" :loading="isLocking">添加头衔</el-button>
+        <el-button @click="dialogShow.addRole = false">取消</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+</template>
+
+<script lang="ts">
+import Cfg from '@/config/config.ts'
+import Method from '@/globalmethods'
+import './index.ts'
+import { watch } from 'vue'
+import UserRole from '@comps/user/roleList.vue'
+import { ElMessage } from 'element-plus'
+import DialogConfirm from '@comps/dialogs/confirm.vue'
+import DialogExamine from '@comps/dialogs/examine.vue'
+
+export default {
+  name: 'Admin',
+  components: { DialogExamine, DialogConfirm, UserRole },
+  data() {
+    return {
+      set: Cfg.set,
+      dialogShow: {
+        lockAccount: false,
+        addRole: false,
+        lockBbs: false,
+        lockMod: false,
+        lockRole: false,
+        lockCate: false,
+        examineMod: false,
+      },
+      gameConfig: {
+        name: '',
+      },
+      roleConfig: {
+        name: '预览',
+        color: '',
+        type: '',
+        effect: 'plain',
+      },
+      activeTab: '1',
+      taskTimerId: 0,
+      page: 1,
+      limit: 10,
+      total: 0,
+      activeItem: {
+        member: <memberItem>{},
+        bbs: <bbsItem>{},
+        mod: <modItem>{},
+        cate: <cateItem>{},
+        role: <roleItem>{},
+      },
+      isLoadingData: false,
+      isLockAccountDialogVisible: false,
+      isLocking: false,
+      isInjecting: false,
+      isPassing: false,
+      member_list: <memberItem[]>[],
+      mod_list: <modItem[]>[],
+      bbs_list: <bbsItem[]>[],
+      role_list: <roleItem[]>[],
+      cate_list: <cateItem[]>[],
+      site_config_list: <siteConfig[]>[],
+      serverInfo: <serverInfo>{},
+    }
+  },
+  methods: {
+    showLockItem(type: number, index: number) {
+      switch (type) {
+        case 1:
+          this.dialogShow.lockAccount = true
+          this.activeItem.member = this.member_list[index]
+          break
+        case 2:
+          this.dialogShow.lockBbs = true
+          this.activeItem.bbs = this.bbs_list[index]
+          break
+        case 3:
+          this.dialogShow.lockMod = true
+          this.activeItem.mod = this.mod_list[index]
+          break
+        case 4:
+          this.dialogShow.lockRole = true
+          this.activeItem.role = this.role_list[index]
+          break
+        case 5:
+          this.dialogShow.lockCate = true
+          this.activeItem.cate = this.cate_list[index]
+          break
+      }
+    },
+    showAddRole(index: number) {
+      this.dialogShow.addRole = true
+      this.activeItem.role = this.role_list[index]
+    },
+    showExamineMode(index: number) {
+      this.activeItem.mod = this.mod_list[index]
+      this.dialogShow.examineMod = true
+    },
+    examineMod(e: any) {
+      this.isInjecting = !e.result
+      this.isPassing = e.result
+      let stat = e.result ? 1 : 3
+      Method.api_post('/admin/examine_mod', {
+        id: this.activeItem.mod.id,
+        stat: stat,
+        reason: e.reason,
+      }).then((response) => {
+        this.isPassing = false
+        this.isInjecting = false
+        let res = <res>response.data
+        if (res.code == 200) {
+          this.dialogShow.examineMod = false
+          if (e.result) {
+            ElMessage('已审核通过')
+          } else {
+            ElMessage('已拒绝通过')
+          }
+          this.refreshModList()
+        }
+      })
+    },
+    addRole() {
+      this.isLocking = true
+      Method.api_post('/admin/add_role', this.roleConfig).then((response) => {
+        let res = response.data
+        this.isLocking = false
+        if (res.code == 200) {
+          this.roleConfig = {
+            name: '预览',
+            color: '',
+            type: '',
+            effect: 'plain',
+          }
+          this.dialogShow.addRole = false
+          this.refreshRoleList()
+          ElMessage('添加成功')
+        } else {
+          ElMessage(res.msg)
+        }
+      })
+    },
+    lockItem(type: number) {
+      this.isLocking = true
+      let id = 0
+      let stat = 0
+      switch (type) {
+        case 1:
+          id = this.activeItem.member.id
+          stat = this.activeItem.member.stat == 1 ? 0 : 1
+          break
+        case 2:
+          id = this.activeItem.bbs.id
+          stat = this.activeItem.bbs.stat == 1 ? 0 : 1
+          break
+        case 3:
+          id = this.activeItem.mod.id
+          stat = this.activeItem.mod.stat == 1 ? 0 : 1
+          break
+        case 4:
+          id = this.activeItem.role.id
+          stat = this.activeItem.role.stat == 1 ? 0 : 1
+          break
+        case 5:
+          id = this.activeItem.cate.id
+          stat = this.activeItem.cate.stat == 1 ? 0 : 1
+          break
+      }
+      Method.api_post('/admin/lock_item', {
+        type: type,
+        id: id,
+        stat: stat,
+      }).then((response) => {
+        this.isLocking = false
+        let res = <res>response.data
+        if (res.code == 200) {
+          switch (type) {
+            case 1:
+              this.activeItem.member.stat = res.data.stat
+              this.dialogShow.lockAccount = false
+              break
+            case 2:
+              this.activeItem.bbs.stat = res.data.stat
+              this.dialogShow.lockBbs = false
+              break
+            case 3:
+              this.activeItem.mod.stat = res.data.stat
+              this.activeItem.mod.stat_data = Method.getStat(res.data.stat)
+              this.dialogShow.lockMod = false
+              break
+            case 4:
+              this.activeItem.role.stat = res.data.stat
+              this.dialogShow.lockRole = false
+              break
+            case 5:
+              this.activeItem.cate.stat = res.data.stat
+              this.dialogShow.lockCate = false
+              break
+          }
+          ElMessage(res.data.stat === 0 ? '锁定成功' : '解锁成功')
+        }
+      })
+    },
+    saveSiteConfig() {
+      this.isLocking = true
+      let config = <siteSaveConfig[]>[]
+      this.site_config_list.forEach((x: siteConfig) => {
+        config.push({ id: x.id, value: x.value })
+      })
+      let payLoad = {
+        config: JSON.stringify(config),
+      }
+      Method.api_post('/admin/save_site_config', payLoad).then((response) => {
+        this.isLocking = false
+        let res = response.data
+        if (res.code == 200) {
+          ElMessage('保存成功')
+          this.member_list = res.data
+        } else ElMessage(res.msg)
+      })
+    },
+    refreshMemberList() {
+      this.isLoadingData = true
+      let payLoad = {
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post('/admin/member_list', payLoad).then((response) => {
+        this.isLoadingData = false
+        let res = response.data
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          this.member_list = res.data
+        }
+      })
+    },
+    /**
+     * 资源列表刷新
+     */
+    refreshModList() {
+      this.isLoadingData = true
+      let payLoad = {
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post('/admin/mod_list', payLoad).then((response) => {
+        this.isLoadingData = false
+        let res = response.data as res
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          res.data.forEach((x: modItem) => {
+            x.create_time = Method.formatNormalTime(<number>x.create_time)
+            x.last_modify_time = Method.formatNormalTime(
+              <number>x.last_modify_time,
+            )
+            x.likes = Method.getNumber(<number>x.likes)
+            x.downloads = Method.getNumber(<number>x.downloads)
+            x.stat_data = Method.getStat(x.stat)
+          })
+          this.mod_list = res.data
+        }
+      })
+    },
+    /**
+     * 资源列表刷新
+     */
+    refreshBbsList() {
+      this.isLoadingData = true
+      let payLoad = {
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post('/admin/bbs_list', payLoad).then((response) => {
+        this.isLoadingData = false
+        let res = response.data
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          this.bbs_list = res.data
+        }
+      })
+    },
+    /**
+     * 头衔列表刷新
+     */
+    refreshRoleList() {
+      this.isLoadingData = true
+      let payLoad = {
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post('/admin/role_list', payLoad).then((response) => {
+        this.isLoadingData = false
+        let res = response.data
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          this.role_list = res.data as roleItem[]
+        }
+      })
+    },
+    /**
+     * 板块列表刷新
+     */
+    refreshCateList() {
+      this.isLoadingData = true
+      let payLoad = {
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post('/admin/cate_list', payLoad).then((response) => {
+        this.isLoadingData = false
+        let res = response.data
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          this.cate_list = res.data
+        }
+      })
+    },
+    /**
+     * 配置列表刷新
+     */
+    refreshConfigList() {
+      this.isLoadingData = true
+      let payLoad = {
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post('/admin/get_site_config', payLoad).then((response) => {
+        this.isLoadingData = false
+        let res = response.data
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          this.site_config_list = res.data
+        }
+      })
+    },
+    refreshServerInfo() {
+      this.isLoadingData = true
+      Method.api_get('/admin/server_info').then((response) => {
+        this.isLoadingData = false
+        let res = <res>response.data
+        if (res.code == 200) {
+          this.serverInfo = res.data
+        }
+      })
+    },
+    refreshItem(activeTab: string) {
+      let v = parseInt(activeTab)
+      switch (v) {
+        case 1:
+          this.refreshServerInfo()
+          break
+        case 2:
+          this.refreshMemberList()
+          break
+        case 3:
+          this.refreshBbsList()
+          break
+        case 4:
+          this.refreshModList()
+          break
+        case 5:
+          this.refreshRoleList()
+          break
+        case 6:
+          this.refreshCateList()
+          break
+        case 7:
+          this.refreshConfigList()
+          break
+      }
+    },
+  },
+  mounted() {
+    this.refreshServerInfo()
+    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    watch(
+      () => this.activeTab,
+      (v) => {
+        this.page = 1
+        this.refreshItem(v)
+      },
+    )
+    watch(
+      () => this.page,
+      () => {
+        this.refreshItem(this.activeTab)
+      },
+    )
+  },
+  created() {
+    this.taskTimerId = 0
+  },
+  unmounted() {
+    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+  },
+}
+</script>
+<style scoped>
+.container {
+  margin-top: 20px;
+}
+.el-pagination {
+  margin-top: 10px;
+}
+</style>

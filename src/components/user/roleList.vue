@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Method from '@/globalmethods.ts'
-import './roleList.ts'
+import '../admin/index.ts'
 import {watch} from "vue";
 export default {
   name: 'UserRole',

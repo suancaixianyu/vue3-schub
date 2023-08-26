@@ -1,48 +1,78 @@
 <template>
   <el-container style="height: 100%" v-loading="isLoading">
-    <el-header class="zone-head-container">
-      <img class="img" src="../../assets/image/headbj.png" />
-      <img class="img2" src="../../assets/image/wenben.png" />
+    <el-header
+      class="zone-head-container bj"
+      :style="{
+        backgroundImage:
+          'url(https://pic.imgdb.cn/item/64e8cf2e661c6c8e5411e1e4.png)',
+      }"
+    >
+      <img
+        class="img2"
+        src="https://pic.imgdb.cn/item/64e8cf5d661c6c8e5411e646.png"
+      />
       <div class="head-area">
-        <el-upload :action="uploadServer" v-model="userInfo.data.headurl" :with-credentials="true" :show-file-list="false"
-          :on-success="uploadCover">
-          <el-avatar :size="headsize" :src="userInfo.data.headurl" />
-        </el-upload>
-        <div class="nickname" v-html="userInfo.data.nickname"></div>
-        <UserRole :role="userInfo.data.role" />
+        <el-container>
+          <el-aside :width="`${headsize * 1.2}px`">
+            <el-upload
+              :action="uploadServer"
+              v-model="userInfo.data.headurl"
+              :with-credentials="true"
+              :show-file-list="false"
+              :on-success="uploadCover"
+              accept="image/png, image/jpeg"
+            >
+              <el-avatar :size="headsize" :src="userInfo.data.headurl" />
+            </el-upload>
+          </el-aside>
+          <el-main class="padding-0" style="overflow-x: hidden">
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-text class="nickname">{{ userInfo.data.nickname }}</el-text>
+                <UserRole :role="userInfo.data.role" />
+                <el-text>
+                  <router-link to="/usersetup">
+                    <el-icon :size="18" class="pointer" style="color: #fff">
+                      <EditPen />
+                    </el-icon>
+                  </router-link>
+                </el-text>
+              </el-col>
+              <el-col :span="20">
+                <el-text class="signature">{{
+                  userInfo.data.signature
+                }}</el-text>
+              </el-col>
+            </el-row>
+          </el-main>
+        </el-container>
       </div>
     </el-header>
+
     <el-header class="zone-head-container btn-area">
       <el-tabs class="el-tabs" model-value="bbs" @tab-click="onTabChange">
-        <!-- <el-tab-pane name="index">
-          <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <House />
-              </el-icon><span>主页</span></span>
-          </template>
-          <UserIndexPage :bbs="bbsList" :mod="modList" :world="worldList" v-if="activePages[0]" />
-        </el-tab-pane> -->
         <el-tab-pane name="bbs">
           <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <ChatLineSquare />
-              </el-icon><span>我的帖子</span></span>
+            <span class="custom-tabs-label"
+              ><el-icon> <ChatLineSquare /> </el-icon
+              ><span>我的帖子</span></span
+            >
           </template>
           <BbsPage v-if="activePages[0]" />
         </el-tab-pane>
         <el-tab-pane name="world">
           <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <UploadFilled />
-              </el-icon><span>我的存档</span></span>
+            <span class="custom-tabs-label"
+              ><el-icon> <UploadFilled /> </el-icon><span>我的存档</span></span
+            >
           </template>
           <WorldPage v-if="activePages[1]" />
         </el-tab-pane>
         <el-tab-pane name="mod">
           <template #label>
-            <span class="custom-tabs-label"><el-icon>
-                <Promotion />
-              </el-icon><span>我的资源</span></span>
+            <span class="custom-tabs-label"
+              ><el-icon> <Promotion /> </el-icon><span>我的资源</span></span
+            >
           </template>
           <ModPage v-if="activePages[2]" />
         </el-tab-pane>
@@ -64,9 +94,10 @@ import BbsPage from '@comps/user/zone-page/bbs.vue'
 import WorldPage from '@comps/user/zone-page/world.vue'
 import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router'
-import Cfg from '@/config/config'
-import Method from '@/globalmethods'
+import Cfg from '@/config/config.ts'
+import Method from '@/globalmethods.ts'
 import UserRole from '@comps/user/roleList.vue'
+import { api } from '@/apitypes'
 
 export default {
   name: 'UserIndex',
@@ -83,6 +114,28 @@ export default {
   methods: {
     uploadCover(e: any) {
       Cfg.userInfo.data.headurl = Method.getHostUrl(e.data.src)
+      Method.api_post('/user/edit', { avatar: e.data.src })
+        .then((res) => {
+          let obj = res.data as api
+          if (obj.code === 200) {
+            ElMessage({
+              type: 'success',
+              message: obj.msg,
+            })
+            Method.getInformation()
+          } else {
+            ElMessage({
+              type: 'error',
+              message: obj.msg,
+            })
+          }
+        })
+        .catch((err) => {
+          ElMessage({
+            type: 'error',
+            message: '请求错误：' + err.message,
+          })
+        })
     },
     onTabChange(e: any) {
       this.activePages[e.index] = true
@@ -90,7 +143,15 @@ export default {
     },
   },
   data() {
-    let { userInfo, config: { server, homestyle: { headsize: { post } } } } = Cfg;
+    let {
+      userInfo,
+      config: {
+        server,
+        homestyle: {
+          headsize: { userindex },
+        },
+      },
+    } = Cfg
     return {
       uploadServer: `${server}/Upload/Upload`,
       activeTab: 0,
@@ -99,19 +160,19 @@ export default {
       bbsList: <any>[],
       worldList: <any>[],
       modList: <any>[],
-      activePages: <boolean[]>[true, false, false, false],
-      headsize: post,
-      userInfo: userInfo
+      activePages: <boolean[]>[false, false, false, false],
+      headsize: userindex,
+      userInfo: userInfo,
     }
   },
   created() {
     let route = useRoute()
-    let userInfo = this.userInfo
     this.isLoading = true
-    this.isSelf = userInfo.id === route.params.id
+    this.isSelf = this.userInfo.id === route.params.id
     Method.api_get(`/user/zone/${this.userInfo.data.id}`)
       .then((response: any) => {
-        let res = response.data
+        let res = response.data as api
+        this.activePages[0] = true
         this.isLoading = false
         if (res.code == 200) {
           res.data.bbs.forEach((x: any) => {
@@ -145,6 +206,19 @@ export default {
 </script>
 
 <style scoped>
+.padding-0 {
+  padding: 0;
+}
+.bj {
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.signature {
+  margin: 0 12px;
+  color: #fff;
+}
+
 .el-tabs {
   flex: 1;
   padding: 0;
@@ -178,7 +252,7 @@ export default {
   top: 15%;
   left: 50%;
   transform: translateX(-50%);
-  height: 38%;
+  height: 35%;
   object-fit: cover;
 }
 
@@ -198,7 +272,7 @@ export default {
   z-index: 1;
 }
 
-.head-area .nickname {
+.nickname {
   margin: 0 12px;
   font-size: 18px;
   font-weight: bold;

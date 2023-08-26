@@ -118,6 +118,46 @@ class Method {
     }
   }
 
+  /**
+   * 格式化标签id，mod状态
+   * @param number id
+   */
+  getStat(number: number): { name: string; type: string } {
+    let obj = {
+      name: '',
+      type: ''
+    }
+    switch (number) {
+      case 0:
+        obj = {
+          name: '已锁定',
+          type: 'danger'
+        }
+        break;
+      case 1:
+        obj = {
+          name: '正常',
+          type: ''
+        }
+        break;
+      case 2:
+        obj = {
+          name: '审核中',
+          type: 'info'
+        }
+        break;
+      case 3:
+        obj = {
+          name: '审核未通过',
+          type: 'warning'
+        }
+        break;
+      default:
+        break;
+    }
+    return obj
+  }
+
   fixTimePre(str: number) {
     if (str < 10) return '0' + str
     else return str
@@ -148,6 +188,7 @@ class Method {
     return format.replace(/([YmdHis])/g, (_, char) => pad(formatMap[char]))
   }
 
+  /** 格式化时间 Y-m-d H:i:s */
   formatNormalTime(time: number, format = 'Y-m-d H:i:s'): string {
     const date = new Date(time * 1000)
     return this.myDate(date, format)
@@ -178,7 +219,7 @@ class Method {
    * @param e 资源相对路径
    */
   getHostUrl(e: string): string {
-    if(e==null)return '';
+    if (e == null) return '';
     if (e.indexOf('http://') != -1 || e.indexOf('https://') != -1) return e
     if (e.indexOf('./') == -1) {
       return Cfg.config.server + e
@@ -213,6 +254,7 @@ class Method {
    * @param flag_list_str
    */
   decodeFlagList(flag_list_str: string) {
+    if (flag_list_str == null) return [];
     let {
       userInfo: {
         global_mod_data_list: { flag_list },
@@ -253,7 +295,7 @@ class Method {
       })
       if (f != null) {
         arr2[1] = /^(http|https):\/\//.test(arr2[1]) ? arr2[1] : 'http://' + arr2[1];
-        result.push({id:f.id, name: f.name, src: arr2[1] })
+        result.push({ id: f.id, name: f.name, src: arr2[1] })
       }
     })
     return result
@@ -340,7 +382,7 @@ class Method {
   /**
    * 刷新页面重新获取用户信息
    */
-  getInformation() {
+  getInformation(callback: any = null) {
     let { userInfo } = Cfg
     //刷新页面重新获取用户信息
     this.api_get('/user/role_list').then((response) => {
@@ -365,6 +407,7 @@ class Method {
         q.data = res.data;
         Cfg.userInfo = q;
       }
+      if (callback != null) callback();
     })
   }
 
@@ -373,22 +416,30 @@ class Method {
    */
   setwebstyle() {
     let data = this.localGet('webstyle', {})
-    console.log(data)
     if (data.webkit) {
       console.log('加载本地设置', data)
       for (let key in Cfg.config.webstyle) {
         Cfg.config.webstyle[key] = data[key]
       }
     }
-
+    /** css样式 */
     for (let key in Cfg.config.webstyle) {
       for (let b in Cfg.config.webstyle[key]) {
-        console.log(key, b, Cfg.config.webstyle[key][b])
+        // console.log(key, b, Cfg.config.webstyle[key][b])
         document.documentElement.style.setProperty(
           `--${b}`,
           Cfg.config.webstyle[key][b],
         )
       }
+    }
+    /** 配置 */
+    let websetup = this.localGet('websetup', {})
+    console.log(websetup);
+
+    if (websetup.headsize) {
+      Cfg.set.menu = websetup.menu
+      Cfg.set.shape = websetup.shape
+      Cfg.config.homestyle.headsize = websetup.headsize
     }
   }
 
@@ -409,6 +460,37 @@ class Method {
         message: `复制失败：${error.message}`,
       })
     }
+  }
+
+  /**
+     * 上传图片
+     */
+  async UploadImage(file: any): Promise<string | undefined> {
+    ElMessage('上传中...')
+    // 执行图片上传的逻辑
+    const formData = new FormData()
+    let url = ''
+    formData.append('file', file[0], file[0].name)
+    this.api_post(`/Upload/Upload`, formData)
+      .then((response) => {
+        let obj = response.data
+        if (obj.code === 200) {
+          ElMessage({
+            type: 'success',
+            message: '上传成功',
+          })
+          url = `![](${this.getHostUrl(obj.data.src)})`
+        }
+      })
+      .catch((error) => {
+        ElMessage({
+          type: 'error',
+          message: '上传失败',
+        })
+        console.log('error', error)
+        url = ''
+      })
+    return url
   }
 }
 

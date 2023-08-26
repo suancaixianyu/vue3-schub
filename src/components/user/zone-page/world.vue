@@ -54,6 +54,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        class="el-pagination"
+        v-model:current-page="page"
+        background
+        :page-size="limit"
+        :pager-count="8"
+        layout="prev, pager, next"
+        :total="total"
+    />
   </div>
 </template>
 
@@ -61,6 +70,7 @@
 import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
+import {watch} from "vue";
 
 export default {
   name: 'WorldPage',
@@ -70,6 +80,9 @@ export default {
       isLoading: false,
       list: [] as any[],
       activeItemIndex: -1,
+      page:1,
+      limit:10,
+      total:0
     }
   },
   methods: {
@@ -77,24 +90,35 @@ export default {
       this.activeItemIndex = index
       ElMessage('暂不支持')
     },
+    refreshList(){
+      this.isLoading = true
+      let payLoad = {
+        page:this.page,
+        limit:this.limit
+      };
+      Method.api_post(`/user/my_world_list/${Cfg.userInfo.data.id}`,payLoad).then((response: any) => {
+        let res = response.data
+        this.isLoading = false
+        if (res.code == 200) {
+          res.data.forEach((x: any) => {
+            x.create_time = Method.formatNormalTime(x.create_time)
+            x.type_name = Method.getScTypeName(x.file_type)
+            x.file_size = Method.getFileSize(x.size)
+          })
+          if(this.page == 1)this.total = res.sum;
+          this.list = res.data;
+        } else {
+          ElMessage(res.msg)
+        }
+      })
+    }
   },
-  created() {
-    this.isLoading = true
-    Method.api_get(`/user/my_world_list/${Cfg.userInfo.data.id}`).then((response: any) => {
-      let res = response.data
-      this.isLoading = false
-      if (res.code == 200) {
-        res.data.forEach((x: any) => {
-          x.create_time = Method.formatNormalTime(x.create_time)
-          x.type_name = Method.getScTypeName(x.file_type)
-          x.file_size = Method.getFileSize(x.size)
-        })
-        this.list = res.data
-      } else {
-        ElMessage(res.msg)
-      }
+  mounted() {
+    this.page = 1;
+    watch(()=>this.page,()=>{
+      this.refreshList();
     })
-  },
+  }
 }
 </script>
 

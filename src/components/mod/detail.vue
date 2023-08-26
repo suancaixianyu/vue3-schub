@@ -1,5 +1,5 @@
 <template>
-  <div v-if="set.ismobile">
+  <div v-if="set.ismobile" v-loading="isLoading">
     <div class="bj" :style="{ backgroundImage: `url(${cover_src})` }">
       <div class="ismobile-title">
         <div class="status-area">
@@ -9,18 +9,29 @@
         <div class="name">[{{ mini_name }}]{{ name }}</div>
         <div class="en-name">{{ en_name }}</div>
         <div class="flag-area">
-          <mod-flag class="flag" :flag="x.flag_name" active v-for="x in flag_list"></mod-flag>
+          <mod-flag
+            class="flag"
+            :flag="x.flag_name"
+            active
+            v-for="x in flag_list"
+          ></mod-flag>
         </div>
       </div>
     </div>
 
     <div class="extra-area" style="background-color: white; padding: 0 10px">
       <div class="item">
-        <el-text>支持的游戏版本:<el-tag v-for="x in game_list" v-html="x.name"></el-tag></el-text>
+        <el-text
+          >支持的游戏版本:<el-tag
+            v-for="x in game_list"
+            v-html="x.name"
+          ></el-tag
+        ></el-text>
       </div>
       <div class="item">
-        <el-text>支持的API版本:
-          <el-tag v-for="x in api_list" v-html="x.name"></el-tag></el-text>
+        <el-text
+          >支持的API版本: <el-tag v-for="x in api_list" v-html="x.name"></el-tag
+        ></el-text>
       </div>
       <div class="item">最后编辑: {{ last_modify }}</div>
       <div class="item">
@@ -42,13 +53,32 @@
         </a>
       </div>
       <el-tabs class="el-tabs" type="card">
-        <el-tab-pane label="资源介绍" v-html="description"></el-tab-pane>
+        <el-tab-pane label="资源介绍">
+          <MdPreview
+            editorId="preview-mobile"
+            :modelValue="description"
+            class="bg-base-200"
+          />
+        </el-tab-pane>
         <el-tab-pane label="资源关系">
           <el-collapse v-model="activeRelation">
-            <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
+            <el-collapse-item
+              v-for="(x, i) in relation_list"
+              :title="x.condition"
+              :name="i"
+            >
               <div class="flex" v-for="xx in x.list">
-                <el-tag class="ml-2" type="success" v-html="xx.type_name"></el-tag>
-                <el-button type="primary" link @click="goModDetail(xx.package_id)" v-html="xx.package_name"></el-button>
+                <el-tag
+                  class="ml-2"
+                  type="success"
+                  v-html="xx.type_name"
+                ></el-tag>
+                <el-button
+                  type="primary"
+                  link
+                  @click="goModDetail(xx.package_id)"
+                  v-html="xx.package_name"
+                ></el-button>
               </div>
             </el-collapse-item>
           </el-collapse>
@@ -56,18 +86,32 @@
         <el-tab-pane label="资源下载">
           <el-table :data="version_list" stripe style="width: 100%">
             <el-table-column prop="name" label="文件名" />
-            <el-table-column prop="create_time_str" label="创建时间" width="180" />
+            <el-table-column
+              prop="create_time_str"
+              label="创建时间"
+              width="180"
+            />
             <el-table-column prop="file_size" label="大小" width="180" />
             <el-table-column label="操作">
               <template #default="scope">
-                <el-button size="small" link type="danger" @click="downLoad(scope.$index)">下载</el-button>
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="downLoad(scope.$index)"
+                  >下载</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="更新日志">
           <el-timeline v-if="version_list.length != 0">
-            <el-timeline-item v-for="(activity, index) in version_list" :key="index" :timestamp="activity.time">
+            <el-timeline-item
+              v-for="(activity, index) in version_list"
+              :key="index"
+              :timestamp="activity.time"
+            >
               {{ activity.description }}
             </el-timeline-item>
           </el-timeline>
@@ -75,7 +119,6 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-
   </div>
 
   <el-container class="el-container" v-loading="isLoading" v-else>
@@ -83,8 +126,18 @@
       <el-avatar class="img" :src="cover_src" />
       <div class="update-area">
         <div class="tab">更新日志</div>
-        <div class="update-log" v-if="version_list.length != 0" v-for="x in version_list">
-          <el-popover placement="top-start" :title="x.version" :width="512" trigger="click" :content="x.description">
+        <div
+          class="update-log"
+          v-if="version_list.length != 0"
+          v-for="x in version_list"
+        >
+          <el-popover
+            placement="top-start"
+            :title="x.version"
+            :width="512"
+            trigger="click"
+            :content="x.description"
+          >
             <template #reference>
               <div class="version" v-html="x.version"></div>
             </template>
@@ -106,7 +159,12 @@
         <div class="en-name">{{ en_name }}</div>
       </div>
       <div class="flag-area">
-        <mod-flag class="flag" :flag="x.flag_name" active v-for="x in flag_list"></mod-flag>
+        <mod-flag
+          class="flag"
+          :flag="x.flag_name"
+          active
+          v-for="x in flag_list"
+        ></mod-flag>
       </div>
       <div class="extra-area">
         <div class="item">
@@ -120,14 +178,23 @@
         <div class="item">最后编辑: {{ last_modify }}</div>
         <div class="item">
           <div>Mod作者/开发团队:</div>
-          <div>无</div>
+          <el-row class="author-item" v-for="x in author_list">
+            <el-avatar shape="circle" :src="x.avatar"></el-avatar>
+            <div class="nickname">
+              <div v-html="x.nickname"></div>
+              <div v-html="x.staff" class="staff"></div>
+            </div>
+          </el-row>
         </div>
         <div class="item">相关链接:</div>
         <div class="item">
           <a class="link" :href="x.src" v-for="x in link_list">
             <icon-down v-if="x.id == 1"></icon-down>
             <icon-github v-if="x.id == 2"></icon-github>
-            <icon-cloud-store fill="#f8574c" v-if="x.id == 3"></icon-cloud-store>
+            <icon-cloud-store
+              fill="#f8574c"
+              v-if="x.id == 3"
+            ></icon-cloud-store>
             <icon-cloud-store v-if="x.id == 4"></icon-cloud-store>
             <icon-server v-if="x.id == 5"></icon-server>
             <el-icon v-if="x.id == 6" size="26">
@@ -137,13 +204,32 @@
           </a>
         </div>
         <el-tabs class="el-tabs" type="card">
-          <el-tab-pane label="资源介绍" v-html="description"></el-tab-pane>
+          <el-tab-pane label="资源介绍">
+            <MdPreview
+              editorId="preview-mobile"
+              :modelValue="description"
+              class="bg-base-200"
+            />
+          </el-tab-pane>
           <el-tab-pane label="资源关系">
             <el-collapse v-model="activeRelation">
-              <el-collapse-item v-for="(x, i) in relation_list" :title="x.condition" :name="i">
+              <el-collapse-item
+                v-for="(x, i) in relation_list"
+                :title="x.condition"
+                :name="i"
+              >
                 <div class="flex" v-for="xx in x.list">
-                  <el-tag class="ml-2" type="success" v-html="xx.type_name"></el-tag>
-                  <el-button type="primary" link @click="goModDetail(xx.package_id)" v-html="xx.package_name"></el-button>
+                  <el-tag
+                    class="ml-2"
+                    type="success"
+                    v-html="xx.type_name"
+                  ></el-tag>
+                  <el-button
+                    type="primary"
+                    link
+                    @click="goModDetail(xx.package_id)"
+                    v-html="xx.package_name"
+                  ></el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -152,11 +238,21 @@
             <el-table :data="version_list" stripe style="width: 100%">
               <el-table-column prop="version" label="版本" />
               <el-table-column prop="name" label="文件名" />
-              <el-table-column prop="create_time_str" label="创建时间" width="180" />
+              <el-table-column
+                prop="create_time_str"
+                label="创建时间"
+                width="180"
+              />
               <el-table-column prop="file_size" label="大小" width="180" />
               <el-table-column label="操作">
                 <template #default="scope">
-                  <el-button size="small" link type="danger" @click="downLoad(scope.$index)">下载</el-button>
+                  <el-button
+                    size="small"
+                    link
+                    type="danger"
+                    @click="downLoad(scope.$index)"
+                    >下载</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -187,12 +283,25 @@ import IconHot from '@comps/icons/common/hot.vue'
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 import { watch } from 'vue'
-import IconGithub from "@comps/icons/common/github.vue";
-import IconCloudStore from "@comps/icons/common/cloudStore.vue";
-import IconServer from "@comps/icons/mod/server.vue";
+import IconGithub from '@comps/icons/common/github.vue'
+import IconCloudStore from '@comps/icons/common/cloudStore.vue'
+import IconServer from '@comps/icons/mod/server.vue'
+import { ElMessage } from 'element-plus'
+import { MdPreview } from 'md-editor-v3'
+/** md编辑器 */
+import 'md-editor-v3/lib/style.css'
+import { api } from '@/apitypes'
 export default {
   name: 'modDetail',
-  components: { IconServer, IconCloudStore, IconGithub, IconHot, IconDown, ModFlag },
+  components: {
+    IconServer,
+    IconCloudStore,
+    IconGithub,
+    IconHot,
+    IconDown,
+    ModFlag,
+    MdPreview,
+  },
   data() {
     return {
       set: Cfg.set,
@@ -213,6 +322,7 @@ export default {
       game_list: <any>[],
       api_list: <any>[],
       relation_list: <any>[],
+      author_list:<any>[],
       name: '',
       views: 0,
       mini_name: '',
@@ -231,58 +341,72 @@ export default {
     },
     reloadPageData() {
       this.isLoading = true
-      Method.api_get(`/mod/item/${this.$route.params.id}`).then((response) => {
-        let res = response.data
-        if (res.code == 200) {
-          this.isLoading = false
-          let modInfo = res.data.mod
-          let version_list = res.data.version_list
-          version_list.forEach((x: any) => {
-            x.time = Method.formatNormalTime(x.create_time, 'Y-m-d')
-            x.create_time_str = Method.formatBbsTime(x.create_time)
-            x.file_size = Method.getFileSize(x.size)
+      Method.api_get(`/mod/item/${this.$route.params.id}`)
+        .then((response) => {
+          let res = response.data as api
+          if (res.code == 200) {
+            this.isLoading = false
+            let modInfo = res.data.mod
+            let version_list = res.data.version_list
+            version_list.forEach((x: any) => {
+              x.time = Method.formatNormalTime(x.create_time, 'Y-m-d')
+              x.create_time_str = Method.formatBbsTime(x.create_time)
+              x.file_size = Method.getFileSize(x.size)
+            })
+            this.author_list = res.data.author_list;
+            this.relation_list = Method.decodeRelationList(res.data.relation)
+            this.modRate = modInfo.rate
+            this.cover_src = Method.getHostUrl(modInfo.cover_src)
+            this.create_time = modInfo.create_time
+            this.description = modInfo.description
+            this.downloads = modInfo.downloads
+            this.id = modInfo.id
+            this.likes = modInfo.likes
+            this.last_modify = Method.formatBbsTime(modInfo.last_modify_time)
+            this.link_list = Method.decodeLinkList(modInfo.link_list)
+            this.flag_list = Method.decodeFlagList(modInfo.flag_list)
+            this.api_list = Method.decodeApiVersionList(modInfo.api_list)
+            this.game_list = Method.decodeGameVersionList(modInfo.game_list)
+            this.version_list = version_list
+            this.name = modInfo.name
+            this.views = modInfo.views
+            this.mini_name = modInfo.mini_name
+            this.en_name = modInfo.en_name
+          } else {
+            ElMessage({
+              type: 'error',
+              message: res.msg,
+            })
+            this.isLoading = false
+          }
+        })
+        .catch((err) => {
+          ElMessage({
+            type: 'error',
+            message: `请求出错：${err.message}`,
           })
-          this.relation_list = Method.decodeRelationList(res.data.relation)
-          this.modRate = modInfo.rate;
-          this.cover_src = modInfo.cover_src
-          this.create_time = modInfo.create_time
-          this.description = modInfo.description
-          this.downloads = modInfo.downloads
-          this.id = modInfo.id
-          this.likes = modInfo.likes
-          this.last_modify = Method.formatBbsTime(modInfo.last_modify_time)
-          this.link_list = Method.decodeLinkList(modInfo.link_list)
-          this.flag_list = Method.decodeFlagList(modInfo.flag_list)
-          this.api_list = Method.decodeApiVersionList(modInfo.api_list)
-          this.game_list = Method.decodeGameVersionList(modInfo.game_list)
-          this.version_list = version_list
-          this.name = modInfo.name
-          this.views = modInfo.views
-          this.mini_name = modInfo.mini_name
-          this.en_name = modInfo.en_name
-        }
-      })
+        })
     },
   },
   mounted() {
+    this.reloadPageData()
+    watch(
+        () => this.$route.params.id,
+        () => {
+          this.reloadPageData()
+        },
+    )
     Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.height = 'auto'
-    Cfg.config.homestyle.maincontainer.overflowY = ''
+    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    Cfg.set.showfooter = false
   },
   unmounted() {
     Cfg.config.homestyle.maincontainer.padding = '0 1rem'
-    Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 90px)'
+    Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 6rem)'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
-  },
-  created() {
-    watch(
-      () => this.$route.params.id,
-      () => {
-        this.reloadPageData()
-      },
-    )
-    this.reloadPageData()
-  },
+    Cfg.set.showfooter = true
+  }
 }
 </script>
 <style scoped>
@@ -290,10 +414,12 @@ export default {
   padding: 1rem;
   padding-top: 5rem;
   color: white;
-  background: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0.8));
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.8)
+  );
 }
 
 .bj {
@@ -404,7 +530,7 @@ export default {
   padding: 2px 5px;
 }
 
-.status-area .item+.item {
+.status-area .item + .item {
   margin-left: 2px;
 }
 
@@ -498,5 +624,24 @@ export default {
   align-items: center;
   flex: 1;
   flex-direction: row;
+}
+.author-item{
+  margin: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding:5px 10px;
+  background: #eee;
+}
+.author-item .nickname{
+  padding-left: 10px;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.author-item .nickname .staff{
+  color: #333;
+  font-weight: bold;
 }
 </style>

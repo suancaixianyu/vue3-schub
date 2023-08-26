@@ -1,6 +1,11 @@
 <template>
   <div class="post-area">
-    <el-avatar :src="v.xx.author.headurl" :shape="shape" :size="26" style="margin-right: 12px" />
+    <el-avatar
+      :src="v.xx.author.headurl"
+      :shape="shape"
+      :size="26"
+      style="margin-right: 12px"
+    />
     <div class="area">
       <div class="user-label">
         <div>{{ v.xx.author.nickname }}</div>
@@ -11,17 +16,35 @@
         </div>
       </div>
       <!-- <div class="comments">{{ v.xx.content }}</div> -->
-      <MdPreview :modelValue="v.xx.content" :editorId="`preview-tow-${previewid}`" />
+      <MdPreview
+        :modelValue="v.xx.content"
+        :editorId="`preview-tow-${previewid}`"
+      />
       <div class="extra-line">
         <div class="time">{{ v.xx.time }}</div>
         <LikeIcon class="label"></LikeIcon>
         <div class="label amount">{{ likes }}</div>
         <div class="label" @click="readyReply">回复</div>
       </div>
-      <div class="post-area" v-if="isReadyReply">
-        <el-avatar :src="userInfo.data.headurl" :shape="shape" :size="26" style="margin-right: 12px" />
-        <el-input v-model="comments" autosize type="textarea" placeholder="发表评论" />
-        <el-button icon="Edit" @click="reply" :loading="isReplying">回复</el-button>
+      <div v-if="isReadyReply">
+        <el-row :gutter="24">
+          <el-col :span="2">
+            <el-avatar :src="userInfo.data.headurl" :shape="shape" :size="26" />
+          </el-col>
+          <el-col :span="19">
+            <el-input
+              v-model="comments"
+              autosize
+              type="textarea"
+              placeholder="发表评论"
+            />
+          </el-col>
+          <el-col :span="3">
+            <el-button icon="Edit" :loading="isReplying" @click="reply">
+              回复
+            </el-button>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>

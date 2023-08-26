@@ -3,8 +3,13 @@
     <el-form class="el-form">
       <el-tabs type="border-card" v-model="activeTab" class="demo-tabs">
         <el-tab-pane label="基本信息" name="base">
-          <el-form-item label="资源元素*">
-            <mod-flag :flag="x.flag_name" :active="x.active" @click="x.active = !x.active" v-for="x in mod_flag_list" />
+          <el-form-item label="资源标签*">
+            <mod-flag
+              :flag="x.flag_name"
+              :active="x.active"
+              @click="x.active = !x.active"
+              v-for="x in mod_flag_list"
+            />
           </el-form-item>
           <el-form-item label="资源名称*">
             <el-input v-model="name" />
@@ -17,35 +22,104 @@
           </el-form-item>
           <el-form-item label="游戏API*">
             <el-radio-group>
-              <el-checkbox v-model="x.active" :key="x" :label="x.name" v-for="x in api_version_list" />
+              <el-checkbox
+                v-model="x.active"
+                :key="x"
+                :label="x.name"
+                v-for="x in api_version_list"
+              />
             </el-radio-group>
           </el-form-item>
           <el-form-item label="游戏主体*">
             <el-radio-group>
-              <el-checkbox v-model="x.active" :key="x" :label="x.name" v-for="x in game_version_list" />
+              <el-checkbox
+                v-model="x.active"
+                :key="x"
+                :label="x.name"
+                v-for="x in game_version_list"
+              />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="服务器版本*" v-if="mod_flag_list[9].active">
+          <el-form-item label="服务器版本*" v-if="mod_flag_list[9]?.active">
             <el-radio-group>
-              <el-checkbox v-model="x.active" :key="x" :label="x.name" v-for="x in server_version_list" />
+              <el-checkbox
+                v-model="x.active"
+                :key="x"
+                :label="x.name"
+                v-for="x in server_version_list"
+              />
             </el-radio-group>
+          </el-form-item>
+          <el-form-item label="作者/团队">
+            <div class="flex v">
+              <div class="flex" v-for="(x, i) in mod_author" :key="x">
+                <el-avatar :src="x.avatar" style="padding: 0 5px" shape="circle"></el-avatar>
+                <el-select :automatic-dropdown="true" v-model="x.type" :loading="isLoading" placeholder="搜索昵称以选择作者" @focus="authorFocus(x)" remote filterable @change="authorChange" :remote-method="searchUser">
+                  <el-option
+                      :label="r.nickname"
+                      :value="r.id"
+                      :key="r.id"
+                      v-for="r in mod_author_list"
+                  />
+                </el-select>
+                <el-input v-model="x.staff" placeholder="请输入职位名称"/>
+                <el-button
+                    type="primary"
+                    icon="Minus"
+                    text
+                    @click="deleteAuthor(i)"
+                    :data-index="i"
+                >删除</el-button
+                >
+              </div>
+              <div>
+                <el-button
+                    size="small"
+                    type="primary"
+                    text
+                    icon="Plus"
+                    @click="newAuthor"
+                >添加作者</el-button
+                >
+              </div>
+            </div>
           </el-form-item>
           <el-form-item label="相关链接">
             <div class="flex v">
               <div class="flex" v-for="(x, i) in link" :key="x">
                 <el-select v-model="x.type" placeholder="选择渠道">
-                  <el-option :label="r.name" :value="r.id" v-for="r in mod_link_type" />
+                  <el-option
+                    :label="r.name"
+                    :value="r.id"
+                    v-for="r in mod_link_type"
+                  />
                 </el-select>
-                <el-input v-model="x.src" />
-                <el-button type="primary" icon="Minus" text @click="deleteLink(i)" :data-index="i">删除</el-button>
+                <el-input placeholder="请输入链接/url" v-model="x.src" />
+                <el-button
+                  type="primary"
+                  icon="Minus"
+                  text
+                  @click="deleteLink(i)"
+                  :data-index="i"
+                  >删除</el-button
+                >
               </div>
               <div>
-                <el-button size="small" type="primary" text icon="Plus" @click="newLink">添加链接</el-button>
+                <el-button
+                  size="small"
+                  type="primary"
+                  text
+                  icon="Plus"
+                  @click="newLink"
+                  >添加链接</el-button
+                >
               </div>
             </div>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit" :loading="isCreating">创建</el-button>
+            <el-button type="primary" @click="submit" :loading="isCreating"
+              >创建</el-button
+            >
             <el-button plain>取消</el-button>
           </el-form-item>
         </el-tab-pane>
@@ -55,41 +129,94 @@
           </el-form-item>
           <el-form-item label="资源封面*">
             <el-input disabled v-model="cover" class="el-input" />
-            <el-upload :action="uploadServer" v-model="cover_list" :with-credentials="true" :show-file-list="false"
-              :on-success="uploadCover">
+            <el-upload
+              :action="uploadServer"
+              v-model="cover_list"
+              :with-credentials="true"
+              :show-file-list="false"
+              :on-success="uploadCover"
+              accept="image/png, image/jpeg"
+            >
               <el-button type="primary">上传</el-button>
             </el-upload>
           </el-form-item>
           <el-form-item label="资源介绍*">
-            <el-input v-model="desc" type="textarea" />
+            <MdEditor
+              editorId="modEditor"
+              :preview="!set.ismobile"
+              v-model="desc"
+              @onUploadImg="UploadImage"
+            />
           </el-form-item>
-          <el-form-item label="资源关系*">
+          <el-form-item label="资源关系*" v-if="!set.ismobile">
             <div class="flex v">
               <el-card v-for="(x, i) in relation" :key="x">
                 <template #header>
                   <el-form-item label="需要条件*">
                     <el-input v-model="x.condition" placeholder=">=API1.5" />
-                    <el-button size="small" type="primary" text icon="Minus" @click="deleteRelation(i)">删除本组</el-button>
+                    <el-button
+                      size="small"
+                      type="primary"
+                      text
+                      icon="Minus"
+                      @click="deleteRelation(i)"
+                      >删除本组</el-button
+                    >
                   </el-form-item>
                 </template>
                 <div class="flex" v-for="(xx, ii) in x.list" :key="xx">
-                  <el-select remote :loading="remoteLoading" :remote-method="getModList" v-model="xx.package_id"
-                    filterable remote-show-suffix placeholder="选择资源ID">
-                    <el-option :label="xxx.label" :key="xxx.value" :value="xxx.value"
-                      v-for="xxx in relate_mod_list"></el-option>
+                  <el-select
+                    remote
+                    :loading="remoteLoading"
+                    :remote-method="getModList"
+                    v-model="xx.package_id"
+                    filterable
+                    remote-show-suffix
+                    placeholder="选择资源ID"
+                  >
+                    <el-option
+                      :label="xxx.label"
+                      :key="xxx.value"
+                      :value="xxx.value"
+                      v-for="xxx in relate_mod_list"
+                    ></el-option>
                   </el-select>
                   <el-select v-model="xx.type" placeholder="选择关系">
-                    <el-option :label="r.name" :value="r.id" v-for="r in relate_type_list" />
+                    <el-option
+                      :label="r.name"
+                      :value="r.id"
+                      v-for="r in relate_type_list"
+                    />
                   </el-select>
-                  <el-button type="primary" icon="Minus" text @click="deleteRelationDetail(i, ii)"
-                    :data-index="ii">删除</el-button>
+                  <el-button
+                    type="primary"
+                    icon="Minus"
+                    text
+                    @click="deleteRelationDetail(i, ii)"
+                    :data-index="ii"
+                    >删除</el-button
+                  >
                 </div>
                 <div>
-                  <el-button size="small" type="primary" text icon="Plus" @click="newRelation(i)">添加关系</el-button>
+                  <el-button
+                    size="small"
+                    type="primary"
+                    text
+                    icon="Plus"
+                    @click="newRelation(i)"
+                    >添加关系</el-button
+                  >
                 </div>
               </el-card>
               <div>
-                <el-button size="small" type="primary" text icon="Plus" @click="newGroupRelation">添加一组</el-button>
+                <el-button
+                  size="small"
+                  type="primary"
+                  text
+                  icon="Plus"
+                  @click="newGroupRelation"
+                  >添加一组</el-button
+                >
               </div>
             </div>
           </el-form-item>
@@ -104,6 +231,9 @@ import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 import ModFlag from '@comps/mod/flag.vue'
 import { ElMessage } from 'element-plus'
+import { MdEditor } from 'md-editor-v3'
+/** md编辑器 */
+import 'md-editor-v3/lib/style.css'
 interface modItem {
   label: string
   value: string
@@ -112,9 +242,11 @@ export default {
   name: 'ModPublish',
   components: {
     ModFlag,
+    MdEditor,
   },
   data() {
     return {
+      set: Cfg.set,
       uploadServer: `${Cfg.config.server}/Upload/Upload`,
       cover_list: [],
       en_name: '',
@@ -127,6 +259,10 @@ export default {
       desc: '',
       mod_flag_list: <any>[],
       mod_link_type: <any>[],
+      mod_author:<any>[],
+      isLoading:false,
+      activeAuthor:<any>null,
+      mod_author_list:<any>[],
       relate_type_list: <any>[],
       game_version_list: <any>[],
       api_version_list: <any>[],
@@ -168,6 +304,12 @@ export default {
     deleteLink(e: number) {
       this.link.splice(e, 1)
     },
+    newAuthor() {
+      this.mod_author.push({ uid: '', staff: '',avatar:'' })
+    },
+    deleteAuthor(e: number) {
+      this.mod_author.splice(e, 1)
+    },
     newGroupRelation() {
       this.getModList()
       this.relation.push({ condition: '', list: [] })
@@ -181,11 +323,32 @@ export default {
     deleteRelationDetail(index: number, index2: number) {
       this.relation[index].list.splice(index2, 1)
     },
+    authorFocus(e:any){
+      this.activeAuthor = e;
+    },
+    authorChange(e:any){
+      let id = e;
+      let item = this.mod_author_list.find((x:any)=>{return x.id == id;});
+      if(item!=null) {
+        this.activeAuthor.avatar = item.avatar;
+        this.activeAuthor.id = item.id;
+      }
+    },
+    searchUser(e:any){
+      this.isLoading = true;
+      Method.api_post('/mod/search_user',{key:e}).then(response=>{
+        let res = <res>response.data;
+        this.isLoading = false;
+        if(res.code==200){
+          this.mod_author_list = res.data;
+        }
+      });
+    },
     submit() {
-      let activeFlagId = <any>[];
-      let activeApiId = <any>[];
-      let activeGameId = <any>[];
-      let activeServerId = <any>[];
+      let activeFlagId = <any>[]
+      let activeApiId = <any>[]
+      let activeGameId = <any>[]
+      let activeServerId = <any>[]
       this.mod_flag_list.forEach((x: any) => {
         if (x.active) activeFlagId.push(x.id)
       })
@@ -210,6 +373,7 @@ export default {
         api_version: JSON.stringify(activeApiId),
         game_version: JSON.stringify(activeGameId),
         server_version: JSON.stringify(activeServerId),
+        mod_author:JSON.stringify(this.mod_author),
         flag: JSON.stringify(activeFlagId),
         package_id: this.package_id,
       }
@@ -224,8 +388,15 @@ export default {
         }
       })
     },
+    async UploadImage(file: any) {
+      let url = await Method.UploadImage(file)
+      if (url) {
+        this.desc += url
+      }
+    },
   },
-  created() {
+  mounted() {
+    this.searchUser('');
     let {
       userInfo: {
         global_mod_data_list: {
@@ -234,7 +405,7 @@ export default {
           relate_type,
           api_version,
           game_version,
-          server_version_list
+          server_version_list,
         },
       },
     } = Cfg
@@ -244,8 +415,6 @@ export default {
     this.mod_link_type = link_type
     this.mod_flag_list = flag_list
     this.server_version_list = server_version_list
-  },
-  mounted() {
     Cfg.config.homestyle.maincontainer.overflowY = 'auto'
   },
   unmounted() {
