@@ -42,11 +42,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@comps/main/WebSetup.vue'),
   },
   /** 登录和注册 */
-  {
-    path: '/login/:register?',
-    name: 'UserLogin',
-    component: () => import('@comps/user/login.vue'),
-  },
+  // {
+  //   path: '/login/:register?',
+  //   name: 'UserLogin',
+  //   component: () => import('@comps/user/login.vue'),
+  // },
   /** 发帖 */
   {
     path: '/publish/:chatid',
@@ -84,7 +84,7 @@ const routes: RouteRecordRaw[] = [
   },
   /**管理员**/
   {
-    path: '/Admin',
+    path: '/admin',
     name: 'Admin',
     meta: { title: '网页后台-SC中文社区' },
     component: () => import('@comps/admin/index.vue'),

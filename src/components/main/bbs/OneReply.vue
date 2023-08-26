@@ -25,7 +25,7 @@
       />
       <div class="extra-line">
         <div class="time">{{ x.time }}</div>
-        <LikeIcon @click="doGood" class="label"></LikeIcon>
+        <LikeIcon @click="doLike" class="label"></LikeIcon>
         <div class="label amount">{{ likes }}</div>
         <div class="label" @click="readyReply">回复</div>
       </div>
@@ -131,18 +131,20 @@ export default {
     function readyReply() {
       data.isReadyReply = !data.isReadyReply
     }
-    function doGood() {
+    function doLike() {
       //评论点赞
-      data.isDoGooding = true
-      Method.api_get(`/bbs/reply_good/${props.x.id}`).then((res: any) => {
-        let obj = res.data as api
-        if (obj.code === 200) data.likes += parseInt(obj.data)
+      if (!data.isDoGooding) {
+        data.isDoGooding = true
+        Method.api_get(`/bbs/reply_good/${props.x.id}`).then((res: any) => {
+          let obj = res.data as api
+          if (obj.code === 200) data.likes += parseInt(obj.data)
 
-        ElMessage({
-          type: obj.code == 200 ? 'success' : 'error',
-          message: obj.msg,
+          ElMessage({
+            type: obj.code == 200 ? 'success' : 'error',
+            message: obj.msg,
+          })
         })
-      })
+      }
     }
 
     function doReply(callback: any) {
@@ -171,7 +173,7 @@ export default {
       ...toRefs(data),
       readyReply,
       doReply,
-      doGood,
+      doLike,
     }
   },
 }

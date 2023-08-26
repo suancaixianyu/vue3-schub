@@ -8,8 +8,11 @@
     >
       <el-container style="padding: 0">
         <el-aside width="45%" style="padding: 0; word-wrap: break-word">
-          <el-text class="title"> {{ x.title }}</el-text>
+          <router-link class="title" to="/postlist/1/71">
+            {{ x.title }}
+          </router-link>
         </el-aside>
+
         <el-main style="padding: 0; overflow-x: hidden">
           <el-row :gutter="5">
             <el-col :span="9">
@@ -68,13 +71,13 @@
       </el-table-column>
     </el-table>
     <el-pagination
-        class="el-pagination"
-        v-model:current-page="page"
-        background
-        :page-size="limit"
-        :pager-count="8"
-        layout="prev, pager, next"
-        :total="total"
+      class="el-pagination"
+      v-model:current-page="page"
+      background
+      :page-size="limit"
+      :pager-count="8"
+      layout="prev, pager, next"
+      :total="total"
     />
   </div>
 
@@ -103,7 +106,7 @@
 import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
-import {watch} from "vue";
+import { watch } from 'vue'
 
 export default {
   name: 'BbsPage',
@@ -116,9 +119,9 @@ export default {
       isLoading: false,
       list: <any>[],
       activeItem: <any>null,
-      page:1,
-      limit:10,
-      total:0
+      page: 1,
+      limit: 10,
+      total: 0,
     }
   },
   methods: {
@@ -144,33 +147,37 @@ export default {
     refreshList() {
       this.isLoading = true
       let payLoad = {
-        page:this.page,
-        limit:this.limit
-      };
-      Method.api_post(`/user/my_bbs_list/${Cfg.userInfo.data.id}`,payLoad).then(
-        (response: any) => {
-          let res = <res>response.data
-          this.isLoading = false
-          if (res.code == 200) {
-            if(this.page == 1)this.total = res.sum;
-            res.data.forEach((x: any) => {
-              x.create_time = Method.formatNormalTime(x.create_time)
-              x.title =
-                x.title.length > 20 ? `${x.title.substring(0, 15)}...` : x.title
-            })
-            this.list = res.data
-          } else {
-            ElMessage(res.msg)
-          }
-        },
-      )
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post(
+        `/user/my_bbs_list/${Cfg.userInfo.data.id}`,
+        payLoad,
+      ).then((response: any) => {
+        let res = <res>response.data
+        this.isLoading = false
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          res.data.forEach((x: any) => {
+            x.create_time = Method.formatNormalTime(x.create_time)
+            x.title =
+              x.title.length > 20 ? `${x.title.substring(0, 15)}...` : x.title
+          })
+          this.list = res.data
+        } else {
+          ElMessage(res.msg)
+        }
+      })
     },
   },
   mounted() {
-    this.refreshList();
-    watch(()=>this.page,()=>{
-      this.refreshList();
-    })
+    this.refreshList()
+    watch(
+      () => this.page,
+      () => {
+        this.refreshList()
+      },
+    )
   },
 }
 </script>
