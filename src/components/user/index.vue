@@ -4,7 +4,8 @@
       class="zone-head-container bj"
       :style="{
         backgroundImage:
-          'url(https://pic.imgdb.cn/item/64e8cf2e661c6c8e5411e1e4.png)',
+          // 'url(https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png)',
+          'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png)',
       }"
     >
       <img
@@ -269,7 +270,7 @@ export default {
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
-  padding-bottom: 20px;
+  padding-bottom: 0.5rem;
   z-index: 1;
 }
 
