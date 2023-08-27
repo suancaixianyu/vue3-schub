@@ -141,6 +141,32 @@ export default {
       this.activePages[e.index] = true
       this.activeTab = e.index
     },
+    getUserInfo(){
+      this.isLoading = true
+      Method.api_get(`/user/zone/${this.userInfo.id}`)
+          .then((response: any) => {
+            let res = response.data as api
+            this.isLoading = false
+            if (res.code == 200) {
+              res.data.bbs.forEach((x: any) => {
+                x.create_time = Method.formatNormalTime(x.create_time)
+              })
+              this.bbsList = res.data.bbs
+              this.modList = res.data.mod
+              res.data.world.forEach((x: any) => {
+                x.type_name = Method.getScTypeName(x.file_type)
+                x.file_name = Method.getFileName(x.name)
+                x.create_time = Method.formatNormalTime(x.create_time)
+              })
+              this.worldList = res.data.world
+            } else {
+              ElMessage(res.msg)
+            }
+          })
+          .catch(() => {
+            this.isLoading = false
+          })
+    }
   },
   data() {
     let {
@@ -165,30 +191,6 @@ export default {
     }
   },
   mounted() {
-    this.isLoading = true
-    Method.api_get(`/user/zone/${this.userInfo.id}`)
-        .then((response: any) => {
-          let res = response.data as api
-          this.isLoading = false
-          if (res.code == 200) {
-            res.data.bbs.forEach((x: any) => {
-              x.create_time = Method.formatNormalTime(x.create_time)
-            })
-            this.bbsList = res.data.bbs
-            this.modList = res.data.mod
-            res.data.world.forEach((x: any) => {
-              x.type_name = Method.getScTypeName(x.file_type)
-              x.file_name = Method.getFileName(x.name)
-              x.create_time = Method.formatNormalTime(x.create_time)
-            })
-            this.worldList = res.data.world
-          } else {
-            ElMessage(res.msg)
-          }
-        })
-        .catch(() => {
-          this.isLoading = false
-        })
     Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.overflowY = 'auto'
   },
