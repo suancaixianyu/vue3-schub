@@ -40,14 +40,8 @@
             <el-table-column prop="email" label="邮箱" width="120" />
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  link
-                  type="danger"
-                  @click="showLockItem(1, scope.$index)"
-                >
-                  {{ member_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
-                </el-button>
+                <el-button size="small" link type="danger" @click="showLockItem(1, scope.$index)" v-html="member_list[scope.$index].stat == 0 ? '解锁' : '锁定'"></el-button>
+                <el-button size="small" link type="danger" @click="showLockItem(6, scope.$index)">头衔设置</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -56,7 +50,6 @@
             v-model:current-page="page"
             background
             :page-size="limit"
-            :pager-count="8"
             layout="prev, pager, next"
             :total="total"
           />
@@ -433,6 +426,7 @@ export default {
         lockRole: false,
         lockCate: false,
         examineMod: false,
+        setRole:false
       },
       gameConfig: {
         name: '',
@@ -492,6 +486,10 @@ export default {
           this.dialogShow.lockCate = true
           this.activeItem.cate = this.cate_list[index]
           break
+        case 6:
+          this.dialogShow.setRole = true;
+          this.activeItem.member = this.member_list[index]
+          break;
       }
     },
     showAddRole(index: number) {

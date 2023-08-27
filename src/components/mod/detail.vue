@@ -392,7 +392,8 @@ export default {
     this.reloadPageData()
     watch(
         () => this.$route.params.id,
-        () => {
+        (v:any) => {
+          if(v==null)return;
           this.reloadPageData()
         },
     )

@@ -268,7 +268,7 @@ class Method {
           return xx.id == x
         })
         if (f != null) {
-          result.push({ name: f.name, flag_name: f.flag_name })
+          result.push(f)
         }
       })
     }
@@ -295,7 +295,7 @@ class Method {
       })
       if (f != null) {
         arr2[1] = /^(http|https):\/\//.test(arr2[1]) ? arr2[1] : 'http://' + arr2[1];
-        result.push({ id: f.id, name: f.name, src: arr2[1] })
+        result.push({ id: f.id,type:f.id, name: f.name, src: arr2[1] })
       }
     })
     return result
@@ -318,7 +318,7 @@ class Method {
         return xx.id == x
       })
       if (f != null) {
-        result.push({ name: f.name })
+        result.push(f)
       }
     })
     return result
@@ -341,7 +341,7 @@ class Method {
         return xx.id == x
       })
       if (f != null) {
-        result.push({ name: f.name })
+        result.push(f)
       }
     })
     return result
@@ -368,6 +368,7 @@ class Method {
           })
           if (f != null) {
             item.list.push({
+              type:f.id,
               type_name: f.name,
               package_name: arr2[1],
               package_id: arr2[2],
@@ -411,6 +412,13 @@ class Method {
     })
   }
 
+  /**
+   * 复制对象数据
+   * @param obj
+   */
+  copyObject(obj:any){
+    return JSON.parse(JSON.stringify(obj));
+  }
   /**
    * 设置页面样式
    */

@@ -68,11 +68,9 @@
       </el-table-column>
     </el-table>
     <el-pagination
-        class="el-pagination"
         v-model:current-page="page"
         background
         :page-size="limit"
-        :pager-count="8"
         layout="prev, pager, next"
         :total="total"
     />
@@ -167,10 +165,10 @@ export default {
     },
   },
   mounted() {
-    this.refreshList();
     watch(()=>this.page,()=>{
       this.refreshList();
     })
+    this.refreshList();
   },
 }
 </script>
