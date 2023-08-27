@@ -127,7 +127,7 @@
       <el-form label="top">
         <el-form-item>
           <el-input v-model="loginconfig.user" placeholder="请输入邮箱">
-            <template #prepend>用户名</template>
+            <template #prepend>邮&emsp;箱</template>
           </el-input>
         </el-form-item>
         <el-form-item>
@@ -148,7 +148,7 @@
         </el-form-item>
       </el-form>
       <el-form-item>
-        <el-checkbox v-model="remember" label="记账账号" size="large" />
+        <el-checkbox v-model="remember" label="记住账号" size="large" />
       </el-form-item>
       <el-form-item>
         <el-button plain :loading="loading" @click="submitLogin('login')"

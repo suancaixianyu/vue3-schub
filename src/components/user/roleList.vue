@@ -5,13 +5,14 @@
     :type="x.type"
     :effect="x.effect"
     v-for="x in role_list"
-    >{{ x.name }}</el-tag>
+    >{{ x.name }}</el-tag
+  >
 </template>
 
 <script lang="ts">
 import Method from '@/globalmethods.ts'
 import '../admin/index.ts'
-import {watch} from "vue";
+import { watch } from 'vue'
 export default {
   name: 'UserRole',
   props: {
@@ -22,14 +23,20 @@ export default {
   },
   data() {
     return {
-      role_list: <roleItem[]>[]
+      role_list: <roleItem[]>[],
     }
   },
-  created(){
-    this.role_list = Method.decodeRoleList(this.role);
-    watch(()=>this.role,()=>{
-      this.role_list = Method.decodeRoleList(this.role);
-    });
-  }
+  created() {
+    console.log(Method.decodeRoleList(this.role))
+    console.log(this.role)
+
+    this.role_list = Method.decodeRoleList(this.role)
+    watch(
+      () => this.role,
+      () => {
+        this.role_list = Method.decodeRoleList(this.role)
+      },
+    )
+  },
 }
 </script>

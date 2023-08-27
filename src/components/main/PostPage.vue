@@ -35,7 +35,7 @@
             <BbsItem
               :item="item"
               :path="path"
-              @click="onItemClick(item), console.log(item)"
+              @click="onItemClick(item)"
             ></BbsItem>
           </div>
         </div>
@@ -141,6 +141,11 @@ export default {
             // 格式化数据
             obj.data.forEach((el: any) => {
               el.cover = el.cover ? Method.getHostUrl(el.cover) : ''
+              el.time = Method.formatBbsTime(el.time)
+              el.author.headurl = el.author.headurl
+                ? Method.getHostUrl(el.author.headurl)
+                : 'https://q.qlogo.cn/headimg_dl?dst_uin=100000&spec=160'
+              el.likes = parseInt(el.likes)
             })
 
             // 更新列表
@@ -151,11 +156,7 @@ export default {
               })
               scrollElement.scrollTop = scrollElement.scrollHeight
             } else {
-              let list = <any>[]
-              obj.data.forEach((el: any) => {
-                list.push(el)
-              })
-              this.plate = list
+              this.plate = obj.data
               scrollElement.scrollTop = 0
             }
           }
@@ -177,6 +178,19 @@ export default {
     },
   },
   mounted() {
+    if (Cfg.set.ismobile) {
+      Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+      Cfg.config.homestyle.maincontainer.height = 'auto'
+    }
+    watch(
+      () => Cfg.set.ismobile,
+      () => {
+        if (Cfg.set.ismobile) {
+          Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+          Cfg.config.homestyle.maincontainer.height = 'auto'
+        }
+      },
+    )
     watch(
       () => this.$route.params.cateid,
       () => {
