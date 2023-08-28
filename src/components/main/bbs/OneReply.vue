@@ -107,9 +107,6 @@ export default {
     }
   },
   methods: {
-    loadImgError(e: any) {
-      this.x.author.head_img = Cfg.config.avatar
-    },
     reply() {
       this.doReply(() => {
         this.$emit('refreshEvent')

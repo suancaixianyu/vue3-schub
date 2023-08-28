@@ -2,7 +2,7 @@
   <div v-if="set.ismobile">
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      :style="homestyle.postliststyle"
+      :style="postliststyle"
     >
       <el-button type="primary" plain @click="goPublish">添加模组</el-button>
     </div>
@@ -10,7 +10,7 @@
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
       v-for="(x, index) in list"
       :key="x.id"
-      :style="homestyle.postliststyle"
+      :style="postliststyle"
     >
       <el-container style="padding: 0">
         <el-aside
@@ -164,11 +164,11 @@
               >文件列表</el-button
             >
             <el-button
-                size="small"
-                link
-                type="danger"
-                @click="handleModify(scope.$index)"
-            >编辑</el-button
+              size="small"
+              link
+              type="danger"
+              @click="handleModify(scope.$index)"
+              >编辑</el-button
             >
             <el-button
               size="small"
@@ -227,8 +227,7 @@ export default {
   },
   data() {
     return {
-      ...Cfg.config,
-      set: Cfg.set,
+      ...Cfg,
       isLoading: false,
       list: <modItem[]>[],
       modName: '',
@@ -278,12 +277,12 @@ export default {
     manageFileList(index: number) {
       this.activeItemIndex = index
       let modId = this.list[index].id
-      this.$router.push(`/ModFiles/${modId}`);
+      this.$router.push(`/ModFiles/${modId}`)
     },
-    handleModify(index:number){
+    handleModify(index: number) {
       this.activeItemIndex = index
-      let modId = this.list[index].id;
-      this.$router.push(`/ModPublish/${modId}`);
+      let modId = this.list[index].id
+      this.$router.push(`/ModPublish/${modId}`)
     },
     handleDelete(index: number) {
       this.activeItemIndex = index
@@ -291,7 +290,7 @@ export default {
       this.modName = this.list[index].name
     },
     goPublish() {
-      this.$router.push("/ModPublish/0")
+      this.$router.push('/ModPublish/0')
     },
     refreshList() {
       this.isLoading = true
