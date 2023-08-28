@@ -209,24 +209,12 @@
           <details class="dropdown mb-32 rounded-box" ref="tool">
             <summary class="m-1 btn bg-base-100 btn-ghost">
               <el-icon :size="26">
-                <svg
-                  t="1691074075906"
-                  class="icon"
-                  viewBox="0 0 1024 1024"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  p-id="5561"
-                  width="200"
-                  height="200"
-                  style="margin: 0"
-                >
+                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="200" height="200" style="margin: 0">
                   <path
                     d="M817.87 556.31h-63.58v-66.24A42.27 42.27 0 0 0 712 447.8h-84.81a42.27 42.27 0 0 0-42.27 42.27v66.24H436.57v-66.24a42.27 42.27 0 0 0-42.27-42.27h-84.83a42.27 42.27 0 0 0-42.27 42.27v66.24h-61.83A22.39 22.39 0 0 0 183 578.7a22.39 22.39 0 0 0 22.39 22.39h61.81v65.55a42.27 42.27 0 0 0 42.27 42.27h84.83a42.27 42.27 0 0 0 42.27-42.27v-65.55h148.36v65.55a42.27 42.27 0 0 0 42.27 42.27H712a42.27 42.27 0 0 0 42.27-42.27v-65.55h63.58a22.39 22.39 0 0 0 22.39-22.39 22.39 22.39 0 0 0-22.37-22.39z m-438.64 95.26h-54.69V505.14h54.69z m317.72 0h-54.69V505.14H697z"
-                    p-id="5562"
                   ></path>
                   <path
                     d="M823 202.58h-90.81v-63.09a71.88 71.88 0  0 0-71.88-71.88H363.19a71.88 71.88 0 0 0-71.88 71.88v63.08h-90.12A137.17 137.17 0 0 0 64 339.75v479a137.17 137.17 0 0 0 137.19 137.14H823a137.17 137.17 0 0 0 137.19-137.17v-479A137.17 137.17 0 0 0 823 202.58z m-474.36-54.1A23.52 23.52 0 0 1 372.17 125h279.16a23.52 23.52 0 0 1 23.52 23.52v54.1h-326.2z m554.23 673.31a76.76 76.76 0 0 1-76.76 76.76h-628a76.76 76.76 0 0 1-76.76-76.76V336.67a76.76 76.76 0 0 1 76.76-76.76h628a76.76 76.76 0 0 1 76.76 76.76z"
-                    p-id="5563"
                   ></path>
                 </svg>
               </el-icon>
@@ -299,9 +287,9 @@
             v-else-if="set.ismobile"
           >
             <summary class="m-1 btn-ghost">
-              <el-avatar
+              <user-icon
                 :src="userInfo.data.headurl"
-                :shape="set.shape"
+                :alt="userInfo.data.nickname"
                 :size="32"
               />
             </summary>
@@ -328,10 +316,10 @@
             v-else
           >
             <summary class="m-1 btn-ghost">
-              <el-avatar
+              <user-icon
                 :src="userInfo.data.headurl"
-                :shape="set.shape"
                 :size="32"
+                :alt="userInfo.data.nickname"
               />
             </summary>
             <ul
@@ -373,9 +361,17 @@ import UserLogin from '@comps/user/login.vue'
 import { ElMessage } from 'element-plus'
 import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
+import UserIcon from '@comps/user/userIcon.vue'
+import user from "@comps/user/index.vue";
 export default {
   name: 'NavigationMenu',
+  computed: {
+    user() {
+      return user
+    }
+  },
   components: {
+    UserIcon,
     ScLogo,
     ScMod,
     UserLogin,

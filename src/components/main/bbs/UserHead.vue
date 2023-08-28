@@ -1,25 +1,24 @@
 <template>
   <div class="user">
     <!-- 头像 -->
-    <el-avatar
+    <user-icon
       :src="item.headurl"
-      :shape="item.shape"
       :size="item.headsize"
+      :alt="item.nickname"
       style="margin-right: 12px"
     />
     <!-- 昵称，日期 -->
     <div class="time" :style="item.style">
       <div style="display: flex; justify-content: center">
-        <div style="font-size: 15px">{{ item.nickname }}</div>
+        <div style="font-size: 15px" v-html="item.nickname"></div>
         <UserRole :role="item.role" />
       </div>
       <div>
         <el-text
-          class="mx-1 time"
           size="small"
           style="display: flex; justify-content: flex-start"
+          v-html="item.time+'发表了帖子'"
         >
-          {{ item.time }}
         </el-text>
       </div>
     </div>
@@ -28,9 +27,10 @@
 
 <script lang="ts">
 import UserRole from '@comps/user/roleList.vue'
+import UserIcon from '@comps/user/userIcon.vue'
 export default {
   name: 'UserHead',
-  components: { UserRole },
+  components: { UserIcon, UserRole },
   props: {
     item: {
       type: Object,

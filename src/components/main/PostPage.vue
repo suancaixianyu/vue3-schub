@@ -142,9 +142,6 @@ export default {
             obj.data.forEach((el: any) => {
               el.cover = el.cover ? Method.getHostUrl(el.cover) : ''
               el.time = Method.formatBbsTime(el.time)
-              el.author.headurl = el.author.headurl
-                ? Method.getHostUrl(el.author.headurl)
-                : 'https://q.qlogo.cn/headimg_dl?dst_uin=100000&spec=160'
               el.likes = parseInt(el.likes)
             })
 

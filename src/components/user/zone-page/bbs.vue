@@ -8,22 +8,22 @@
     >
       <el-container style="padding: 0">
         <el-aside width="45%" style="padding: 0; word-wrap: break-word">
-          <router-link class="title" to="/postlist/1/71">
-            {{ x.title }}
-          </router-link>
+          <router-link class="title" :to="'/postlist/'+x.cate_id+'/'+x.id" v-html="x.title"></router-link>
         </el-aside>
 
         <el-main style="padding: 0; overflow-x: hidden">
           <el-row :gutter="5">
             <el-col :span="9">
               <el-text>
-                <el-icon> <View /> </el-icon>{{ x.views }}
+                <el-icon> <View /> </el-icon>
+                <div v-html="x.views"></div>
               </el-text>
             </el-col>
 
             <el-col :span="9">
               <el-text>
-                <el-icon> <ChatRound /> </el-icon>{{ x.comments }}
+                <el-icon> <ChatRound /> </el-icon>
+                <div v-html="x.comments"></div>
               </el-text>
             </el-col>
             <el-col :span="2"> </el-col>
@@ -40,9 +40,7 @@
                     <el-dropdown-item>复制链接</el-dropdown-item>
                     <el-dropdown-item>编辑</el-dropdown-item>
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)"
-                      >删除</el-dropdown-item
-                    >
+                    <el-dropdown-item divided @click="handleDelete(index)">删除</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -60,24 +58,17 @@
       <el-table-column prop="comments" label="评论" width="180" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button
-            size="small"
-            link
-            type="danger"
-            @click="handleDelete(scope.$index)"
-            >删除</el-button
-          >
+          <el-button size="small" link type="primary" @click="$router.push('/postlist/'+list[scope.$index].cate_id+'/'+list[scope.$index].id)">查看</el-button>
+          <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-      class="el-pagination"
-      v-model:current-page="page"
-      background
-      :page-size="limit"
-      :pager-count="8"
-      layout="prev, pager, next"
-      :total="total"
+        v-model:current-page="page"
+        background
+        :page-size="limit"
+        layout="prev, pager, next"
+        :total="total"
     />
   </div>
 
@@ -171,13 +162,10 @@ export default {
     },
   },
   mounted() {
-    this.refreshList()
-    watch(
-      () => this.page,
-      () => {
-        this.refreshList()
-      },
-    )
+    watch(()=>this.page,()=>{
+      this.refreshList();
+    })
+    this.refreshList();
   },
 }
 </script>

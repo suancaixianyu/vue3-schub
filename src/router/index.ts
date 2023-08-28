@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/user',
     name: 'UserIndex',
-    meta: { title: '个人中心-SC中文社区' },
+    meta: { title: '个人中心-SC中文社区',keepAlive:true },
     component: () => import('@comps/user/index.vue'),
   },
   {
@@ -56,7 +56,7 @@ const routes: RouteRecordRaw[] = [
   },
   /**发模组*/
   {
-    path: '/ModPublish',
+    path: '/ModPublish/:id',
     name: 'ModPublish',
     meta: { title: '发布模组-SC中文社区' },
     component: () => import('@comps/mod/publish.vue'),

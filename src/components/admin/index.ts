@@ -8,6 +8,7 @@ interface memberItem {
     money: number
     stat: number
     email: string
+    role_list:string
 }
 interface roleItem {
     id: number
@@ -91,4 +92,5 @@ interface cateItem {
     id: number
     name: string
     stat: number
+    introduce:string
 }

@@ -59,7 +59,6 @@
         v-model:current-page="page"
         background
         :page-size="limit"
-        :pager-count="8"
         layout="prev, pager, next"
         :total="total"
     />
