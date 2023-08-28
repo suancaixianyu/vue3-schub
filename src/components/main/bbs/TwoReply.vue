@@ -1,17 +1,17 @@
 <template>
   <div class="post-area">
-    <el-avatar
+    <user-icon
       :src="v.xx.author.headurl"
-      :shape="shape"
-      :size="26"
+      :size="v.size"
+      :alt="v.xx.author.nickname"
       style="margin-right: 12px"
     />
     <div class="area">
       <div class="user-label">
-        <div>{{ v.xx.author.nickname }}</div>
+        <div v-html="v.xx.author.nickname"></div>
         <div class="to-user" v-if="v.xx.to_author != null">
           <div class="to-user-label">回复</div>
-          <a class="to-user-name">@{{ v.xx.to_author.nickname }}</a>
+          <a class="to-user-name" v-html="'@' + v.xx.to_author.nickname"></a>
           <div>:</div>
         </div>
       </div>
@@ -21,9 +21,9 @@
         :editorId="`preview-tow-${previewid}`"
       />
       <div class="extra-line">
-        <div class="time">{{ v.xx.time }}</div>
+        <div class="time" v-html="v.xx.time"></div>
         <LikeIcon class="label" @click="doLike"></LikeIcon>
-        <div class="label amount">{{ likes }}</div>
+        <div class="label amount" v-html="likes"></div>
         <div class="label" @click="readyReply">回复</div>
       </div>
       <div v-if="isReadyReply">
@@ -63,10 +63,12 @@ import 'md-editor-v3/lib/preview.css'
 import Method from '@/globalmethods.ts'
 import Cfg from '@/config/config.ts'
 import UserRole from '@comps/user/roleList.vue'
+import UserIcon from '@comps/user/userIcon.vue'
 
 export default {
   name: 'TowReply',
   components: {
+    UserIcon,
     UserRole,
     LikeIcon,
     MdPreview,
@@ -79,7 +81,7 @@ export default {
     v: {
       type: Object,
       required: true,
-    },
+    }
   },
   data() {
     return {

@@ -3,25 +3,21 @@
     <router-link :to="`/postlist/${path}/${item.id}`">
       <el-container>
         <el-aside width="70%">
-          <el-text class="mx-1 time title" size="large" tag="b">{{
-            item.title
-          }}</el-text>
-          <el-text class="mx-1 time" style="text-align: left">{{
-            item.summary
-          }}</el-text>
+          <el-text class="mx-1 time title" size="large" tag="b" v-html="item.title"></el-text>
+          <el-text class="mx-1 time" style="text-align: left" v-html="item.summary"></el-text>
           <ul class="category-counts">
             <li @click="doLike">
               <el-icon :size="22">
                 <LikeIcon />
               </el-icon>
-              <p>{{ goodNum }}</p>
+              <p v-html="goodNum"></p>
             </li>
             <router-link :to="`/postlist/${path}/${item.id}`">
               <li>
                 <el-icon :size="18" style="margin-right: 5px">
                   <ChatDotSquare />
                 </el-icon>
-                <p>{{ item.comments }}</p>
+                <p v-html="item.comments"></p>
               </li>
             </router-link>
           </ul>
@@ -59,7 +55,7 @@
           headsize,
           nickname: item.author.nickname,
           time: item.time,
-          role: item.author.role,
+          role: item.author.role
         }"
       />
     </el-header>
@@ -67,12 +63,8 @@
     <router-link :to="`/postlist/${path}/${item.id}`">
       <el-container>
         <el-aside width="70%">
-          <el-text class="mx-1 time title" size="large" tag="b">{{
-            item.title
-          }}</el-text>
-          <el-text class="mx-1 time" style="text-align: left">{{
-            item.summary
-          }}</el-text>
+          <el-text class="mx-1 time title" size="large" tag="b" v-html="item.title"></el-text>
+          <el-text class="mx-1 time" style="text-align: left" v-html="item.summary"></el-text>
         </el-aside>
         <el-main style="padding: 0; text-align: right" v-if="item.cover">
           <el-image style="height: 80px" :src="item.cover" fit="cover" />
@@ -86,14 +78,14 @@
           <el-icon :size="22">
             <LikeIcon />
           </el-icon>
-          <p>{{ goodNum }}</p>
+          <p v-html="goodNum"></p>
         </li>
         <router-link :to="`/postlist/${path}/${item.id}`">
           <li>
             <el-icon :size="18" style="margin-right: 5px">
               <ChatDotSquare />
             </el-icon>
-            <p>{{ item.comments }}</p>
+            <p v-html="item.comments"></p>
           </li>
         </router-link>
       </ul>
