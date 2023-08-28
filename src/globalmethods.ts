@@ -244,7 +244,7 @@ class Method {
         return xx.id == x
       })
       if (f != null) {
-        result.push(f)
+        result.push(this.copyObject(f))
       }
     })
     return result
@@ -268,7 +268,7 @@ class Method {
           return xx.id == x
         })
         if (f != null) {
-          result.push(f)
+          result.push(this.copyObject(f))
         }
       })
     }
@@ -318,7 +318,7 @@ class Method {
         return xx.id == x
       })
       if (f != null) {
-        result.push(f)
+        result.push(this.copyObject(f))
       }
     })
     return result
@@ -341,7 +341,7 @@ class Method {
         return xx.id == x
       })
       if (f != null) {
-        result.push(f)
+        result.push(this.copyObject(f))
       }
     })
     return result
