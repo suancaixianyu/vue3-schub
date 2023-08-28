@@ -1,9 +1,9 @@
 <template>
   <el-container v-if="set.ismobile">
-    <el-col class="el-main v">
-      <div class="cate-list mobile" v-if="!isBbsView">
+    <el-col class="el-main v bg-base-100">
+      <div class="cate-list mobile bg-base-100" v-if="!isBbsView">
         <el-button type="info" @click="topicPublish">发布主题</el-button>
-        <div class="list" v-loading="loadingCate">
+        <div class="list bg-base-100" v-loading="loadingCate">
           <!-- <el-button :class="active_cate_id == item.id ? 'active' : ''" v-for="item in cate_list"
             @click="active_cate_id = item.id">
             <el-icon>
@@ -14,6 +14,7 @@
           <router-link
             v-for="item in cate_list"
             :class="active_cate_id == item.id ? 'active' : ''"
+            class="bg-base-100"
             :to="`/postlist/${item.id}`"
             @click="active_cate_id = item.id"
           >
@@ -83,7 +84,7 @@ export default {
       set: Cfg.set,
       isBbsView: false,
       activeBbsItem: <any>null,
-      headsize: Cfg.config.homestyle.headsize.post,
+      headsize: Cfg.headsize.post,
       bbs_list: [] as any,
       cate_list: <cateItem[]>[],
       loadingCate: false,
@@ -153,7 +154,6 @@ export default {
     if (!this.$route.params.cateid) {
       this.$router.replace('/postlist/0')
     }
-    Cfg.config.homestyle.maincontainer.padding = '0 0.5rem'
   },
   updated() {
     if (this.$route.params.id) {
@@ -161,9 +161,6 @@ export default {
     } else {
       this.isBbsView = false
     }
-  },
-  unmounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0 1rem'
   },
 }
 </script>

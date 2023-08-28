@@ -41,12 +41,9 @@
         </div>
         <el-empty v-else description="没有数据" :image-size="200" />
         <div class="load-more" v-if="set.ismobile">
-          <el-button
-            type="primary"
-            @click="loadMore"
-            v-html="txt"
-            v-loading="isLoadingMore"
-          ></el-button>
+          <el-button type="primary" @click="loadMore" v-loading="isLoadingMore">
+            {{ txt }}
+          </el-button>
         </div>
       </div>
     </div>
@@ -176,15 +173,15 @@ export default {
   },
   mounted() {
     if (Cfg.set.ismobile) {
-      Cfg.config.homestyle.maincontainer.overflowY = 'auto'
-      Cfg.config.homestyle.maincontainer.height = 'auto'
+      Cfg.maincontainer.overflowY = 'auto'
+      Cfg.maincontainer.height = 'auto'
     }
     watch(
       () => Cfg.set.ismobile,
       () => {
         if (Cfg.set.ismobile) {
-          Cfg.config.homestyle.maincontainer.overflowY = 'auto'
-          Cfg.config.homestyle.maincontainer.height = 'auto'
+          Cfg.maincontainer.overflowY = 'auto'
+          Cfg.maincontainer.height = 'auto'
         }
       },
     )

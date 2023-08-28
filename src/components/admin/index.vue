@@ -16,26 +16,41 @@
       </el-tab-pane>
       <el-tab-pane label="账号管理" name="2">
         <div v-loading="isLoadingData">
-          <el-table
-            :data="member_list"
-            stripe
-            style="width: 100%"
-          >
+          <el-table :data="member_list" stripe style="width: 100%">
             <el-table-column prop="id" width="60" label="ID" />
             <el-table-column prop="account" label="账号" width="120" />
             <el-table-column prop="nickname" label="昵称" width="120" />
             <el-table-column prop="reg_time" label="注册时间" width="180" />
-            <el-table-column prop="last_login_time" label="最后登陆时间" width="180"/>
-            <el-table-column prop="last_login_ip" label="最后登陆IP" width="120"/>
+            <el-table-column
+              prop="last_login_time"
+              label="最后登陆时间"
+              width="180"
+            />
+            <el-table-column
+              prop="last_login_ip"
+              label="最后登陆IP"
+              width="120"
+            />
             <el-table-column prop="money" label="积分" width="80" />
             <el-table-column prop="email" label="邮箱" width="120" />
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button size="small" link type="danger" @click="showLockItem(1, scope.$index)">
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(1, scope.$index)"
+                >
                   <div v-if="member_list[scope.$index].stat == 0">解锁</div>
                   <div v-else>锁定</div>
                 </el-button>
-                <el-button size="small" link type="primary" @click="showLockItem(6, scope.$index)">头衔设置</el-button>
+                <el-button
+                  size="small"
+                  link
+                  type="primary"
+                  @click="showLockItem(6, scope.$index)"
+                  >头衔设置</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -106,8 +121,20 @@
             <el-table-column prop="create_time" label="发布时间" width="180" />
             <el-table-column prop="stat" label="状态" width="180">
               <template #default="scope">
-                <el-tag size="small" :type="mod_list[scope.$index].stat_data.type" v-if="mod_list[scope.$index].stat !== 3" v-html="mod_list[scope.$index].stat_data.name"></el-tag>
-                <el-popover  v-if="mod_list[scope.$index].stat == 3" placement="top-start" title="原因" :width="200" trigger="hover" :content="mod_list[scope.$index].reason">
+                <el-tag
+                  size="small"
+                  :type="mod_list[scope.$index].stat_data.type"
+                  v-if="mod_list[scope.$index].stat !== 3"
+                  v-html="mod_list[scope.$index].stat_data.name"
+                ></el-tag>
+                <el-popover
+                  v-if="mod_list[scope.$index].stat == 3"
+                  placement="top-start"
+                  title="原因"
+                  :width="200"
+                  trigger="hover"
+                  :content="mod_list[scope.$index].reason"
+                >
                   <template #reference>
                     <el-tag size="small" type="danger">审核未通过</el-tag>
                   </template>
@@ -116,8 +143,19 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button size="small" link type="primary" @click="showExamineMode(scope.$index)">审核</el-button>
-                <el-button size="small" link type="danger" @click="showLockItem(3, scope.$index)">
+                <el-button
+                  size="small"
+                  link
+                  type="primary"
+                  @click="showExamineMode(scope.$index)"
+                  >审核</el-button
+                >
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(3, scope.$index)"
+                >
                   <div v-if="mod_list[scope.$index].stat == 0">解锁</div>
                   <div v-else>锁定</div>
                 </el-button>
@@ -138,11 +176,7 @@
           <el-button type="primary" plain @click="showAddRole"
             >添加头衔</el-button
           >
-          <el-table
-            :data="role_list"
-            stripe
-            style="width: 100%"
-          >
+          <el-table :data="role_list" stripe style="width: 100%">
             <el-table-column prop="id" width="80" label="ID" />
             <el-table-column prop="name" label="名称" width="180" />
             <el-table-column label="预览" width="180">
@@ -157,8 +191,19 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button size="small" link type="primary" @click="showLockItem(7, scope.$index)">编辑</el-button>
-                <el-button size="small" link type="danger" @click="showLockItem(4, scope.$index)">
+                <el-button
+                  size="small"
+                  link
+                  type="primary"
+                  @click="showLockItem(7, scope.$index)"
+                  >编辑</el-button
+                >
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(4, scope.$index)"
+                >
                   <div v-if="role_list[scope.$index].stat == 0">启用</div>
                   <div v-else>停用</div>
                 </el-button>
@@ -177,7 +222,9 @@
       </el-tab-pane>
       <el-tab-pane label="板块列表管理" name="6">
         <div v-loading="isLoadingData">
-          <el-button type="primary" plain @click="showAddCate">添加板块</el-button>
+          <el-button type="primary" plain @click="showAddCate"
+            >添加板块</el-button
+          >
           <el-table :data="cate_list" stripe style="width: 100%">
             <el-table-column prop="id" width="80" label="ID" />
             <el-table-column prop="name" label="名称" width="180" />
@@ -186,8 +233,19 @@
             <el-table-column prop="interaction" label="回复数" width="80" />
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button size="small" link type="primary"  @click="showModifyCate(scope.$index)">编辑</el-button>
-                <el-button size="small" link type="danger" @click="showLockItem(5, scope.$index)">
+                <el-button
+                  size="small"
+                  link
+                  type="primary"
+                  @click="showModifyCate(scope.$index)"
+                  >编辑</el-button
+                >
+                <el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="showLockItem(5, scope.$index)"
+                >
                   <div v-if="cate_list[scope.$index].stat == 0">解锁</div>
                   <div v-else>锁定</div>
                 </el-button>
@@ -210,14 +268,21 @@
             <el-input rows="20" type="textarea" v-model="x.value" />
           </el-form-item>
           <el-form-item>
-            <el-button @click="saveSiteConfig" :loading="isLocking">保存配置</el-button>
+            <el-button @click="saveSiteConfig" :loading="isLocking"
+              >保存配置</el-button
+            >
           </el-form-item>
         </el-form>
       </el-tab-pane>
     </el-tabs>
   </div>
   <!---添加/编辑板块弹窗-->
-  <dialog-confirm :title="this.cateConfig.id>0?'修改板块':'添加板块'" v-model:visible="dialogShow.addCate" @submit="addCate(false)" :loading="isLocking">
+  <dialog-confirm
+    :title="cateConfig.id > 0 ? '修改板块' : '添加板块'"
+    v-model:visible="dialogShow.addCate"
+    @submit="addCate(false)"
+    :loading="isLocking"
+  >
     <el-form>
       <el-form-item label="板块名称">
         <el-input v-model="cateConfig.name"></el-input>
@@ -228,16 +293,34 @@
     </el-form>
   </dialog-confirm>
   <!--头衔设置弹窗-->
-  <dialog-confirm title="头衔设置" v-model:visible="dialogShow.setRole" @submit="setUserRole">
+  <dialog-confirm
+    title="头衔设置"
+    v-model:visible="dialogShow.setRole"
+    @submit="setUserRole"
+  >
     <el-form>
       <el-form-item label="头衔列表">
         <el-row>
-          <el-tag @click="addUserRole(x)" v-for="x in role_list" :color="x.color" :type="x.type" :effect="x.effect" v-html="x.name"></el-tag>
+          <el-tag
+            @click="addUserRole(x)"
+            v-for="x in role_list"
+            :color="x.color"
+            :type="x.type"
+            :effect="x.effect"
+            v-html="x.name"
+          ></el-tag>
         </el-row>
       </el-form-item>
       <el-form-item label="已选择">
         <el-row>
-          <el-tag @click="removeUserRole(x)" v-for="x in user_role_list" :color="x.color" :type="x.type" :effect="x.effect" v-html="x.name"></el-tag>
+          <el-tag
+            @click="removeUserRole(x)"
+            v-for="x in user_role_list"
+            :color="x.color"
+            :type="x.type"
+            :effect="x.effect"
+            v-html="x.name"
+          ></el-tag>
         </el-row>
       </el-form-item>
     </el-form>
@@ -291,7 +374,12 @@
     </span>
   </dialog-confirm>
   <!--停用头衔弹窗-->
-  <dialog-confirm title="提示" v-model:visible="dialogShow.lockRole" :loading="isLocking" @submit="lockItem(4)">
+  <dialog-confirm
+    title="提示"
+    v-model:visible="dialogShow.lockRole"
+    :loading="isLocking"
+    @submit="lockItem(4)"
+  >
     <span>
       <span>是否停用头衔[ID:{{ activeItem.role.id }}]</span>
       <span style="color: #008ac5">{{ activeItem.role.name }}</span>
@@ -306,7 +394,12 @@
     :loading-success="isPassing"
   ></dialog-examine>
   <!--添加/编辑头衔弹窗-->
-  <dialog-confirm v-model:visible="dialogShow.addRole" :title="this.activeItem.role.id>0?'修改头衔':'添加头衔'" :loading="isLocking" @submit="addRole">
+  <dialog-confirm
+    v-model:visible="dialogShow.addRole"
+    :title="activeItem.role.id > 0 ? '修改头衔' : '添加头衔'"
+    :loading="isLocking"
+    @submit="addRole"
+  >
     <el-form>
       <el-form-item label="预览">
         <el-tag
@@ -379,13 +472,13 @@ export default {
         lockRole: false,
         lockCate: false,
         examineMod: false,
-        setRole:false,
-        addCate:false
+        setRole: false,
+        addCate: false,
       },
-      cateConfig:<cateItem>{
-        id:0,
-        name:'',
-        introduce:''
+      cateConfig: <cateItem>{
+        id: 0,
+        name: '',
+        introduce: '',
       },
       gameConfig: {
         name: '',
@@ -395,7 +488,7 @@ export default {
         name: '预览',
         color: '',
         type: '',
-        effect: 'plain'
+        effect: 'plain',
       },
       activeTab: '1',
       taskTimerId: 0,
@@ -418,7 +511,7 @@ export default {
       mod_list: <modItem[]>[],
       bbs_list: <bbsItem[]>[],
       role_list: <roleItem[]>[],
-      user_role_list:<roleItem[]>[],
+      user_role_list: <roleItem[]>[],
       cate_list: <cateItem[]>[],
       site_config_list: <siteConfig[]>[],
       serverInfo: <serverInfo>{},
@@ -448,39 +541,42 @@ export default {
           this.activeItem.cate = this.cate_list[index]
           break
         case 6:
-          this.dialogShow.setRole = true;
-          this.activeItem.member = this.member_list[index];
-          let list = Method.decodeRoleList(this.activeItem.member.role_list);
-          this.user_role_list = Method.copyObject(list);
-          this.refreshRoleList();
-          break;
+          this.dialogShow.setRole = true
+          this.activeItem.member = this.member_list[index]
+          let list = Method.decodeRoleList(this.activeItem.member.role_list)
+          this.user_role_list = Method.copyObject(list)
+          this.refreshRoleList()
+          break
         case 7:
-          this.dialogShow.addRole = true;
-          this.activeItem.role = this.role_list[index];
-          this.roleConfig = Method.copyObject(this.activeItem.role);
-          break;
+          this.dialogShow.addRole = true
+          this.activeItem.role = this.role_list[index]
+          this.roleConfig = Method.copyObject(this.activeItem.role)
+          break
       }
     },
-    addUserRole(x:roleItem){
-      this.user_role_list.push(x);
+    addUserRole(x: roleItem) {
+      this.user_role_list.push(x)
     },
-    removeUserRole(x:roleItem){
-      this.user_role_list.splice(this.user_role_list.indexOf(x),1);
+    removeUserRole(x: roleItem) {
+      this.user_role_list.splice(this.user_role_list.indexOf(x), 1)
     },
-    setUserRole(){
-      let list = <number[]>[];
-      this.user_role_list.forEach((x:any)=>{
-        list.push(x.id);
-      });
-      this.isLocking = true;
-      Method.api_post("/admin/set_user_role",{uid:this.activeItem.member.id,role_list:JSON.stringify(list)}).then(response=>{
-        let res = <res>response.data;
-        if(res.code==200){
-          ElMessage('设置成功');
-          this.dialogShow.setRole = false;
-          this.refreshRoleList();
-        }else ElMessage(res.msg);
-      });
+    setUserRole() {
+      let list = <number[]>[]
+      this.user_role_list.forEach((x: any) => {
+        list.push(x.id)
+      })
+      this.isLocking = true
+      Method.api_post('/admin/set_user_role', {
+        uid: this.activeItem.member.id,
+        role_list: JSON.stringify(list),
+      }).then((response) => {
+        let res = <res>response.data
+        if (res.code == 200) {
+          ElMessage('设置成功')
+          this.dialogShow.setRole = false
+          this.refreshRoleList()
+        } else ElMessage(res.msg)
+      })
     },
     showAddRole() {
       this.dialogShow.addRole = true
@@ -489,16 +585,16 @@ export default {
         name: '预览',
         color: '',
         type: '',
-        effect: 'plain'
-      };
+        effect: 'plain',
+      }
     },
-    showAddCate(){
-      this.dialogShow.addCate = true;
+    showAddCate() {
+      this.dialogShow.addCate = true
       this.cateConfig = <cateItem>{
-        id:0,
-        name:'',
-        introduce:''
-      };
+        id: 0,
+        name: '',
+        introduce: '',
+      }
     },
     showExamineMode(index: number) {
       this.activeItem.mod = this.mod_list[index]
@@ -539,35 +635,36 @@ export default {
             color: '',
             type: '',
             effect: 'plain',
+            stat: 1,
           }
           this.dialogShow.addRole = false
           this.refreshRoleList()
-          ElMessage(this.roleConfig.id>0?'修改成功':'添加成功')
+          ElMessage(this.roleConfig.id > 0 ? '修改成功' : '添加成功')
         } else {
           ElMessage(res.msg)
         }
       })
     },
-    addCate(modify:boolean) {
-      this.isLocking = true;
-      let payLoad = this.cateConfig;
-      if(modify) payLoad.id = this.activeItem.cate.id;
+    addCate(modify: boolean) {
+      this.isLocking = true
+      let payLoad = this.cateConfig
+      if (modify) payLoad.id = this.activeItem.cate.id
       Method.api_post('/admin/add_cate', payLoad).then((response) => {
         let res = response.data
-        this.isLocking = false;
+        this.isLocking = false
         if (res.code == 200) {
-          this.dialogShow.addCate = false;
+          this.dialogShow.addCate = false
           this.refreshCateList()
-          ElMessage(modify?'修改成功':'添加成功')
+          ElMessage(modify ? '修改成功' : '添加成功')
         } else {
           ElMessage(res.msg)
         }
       })
     },
-    showModifyCate(index:number){
-      this.dialogShow.addCate = true;
-      this.activeItem.cate = this.cate_list[index];
-      this.cateConfig = Method.copyObject(this.activeItem.cate);
+    showModifyCate(index: number) {
+      this.dialogShow.addCate = true
+      this.activeItem.cate = this.cate_list[index]
+      this.cateConfig = Method.copyObject(this.activeItem.cate)
     },
     lockItem(type: number) {
       this.isLocking = true
@@ -658,12 +755,12 @@ export default {
         this.isLoadingData = false
         let res = response.data
         if (res.code == 200) {
-          if (this.page == 1) this.total = res.sum;
-          res.data.forEach((x:any)=>{
-            x.last_login_time = Method.formatNormalTime(x.last_login_time);
-            x.reg_time = Method.formatNormalTime(x.reg_time);
-          });
-          this.member_list = res.data;
+          if (this.page == 1) this.total = res.sum
+          res.data.forEach((x: any) => {
+            x.last_login_time = Method.formatNormalTime(x.last_login_time)
+            x.reg_time = Method.formatNormalTime(x.reg_time)
+          })
+          this.member_list = res.data
         }
       })
     },
@@ -707,10 +804,10 @@ export default {
         this.isLoadingData = false
         let res = response.data
         if (res.code == 200) {
-          if (this.page == 1) this.total = res.sum;
-          res.data.forEach((x:any)=>{
-            x.create_time = Method.formatNormalTime(x.create_time);
-          });
+          if (this.page == 1) this.total = res.sum
+          res.data.forEach((x: any) => {
+            x.create_time = Method.formatNormalTime(x.create_time)
+          })
           this.bbs_list = res.data
         }
       })
@@ -808,7 +905,7 @@ export default {
   },
   mounted() {
     this.refreshServerInfo()
-    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    Cfg.maincontainer.overflowY = 'auto'
     watch(
       () => this.activeTab,
       (v) => {
@@ -827,7 +924,7 @@ export default {
     this.taskTimerId = 0
   },
   unmounted() {
-    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+    Cfg.maincontainer.overflowY = 'hidden'
   },
 }
 </script>

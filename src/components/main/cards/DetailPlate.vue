@@ -1,7 +1,7 @@
 <template>
   <div v-loading="isLoading">
     <!-- 移动端 -->
-    <div v-if="set.ismobile">
+    <div v-if="set.ismobile" style="padding: 0 0.5rem">
       <!-- 顶部按钮 -->
       <el-row :gutter="24" style="padding: 0" v-if="content != null">
         <el-col :span="16">
@@ -60,7 +60,11 @@
             <!-- 发表评论 -->
             <el-row :gutter="24">
               <el-col :span="3" style="padding: 0">
-                <user-icon :src="headurl" :size="headsize" :alt="userInfo.nickname"/>
+                <user-icon
+                  :src="headurl"
+                  :size="headsize"
+                  :alt="userInfo.nickname"
+                />
               </el-col>
               <el-col :span="14" style="padding: 0">
                 <el-input v-model="comments" autosize placeholder="发表评论" />
@@ -97,7 +101,12 @@
       <div v-if="content != null" class="common-layout">
         <el-row :gutter="24" style="padding: 0" v-if="content != null">
           <el-col :span="16">
-            <el-text class="mx-1 time title" size="large" tag="b" v-html="content.title"></el-text>
+            <el-text
+              class="mx-1 time title"
+              size="large"
+              tag="b"
+              v-html="content.title"
+            ></el-text>
           </el-col>
           <el-col :span="8" style="display: flex; justify-content: flex-end">
             <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
@@ -147,7 +156,11 @@
               <!-- 发表评论 -->
               <el-row :gutter="24">
                 <el-col :span="2">
-                  <user-icon :src="headurl" :alt="userInfo.nickname" :size="headsize" />
+                  <user-icon
+                    :src="headurl"
+                    :alt="userInfo.nickname"
+                    :size="headsize"
+                  />
                 </el-col>
                 <el-col :span="19">
                   <el-input
@@ -213,7 +226,7 @@ export default {
     return {
       headurl: Cfg.userInfo.data.headurl,
       userInfo: <any>null,
-      headsize: Cfg.config.homestyle.headsize.post,
+      headsize: Cfg.headsize.post,
       set: Cfg.set,
       shape: Cfg.set.shape,
       isLoading: false,
@@ -242,10 +255,10 @@ export default {
         .then((res: any) => {
           this.isLoading = false
           if (res.data.code === 200) {
-            let item = res.data.data;
-            item.time = Method.formatBbsTime(item.time);
-            item.author.headurl = Method.getHostUrl(item.author.headurl);
-            this.content = item;
+            let item = res.data.data
+            item.time = Method.formatBbsTime(item.time)
+            item.author.headurl = Method.getHostUrl(item.author.headurl)
+            this.content = item
             this.userInfo = {
               headurl: item.author.headurl,
               nickname: item.author.nickname,
@@ -327,7 +340,7 @@ export default {
       this.refresh_reply_list()
     },
     close() {
-      this.$router.push("/postlist/0")
+      this.$router.push('/postlist/0')
     },
     copyText() {
       Method.copyText(window.location.href)
@@ -356,12 +369,8 @@ export default {
   },
 
   updated() {
-    Cfg.config.homestyle.maincontainer.height = Cfg.set.ismobile
-      ? 'auto'
-      : 'calc(100vh - 6rem)'
-    Cfg.config.homestyle.maincontainer.overflowY = Cfg.set.ismobile
-      ? 'auto'
-      : 'hidden'
+    Cfg.maincontainer.height = Cfg.set.ismobile ? 'auto' : 'calc(100vh - 6rem)'
+    Cfg.maincontainer.overflowY = Cfg.set.ismobile ? 'auto' : 'hidden'
     Cfg.set.showfooter = Cfg.set.ismobile ? false : true
   },
 

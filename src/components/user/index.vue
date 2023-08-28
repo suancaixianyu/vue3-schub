@@ -6,6 +6,7 @@
         backgroundImage:
           // 'url(https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png)',
           'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png)',
+        padding: '0',
       }"
     >
       <img
@@ -94,7 +95,6 @@ import ModPage from '@comps/user/zone-page/mod.vue'
 import BbsPage from '@comps/user/zone-page/bbs.vue'
 import WorldPage from '@comps/user/zone-page/world.vue'
 import { ElMessage } from 'element-plus'
-import { useRoute } from 'vue-router'
 import Cfg from '@/config/config.ts'
 import Method from '@/globalmethods.ts'
 import UserRole from '@comps/user/roleList.vue'
@@ -142,42 +142,38 @@ export default {
       this.activePages[e.index] = true
       this.activeTab = e.index
     },
-    getUserInfo(){
+    getUserInfo() {
       this.isLoading = true
       Method.api_get(`/user/zone/${this.userInfo.id}`)
-          .then((response: any) => {
-            let res = response.data as api
-            this.isLoading = false
-            if (res.code == 200) {
-              res.data.bbs.forEach((x: any) => {
-                x.create_time = Method.formatNormalTime(x.create_time)
-              })
-              this.bbsList = res.data.bbs
-              this.modList = res.data.mod
-              res.data.world.forEach((x: any) => {
-                x.type_name = Method.getScTypeName(x.file_type)
-                x.file_name = Method.getFileName(x.name)
-                x.create_time = Method.formatNormalTime(x.create_time)
-              })
-              this.worldList = res.data.world
-            } else {
-              ElMessage(res.msg)
-            }
-          })
-          .catch(() => {
-            this.isLoading = false
-          })
-    }
+        .then((response: any) => {
+          let res = response.data as api
+          this.isLoading = false
+          if (res.code == 200) {
+            res.data.bbs.forEach((x: any) => {
+              x.create_time = Method.formatNormalTime(x.create_time)
+            })
+            this.bbsList = res.data.bbs
+            this.modList = res.data.mod
+            res.data.world.forEach((x: any) => {
+              x.type_name = Method.getScTypeName(x.file_type)
+              x.file_name = Method.getFileName(x.name)
+              x.create_time = Method.formatNormalTime(x.create_time)
+            })
+            this.worldList = res.data.world
+          } else {
+            ElMessage(res.msg)
+          }
+        })
+        .catch(() => {
+          this.isLoading = false
+        })
+    },
   },
   data() {
     let {
       userInfo,
-      config: {
-        server,
-        homestyle: {
-          headsize: { userindex },
-        },
-      },
+      config: { server },
+      headsize: { userindex },
     } = Cfg
     return {
       uploadServer: `${server}/Upload/Upload`,
@@ -192,12 +188,10 @@ export default {
     }
   },
   mounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0'
-    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    Cfg.maincontainer.overflowY = 'auto'
   },
   unmounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0 1rem'
-    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+    Cfg.maincontainer.overflowY = 'hidden'
   },
 }
 </script>
@@ -265,8 +259,13 @@ export default {
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
-  padding-bottom: 0.5rem;
+  padding: 0 1rem 0.5rem 1rem;
   z-index: 1;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.4)
+  );
 }
 
 .nickname {

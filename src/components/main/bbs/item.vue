@@ -3,8 +3,17 @@
     <router-link :to="`/postlist/${path}/${item.id}`">
       <el-container>
         <el-aside width="70%">
-          <el-text class="mx-1 time title" size="large" tag="b" v-html="item.title"></el-text>
-          <el-text class="mx-1 time" style="text-align: left" v-html="item.summary"></el-text>
+          <el-text
+            class="mx-1 time title"
+            size="large"
+            tag="b"
+            v-html="item.title"
+          ></el-text>
+          <el-text
+            class="mx-1 time"
+            style="text-align: left"
+            v-html="item.summary"
+          ></el-text>
           <ul class="category-counts">
             <li @click="doLike">
               <el-icon :size="22">
@@ -55,7 +64,7 @@
           headsize,
           nickname: item.author.nickname,
           time: item.time,
-          role: item.author.role
+          role: item.author.role,
         }"
       />
     </el-header>
@@ -63,8 +72,17 @@
     <router-link :to="`/postlist/${path}/${item.id}`">
       <el-container>
         <el-aside width="70%">
-          <el-text class="mx-1 time title" size="large" tag="b" v-html="item.title"></el-text>
-          <el-text class="mx-1 time" style="text-align: left" v-html="item.summary"></el-text>
+          <el-text
+            class="mx-1 time title"
+            size="large"
+            tag="b"
+            v-html="item.title"
+          ></el-text>
+          <el-text
+            class="mx-1 time"
+            style="text-align: left"
+            v-html="item.summary"
+          ></el-text>
         </el-aside>
         <el-main style="padding: 0; text-align: right" v-if="item.cover">
           <el-image style="height: 80px" :src="item.cover" fit="cover" />
@@ -115,7 +133,7 @@ export default {
     return {
       shape: Cfg.set.shape,
       set: Cfg.set,
-      headsize: Cfg.config.homestyle.headsize.post,
+      headsize: Cfg.headsize.post,
     }
   },
   setup(props) {

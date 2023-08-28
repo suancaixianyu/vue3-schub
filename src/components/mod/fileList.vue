@@ -2,7 +2,7 @@
   <div v-if="set.ismobile">
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      :style="homestyle.postliststyle"
+      :style="postliststyle"
     >
       <el-button type="primary" plain @click="showAddFile">添加文件</el-button>
     </div>
@@ -10,7 +10,7 @@
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
       v-for="x in list"
       :key="x.id"
-      :style="homestyle.postliststyle"
+      :style="postliststyle"
     >
       <el-container style="padding: 0">
         <el-aside
@@ -95,13 +95,13 @@
       </el-table-column>
     </el-table>
     <el-pagination
-        class="el-pagination"
-        v-model:current-page="page"
-        background
-        :page-size="limit"
-        :pager-count="8"
-        layout="prev, pager, next"
-        :total="total"
+      class="el-pagination"
+      v-model:current-page="page"
+      background
+      :page-size="limit"
+      :pager-count="8"
+      layout="prev, pager, next"
+      :total="total"
     />
   </div>
   <el-dialog
@@ -207,8 +207,7 @@ export default {
   components: { ModFlag },
   data() {
     return {
-      set: Cfg.set,
-      homestyle: Cfg.config.homestyle,
+      ...Cfg,
       type_list: <any>[
         { id: 1, name: '世界' },
         { id: 2, name: '方块材质' },
@@ -235,9 +234,9 @@ export default {
       version: '',
       isDeleting: false,
       progress: 0,
-      page:1,
-      limit:10,
-      total:0
+      page: 1,
+      limit: 10,
+      total: 0,
     }
   },
   methods: {
@@ -344,24 +343,26 @@ export default {
     refreshList() {
       let modId = this.$route.params.id
       let payLoad = {
-        page:this.page,
-        limit:this.limit
-      };
-      Method.api_post(`/mod/file_list/${modId}`,payLoad).then((response: any) => {
-        let res = response.data
-        this.isLoading = false
-        if (res.code == 200) {
-          if(this.page == 1) this.total = res.sum;
-          res.data.forEach((x: any) => {
-            x.create_time = Method.formatNormalTime(x.create_time)
-            x.file_size = Method.getFileSize(x.size)
-            x.downloads_num = Method.getNumber(x.downloads)
-          })
-          this.list = res.data
-        } else {
-          ElMessage(res.msg)
-        }
-      })
+        page: this.page,
+        limit: this.limit,
+      }
+      Method.api_post(`/mod/file_list/${modId}`, payLoad).then(
+        (response: any) => {
+          let res = response.data
+          this.isLoading = false
+          if (res.code == 200) {
+            if (this.page == 1) this.total = res.sum
+            res.data.forEach((x: any) => {
+              x.create_time = Method.formatNormalTime(x.create_time)
+              x.file_size = Method.getFileSize(x.size)
+              x.downloads_num = Method.getNumber(x.downloads)
+            })
+            this.list = res.data
+          } else {
+            ElMessage(res.msg)
+          }
+        },
+      )
     },
   },
   mounted() {
@@ -372,11 +373,14 @@ export default {
       () => this.inner_name,
       () => {
         this.refreshDocList()
-      }
+      },
     )
-    watch(()=>this.page,()=>{
-      this.refreshList();
-    })
+    watch(
+      () => this.page,
+      () => {
+        this.refreshList()
+      },
+    )
   },
 }
 </script>

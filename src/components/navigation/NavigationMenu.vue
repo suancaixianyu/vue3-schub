@@ -2,7 +2,7 @@
   <!-- 导航 -->
   <div class="navbar bg-base-100" style="padding: 0 8px; height: 64px">
     <!-- 宽屏logo -->
-    <div class="flex-1 hidden-xs-only">
+    <div class="flex-1 hidden-xs-only bg-base-100">
       <router-link
         v-if="isRootPath"
         class="btn btn-ghost normal-case text-xl"
@@ -209,7 +209,13 @@
           <details class="dropdown mb-32 rounded-box" ref="tool">
             <summary class="m-1 btn bg-base-100 btn-ghost">
               <el-icon :size="26">
-                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="200" height="200" style="margin: 0">
+                <svg
+                  viewBox="0 0 1024 1024"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="200"
+                  height="200"
+                  style="margin: 0"
+                >
                   <path
                     d="M817.87 556.31h-63.58v-66.24A42.27 42.27 0 0 0 712 447.8h-84.81a42.27 42.27 0 0 0-42.27 42.27v66.24H436.57v-66.24a42.27 42.27 0 0 0-42.27-42.27h-84.83a42.27 42.27 0 0 0-42.27 42.27v66.24h-61.83A22.39 22.39 0 0 0 183 578.7a22.39 22.39 0 0 0 22.39 22.39h61.81v65.55a42.27 42.27 0 0 0 42.27 42.27h84.83a42.27 42.27 0 0 0 42.27-42.27v-65.55h148.36v65.55a42.27 42.27 0 0 0 42.27 42.27H712a42.27 42.27 0 0 0 42.27-42.27v-65.55h63.58a22.39 22.39 0 0 0 22.39-22.39 22.39 22.39 0 0 0-22.37-22.39z m-438.64 95.26h-54.69V505.14h54.69z m317.72 0h-54.69V505.14H697z"
                   ></path>
@@ -243,7 +249,7 @@
           </details>
         </li>
         <!-- 主题切换 -->
-        <li class="hidden-xs-only" @click="bailanle">
+        <li class="hidden-xs-only">
           <div class="indicator">
             <label class="swap swap-rotate">
               <input
@@ -362,13 +368,13 @@ import { ElMessage } from 'element-plus'
 import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import UserIcon from '@comps/user/userIcon.vue'
-import user from "@comps/user/index.vue";
+import user from '@comps/user/index.vue'
 export default {
   name: 'NavigationMenu',
   computed: {
     user() {
       return user
-    }
+    },
   },
   components: {
     UserIcon,

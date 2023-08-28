@@ -295,7 +295,7 @@ class Method {
       })
       if (f != null) {
         arr2[1] = /^(http|https):\/\//.test(arr2[1]) ? arr2[1] : 'http://' + arr2[1];
-        result.push({ id: f.id,type:f.id, name: f.name, src: arr2[1] })
+        result.push({ id: f.id, type: f.id, name: f.name, src: arr2[1] })
       }
     })
     return result
@@ -368,7 +368,7 @@ class Method {
           })
           if (f != null) {
             item.list.push({
-              type:f.id,
+              type: f.id,
               type_name: f.name,
               package_name: arr2[1],
               package_id: arr2[2],
@@ -416,7 +416,7 @@ class Method {
    * 复制对象数据
    * @param obj
    */
-  copyObject(obj:any){
+  copyObject(obj: any) {
     return JSON.parse(JSON.stringify(obj));
   }
   /**
@@ -424,30 +424,30 @@ class Method {
    */
   setwebstyle() {
     let data = this.localGet('webstyle', {})
-    if (data.webkit) {
+    if (Object.keys(data).length) {
       console.log('加载本地设置', data)
-      for (let key in Cfg.config.webstyle) {
-        Cfg.config.webstyle[key] = data[key]
+      for (let key in Cfg.webstyle) {
+        Cfg.webstyle[key] = data[key]
       }
     }
     /** css样式 */
-    for (let key in Cfg.config.webstyle) {
-      for (let b in Cfg.config.webstyle[key]) {
+    for (let key in Cfg.webstyle) {
+      for (let b in Cfg.webstyle[key]) {
         // console.log(key, b, Cfg.config.webstyle[key][b])
         document.documentElement.style.setProperty(
           `--${b}`,
-          Cfg.config.webstyle[key][b],
+          Cfg.webstyle[key][b],
         )
       }
     }
     /** 配置 */
     let websetup = this.localGet('websetup', {})
-    console.log(websetup);
 
-    if (websetup.headsize) {
+
+    if (Object.keys(websetup).length) {
       Cfg.set.menu = websetup.menu
       Cfg.set.shape = websetup.shape
-      Cfg.config.homestyle.headsize = websetup.headsize
+      Cfg.headsize = websetup.headsize
     }
   }
 

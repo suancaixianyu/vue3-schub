@@ -40,7 +40,7 @@
         </el-form-item>
 
         <el-form-item label="帖子头像大小">
-          <el-input type="number" v-model="headsize.post" @blur="sizepost" />
+          <el-input type="number" v-model="headsize.post" />
         </el-form-item>
         <el-form-item label="用户主头像页大小">
           <el-input
@@ -199,20 +199,18 @@ export default {
     return {
       dialogFormVisible: false,
       configuration: '',
-      webstyle: Cfg.config.webstyle,
-      set: Cfg.set,
-      ...Cfg.config.homestyle,
+      ...Cfg,
     }
   },
   setup() {
     onMounted(() => {
-      Cfg.config.homestyle.maincontainer.overflowY = 'visible'
-      Cfg.config.homestyle.maincontainer.height = 'auto'
+      Cfg.maincontainer.overflowY = 'visible'
+      Cfg.maincontainer.height = 'auto'
       Cfg.set.showfooter = false
     })
     onUnmounted(() => {
-      Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
-      Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 2rem)'
+      Cfg.maincontainer.overflowY = 'hidden'
+      Cfg.maincontainer.height = 'calc(100vh - 2rem)'
       Cfg.set.showfooter = true
     })
     return {
@@ -230,14 +228,14 @@ export default {
       ElMessage('重置成功，刷新页面生效')
     },
     sizepost() {
-      this.headsize.post = Number(this.headsize.post)
+      Cfg.headsize.post = Number(Cfg.headsize.post)
     },
     sizeuser() {
-      this.headsize.userindex = Number(this.headsize.userindex)
+      Cfg.headsize.userindex = Number(Cfg.headsize.userindex)
     },
     setstyle() {
       /** css设置 */
-      Method.localSet('webstyle', Cfg.config.webstyle)
+      Method.localSet('webstyle', Cfg.webstyle)
       /** 其他设置 */
       Method.localSet('websetup', {
         menu: this.set.menu,
