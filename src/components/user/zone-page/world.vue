@@ -3,6 +3,7 @@
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
       v-for="(x, index) in list"
+      v-if="list.length > 0"
       :key="index"
       :style="postliststyle"
     >
@@ -18,9 +19,7 @@
           <el-row :gutter="5">
             <el-col :span="12">
               <el-text>
-                <el-icon>
-                  <Document /> </el-icon
-                >{{ x.file_size }}
+                <el-icon> <Document /> </el-icon>{{ x.file_size }}
               </el-text>
             </el-col>
 
@@ -49,6 +48,7 @@
         </el-main>
       </el-container>
     </div>
+    <div v-else>什么也没有~</div>
   </div>
   <div class="tab-container" v-loading="isLoading" v-else>
     <el-table :data="list" stripe style="width: 100%">

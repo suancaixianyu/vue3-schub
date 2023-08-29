@@ -50,85 +50,132 @@
               />
             </el-radio-group>
           </el-form-item>
+
           <el-form-item label="作者/团队">
-            <div class="flex v">
-              <div class="flex" v-for="(x, i) in mod_author" :key="x">
-                <el-avatar
-                  :src="x.avatar"
-                  style="padding: 0 5px"
-                  shape="circle"
-                ></el-avatar>
-                <el-select
-                  :automatic-dropdown="true"
-                  v-model="x.type"
-                  :loading="isLoading"
-                  placeholder="搜索昵称以选择作者"
-                  @focus="authorFocus(x)"
-                  remote
-                  filterable
-                  @change="authorChange"
-                  :remote-method="searchUser"
-                >
-                  <el-option
-                    :label="r.nickname"
-                    :value="r.id"
-                    :key="r.id"
-                    v-for="r in mod_author_list"
-                  />
-                </el-select>
-                <el-input v-model="x.staff" placeholder="请输入职位名称" />
-                <el-button
-                  type="primary"
-                  icon="Minus"
-                  text
-                  @click="deleteAuthor(i)"
-                  :data-index="i"
-                  >删除</el-button
-                >
-              </div>
-              <div>
-                <el-button
-                  size="small"
-                  type="primary"
-                  text
-                  icon="Plus"
-                  @click="newAuthor"
-                  >添加作者</el-button
-                >
-              </div>
+            <div v-for="x in mod_author" :key="x">
+              <el-avatar :src="x.avatar" />
             </div>
+            <el-button
+              size="small"
+              type="primary"
+              text
+              icon="Plus"
+              @click="openDialog = true"
+            >
+              添加作者
+            </el-button>
+
+            <el-dialog
+              v-model="openDialog"
+              title="添加团队成员"
+              :draggable="true"
+              :fullscreen="set.ismobile"
+            >
+              <div v-for="(x, i) in mod_author" :key="x">
+                <el-row :gutter="20">
+                  <el-col :span="4">
+                    <el-avatar :src="x.avatar" />
+                  </el-col>
+                  <el-col :span="10">
+                    <el-select
+                      :automatic-dropdown="true"
+                      v-model="x.type"
+                      :loading="isLoading"
+                      placeholder="搜索昵称以选择作者"
+                      @focus="authorFocus(x)"
+                      remote
+                      filterable
+                      @change="authorChange"
+                      :remote-method="searchUser"
+                    >
+                      <el-option
+                        :label="r.nickname"
+                        :value="r.id"
+                        :key="r.id"
+                        v-for="r in mod_author_list"
+                      />
+                    </el-select>
+                  </el-col>
+
+                  <el-col :span="10">
+                    <el-input v-model="x.staff" placeholder="请输入职位名称" />
+                  </el-col>
+
+                  <el-col :span="6">
+                    <el-button
+                      type="primary"
+                      icon="Minus"
+                      text
+                      @click="deleteAuthor(i)"
+                      :data-index="i"
+                      >删除</el-button
+                    >
+                  </el-col>
+                </el-row>
+              </div>
+
+              <el-button
+                size="small"
+                type="primary"
+                text
+                icon="Plus"
+                @click="newAuthor"
+                >添加作者</el-button
+              >
+            </el-dialog>
           </el-form-item>
+
           <el-form-item label="相关链接">
-            <div class="flex v">
-              <div class="flex" v-for="(x, i) in link" :key="x">
-                <el-select v-model="x.type" placeholder="选择渠道">
-                  <el-option
-                    :label="r.name"
-                    :value="r.id"
-                    v-for="r in mod_link_type"
-                  />
-                </el-select>
-                <el-input placeholder="请输入链接/url" v-model="x.src" />
-                <el-button
-                  type="primary"
-                  icon="Minus"
-                  text
-                  @click="deleteLink(i)"
-                  :data-index="i"
-                  >删除</el-button
-                >
+            <el-button
+              size="small"
+              type="primary"
+              text
+              icon="Plus"
+              @click="openDialogLink = true"
+            >
+              添加链接
+            </el-button>
+            <el-dialog
+              v-model="openDialogLink"
+              title="添加相关链接"
+              :draggable="true"
+              :fullscreen="set.ismobile"
+            >
+              <div v-for="(x, i) in link" :key="x">
+                <el-row :gutter="24">
+                  <el-col :span="8">
+                    <el-select v-model="x.type" placeholder="选择渠道">
+                      <el-option
+                        :label="r.name"
+                        :value="r.id"
+                        v-for="r in mod_link_type"
+                      />
+                    </el-select>
+                  </el-col>
+                  <el-col :span="16">
+                    <el-input placeholder="请输入链接/url" v-model="x.src" />
+                  </el-col>
+                  <el-col :span="5">
+                    <el-button
+                      type="primary"
+                      icon="Minus"
+                      text
+                      @click="deleteLink(i)"
+                      :data-index="i"
+                      >删除</el-button
+                    >
+                  </el-col>
+                </el-row>
               </div>
-              <div>
-                <el-button
-                  size="small"
-                  type="primary"
-                  text
-                  icon="Plus"
-                  @click="newLink"
-                  >添加链接</el-button
-                >
-              </div>
-            </div>
+              <el-button
+                size="small"
+                type="primary"
+                text
+                icon="Plus"
+                @click="newLink"
+                >添加链接</el-button
+              >
+            </el-dialog>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -272,6 +319,8 @@ export default {
   },
   data() {
     return {
+      openDialogLink: false,
+      openDialog: false,
       modId: 0,
       set: Cfg.set,
       uploadServer: `${Cfg.config.server}/Upload/Upload`,
@@ -535,6 +584,10 @@ export default {
 }
 </script>
 <style scoped>
+.el-col {
+  padding: 0 0.5rem;
+}
+
 .el-form {
   width: inherit;
 }

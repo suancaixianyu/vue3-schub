@@ -31,7 +31,7 @@
           <MdPreview
             editorId="preview-mobile"
             :modelValue="content.summary"
-            class="bg-base-200"
+            class="bg-base-200 md-editor-preview-wrapper-main"
           />
 
           <!-- 分割线 -->
@@ -127,7 +127,7 @@
             <MdPreview
               editorId="preview-mobile"
               :modelValue="content.summary"
-              class="bg-base-200"
+              class="bg-base-200 md-editor-preview-wrapper-main"
             />
 
             <!-- 分割线 -->
@@ -155,14 +155,14 @@
             <div class="reply-body">
               <!-- 发表评论 -->
               <el-row :gutter="24">
-                <el-col :span="2">
+                <el-col :xs="8" :sm="2" :md="2" :lg="1" :xl="1">
                   <user-icon
                     :src="headurl"
                     :alt="userInfo.nickname"
                     :size="headsize"
                   />
                 </el-col>
-                <el-col :span="19">
+                <el-col :xs="8" :sm="15" :md="15" :lg="17" :xl="16">
                   <el-input
                     v-model="comments"
                     autosize
@@ -171,7 +171,11 @@
                   />
                 </el-col>
                 <el-col :span="3">
-                  <el-button icon="Edit" :loading="isReplying" @click="doReply">
+                  <el-button
+                    :icon="set.ismobile ? '' : 'Edit'"
+                    :loading="isReplying"
+                    @click="doReply"
+                  >
                     发表
                   </el-button>
                 </el-col>
@@ -450,6 +454,14 @@ export default {
   justify-self: center;
   flex-direction: column;
   margin: 20px 5px;
+}
+
+.md-editor-preview-wrapper {
+  padding: 0;
+}
+
+.md-editor-preview-wrapper-main {
+  padding: 10px 20px;
 }
 
 .post-area {

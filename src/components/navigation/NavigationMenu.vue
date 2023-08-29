@@ -58,7 +58,7 @@
               <el-text>消息</el-text>
             </div>
           </li>
-          <li @click="handleLiClick">
+          <!-- <li @click="handleLiClick">
             <div>
               <input
                 ref="toggleInput"
@@ -77,7 +77,7 @@
                 <el-icon v-else> <Sunny /> </el-icon>切换主题
               </el-text>
             </div>
-          </li>
+          </li> -->
           <li>
             <router-link to="/setup">
               <el-icon :size="28" style="padding: 0 2px">
@@ -136,7 +136,7 @@
             <el-text>消息</el-text>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div @click="handleLiClick">
             <input
               @click="bailanle"
@@ -155,7 +155,7 @@
               <el-icon v-if="iconid === false"> <Sunny /> </el-icon>切换主题
             </el-text>
           </div>
-        </li>
+        </li> -->
         <li>
           <router-link to="/setup" @click="menuClick('menu')">
             <el-icon :size="28" style="padding: 0 2px">
@@ -249,7 +249,7 @@
           </details>
         </li>
         <!-- 主题切换 -->
-        <li class="hidden-xs-only">
+        <!-- <li class="hidden-xs-only">
           <div class="indicator">
             <label class="swap swap-rotate">
               <input
@@ -278,7 +278,7 @@
               </svg>
             </label>
           </div>
-        </li>
+        </li> -->
         <!-- 个人中心 -->
         <li>
           <div v-if="!userInfo.isLogin" @click="showLoginDialog">

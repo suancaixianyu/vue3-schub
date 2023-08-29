@@ -9,6 +9,7 @@
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
       v-for="(x, index) in list"
+      v-if="list.length > 0"
       :key="x.id"
       :style="postliststyle"
     >
@@ -107,6 +108,7 @@
         </el-main>
       </el-container>
     </div>
+    <div v-else>什么也没有~</div>
   </div>
   <div class="tab-container" v-else>
     <el-header class="el-header">

@@ -2,26 +2,22 @@
   <el-container v-if="set.ismobile">
     <el-col class="el-main v bg-base-100">
       <div class="cate-list mobile bg-base-100" v-if="!isBbsView">
-        <el-button type="info" @click="topicPublish">发布主题</el-button>
-        <div class="list bg-base-100" v-loading="loadingCate">
-          <!-- <el-button :class="active_cate_id == item.id ? 'active' : ''" v-for="item in cate_list"
-            @click="active_cate_id = item.id">
-            <el-icon>
-              <ChatDotSquare />
-            </el-icon>
-            <div class="name">{{ item.name }}</div>
-          </el-button> -->
+        <el-button type="primary" plain @click="topicPublish"
+          >发布主题</el-button
+        >
+        <div class="list bg-base-100 hide-scrollbar" v-loading="loadingCate">
           <router-link
             v-for="item in cate_list"
-            :class="active_cate_id == item.id ? 'active' : ''"
+            :class="active_cate_id == item.id ? 'btnactive' : ''"
             class="bg-base-100"
             :to="`/postlist/${item.id}`"
             @click="active_cate_id = item.id"
           >
-            <el-button>
-              <el-icon>
-                <ChatDotSquare />
-              </el-icon>
+            <el-button
+              link
+              :type="active_cate_id == item.id ? 'primary' : ''"
+              style="margin: 0 0.5rem"
+            >
               <div class="name">{{ item.name }}</div>
             </el-button>
           </router-link>
@@ -36,16 +32,11 @@
       <!-- 板块列表 -->
       <div class="cate-list" :class="isBbsView ? '' : 'active'">
         <div class="cate-item">
-          <el-button type="info" @click="topicPublish">发布主题</el-button>
+          <el-button type="info" style="width: 100%" @click="topicPublish"
+            >发布主题</el-button
+          >
         </div>
         <div class="container" v-loading="loadingCate">
-          <!-- <div class="cate-item" :class="item.id == active_cate_id ? 'active' : ''" v-for="item in cate_list"
-            @click="refreshBbsList(item.id)">
-            <el-icon>
-              <ChatDotSquare />
-            </el-icon>
-            <div class="name">{{ item.name }}</div>
-          </div> -->
           <router-link
             class="cate-item"
             :class="item.id == active_cate_id ? 'active' : ''"
@@ -165,6 +156,8 @@ export default {
 }
 </script>
 <style scoped>
+.btnactive {
+}
 .el-main {
   display: flex;
   flex-direction: row;

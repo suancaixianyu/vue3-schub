@@ -142,10 +142,8 @@
           <el-text>卡片样式</el-text>
         </el-radio-group>
         <el-divider style="margin: 0" />
-        <el-form-item label="圆角">
-          <el-text>圆角: var(--rounded-card)</el-text>
+        <el-form-item label="圆角: var(--rounded-card)">
           <el-input
-            class="bg-base-200"
             type="text"
             placeholder="输入文本"
             style="width: 100%"

@@ -15,18 +15,29 @@
             v-html="item.summary"
           ></el-text>
           <ul class="category-counts">
+            <li>
+              <UserIcon
+                :src="item.author.headurl"
+                :size="headsize"
+                :alt="item.author.nickname"
+                style="margin-right: 12px"
+              />
+              <el-text size="small">{{ item.time }}</el-text>
+            </li>
+
             <li @click="doLike">
-              <el-icon :size="22">
-                <LikeIcon />
-              </el-icon>
-              <p v-html="goodNum"></p>
+              <el-button link>
+                <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
+              </el-button>
             </li>
             <router-link :to="`/postlist/${path}/${item.id}`">
               <li>
-                <el-icon :size="18" style="margin-right: 5px">
-                  <ChatDotSquare />
-                </el-icon>
-                <p v-html="item.comments"></p>
+                <el-button link>
+                  <el-icon :size="18" style="margin-right: 5px">
+                    <ChatDotSquare />
+                  </el-icon>
+                  {{ item.comments }}
+                </el-button>
               </li>
             </router-link>
           </ul>
@@ -120,6 +131,7 @@ import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import { MdPreview } from 'md-editor-v3'
+import UserIcon from '@comps/user/userIcon.vue'
 
 export default {
   name: 'BbsItem',
@@ -127,6 +139,7 @@ export default {
     LikeIcon,
     UserHead,
     MdPreview,
+    UserIcon,
   },
   props: ['item', 'path'],
   data() {
