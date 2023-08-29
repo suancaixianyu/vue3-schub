@@ -40,7 +40,7 @@
         </el-form-item>
 
         <el-form-item label="帖子头像大小">
-          <el-input type="number" v-model="headsize.post" @blur="sizepost" />
+          <el-input type="number" v-model="headsize.post" />
         </el-form-item>
         <el-form-item label="用户主头像页大小">
           <el-input
@@ -142,10 +142,8 @@
           <el-text>卡片样式</el-text>
         </el-radio-group>
         <el-divider style="margin: 0" />
-        <el-form-item label="圆角">
-          <el-text>圆角: var(--rounded-card)</el-text>
+        <el-form-item label="圆角: var(--rounded-card)">
           <el-input
-            class="bg-base-200"
             type="text"
             placeholder="输入文本"
             style="width: 100%"
@@ -199,20 +197,18 @@ export default {
     return {
       dialogFormVisible: false,
       configuration: '',
-      webstyle: Cfg.config.webstyle,
-      set: Cfg.set,
-      ...Cfg.config.homestyle,
+      ...Cfg,
     }
   },
   setup() {
     onMounted(() => {
-      Cfg.config.homestyle.maincontainer.overflowY = 'visible'
-      Cfg.config.homestyle.maincontainer.height = 'auto'
+      Cfg.maincontainer.overflowY = 'visible'
+      Cfg.maincontainer.height = 'auto'
       Cfg.set.showfooter = false
     })
     onUnmounted(() => {
-      Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
-      Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 2rem)'
+      Cfg.maincontainer.overflowY = 'hidden'
+      Cfg.maincontainer.height = 'calc(100vh - 2rem)'
       Cfg.set.showfooter = true
     })
     return {
@@ -230,14 +226,14 @@ export default {
       ElMessage('重置成功，刷新页面生效')
     },
     sizepost() {
-      this.headsize.post = Number(this.headsize.post)
+      Cfg.headsize.post = Number(Cfg.headsize.post)
     },
     sizeuser() {
-      this.headsize.userindex = Number(this.headsize.userindex)
+      Cfg.headsize.userindex = Number(Cfg.headsize.userindex)
     },
     setstyle() {
       /** css设置 */
-      Method.localSet('webstyle', Cfg.config.webstyle)
+      Method.localSet('webstyle', Cfg.webstyle)
       /** 其他设置 */
       Method.localSet('websetup', {
         menu: this.set.menu,

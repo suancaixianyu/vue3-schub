@@ -254,10 +254,10 @@ export default {
     if (this.animateTimerId > 0) {
       clearInterval(this.animateTimerId)
     }
-    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+    Cfg.maincontainer.overflowY = 'hidden'
   },
   mounted() {
-    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    Cfg.maincontainer.overflowY = 'auto'
     Cfg.set.showfooter = true
   },
 }

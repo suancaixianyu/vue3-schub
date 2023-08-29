@@ -1,32 +1,33 @@
-import { CSSProperties, reactive } from 'vue'
+import { reactive } from 'vue'
 import type { userInfoType, setType } from '@/apitypes'
-const homestyle = reactive({
-  /** 内容样式 */
-  maincontainer: {
-    padding: '0 1rem',
-    height: 'calc(100vh - 6rem)',
-    overflowY: 'hidden',
-  },
-  /** 卡片样式 */
-  postliststyle: {
-    display: 'flex',
-    padding: '12px 18px',
-    justifyContent: 'center',
-    margin: '10px auto',
-    width: '88%',
-    maxHeight: '200px',
-    boxShadow: 'var(--el-box-shadow-light)',
-    borderRadius: 'var(--rounded-btn)',
-  },
-  /** 页面整体样式 */
-  container: {
-    padding: '0',
-  },
-  /** 头像大小 */
-  headsize: {
-    post: 32,
-    userindex: 32,
-  },
+
+
+/** 内容样式 */
+const maincontainer = reactive({
+  padding: '0',
+  height: 'calc(100vh - 6rem)',
+  overflowY: 'hidden',
+})
+
+/** 卡片样式 */
+const postliststyle = reactive({
+  display: 'flex',
+  padding: '12px 18px',
+  justifyContent: 'center',
+  margin: '10px auto',
+  width: '88%',
+  maxHeight: '200px',
+  boxShadow: 'var(--el-box-shadow-light)',
+  borderRadius: 'var(--rounded-btn)',
+})
+/** 页面整体样式 */
+const container = reactive({
+  padding: '0',
+  margin: '0',
+})
+const headsize = reactive({
+  post: 28,
+  userindex: 48,
 })
 
 const set = reactive({
@@ -76,49 +77,43 @@ class Cfg {
   config: {
     /** 后端服务器地址 */
     server: string
-    /** 主页样式 */
-    homestyle: {
-      /** 内容样式 */
-      maincontainer: {
-        padding: string
-        height: string
-        overflowY: string
-      }
-      /** 整体样式 */
-      container: {
-        padding: string
-      }
-      /** 卡片样式 */
-      postliststyle: CSSProperties
-      /** 头像大小 */
-      headsize: {
-        /** 在帖子中的大小 */
-        post: number
-        /** 在用户中心的大小 */
-        userindex: number
-      }
-    }
-    /** 全局样式 */
-    webstyle: { [key: string]: { [key: string]: string } }
   };
+  /** 全局样式 */
+  webstyle: { [key: string]: { [key: string]: string } }
   /** 用户信息 */
-  userInfo: userInfoType;
+  userInfo: userInfoType
   /** 设置 */
-  set: setType;
+  set: setType
+
+  /** 用户头像大小 */
+  headsize: {
+    /** 帖子显示大小 */
+    post: number
+    /** 个人中心显示大小 */
+    userindex: number
+  }
+  container: {
+    padding: string,
+    margin: string,
+  }
+  maincontainer: { [key: string]: string }
+  postliststyle: { [key: string]: string }
 
   constructor() {
     this.config = {
       /** 后端服务器地址 */
-       server: "http://localhost:8081",
-      //server: '/xyapi',
+      //  server: "http://localhost:8081",
+      // server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
-      // server: "https://schub.top",
-      /** 主页样式 */
-      homestyle,
-      webstyle,
+      server: "https://schub.top",
     }
-    this.userInfo = userInfo;
-    this.set = set;
+    this.webstyle = webstyle
+    this.userInfo = userInfo
+    this.set = set
+    this.headsize = headsize
+    this.container = container
+    this.postliststyle = postliststyle
+    this.maincontainer = maincontainer
   }
 }
 

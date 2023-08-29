@@ -3,12 +3,17 @@
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
       v-for="(x, index) in list"
+      v-if="list.length > 0"
       :key="index"
-      :style="homestyle.postliststyle"
+      :style="postliststyle"
     >
       <el-container style="padding: 0">
         <el-aside width="45%" style="padding: 0; word-wrap: break-word">
-          <router-link class="title" :to="'/postlist/'+x.cate_id+'/'+x.id" v-html="x.title"></router-link>
+          <router-link
+            class="title"
+            :to="`/postlist/${x.cate_id}/${x.id}`"
+            v-html="x.title"
+          ></router-link>
         </el-aside>
 
         <el-main style="padding: 0; overflow-x: hidden">
@@ -40,7 +45,9 @@
                     <el-dropdown-item>复制链接</el-dropdown-item>
                     <el-dropdown-item>编辑</el-dropdown-item>
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)">删除</el-dropdown-item>
+                    <el-dropdown-item divided @click="handleDelete(index)"
+                      >删除</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -49,6 +56,7 @@
         </el-main>
       </el-container>
     </div>
+    <div v-else>什么也没有~</div>
   </div>
   <div class="tab-container" v-loading="isLoading" v-else>
     <el-table :data="list" stripe style="width: 100%">
@@ -58,17 +66,36 @@
       <el-table-column prop="comments" label="评论" width="180" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="small" link type="primary" @click="$router.push('/postlist/'+list[scope.$index].cate_id+'/'+list[scope.$index].id)">查看</el-button>
-          <el-button size="small" link type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+          <el-button
+            size="small"
+            link
+            type="primary"
+            @click="
+              $router.push(
+                '/postlist/' +
+                  list[scope.$index].cate_id +
+                  '/' +
+                  list[scope.$index].id,
+              )
+            "
+            >查看</el-button
+          >
+          <el-button
+            size="small"
+            link
+            type="danger"
+            @click="handleDelete(scope.$index)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-        v-model:current-page="page"
-        background
-        :page-size="limit"
-        layout="prev, pager, next"
-        :total="total"
+      v-model:current-page="page"
+      background
+      :page-size="limit"
+      layout="prev, pager, next"
+      :total="total"
     />
   </div>
 
@@ -103,8 +130,7 @@ export default {
   name: 'BbsPage',
   data() {
     return {
-      ...Cfg.config,
-      set: Cfg.set,
+      ...Cfg,
       isDeleting: false,
       isDialogVisible: false,
       isLoading: false,
@@ -162,10 +188,13 @@ export default {
     },
   },
   mounted() {
-    watch(()=>this.page,()=>{
-      this.refreshList();
-    })
-    this.refreshList();
+    watch(
+      () => this.page,
+      () => {
+        this.refreshList()
+      },
+    )
+    this.refreshList()
   },
 }
 </script>

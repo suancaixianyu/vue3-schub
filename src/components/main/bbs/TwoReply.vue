@@ -28,19 +28,20 @@
       </div>
       <div v-if="isReadyReply">
         <el-row :gutter="24">
-          <el-col :span="2">
-            <el-avatar :src="userInfo.data.headurl" :shape="shape" :size="26" />
-          </el-col>
-          <el-col :span="19">
+          <el-col :xs="13" :sm="15" :md="15" :lg="17" :xl="16">
             <el-input
               v-model="comments"
               autosize
               type="textarea"
-              placeholder="发表评论"
+              :placeholder="`回复${v.xx.author.nickname}`"
             />
           </el-col>
           <el-col :span="3">
-            <el-button icon="Edit" :loading="isReplying" @click="reply">
+            <el-button
+              :loading="isReplying"
+              @click="reply"
+              :icon="set.ismobile ? '' : 'Edit'"
+            >
               回复
             </el-button>
           </el-col>
@@ -81,12 +82,11 @@ export default {
     v: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {
-      userInfo: Cfg.userInfo,
-      shape: Cfg.set.shape,
+      ...Cfg,
     }
   },
   methods: {

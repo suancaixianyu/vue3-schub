@@ -1,6 +1,6 @@
 <template>
-  <el-config-provider :locale="locale" :button="button">
-    <div class="common-layout bg-base-100" data-theme="light">
+  <el-config-provider :locale="locale" :button="button" class="bg-base-100">
+    <div class="common-layout bg-base-100">
       <el-container :style="container">
         <el-header :style="container" style="z-index: 20">
           <el-affix :offset="0">
@@ -8,22 +8,26 @@
           </el-affix>
         </el-header>
 
-        <el-main :style="maincontainer">
-          <router-view v-slot="{Component}">
+        <el-main
+          :style="maincontainer"
+          class="bg-base-100"
+          data-set-theme="dark"
+        >
+          <router-view v-slot="{ Component }">
             <keep-alive v-show="$route.meta.keepAlive">
-              <component v-if="$route.meta.keepAlive" :is="Component"/>
+              <component v-if="$route.meta.keepAlive" :is="Component" />
             </keep-alive>
-            <component  v-if="!$route.meta.keepAlive" :is="Component"/>
+            <component v-if="!$route.meta.keepAlive" :is="Component" />
           </router-view>
         </el-main>
-        <el-footer
+        <!-- <el-footer
           v-if="set.showfooter"
           :style="container"
           class="home-footer"
           style="height: 2rem"
         >
           <el-text>这里是底部栏</el-text>
-        </el-footer>
+        </el-footer> -->
       </el-container>
     </div>
   </el-config-provider>
@@ -84,7 +88,7 @@ export default {
     provide('windowwidth', windowwidth)
     provide('theme', theme)
     return {
-      ...Cfg.config.homestyle,
+      ...Cfg,
       set: Cfg.set,
       locale,
       button,

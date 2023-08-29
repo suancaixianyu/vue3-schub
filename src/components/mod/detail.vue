@@ -336,8 +336,8 @@ export default {
       this.$router.push(`/ModDetail/${id}`)
     },
     downLoad(index: number) {
-      this.activeIndex = index;
-      let item = this.version_list[index];
+      this.activeIndex = index
+      let item = this.version_list[index]
       window.location.href = Method.getHostUrl(`/down/${item.id}`)
     },
     reloadPageData() {
@@ -398,15 +398,13 @@ export default {
         this.reloadPageData()
       },
     )
-    Cfg.config.homestyle.maincontainer.padding = '0'
-    Cfg.config.homestyle.maincontainer.height = 'auto'
-    Cfg.config.homestyle.maincontainer.overflowY = 'auto'
+    Cfg.maincontainer.height = 'auto'
+    Cfg.maincontainer.overflowY = 'auto'
     Cfg.set.showfooter = false
   },
   unmounted() {
-    Cfg.config.homestyle.maincontainer.padding = '0 1rem'
-    Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 6rem)'
-    Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
+    Cfg.maincontainer.height = 'calc(100vh - 6rem)'
+    Cfg.maincontainer.overflowY = 'hidden'
     Cfg.set.showfooter = true
   },
 }

@@ -8,7 +8,7 @@
     />
     <div class="area">
       <div class="user-label">
-        <div v-html="x.author.nickname"></div>
+        <div>{{ x.author.nickname }}</div>
         <UserRole :role="x.author.role" />
         <el-tag
           size="small"
@@ -22,6 +22,7 @@
         :editorId="`preview-one-${previewid}`"
         :modelValue="x.content"
         class="bg-base-100"
+        style="padding: 2px 0"
       />
       <div class="extra-line">
         <div class="time" v-html="x.time"></div>
@@ -30,28 +31,39 @@
         <div class="label" @click="readyReply">回复</div>
       </div>
       <!-- 二级评论 -->
-      <TowReply
-        v-for="(xx, index) in x.children"
-        :key="xx"
-        :v="{ x, xx, shape, size }"
-        :previewid="index"
-        @refreshEvent="refreshList"
-      />
+      <div
+        v-if="x.children.length > 0"
+        style="
+          border: 1px solid rgba(204, 204, 204, 0.5);
+          border-radius: 0.5rem;
+          padding: 0.5rem;
+        "
+      >
+        <TowReply
+          v-for="(xx, index) in x.children"
+          :key="xx"
+          :v="{ x, xx, shape: set.shape, size }"
+          :previewid="index"
+          @refreshEvent="refreshList"
+        />
+      </div>
+
       <div v-if="isReadyReply">
         <el-row :gutter="24">
-          <el-col :span="2">
-            <el-avatar :src="userInfo.data.headurl" :shape="shape" :size="26" />
-          </el-col>
-          <el-col :span="19">
+          <el-col :xs="17" :sm="15" :md="15" :lg="17" :xl="17">
             <el-input
               v-model="comments"
               autosize
               type="textarea"
-              placeholder="发表评论"
+              :placeholder="`回复${x.author.nickname}`"
             />
           </el-col>
           <el-col :span="3">
-            <el-button icon="Edit" :loading="isReplying" @click="reply">
+            <el-button
+              :icon="set.ismobile ? '' : 'Edit'"
+              :loading="isReplying"
+              @click="reply"
+            >
               回复
             </el-button>
           </el-col>
@@ -102,14 +114,10 @@ export default {
 
   data() {
     return {
-      userInfo: Cfg.userInfo,
-      shape: Cfg.set.shape,
+      ...Cfg,
     }
   },
   methods: {
-    loadImgError(e: any) {
-      this.x.author.head_img = Cfg.config.avatar
-    },
     reply() {
       this.doReply(() => {
         this.$emit('refreshEvent')
@@ -183,3 +191,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.md-editor-preview-wrapper {
+  padding: 0.5rem 0;
+}
+</style>
