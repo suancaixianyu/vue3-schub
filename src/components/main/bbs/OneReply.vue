@@ -1,21 +1,21 @@
 <template>
   <div class="post-area">
-    <el-avatar
+    <user-icon
       :src="x.author.headurl"
-      :shape="shape"
       :size="size"
+      :alt="x.author.nickname"
       style="margin-right: 12px"
     />
     <div class="area">
       <div class="user-label">
-        <div>{{ x.author.nickname }}</div>
+        <div v-html="x.author.nickname"></div>
         <UserRole :role="x.author.role" />
         <el-tag
           size="small"
           :color="xv.color"
           v-for="xv in x.author.role_list"
-          >{{ xv.name }}</el-tag
-        >
+          v-html="xv.name"
+        ></el-tag>
       </div>
       <!-- <div class="comments">{{ x.content }}</div> -->
       <MdPreview
@@ -24,9 +24,9 @@
         class="bg-base-100"
       />
       <div class="extra-line">
-        <div class="time">{{ x.time }}</div>
-        <LikeIcon @click="doGood" class="label"></LikeIcon>
-        <div class="label amount">{{ likes }}</div>
+        <div class="time" v-html="x.time"></div>
+        <LikeIcon @click="doLike" class="label"></LikeIcon>
+        <div class="label amount" v-html="likes"></div>
         <div class="label" @click="readyReply">回复</div>
       </div>
       <!-- 二级评论 -->
@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import LikeIcon from '@comps/icons/Like.vue'
-import TowReply from '@comps/main/bbs/TowReply.vue'
+import TowReply from '@comps/main/bbs/TwoReply.vue'
 import { reactive, toRefs } from 'vue'
 import { api } from '@/apitypes'
 import { ElMessage } from 'element-plus'
@@ -75,9 +75,11 @@ import 'md-editor-v3/lib/preview.css'
 import Method from '@/globalmethods.ts'
 import Cfg from '@/config/config.ts'
 import UserRole from '@comps/user/roleList.vue'
+import UserIcon from '@comps/user/userIcon.vue'
 
 export default {
   components: {
+    UserIcon,
     UserRole,
     TowReply,
     LikeIcon,
@@ -105,6 +107,9 @@ export default {
     }
   },
   methods: {
+    loadImgError(e: any) {
+      this.x.author.head_img = Cfg.config.avatar
+    },
     reply() {
       this.doReply(() => {
         this.$emit('refreshEvent')
@@ -131,18 +136,20 @@ export default {
     function readyReply() {
       data.isReadyReply = !data.isReadyReply
     }
-    function doGood() {
+    function doLike() {
       //评论点赞
-      data.isDoGooding = true
-      Method.api_get(`/bbs/reply_good/${props.x.id}`).then((res: any) => {
-        let obj = res.data as api
-        if (obj.code === 200) data.likes += parseInt(obj.data)
+      if (!data.isDoGooding) {
+        data.isDoGooding = true
+        Method.api_get(`/bbs/reply_good/${props.x.id}`).then((res: any) => {
+          let obj = res.data as api
+          if (obj.code === 200) data.likes += parseInt(obj.data)
 
-        ElMessage({
-          type: obj.code == 200 ? 'success' : 'error',
-          message: obj.msg,
+          ElMessage({
+            type: obj.code == 200 ? 'success' : 'error',
+            message: obj.msg,
+          })
         })
-      })
+      }
     }
 
     function doReply(callback: any) {
@@ -171,7 +178,7 @@ export default {
       ...toRefs(data),
       readyReply,
       doReply,
-      doGood,
+      doLike,
     }
   },
 }

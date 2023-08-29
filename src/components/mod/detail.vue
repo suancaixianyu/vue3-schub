@@ -291,6 +291,7 @@ import { MdPreview } from 'md-editor-v3'
 /** md编辑器 */
 import 'md-editor-v3/lib/style.css'
 import { api } from '@/apitypes'
+
 export default {
   name: 'modDetail',
   components: {
@@ -322,7 +323,7 @@ export default {
       game_list: <any>[],
       api_list: <any>[],
       relation_list: <any>[],
-      author_list:<any>[],
+      author_list: <any>[],
       name: '',
       views: 0,
       mini_name: '',
@@ -335,9 +336,9 @@ export default {
       this.$router.push(`/ModDetail/${id}`)
     },
     downLoad(index: number) {
-      console.log(index)
-
-      this.activeIndex = index
+      this.activeIndex = index;
+      let item = this.version_list[index];
+      window.location.href = Method.getHostUrl(`/down/${item.id}`)
     },
     reloadPageData() {
       this.isLoading = true
@@ -353,7 +354,7 @@ export default {
               x.create_time_str = Method.formatBbsTime(x.create_time)
               x.file_size = Method.getFileSize(x.size)
             })
-            this.author_list = res.data.author_list;
+            this.author_list = res.data.author_list
             this.relation_list = Method.decodeRelationList(res.data.relation)
             this.modRate = modInfo.rate
             this.cover_src = Method.getHostUrl(modInfo.cover_src)
@@ -391,10 +392,11 @@ export default {
   mounted() {
     this.reloadPageData()
     watch(
-        () => this.$route.params.id,
-        () => {
-          this.reloadPageData()
-        },
+      () => this.$route.params.id,
+      (v: any) => {
+        if (v == null) return
+        this.reloadPageData()
+      },
     )
     Cfg.config.homestyle.maincontainer.padding = '0'
     Cfg.config.homestyle.maincontainer.height = 'auto'
@@ -406,7 +408,7 @@ export default {
     Cfg.config.homestyle.maincontainer.height = 'calc(100vh - 6rem)'
     Cfg.config.homestyle.maincontainer.overflowY = 'hidden'
     Cfg.set.showfooter = true
-  }
+  },
 }
 </script>
 <style scoped>
@@ -625,14 +627,14 @@ export default {
   flex: 1;
   flex-direction: row;
 }
-.author-item{
+.author-item {
   margin: 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding:5px 10px;
+  padding: 5px 10px;
   background: #eee;
 }
-.author-item .nickname{
+.author-item .nickname {
   padding-left: 10px;
   color: #777;
   display: flex;
@@ -640,7 +642,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.author-item .nickname .staff{
+.author-item .nickname .staff {
   color: #333;
   font-weight: bold;
 }

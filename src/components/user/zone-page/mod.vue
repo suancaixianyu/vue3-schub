@@ -164,6 +164,13 @@
               >文件列表</el-button
             >
             <el-button
+                size="small"
+                link
+                type="danger"
+                @click="handleModify(scope.$index)"
+            >编辑</el-button
+            >
+            <el-button
               size="small"
               link
               type="danger"
@@ -174,11 +181,9 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        class="el-pagination"
         v-model:current-page="page"
         background
         :page-size="limit"
-        :pager-count="8"
         layout="prev, pager, next"
         :total="total"
       />
@@ -273,7 +278,12 @@ export default {
     manageFileList(index: number) {
       this.activeItemIndex = index
       let modId = this.list[index].id
-      this.$router.push(`/ModFiles/${modId}`)
+      this.$router.push(`/ModFiles/${modId}`);
+    },
+    handleModify(index:number){
+      this.activeItemIndex = index
+      let modId = this.list[index].id;
+      this.$router.push(`/ModPublish/${modId}`);
     },
     handleDelete(index: number) {
       this.activeItemIndex = index
@@ -281,7 +291,7 @@ export default {
       this.modName = this.list[index].name
     },
     goPublish() {
-      this.$router.push({ name: 'ModPublish' })
+      this.$router.push("/ModPublish/0")
     },
     refreshList() {
       this.isLoading = true

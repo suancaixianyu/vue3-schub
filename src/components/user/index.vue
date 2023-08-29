@@ -4,7 +4,8 @@
       class="zone-head-container bj"
       :style="{
         backgroundImage:
-          'url(https://pic.imgdb.cn/item/64e8cf2e661c6c8e5411e1e4.png)',
+          // 'url(https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png)',
+          'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png)',
       }"
     >
       <img
@@ -141,6 +142,32 @@ export default {
       this.activePages[e.index] = true
       this.activeTab = e.index
     },
+    getUserInfo(){
+      this.isLoading = true
+      Method.api_get(`/user/zone/${this.userInfo.id}`)
+          .then((response: any) => {
+            let res = response.data as api
+            this.isLoading = false
+            if (res.code == 200) {
+              res.data.bbs.forEach((x: any) => {
+                x.create_time = Method.formatNormalTime(x.create_time)
+              })
+              this.bbsList = res.data.bbs
+              this.modList = res.data.mod
+              res.data.world.forEach((x: any) => {
+                x.type_name = Method.getScTypeName(x.file_type)
+                x.file_name = Method.getFileName(x.name)
+                x.create_time = Method.formatNormalTime(x.create_time)
+              })
+              this.worldList = res.data.world
+            } else {
+              ElMessage(res.msg)
+            }
+          })
+          .catch(() => {
+            this.isLoading = false
+          })
+    }
   },
   data() {
     let {
@@ -155,44 +182,14 @@ export default {
     return {
       uploadServer: `${server}/Upload/Upload`,
       activeTab: 0,
-      isSelf: false,
       isLoading: false,
       bbsList: <any>[],
       worldList: <any>[],
       modList: <any>[],
-      activePages: <boolean[]>[false, false, false, false],
+      activePages: <boolean[]>[true, false, false],
       headsize: userindex,
       userInfo: userInfo,
     }
-  },
-  created() {
-    let route = useRoute()
-    this.isLoading = true
-    this.isSelf = this.userInfo.id === route.params.id
-    Method.api_get(`/user/zone/${this.userInfo.data.id}`)
-      .then((response: any) => {
-        let res = response.data as api
-        this.activePages[0] = true
-        this.isLoading = false
-        if (res.code == 200) {
-          res.data.bbs.forEach((x: any) => {
-            x.create_time = Method.formatNormalTime(x.create_time)
-          })
-          this.bbsList = res.data.bbs
-          this.modList = res.data.mod
-          res.data.world.forEach((x: any) => {
-            x.type_name = Method.getScTypeName(x.file_type)
-            x.file_name = Method.getFileName(x.name)
-            x.create_time = Method.formatNormalTime(x.create_time)
-          })
-          this.worldList = res.data.world
-        } else {
-          ElMessage(res.msg)
-        }
-      })
-      .catch(() => {
-        this.isLoading = false
-      })
   },
   mounted() {
     Cfg.config.homestyle.maincontainer.padding = '0'
@@ -268,7 +265,7 @@ export default {
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
-  padding-bottom: 20px;
+  padding-bottom: 0.5rem;
   z-index: 1;
 }
 

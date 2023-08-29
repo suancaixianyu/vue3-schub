@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/user',
     name: 'UserIndex',
-    meta: { title: '个人中心-SC中文社区' },
+    meta: { title: '个人中心-SC中文社区',keepAlive:true },
     component: () => import('@comps/user/index.vue'),
   },
   {
@@ -42,11 +42,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@comps/main/WebSetup.vue'),
   },
   /** 登录和注册 */
-  {
-    path: '/login/:register?',
-    name: 'UserLogin',
-    component: () => import('@comps/user/login.vue'),
-  },
+  // {
+  //   path: '/login/:register?',
+  //   name: 'UserLogin',
+  //   component: () => import('@comps/user/login.vue'),
+  // },
   /** 发帖 */
   {
     path: '/publish/:chatid',
@@ -56,7 +56,7 @@ const routes: RouteRecordRaw[] = [
   },
   /**发模组*/
   {
-    path: '/ModPublish',
+    path: '/ModPublish/:id',
     name: 'ModPublish',
     meta: { title: '发布模组-SC中文社区' },
     component: () => import('@comps/mod/publish.vue'),
@@ -84,7 +84,7 @@ const routes: RouteRecordRaw[] = [
   },
   /**管理员**/
   {
-    path: '/Admin',
+    path: '/admin',
     name: 'Admin',
     meta: { title: '网页后台-SC中文社区' },
     component: () => import('@comps/admin/index.vue'),

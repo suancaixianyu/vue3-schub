@@ -5,9 +5,12 @@
       <!-- 顶部按钮 -->
       <el-row :gutter="24" style="padding: 0" v-if="content != null">
         <el-col :span="16">
-          <el-text class="mx-1 time title" size="large" tag="b">
-            {{ content.title }}
-          </el-text>
+          <el-text
+            class="mx-1 time title"
+            size="large"
+            tag="b"
+            v-html="content.title"
+          ></el-text>
         </el-col>
         <el-col :span="8" style="display: flex; justify-content: flex-end">
           <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
@@ -32,9 +35,9 @@
           />
 
           <!-- 分割线 -->
-          <label class="plate-label">
+          <div class="plate-label">
             <div class="large">评论</div>
-            <div class="small">{{ sum.total }}</div>
+            <div class="small" v-html="sum.total"></div>
             <div class="space"></div>
             <div
               class="filter"
@@ -51,21 +54,16 @@
             >
               最热
             </div>
-          </label>
+          </div>
           <!-- 个人评论区 -->
           <div class="reply-body">
             <!-- 发表评论 -->
             <el-row :gutter="24">
               <el-col :span="3" style="padding: 0">
-                <el-avatar :src="headurl" :shape="shape" :size="headsize" />
+                <user-icon :src="headurl" :size="headsize" :alt="userInfo.nickname"/>
               </el-col>
               <el-col :span="14" style="padding: 0">
-                <el-input
-                  v-model="comments"
-                  autosize
-                  type="textarea"
-                  placeholder="发表评论"
-                />
+                <el-input v-model="comments" autosize placeholder="发表评论" />
               </el-col>
               <el-col :span="3" style="padding: 0">
                 <el-button icon="Edit" :loading="isReplying" @click="doReply">
@@ -74,7 +72,7 @@
               </el-col>
             </el-row>
             <!-- 回复列表 -->
-            <div v-loading="isLoadingReply">
+            <div style="margin-top: 15px" v-loading="isLoadingReply">
               <OneReply
                 v-for="(x, index) in reply_list"
                 :key="x"
@@ -99,9 +97,7 @@
       <div v-if="content != null" class="common-layout">
         <el-row :gutter="24" style="padding: 0" v-if="content != null">
           <el-col :span="16">
-            <el-text class="mx-1 time title" size="large" tag="b">
-              {{ content.title }}
-            </el-text>
+            <el-text class="mx-1 time title" size="large" tag="b" v-html="content.title"></el-text>
           </el-col>
           <el-col :span="8" style="display: flex; justify-content: flex-end">
             <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
@@ -126,7 +122,7 @@
             />
 
             <!-- 分割线 -->
-            <label class="plate-label">
+            <div class="plate-label">
               <div class="large">评论</div>
               <div class="small">{{ sum.total }}</div>
               <div class="space"></div>
@@ -145,13 +141,13 @@
               >
                 最热
               </div>
-            </label>
+            </div>
             <!-- 个人评论区 -->
             <div class="reply-body">
               <!-- 发表评论 -->
               <el-row :gutter="24">
                 <el-col :span="2">
-                  <el-avatar :src="headurl" :shape="shape" :size="headsize" />
+                  <user-icon :src="headurl" :alt="userInfo.nickname" :size="headsize" />
                 </el-col>
                 <el-col :span="19">
                   <el-input
@@ -168,7 +164,7 @@
                 </el-col>
               </el-row>
               <!-- 回复列表 -->
-              <div v-loading="isLoadingReply">
+              <div style="margin-top: 15px" v-loading="isLoadingReply">
                 <OneReply
                   v-for="(x, index) in reply_list"
                   :key="x"
@@ -198,11 +194,13 @@ import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 
 import { MdPreview } from 'md-editor-v3'
+import UserIcon from '@comps/user/userIcon.vue'
 /** md编辑器 */
 
 export default {
   name: 'DetailPlate',
   components: {
+    UserIcon,
     Flushed,
     UserHead,
     MdPreview,
@@ -244,10 +242,10 @@ export default {
         .then((res: any) => {
           this.isLoading = false
           if (res.data.code === 200) {
-            let item = res.data.data
-            item.time = Method.formatBbsTime(item.time)
-            item.author.headurl = Method.getHostUrl(item.author.headurl)
-            this.content = item
+            let item = res.data.data;
+            item.time = Method.formatBbsTime(item.time);
+            item.author.headurl = Method.getHostUrl(item.author.headurl);
+            this.content = item;
             this.userInfo = {
               headurl: item.author.headurl,
               nickname: item.author.nickname,
@@ -329,7 +327,7 @@ export default {
       this.refresh_reply_list()
     },
     close() {
-      this.$router.back()
+      this.$router.push("/postlist/0")
     },
     copyText() {
       Method.copyText(window.location.href)
