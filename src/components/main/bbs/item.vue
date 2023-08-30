@@ -3,12 +3,6 @@
     <router-link :to="`/postlist/${path}/${item.id}`">
       <el-container>
         <el-aside width="70%">
-          <UserIcon
-              :src="item.author.headurl"
-              :size="headsize"
-              :alt="item.author.nickname"
-              style="margin-right: 12px"
-          />
           <el-text
             class="mx-1 time title"
             size="large"
@@ -22,12 +16,12 @@
           ></el-text>
           <ul class="category-counts">
             <li>
-<!--              <UserIcon-->
-<!--                :src="item.author.headurl"-->
-<!--                :size="headsize"-->
-<!--                :alt="item.author.nickname"-->
-<!--                style="margin-right: 12px"-->
-<!--              />-->
+              <UserIcon
+                :src="item.author.headurl"
+                :size="headsize"
+                :alt="item.author.nickname"
+                style="margin-right: 12px"
+              />
               <el-text size="small">{{ item.time }}</el-text>
             </li>
 
