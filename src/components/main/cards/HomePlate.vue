@@ -154,8 +154,6 @@ export default {
 }
 </script>
 <style scoped>
-.btnactive {
-}
 .el-main {
   display: flex;
   flex-direction: row;

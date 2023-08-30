@@ -65,10 +65,8 @@
 </template>
 
 <script lang="ts">
-import { ElMessage } from 'element-plus'
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
-import PostListPlate from './bbs/list.vue'
 import BbsItem from '@comps/main/bbs/item.vue'
 import { watch } from 'vue'
 
@@ -77,7 +75,6 @@ export default {
   name: 'PostPage',
   components: {
     BbsItem,
-    PostListPlate,
   },
   data() {
     return {
@@ -144,9 +141,8 @@ export default {
 
             // 更新列表
             if (appendMode) {
-              let list = this.plate
               obj.data.forEach((el: any) => {
-                list.push(el)
+                this.plate.push(el)
               })
               scrollElement.scrollTop = scrollElement.scrollHeight
             } else {
@@ -158,10 +154,6 @@ export default {
         .catch((error) => {
           this.isLoadingMore = false
           this.isLoadingList = false
-          ElMessage({
-            type: 'error',
-            message: '获取列表失败',
-          })
           console.error(error)
         })
     },
