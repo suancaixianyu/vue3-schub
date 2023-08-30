@@ -2,29 +2,35 @@
   <div v-if="set.ismobile">
     <router-link :to="`/postlist/${path}/${item.id}`">
       <el-container>
-        <el-aside width="70%">
+        <el-aside width="100%">
+          <!-- 列表顶部栏 S -->
+          <div class="item-top-title">
+            <!-- 头像 -->
+            <UserIcon
+                class="item-top-title-list avatar"
+                :src="item.author.headurl"
+                :size="headsize"
+                :alt="item.author.nickname" />
+            <!-- 标题 -->
+            <el-text
+                class="item-top-title-list mx-1 time title"
+                size="large"
+                tag="b"
+                v-html="item.title"
+            ></el-text>
+            <!-- 发布时间 -->
+            <el-text
+                class="item-top-title-list release-time"
+                size="small"
+            >{{ item.time }}</el-text>
+          </div>
+          <!-- 列表顶部栏 E -->
           <el-text
-            class="mx-1 time title"
-            size="large"
-            tag="b"
-            v-html="item.title"
-          ></el-text>
-          <el-text
-            class="mx-1 time"
+            class="mx-1 time item-content"
             style="text-align: left"
             v-html="item.summary"
           ></el-text>
           <ul class="category-counts">
-            <li>
-              <UserIcon
-                :src="item.author.headurl"
-                :size="headsize"
-                :alt="item.author.nickname"
-                style="margin-right: 12px"
-              />
-              <el-text size="small">{{ item.time }}</el-text>
-            </li>
-
             <li @click="doLike">
               <el-button link>
                 <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
@@ -201,5 +207,35 @@ export default {
   display: flex;
   align-items: center;
   justify-items: center;
+  justify-content: flex-end;
+}
+
+.item-top-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.item-top-title .item-top-title-list {
+  flex: 1;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
+.item-top-title .item-top-title-list.avatar {
+  flex: 0.143;
+}
+
+.item-top-title .item-top-title-list.release-time {
+  flex: 0.3;
+  text-align: right;
+}
+
+.item-top-title .item-top-title-list:last-child {
+  margin-right: 0;
+}
+
+.item-content {
+  margin: 10px 0;
 }
 </style>
