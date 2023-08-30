@@ -17,7 +17,7 @@
         <el-text
           size="small"
           style="display: flex; justify-content: flex-start"
-          v-html="item.time+'发表了帖子'"
+          v-html="item.time + '发表了帖子'"
         >
         </el-text>
       </div>
@@ -31,12 +31,7 @@ import UserIcon from '@comps/user/userIcon.vue'
 export default {
   name: 'UserHead',
   components: { UserIcon, UserRole },
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: ['item'],
 }
 </script>
 

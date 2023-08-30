@@ -425,7 +425,6 @@ class Method {
   setwebstyle() {
     let data = this.localGet('webstyle', {})
     if (Object.keys(data).length) {
-      console.log('加载本地设置', data)
       for (let key in Cfg.webstyle) {
         Cfg.webstyle[key] = data[key]
       }
@@ -433,7 +432,6 @@ class Method {
     /** css样式 */
     for (let key in Cfg.webstyle) {
       for (let b in Cfg.webstyle[key]) {
-        // console.log(key, b, Cfg.config.webstyle[key][b])
         document.documentElement.style.setProperty(
           `--${b}`,
           Cfg.webstyle[key][b],
@@ -475,6 +473,7 @@ class Method {
      */
   async UploadImage(file: any): Promise<string | undefined> {
     ElMessage('上传中...')
+    ElMessage('111')
     // 执行图片上传的逻辑
     const formData = new FormData()
     let url = ''
@@ -483,6 +482,8 @@ class Method {
       .then((response) => {
         let obj = response.data
         if (obj.code === 200) {
+          console.log(obj.data.src);
+
           ElMessage({
             type: 'success',
             message: '上传成功',

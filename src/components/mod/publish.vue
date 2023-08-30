@@ -530,7 +530,6 @@ export default {
                   })
               })
             })
-            console.log(this.relate_mod_list)
             this.link = Method.decodeLinkList(modInfo.link_list)
             let flagList = Method.decodeFlagList(modInfo.flag_list)
             flagList.forEach((x: any) => {
@@ -579,7 +578,6 @@ export default {
   },
   unmounted() {
     Cfg.maincontainer.overflowY = 'hidden'
-    console.log('unload ')
   },
 }
 </script>

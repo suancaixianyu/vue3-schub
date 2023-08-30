@@ -70,12 +70,11 @@ export default {
       }
     }
 
+    /** 手机和pc切换 */
     function pagewidth(width: number) {
       if (width <= 480) {
-        console.log('切换为手机')
         Cfg.set.ismobile = true
       } else {
-        console.log('切换为pc')
         Cfg.set.ismobile = false
       }
     }

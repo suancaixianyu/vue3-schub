@@ -87,8 +87,11 @@ export default {
     /**
      * 上传图片
      */
-    async UploadImage(file: any) {
-      let url = await Method.UploadImage(file)
+    UploadImage(file: any) {
+      console.log('开始执行')
+
+      let url = Method.UploadImage(file)
+      console.log('上传成功' + url)
       if (url) {
         this.config.content += url
       }
