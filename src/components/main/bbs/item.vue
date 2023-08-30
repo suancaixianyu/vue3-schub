@@ -196,4 +196,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.category-counts {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
 </style>
