@@ -114,7 +114,6 @@ export default {
               list = list.concat(res.data)
               this.cate_list = list
             }
-            console.log(this.$route.params.cateid)
 
             if (this.$route.params.cateid) {
               this.active_cate_id = Number(this.$route.params.cateid)
@@ -138,7 +137,6 @@ export default {
     this.refreshCateList()
   },
   mounted() {
-    console.log(this.$route.params.cateid)
     if (this.$route.params.cateid && this.$route.params.id) {
       this.isBbsView = true
     }

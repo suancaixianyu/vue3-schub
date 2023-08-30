@@ -249,7 +249,6 @@ export default {
     deleteMod() {
       this.isDeleting = true
       let item = this.list[this.activeItemIndex]
-      console.log(item.id)
       Method.api_get(`/mod/delete/${item.id}`)
         .then((response) => {
           let res = <res>response.data

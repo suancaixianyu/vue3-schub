@@ -432,7 +432,6 @@ export default {
     /** 主题切换摆烂 */
     bailanle() {
       ++this.bailan
-      console.log(this.bailan)
       if (this.bailan == 3) {
         ElMessage('点不动？刷新看看！')
       }
@@ -471,7 +470,6 @@ export default {
     watch(
       () => this.$router.currentRoute.value.fullPath,
       (v) => {
-        console.log('---', v)
         if (/\w+\/\d+/.test(v)) {
           if (/postlist\/\d+\/\d+/.test(v)) {
             this.isRootPath = false
@@ -501,7 +499,6 @@ export default {
         Object.keys(menu).forEach((el) => {
           if (isopen) {
             if (type !== el && menu[el].value) {
-              console.log(menu[el].value)
               menu[el].value.removeAttribute('open')
             }
           } else {

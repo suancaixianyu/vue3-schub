@@ -4,10 +4,10 @@
       <el-container>
         <el-aside width="70%">
           <UserIcon
-              :src="item.author.headurl"
-              :size="headsize"
-              :alt="item.author.nickname"
-              style="margin-right: 12px"
+            :src="item.author.headurl"
+            :size="<number>headsize"
+            :alt="item.author.nickname"
+            style="margin-right: 12px"
           />
           <el-text
             class="mx-1 time title"
@@ -22,12 +22,12 @@
           ></el-text>
           <ul class="category-counts">
             <li>
-<!--              <UserIcon-->
-<!--                :src="item.author.headurl"-->
-<!--                :size="headsize"-->
-<!--                :alt="item.author.nickname"-->
-<!--                style="margin-right: 12px"-->
-<!--              />-->
+              <!--              <UserIcon-->
+              <!--                :src="item.author.headurl"-->
+              <!--                :size="headsize"-->
+              <!--                :alt="item.author.nickname"-->
+              <!--                style="margin-right: 12px"-->
+              <!--              />-->
               <el-text size="small">{{ item.time }}</el-text>
             </li>
 

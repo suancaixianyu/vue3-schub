@@ -15,20 +15,15 @@ import '../admin/index.ts'
 import { watch } from 'vue'
 export default {
   name: 'UserRole',
-  props: {
-    role: {
-      type: String,
-      required: true,
-    },
-  },
+  props: ['role'],
   data() {
     return {
       role_list: <roleItem[]>[],
     }
   },
   created() {
-    console.log(Method.decodeRoleList(this.role))
-    console.log(this.role)
+    // console.log(Method.decodeRoleList(this.role))
+    // console.log(this.role)
 
     this.role_list = Method.decodeRoleList(this.role)
     watch(
