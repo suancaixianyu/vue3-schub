@@ -153,8 +153,11 @@
             <template #prepend>验&ensp;证&ensp;码</template>
           </el-input>
           <img :src="codeSrc" @click="refreshCode" />
+        </el-form-item>
+        <el-form-item>
           <vue-hcaptcha
             sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
+            @verify="addHcaptchaToken"
           ></vue-hcaptcha>
         </el-form-item>
       </el-form>
@@ -209,11 +212,13 @@ export default {
         email: '',
         nickname: '',
         captcha_code: '',
+        hcaptcha_code: '',
       },
       loginconfig: {
         user: '',
         pass: '',
         captcha_code: '',
+        hcaptcha_code: '',
       },
       editPass: {
         uid: Cfg.userInfo.data.id,
@@ -221,6 +226,7 @@ export default {
         newPass: '',
         rePass: '',
         code: '',
+        hcaptcha_code: '',
       },
       windowseype: {
         display: 'flex',
@@ -237,6 +243,10 @@ export default {
     }
   },
   methods: {
+    addHcaptchaToken(token: any, eKey: any) {
+      console.log('--' + token)
+      console.log('--' + eKey)
+    },
     edit() {
       Method.api_post('/user/editPass', this.editPass)
         .then((res) => {

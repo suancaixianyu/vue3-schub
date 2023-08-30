@@ -50,7 +50,13 @@ class Method {
     const diffMinutes = Math.floor(diffSeconds / 60)
     const diffHours = Math.floor(diffMinutes / 60)
     const diffDays = Math.floor(diffHours / 24)
-    if (diffDays >= 1) {
+    const diffMonths = Math.floor(diffDays / 30)
+    const diffYears = Math.floor(diffMonths / 12)
+    if (diffYears >= 1) {
+      msg = `${diffYears}年前`
+    } else if (diffMonths >= 1) {
+      msg = `${diffMonths}个月前`
+    } else if (diffDays >= 1) {
       msg = `${diffDays}天前`
     } else if (diffHours % 24 >= 1) {
       msg = `${diffHours % 24}小时前`
