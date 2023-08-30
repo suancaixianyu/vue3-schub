@@ -49,6 +49,10 @@
             <template #prepend>验&ensp;证&ensp;码</template>
           </el-input>
           <img :src="codeSrc" @click="refreshCode" />
+          <div
+            class="h-captcha"
+            data-sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
+          ></div>
         </el-form-item>
         <el-form-item>
           <el-button plain :loading="loading" @click="edit"> 修改 </el-button>
@@ -113,6 +117,10 @@
             <template #prepend>验&ensp;证&ensp;码</template>
           </el-input>
           <img :src="codeSrc" @click="refreshCode" />
+          <div
+            class="h-captcha"
+            data-sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
+          ></div>
         </el-form-item>
         <el-form-item>
           <el-button plain :loading="loading" @click="submitLogin('register')"
@@ -145,6 +153,9 @@
             <template #prepend>验&ensp;证&ensp;码</template>
           </el-input>
           <img :src="codeSrc" @click="refreshCode" />
+          <vue-hcaptcha
+            sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
+          ></vue-hcaptcha>
         </el-form-item>
       </el-form>
       <el-form-item>
@@ -169,8 +180,13 @@ import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import { api } from '@/apitypes'
 
+import VueHcaptcha from '@hcaptcha/vue3-hcaptcha'
+
 export default {
   name: 'UserLogin',
+  components: {
+    VueHcaptcha,
+  },
   props: {
     page: {
       type: Boolean,
