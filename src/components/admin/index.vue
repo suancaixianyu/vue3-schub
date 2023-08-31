@@ -55,7 +55,6 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            class="el-pagination"
             v-model:current-page="page"
             background
             :page-size="limit"
@@ -102,7 +101,6 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            class="el-pagination"
             v-model:current-page="page"
             background
             :page-size="limit"
@@ -163,8 +161,8 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            class="el-pagination"
             background
+            v-model:current-page="page"
             :page-size="limit"
             layout="prev, pager, next"
             :total="total"
@@ -211,7 +209,6 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            class="el-pagination"
             v-model:current-page="page"
             background
             :page-size="limit"
@@ -253,7 +250,6 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            class="el-pagination"
             v-model:current-page="page"
             background
             :page-size="limit"
@@ -909,7 +905,7 @@ export default {
     watch(
       () => this.activeTab,
       (v) => {
-        this.page = 1
+        this.page = 1;
         this.refreshItem(v)
       },
     )
