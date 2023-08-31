@@ -47,11 +47,13 @@
         </div>
       </div>
     </div>
+    <!-- 底部 -->
     <div
       v-if="!set.ismobile && total > 10"
-      class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only"
+      class="card w-96 bg-base-100 shadow-xl search-header card-compact hidden-xs-only pagination-end"
     >
       <el-pagination
+        v-if="pagination"
         :current-page="pagenum"
         :page-size="10"
         :pager-count="5"
@@ -60,6 +62,12 @@
         style="justify-content: center"
       >
       </el-pagination>
+      <el-pagination
+        v-else
+        layout="prev, pager, next"
+        :total="total"
+        :pager-count="5"
+      />
     </div>
   </div>
 </template>
@@ -79,6 +87,7 @@ export default {
   data() {
     return {
       set: Cfg.set,
+      pagination: true,
       pagenum: 1, // 页码
       total: 0, // 总帖子数
       totalpages: 0, // 总页数
@@ -186,11 +195,22 @@ export default {
       },
       { immediate: true },
     )
+    watch(
+      () => this.$route.params.id,
+      () => {
+        if (this.$route.params.id) this.pagination = false
+        else this.pagination = true
+      },
+      { immediate: true },
+    )
   },
 }
 </script>
 
 <style scoped>
+.pagination-end {
+  justify-content: center;
+}
 .bbs-list {
   display: flex;
   flex-direction: column;

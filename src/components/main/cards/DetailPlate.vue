@@ -13,7 +13,7 @@
           ></el-text>
         </el-col>
         <el-col :span="8" style="display: flex; justify-content: flex-end">
-          <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
+          <el-icon @click="refresh_item" :size="24" title="刷新" class="icon">
             <Flushed />
           </el-icon>
           <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
