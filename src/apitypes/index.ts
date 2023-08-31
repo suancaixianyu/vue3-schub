@@ -42,7 +42,7 @@ export interface userInfoType {
   role_list: any
   /** 是否已登录 */
   isLogin: boolean
-  /** 登陆窗口是否可见 */
+  /** 登录窗口是否可见 */
   isLoginDialogVisible: boolean
   /** 用户ID */
   id?: string

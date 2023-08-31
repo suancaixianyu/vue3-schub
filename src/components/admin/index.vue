@@ -23,12 +23,12 @@
             <el-table-column prop="reg_time" label="注册时间" width="180" />
             <el-table-column
               prop="last_login_time"
-              label="最后登陆时间"
+              label="最后登录时间"
               width="180"
             />
             <el-table-column
               prop="last_login_ip"
-              label="最后登陆IP"
+              label="最后登录IP"
               width="120"
             />
             <el-table-column prop="money" label="积分" width="80" />
@@ -905,7 +905,7 @@ export default {
     watch(
       () => this.activeTab,
       (v) => {
-        this.page = 1;
+        this.page = 1
         this.refreshItem(v)
       },
     )

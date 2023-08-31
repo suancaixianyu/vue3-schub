@@ -43,17 +43,6 @@
             <template #prepend>确认密码</template>
           </el-input>
         </el-form-item>
-
-        <el-form-item>
-          <el-input v-model="editPass.code">
-            <template #prepend>验&ensp;证&ensp;码</template>
-          </el-input>
-          <img :src="codeSrc" @click="refreshCode" />
-          <div
-            class="h-captcha"
-            data-sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
-          ></div>
-        </el-form-item>
         <el-form-item>
           <el-button plain :loading="loading" @click="edit"> 修改 </el-button>
         </el-form-item>
@@ -113,15 +102,11 @@
         </el-form-item>
 
         <el-form-item>
-          <el-input v-model="regitser.captcha_code">
-            <template #prepend>验&ensp;证&ensp;码</template>
+          <el-input v-model="regitser.invitation" placeholder="邀请码">
+            <template #prepend>邀&ensp;请&ensp;码</template>
           </el-input>
-          <img :src="codeSrc" @click="refreshCode" />
-          <div
-            class="h-captcha"
-            data-sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
-          ></div>
         </el-form-item>
+
         <el-form-item>
           <el-button plain :loading="loading" @click="submitLogin('register')"
             >注册</el-button
@@ -148,18 +133,6 @@
             <template #prepend>密&emsp;码</template>
           </el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="loginconfig.captcha_code">
-            <template #prepend>验&ensp;证&ensp;码</template>
-          </el-input>
-          <img :src="codeSrc" @click="refreshCode" />
-        </el-form-item>
-        <el-form-item>
-          <vue-hcaptcha
-            sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
-            @verify="addHcaptchaToken"
-          ></vue-hcaptcha>
-        </el-form-item>
       </el-form>
       <el-form-item>
         <el-checkbox v-model="remember" label="记住账号" size="large" />
@@ -172,6 +145,34 @@
       </el-form-item>
     </el-col>
   </el-row>
+
+  <el-dialog
+    v-model="showdialog"
+    title="请通过人机验证"
+    :draggable="true"
+    :fullscreen="false"
+    :center="true"
+    :width="dialogwidth"
+  >
+    <vue-hcaptcha
+      sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
+      @verify="addHcaptchaToken"
+    ></vue-hcaptcha>
+    <el-input
+      v-model="imgcode"
+      v-if="showimgcode"
+      placeholder="请输入图片验证码"
+    >
+      <template #append>
+        <img :src="codeSrc" @click="refreshCode" />
+      </template>
+    </el-input>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="offDialog">确定</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -199,12 +200,18 @@ export default {
   data() {
     let src = Method.getHostUrl('/captcha')
     return {
+      ...Cfg,
+      dialogwidth: Cfg.set.ismobile ? '100%' : '50%',
+      showdialog: false,
+      showimgcode: false,
       baseCodeSrc: src,
       codeSrc: '',
       remember: false,
       loading: false,
       isregister: true,
       userInfo: Cfg.userInfo,
+      pass_uuid: '',
+      imgcode: '',
       regitser: {
         user: '',
         pass: '',
@@ -212,21 +219,22 @@ export default {
         email: '',
         nickname: '',
         captcha_code: '',
-        hcaptcha_code: '',
+        pass_uuid: '',
+        invitation: '',
       },
       loginconfig: {
         user: '',
         pass: '',
         captcha_code: '',
-        hcaptcha_code: '',
+        pass_uuid: '',
       },
       editPass: {
         uid: Cfg.userInfo.data.id,
         oldPass: '',
         newPass: '',
         rePass: '',
-        code: '',
-        hcaptcha_code: '',
+        captcha_code: '',
+        pass_uuid: '',
       },
       windowseype: {
         display: 'flex',
@@ -243,11 +251,33 @@ export default {
     }
   },
   methods: {
-    addHcaptchaToken(token: any, eKey: any) {
-      console.log('--' + token)
-      console.log('--' + eKey)
+    offDialog() {
+      if (this.$props.page) {
+        this.editPass.pass_uuid = this.pass_uuid
+        this.editPass.captcha_code = this.imgcode
+        this.edit()
+      }
+      if (this.isregister) {
+        this.loginconfig.pass_uuid = this.pass_uuid
+        this.loginconfig.captcha_code = this.imgcode
+        this.submitLogin('register')
+      } else {
+        this.regitser.pass_uuid = this.pass_uuid
+        this.regitser.captcha_code = this.imgcode
+        this.submitLogin('login')
+      }
+
+      this.showdialog = false
+    },
+    addHcaptchaToken(token: string) {
+      this.pass_uuid = token
+      this.showimgcode = true
     },
     edit() {
+      if (this.pass_uuid === '') {
+        this.showdialog = true
+        return
+      }
       Method.api_post('/user/editPass', this.editPass)
         .then((res) => {
           let obj = <api>res.data
@@ -280,6 +310,10 @@ export default {
       let userInfo = Cfg.userInfo
 
       if (this.loading) return
+      if (this.pass_uuid === '') {
+        this.showdialog = true
+        return
+      }
 
       let configdata: object, url: string
       let infourl: string = '/user/info'
@@ -367,6 +401,9 @@ export default {
 </script>
 
 <style scoped>
+.captchaimg {
+  margin: 0 auto;
+}
 .logininput {
   width: 100%;
 }
