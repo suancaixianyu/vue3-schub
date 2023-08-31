@@ -2,7 +2,7 @@
   <div class="user">
     <!-- 头像 -->
     <user-icon
-      :src="item.author.headurl"
+      :src="item.author?.headurl"
       :size="headsize"
       :alt="item.nickname"
       style="margin-right: 12px"

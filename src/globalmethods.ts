@@ -397,6 +397,9 @@ class Method {
       if (roleRes.code == 200) {
         userInfo.role_list = roleRes.data //全局角色列表缓存
       }
+    }).catch((err: any) => {
+      console.log(err)
+      window.open(Cfg.config.server, '_blank')
     })
     this.api_get('/mod/global_data_list').then((response) => {
       let roleRes = response.data

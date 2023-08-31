@@ -85,17 +85,18 @@
     <el-footer style="text-align: left; padding: 0; height: 25px">
       <ul class="category-counts">
         <li @click="doLike">
-          <el-icon :size="22">
-            <LikeIcon />
-          </el-icon>
-          <p v-html="goodNum"></p>
+          <el-button link>
+            <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
+          </el-button>
         </li>
         <router-link :to="`/postlist/${path}/${item.id}`">
           <li>
-            <el-icon :size="18" style="margin-right: 5px">
-              <ChatDotSquare />
-            </el-icon>
-            <p v-html="item.comments"></p>
+            <el-button link>
+              <el-icon :size="18" style="margin-right: 5px">
+                <ChatDotSquare />
+              </el-icon>
+              {{ item.comments }}
+            </el-button>
           </li>
         </router-link>
       </ul>

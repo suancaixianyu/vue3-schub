@@ -20,12 +20,7 @@ import Cfg from '@/config/config.ts'
 export default {
   name: 'userIcon',
   components: { Picture },
-  props: {
-    src: String,
-    size: Number,
-    alt: String,
-    shape: String,
-  },
+  props: ['src', 'size', 'alt', 'shape'],
   data() {
     return {
       shape: Cfg.set.shape, //square circle
