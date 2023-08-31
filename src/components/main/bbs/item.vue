@@ -1,28 +1,28 @@
 <template>
   <div v-if="set.ismobile">
-    <router-link :to="`/postlist/${path}/${item.id}`">
-      <el-container>
-        <el-aside width="100%">
+    <el-container>
+      <el-aside width="100%">
+        <router-link :to="`/postlist/${path}/${item.id}`">
           <!-- 列表顶部栏 S -->
           <div class="item-top-title">
             <!-- 头像 -->
             <UserIcon
-                class="item-top-title-list avatar"
-                :src="item.author.headurl"
-                :size="headsize"
-                :alt="item.author.nickname" />
+              class="item-top-title-list avatar"
+              :src="item.author.headurl"
+              :size="headsize"
+              :alt="item.author.nickname"
+            />
             <!-- 标题 -->
             <el-text
-                class="item-top-title-list mx-1 time title"
-                size="large"
-                tag="b"
-                v-html="item.title"
+              class="item-top-title-list mx-1 time title"
+              size="large"
+              tag="b"
+              v-html="item.title"
             ></el-text>
             <!-- 发布时间 -->
-            <el-text
-                class="item-top-title-list release-time"
-                size="small"
-            >{{ item.time }}</el-text>
+            <el-text class="item-top-title-list release-time" size="small">{{
+              item.time
+            }}</el-text>
           </div>
           <!-- 列表顶部栏 E -->
           <el-text
@@ -30,60 +30,35 @@
             style="text-align: left"
             v-html="item.summary"
           ></el-text>
-          <ul class="category-counts">
-            <li @click="doLike">
+        </router-link>
+
+        <ul class="category-counts">
+          <li @click="doLike">
+            <el-button link>
+              <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
+            </el-button>
+          </li>
+          <router-link :to="`/postlist/${path}/${item.id}`">
+            <li>
               <el-button link>
-                <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
+                <el-icon :size="18" style="margin-right: 5px">
+                  <ChatDotSquare />
+                </el-icon>
+                {{ item.comments }}
               </el-button>
             </li>
-            <router-link :to="`/postlist/${path}/${item.id}`">
-              <li>
-                <el-button link>
-                  <el-icon :size="18" style="margin-right: 5px">
-                    <ChatDotSquare />
-                  </el-icon>
-                  {{ item.comments }}
-                </el-button>
-              </li>
-            </router-link>
-          </ul>
-        </el-aside>
-        <el-main style="padding: 0; text-align: right" v-if="item.cover">
-          <el-image style="height: 80px" :src="item.cover" fit="cover" />
-        </el-main>
-      </el-container>
-    </router-link>
-    <!-- <el-header style="height: auto; padding: 0">
-      <UserHead
-        :item="{
-          headurl: item.author.headurl,
-          shape,
-          headsize,
-          nickname: item.author.nickname,
-          time: item.time,
-          role: item.author.role,
-          style: {
-            flexDirection: 'row',
-            alignItems: 'center',
-          },
-        }"
-        style="padding-left: 10px"
-      />
-    </el-header> -->
+          </router-link>
+        </ul>
+      </el-aside>
+      <el-main style="padding: 0; text-align: right" v-if="item.cover">
+        <el-image style="height: 80px" :src="item.cover" fit="cover" />
+      </el-main>
+    </el-container>
   </div>
   <div v-else>
     <!-- 头部 -->
     <el-header style="height: 46px; padding: 0">
-      <UserHead
-        :item="{
-          headurl: item.author.headurl,
-          shape,
-          headsize,
-          nickname: item.author.nickname,
-          time: item.time,
-          role: item.author.role,
-        }"
-      />
+      <UserHead :item="item" />
     </el-header>
     <!-- 中部 -->
     <router-link :to="`/postlist/${path}/${item.id}`">
@@ -150,7 +125,6 @@ export default {
   props: ['item', 'path'],
   data() {
     return {
-      shape: Cfg.set.shape,
       set: Cfg.set,
       headsize: Cfg.headsize.post,
     }
@@ -175,16 +149,6 @@ export default {
       })
     }
     return { ...toRefs(data), doLike }
-  },
-  updated() {
-    if (this.$props.item.author.role) {
-      this.$props.item.author.role = this.$props.item.author.role.charAt(0)
-    }
-  },
-  mounted() {
-    if (this.$props.item.author.role) {
-      this.$props.item.author.role = this.$props.item.author.role.charAt(0)
-    }
   },
 }
 </script>

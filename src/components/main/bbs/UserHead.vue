@@ -2,8 +2,8 @@
   <div class="user">
     <!-- 头像 -->
     <user-icon
-      :src="item.headurl"
-      :size="item.headsize"
+      :src="item.author.headurl"
+      :size="headsize"
       :alt="item.nickname"
       style="margin-right: 12px"
     />
@@ -28,10 +28,16 @@
 <script lang="ts">
 import UserRole from '@comps/user/roleList.vue'
 import UserIcon from '@comps/user/userIcon.vue'
+import Cfg from '@/config/config'
 export default {
   name: 'UserHead',
   components: { UserIcon, UserRole },
   props: ['item'],
+  data() {
+    return {
+      headsize: Cfg.headsize.post,
+    }
+  },
 }
 </script>
 

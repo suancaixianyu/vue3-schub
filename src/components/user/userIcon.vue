@@ -2,7 +2,7 @@
   <el-image
     class="el-image"
     :class="shape"
-    :src="imgSrc"
+    :src="src ?? ''"
     :style="'width:' + size + 'px;height:' + size + 'px;'"
   >
     <template #error>
@@ -28,7 +28,6 @@ export default {
   },
   data() {
     return {
-      imgSrc: this.src ?? '',
       shape: Cfg.set.shape, //square circle
     }
   },
