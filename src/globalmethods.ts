@@ -392,6 +392,8 @@ class Method {
    */
   getInformation(callback: any = null) {
     let route = useRoute()
+    console.log(route);
+
     let { userInfo } = Cfg
     //刷新页面重新获取用户信息
     this.api_get('/user/role_list').then((response) => {

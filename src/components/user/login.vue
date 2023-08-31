@@ -153,6 +153,7 @@
     :fullscreen="false"
     :center="true"
     :width="dialogwidth"
+    destroy-on-close
   >
     <vue-hcaptcha
       sitekey="ebc1a1c0-79d5-4979-839f-c32e938f3629"
@@ -213,7 +214,6 @@ export default {
       pass_uuid: '',
       imgcode: '',
       regitser: {
-        user: '',
         pass: '',
         repass: '',
         email: '',
@@ -255,26 +255,33 @@ export default {
       if (this.$props.page) {
         this.editPass.pass_uuid = this.pass_uuid
         this.editPass.captcha_code = this.imgcode
-        this.edit()
+        console.log(this.editPass)
+
+        this.edit(true)
       }
       if (this.isregister) {
-        this.loginconfig.pass_uuid = this.pass_uuid
-        this.loginconfig.captcha_code = this.imgcode
-        this.submitLogin('register')
-      } else {
         this.regitser.pass_uuid = this.pass_uuid
         this.regitser.captcha_code = this.imgcode
-        this.submitLogin('login')
+        console.log(this.regitser)
+        this.submitLogin('register', true)
+      } else {
+        this.loginconfig.pass_uuid = this.pass_uuid
+        this.loginconfig.captcha_code = this.imgcode
+        console.log(this.loginconfig)
+
+        this.submitLogin('login', true)
       }
 
       this.showdialog = false
     },
     addHcaptchaToken(token: string) {
+      console.log(token)
+
       this.pass_uuid = token
       this.showimgcode = true
     },
-    edit() {
-      if (this.pass_uuid === '') {
+    edit(aa: boolean = false) {
+      if (this.pass_uuid === '' || aa === false) {
         this.showdialog = true
         return
       }
@@ -306,11 +313,11 @@ export default {
     refreshCode() {
       this.codeSrc = this.baseCodeSrc + '?t=' + new Date().getTime()
     },
-    submitLogin(type: string) {
+    submitLogin(type: string, aa: boolean = false) {
       let userInfo = Cfg.userInfo
 
       if (this.loading) return
-      if (this.pass_uuid === '') {
+      if (this.pass_uuid === '' || aa === false) {
         this.showdialog = true
         return
       }
@@ -325,6 +332,8 @@ export default {
         url = '/user/register'
       }
       this.loading = true
+      console.log('xxx', this.regitser, this.loginconfig)
+
       Method.api_post(url, configdata)
         .then((response) => {
           this.loading = false
