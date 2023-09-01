@@ -53,8 +53,6 @@ export interface userInfoType {
 export interface setType {
   /** 是否显示抽屉菜单 */
   menu: boolean
-  /** 是否显示底部栏 */
-  showfooter: boolean
   /** 头像形状 */
   shape: string
   /** 是否为移动端 */

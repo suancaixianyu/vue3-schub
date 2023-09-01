@@ -102,13 +102,9 @@ class Method {
    * @param size 文件大小
    */
   getFileSize(size: number): string {
-    if (size / 1024 >= 1) {
-      return `${(size / 1024).toFixed(1)}KB`
-    } else if (size / 10240 >= 1) {
-      return `${(size / 10240).toFixed(1)}MB`
-    } else {
-      return `${size}B`
-    }
+    const nuits = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+    let a = Math.log2(size) / 10 | 0
+    return (size / 1024 ** a).toFixed(1) + nuits[a | 0]
   }
 
   /**
@@ -118,11 +114,11 @@ class Method {
   getNumber(number: number): string {
     if (number / 1000 >= 1) {
       return `${(number / 1000).toFixed(1)}k`
-    } else if (number / 10000 >= 1) {
-      return `${(number / 1000).toFixed(1)}万`
-    } else {
-      return `${number}`
     }
+    if (number / 10000 >= 1) {
+      return `${(number / 1000).toFixed(1)}w`
+    }
+    return `${number}`
   }
 
   /**

@@ -258,7 +258,6 @@ export default {
   },
   mounted() {
     Cfg.maincontainer.overflowY = 'auto'
-    Cfg.set.showfooter = true
   },
 }
 </script>

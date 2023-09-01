@@ -204,12 +204,10 @@ export default {
     onMounted(() => {
       Cfg.maincontainer.overflowY = 'visible'
       Cfg.maincontainer.height = 'auto'
-      Cfg.set.showfooter = false
     })
     onUnmounted(() => {
       Cfg.maincontainer.overflowY = 'hidden'
       Cfg.maincontainer.height = 'calc(100vh - 2rem)'
-      Cfg.set.showfooter = true
     })
     return {
       userhead:

@@ -84,7 +84,43 @@
           </el-collapse>
         </el-tab-pane>
         <el-tab-pane label="资源下载">
-          <el-table :data="version_list" stripe style="width: 100%">
+          <div
+            class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
+            v-for="(x, index) in version_list"
+            v-if="version_list.length > 0 && set.ismobile"
+            :key="x.id"
+            :style="postliststyle"
+          >
+            <el-container style="padding: 0">
+              <el-main style="padding: 0 0 0 5px; overflow-x: hidden">
+                <el-row :gutter="24">
+                  <el-col :span="24">
+                    <el-text tag="b">{{ x.name }}</el-text>
+                  </el-col>
+                  <el-col :span="24">
+                    {{ x.file_size }} / {{ x.create_time_str }}
+                  </el-col>
+                </el-row>
+              </el-main>
+              <el-aside
+                width="auto"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+                ><el-button
+                  size="small"
+                  link
+                  type="danger"
+                  @click="downLoad(index)"
+                  >下载</el-button
+                ></el-aside
+              >
+            </el-container>
+          </div>
+
+          <el-table :data="version_list" stripe style="width: 100%" v-else>
             <el-table-column prop="name" label="文件名" />
             <el-table-column
               prop="create_time_str"
@@ -305,7 +341,7 @@ export default {
   },
   data() {
     return {
-      set: Cfg.set,
+      ...Cfg,
       activeRelation: <any>[0],
       modRate: 5,
       isLoading: false,
@@ -351,7 +387,7 @@ export default {
             let version_list = res.data.version_list
             version_list.forEach((x: any) => {
               x.time = Method.formatNormalTime(x.create_time, 'Y-m-d')
-              x.create_time_str = Method.formatBbsTime(x.create_time)
+              x.create_time_str = Method.formatNormalTime(x.create_time)
               x.file_size = Method.getFileSize(x.size)
             })
             this.author_list = res.data.author_list
@@ -400,12 +436,10 @@ export default {
     )
     Cfg.maincontainer.height = 'auto'
     Cfg.maincontainer.overflowY = 'auto'
-    Cfg.set.showfooter = false
   },
   unmounted() {
     Cfg.maincontainer.height = 'calc(100vh - 6rem)'
     Cfg.maincontainer.overflowY = 'hidden'
-    Cfg.set.showfooter = true
   },
 }
 </script>

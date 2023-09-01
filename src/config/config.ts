@@ -32,7 +32,6 @@ const headsize = reactive({
 
 const set = reactive({
   menu: true,
-  showfooter: true,
   shape: 'square',
   ismobile: false,
   showheader: false
@@ -110,7 +109,8 @@ class Cfg {
       // server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
       server: "https://schub.top",
-      view: 'http://localhost:4000',
+      // view: 'http://localhost:4000',
+      view: 'http://suancaixianyu.cn',
       captchaserver: 'https://schub.top'
 
     }

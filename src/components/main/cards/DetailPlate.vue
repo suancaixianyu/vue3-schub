@@ -375,7 +375,6 @@ export default {
   updated() {
     Cfg.maincontainer.height = Cfg.set.ismobile ? 'auto' : 'calc(100vh - 6rem)'
     Cfg.maincontainer.overflowY = Cfg.set.ismobile ? 'auto' : 'hidden'
-    Cfg.set.showfooter = Cfg.set.ismobile ? false : true
   },
 
   created() {
