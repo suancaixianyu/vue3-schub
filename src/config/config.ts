@@ -77,6 +77,10 @@ class Cfg {
   config: {
     /** 后端服务器地址 */
     server: string
+    /** 前端地址 */
+    view: string
+    /** 后端验证地址 */
+    captchaserver: string
   };
   /** 全局样式 */
   webstyle: { [key: string]: { [key: string]: string } }
@@ -103,9 +107,12 @@ class Cfg {
     this.config = {
       /** 后端服务器地址 */
       //  server: "http://localhost:8081",
-      server: '/xyapi',
+      // server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
-      // server: "https://schub.top",
+      server: "https://schub.top",
+      view: 'http://localhost:4000',
+      captchaserver: 'https://schub.top'
+
     }
     this.webstyle = webstyle
     this.userInfo = userInfo
