@@ -399,7 +399,7 @@ class Method {
       }
     }).catch((err: any) => {
       console.log(err)
-      window.open(`${Cfg.config.captchaserver}?url=${Cfg.config.view}${route.path}`, '_self')
+      // window.open(`${Cfg.config.captchaserver}?url=${Cfg.config.view}${route.path}`, '_self')
     })
     this.api_get('/mod/global_data_list').then((response) => {
       let roleRes = response.data
