@@ -1,5 +1,4 @@
 <template>
-  {{ openDetails }}
   <!-- 导航 -->
   <div class="navbar bg-base-100" style="padding: 0 8px; height: 64px">
     <!-- 宽屏logo -->
@@ -120,7 +119,7 @@
           width: 10rem;
           border-radius: var(--rounded-btn);
           position: absolute;
-          top: 5rem;
+          top: 4rem;
         "
       >
         <li>

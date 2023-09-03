@@ -34,7 +34,7 @@
 
         <ul class="category-counts">
           <li @click="doLike">
-            <el-button link :style="{ color: item.like == 0 ? '' : '#FD70A1' }">
+            <el-button link :style="{ color: like == 0 ? '' : '#FD70A1' }">
               <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
             </el-button>
           </li>
@@ -85,7 +85,7 @@
     <el-footer style="text-align: left; padding: 0; height: 25px">
       <ul class="category-counts">
         <li @click="doLike">
-          <el-button link :style="{ color: item.like == 0 ? '' : '#FD70A1' }">
+          <el-button link :style="{ color: like == 0 ? '' : '#FD70A1' }">
             <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
           </el-button>
         </li>
@@ -135,6 +135,7 @@ export default {
       isDoGooding: false,
       isDoBading: false,
       goodNum: props.item.likes,
+      like: props.item.like,
     })
     function doLike() {
       //帖子点赞
@@ -142,7 +143,14 @@ export default {
       Method.api_get(`/bbs/good/${props.item.id}`).then((res: any) => {
         let obj = res.data as api
         data.isDoGooding = false
-        if (obj.code === 200) data.goodNum += parseInt(obj.data)
+        if (obj.code === 200) {
+          data.goodNum += parseInt(obj.data)
+          if (obj.data == 1) {
+            data.like = 1
+          } else {
+            data.like = 0
+          }
+        }
         ElMessage({
           type: obj.code == 200 ? 'success' : 'error',
           message: obj.msg,

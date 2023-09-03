@@ -45,8 +45,14 @@
                 <div class="hot">{{ x.views }}</div>
               </div>
               <div class="item">
-                <like-icon :size="24"></like-icon>
-                <div class="like">{{ x.likes }}</div>
+                <el-button
+                  link
+                  :style="{ color: like == 0 ? '' : '#FD70A1' }"
+                  @click="doLike"
+                >
+                  <like-icon :size="24"></like-icon>
+                  {{ x.likes }}
+                </el-button>
               </div>
               <div class="item">
                 <icon-down :size="18"></icon-down>
@@ -86,8 +92,14 @@
                 <div class="hot">{{ x.views }}</div>
               </el-button>
               <div class="item">
-                <like-icon :size="24"></like-icon>
-                <div class="like">{{ x.likes }}</div>
+                <el-button
+                  link
+                  :style="{ color: like == 0 ? '' : '#FD70A1' }"
+                  @click="doLike"
+                >
+                  <like-icon :size="24"></like-icon>
+                  {{ x.likes }}
+                </el-button>
               </div>
               <div class="item">
                 <icon-down :size="18"></icon-down>
@@ -150,9 +162,11 @@ export default {
       mod_flag_list: <any>[],
       search: '',
       isLoading: false,
+      like: 0,
     }
   },
   methods: {
+    doLike() {},
     onFlagClick(id: any) {
       let c = <HTMLDivElement>this.$refs.flagContainer
       this.activeFlagId = id
