@@ -4,25 +4,27 @@
     <div v-if="set.ismobile" style="padding: 0 0.5rem">
       <!-- 顶部按钮 -->
       <el-row :gutter="24" style="padding: 0" v-if="content != null">
-        <el-col :span="16">
-          <el-text
-            class="mx-1 time title"
-            size="large"
-            tag="b"
-            v-html="content.title"
-          ></el-text>
-        </el-col>
-        <el-col :span="8" style="display: flex; justify-content: flex-end">
-          <el-icon @click="refresh_item" :size="24" title="刷新" class="icon">
-            <Flushed />
-          </el-icon>
-          <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
-            <Link />
-          </el-icon>
-          <el-icon @click="close" :size="25" title="关闭" class="icon">
-            <Close />
-          </el-icon>
-        </el-col>
+        <div class="detail-title-container">
+          <el-col :span="16">
+            <el-text
+                class="mx-1 time title"
+                size="large"
+                tag="b"
+                v-html="content.title"
+            ></el-text>
+          </el-col>
+          <el-col :span="8" style="display: flex; justify-content: flex-end">
+            <el-icon @click="refresh_item" :size="24" title="刷新" class="icon">
+              <Flushed />
+            </el-icon>
+            <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
+              <Link />
+            </el-icon>
+            <el-icon @click="close" :size="25" title="关闭" class="icon">
+              <Close />
+            </el-icon>
+          </el-col>
+        </div>
         <el-col :span="24">
           <UserHead :item="userInfo" style="padding-left: 10px" />
         </el-col>
@@ -100,25 +102,27 @@
     >
       <div v-if="content != null" class="common-layout">
         <el-row :gutter="24" style="padding: 0" v-if="content != null">
-          <el-col :span="16">
-            <el-text
-              class="mx-1 time title"
-              size="large"
-              tag="b"
-              v-html="content.title"
-            ></el-text>
-          </el-col>
-          <el-col :span="8" style="display: flex; justify-content: flex-end">
-            <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
-              <Flushed />
-            </el-icon>
-            <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
-              <Link />
-            </el-icon>
-            <el-icon @click="close" :size="25" title="关闭" class="icon">
-              <Close />
-            </el-icon>
-          </el-col>
+          <div class="detail-title-container">
+            <el-col :span="16">
+              <el-text
+                class="mx-1 time title"
+                size="large"
+                tag="b"
+                v-html="content.title"
+              ></el-text>
+            </el-col>
+            <el-col :span="8" style="display: flex; justify-content: flex-end">
+              <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
+                <Flushed />
+              </el-icon>
+              <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
+                <Link />
+              </el-icon>
+              <el-icon @click="close" :size="25" title="关闭" class="icon">
+                <Close />
+              </el-icon>
+            </el-col>
+          </div>
           <el-col :span="24">
             <UserHead :item="userInfo" style="padding-left: 10px" />
           </el-col>
@@ -452,7 +456,7 @@ export default {
   padding: 12px 18px;
   justify-self: center;
   flex-direction: column;
-  margin: 20px 5px;
+  margin: 0 5px;
 }
 
 .md-editor-preview-wrapper {
@@ -460,7 +464,7 @@ export default {
 }
 
 .md-editor-preview-wrapper-main {
-  padding: 10px 20px;
+  padding: 12px 10px 20px;
 }
 
 .post-area {
@@ -506,5 +510,17 @@ export default {
   margin-right: 5px;
   height: 26px;
   width: auto;
+}
+
+.detail-title-container {
+  display: flex;
+  width: 100%;
+  margin: 10px 0 20px;
+  justify-items: center;
+  align-items: center;
+}
+
+.detail-title-container .title {
+  font-size: 1.35rem;
 }
 </style>
