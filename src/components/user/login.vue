@@ -311,6 +311,7 @@ export default {
         })
     },
     refreshCode() {
+      this.imgcode = ''
       this.codeSrc = this.baseCodeSrc + '?t=' + new Date().getTime()
     },
     submitLogin(type: string, aa: boolean = false) {
@@ -380,10 +381,12 @@ export default {
     goRegister() {
       this.$emit('childEvent')
       this.isregister = true
+      this.refreshCode()
     },
     goLogin() {
       this.$emit('childEvent')
       this.isregister = false
+      this.refreshCode()
     },
   },
   created() {

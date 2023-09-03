@@ -81,10 +81,10 @@
             </div>
             <div class="description-line">{{ x.description }}</div>
             <div class="btn-line">
-              <div class="item">
+              <el-button link>
                 <icon-hot :size="18"></icon-hot>
                 <div class="hot">{{ x.views }}</div>
-              </div>
+              </el-button>
               <div class="item">
                 <like-icon :size="24"></like-icon>
                 <div class="like">{{ x.likes }}</div>

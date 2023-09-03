@@ -1,4 +1,5 @@
 <template>
+  {{ openDetails }}
   <!-- 导航 -->
   <div class="navbar bg-base-100" style="padding: 0 8px; height: 64px">
     <!-- 宽屏logo -->
@@ -100,28 +101,31 @@
     </div>
 
     <!-- 弹窗菜单 -->
-    <details
-      class="dropdown mb-32 hidden-sm-and-up rounded-box"
+    <div
+      class="hidden-sm-and-up"
       ref="menu"
-      @click="menuClick('menu', true)"
       v-else
-      @mouseleave="menuClick('menu')"
+      @mouseleave="clickDetails(false)"
+      @click="clickDetails(true)"
     >
       <summary class="m-1 btn bg-base-100 btn-ghost">
         <ScLogo />
       </summary>
       <ul
-        class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
+        v-if="openDetails"
+        class="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-52"
         style="
           box-shadow: var(--el-box-shadow-light);
           border: none;
           width: 10rem;
           border-radius: var(--rounded-btn);
+          position: absolute;
+          top: 5rem;
         "
       >
         <li>
           <!-- 返回主页 -->
-          <router-link to="/" @click="menuClick('menu')">
+          <router-link to="/" @click="clickDetails">
             <el-icon :size="28" style="padding: 0 2px">
               <House />
             </el-icon>
@@ -136,28 +140,8 @@
             <el-text>消息</el-text>
           </div>
         </li>
-        <!-- <li>
-          <div @click="handleLiClick">
-            <input
-              @click="bailanle"
-              ref="toggleInput"
-              checked
-              type="checkbox"
-              class="toggle toggle-sm"
-              data-toggle-theme="dark,light"
-              data-act-class="ACTIVECLASS"
-              v-model="iconid"
-            />
-            <el-text>
-              <el-icon v-if="iconid">
-                <Moon />
-              </el-icon>
-              <el-icon v-if="iconid === false"> <Sunny /> </el-icon>切换主题
-            </el-text>
-          </div>
-        </li> -->
         <li>
-          <router-link to="/setup" @click="menuClick('menu')">
+          <router-link to="/setup" @click="clickDetails">
             <el-icon :size="28" style="padding: 0 2px">
               <setting />
             </el-icon>
@@ -169,7 +153,7 @@
             <summary class="m-1">外部工具</summary>
             <ul
               class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52"
-              @click="menuClick('menu')"
+              @click="clickDetails(false)"
             >
               <li><a href="http://suancaixianyu.cn/sss">简谱转换</a></li>
               <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
@@ -177,7 +161,7 @@
           </details>
         </li>
       </ul>
-    </details>
+    </div>
 
     <!-- 分割元素 -->
     <div class="flex-grow" />
@@ -311,6 +295,11 @@
                   <a href="javascript:;">个人中心</a>
                 </router-link>
               </li>
+              <li v-if="/1/g.test(userInfo.data.role)">
+                <router-link to="/admin">
+                  <a href="javascript:;">后台管理</a>
+                </router-link>
+              </li>
               <li>
                 <a @click="loginOut">退出登录</a>
               </li>
@@ -385,6 +374,7 @@ export default {
   },
   data() {
     return {
+      openDetails: false,
       title: '登录',
       ...Cfg,
       bailan: 0,
@@ -401,6 +391,21 @@ export default {
     }
   },
   methods: {
+    clickDetails(type: boolean) {
+      console.log(type == false && this.openDetails == true)
+      console.log(type == true && this.openDetails == true)
+      console.log(type == true && this.openDetails == false)
+      if (type == false && this.openDetails == true) {
+        this.openDetails = false
+      }
+      if (type && this.openDetails) {
+        this.openDetails = false
+      }
+      if (type == true && this.openDetails == false) {
+        this.openDetails = true
+      }
+      console.log(this.openDetails)
+    },
     settitle() {
       if (this.title == '登录') this.title = '注册'
       else this.title = '登录'

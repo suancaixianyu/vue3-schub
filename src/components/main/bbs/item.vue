@@ -34,7 +34,7 @@
 
         <ul class="category-counts">
           <li @click="doLike">
-            <el-button link>
+            <el-button link :style="{ color: item.like == 0 ? '' : '#FD70A1' }">
               <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
             </el-button>
           </li>
@@ -85,7 +85,7 @@
     <el-footer style="text-align: left; padding: 0; height: 25px">
       <ul class="category-counts">
         <li @click="doLike">
-          <el-button link>
+          <el-button link :style="{ color: item.like == 0 ? '' : '#FD70A1' }">
             <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
           </el-button>
         </li>
@@ -134,7 +134,7 @@ export default {
     let data = reactive({
       isDoGooding: false,
       isDoBading: false,
-      goodNum: 0,
+      goodNum: props.item.likes,
     })
     function doLike() {
       //帖子点赞
