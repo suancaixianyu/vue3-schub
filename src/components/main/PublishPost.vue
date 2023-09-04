@@ -105,21 +105,29 @@ export default {
       this.isPublishing = true
       this.config.cate_id = <string>this.route.params.chatid
       Method.api_post('/bbs/add', this.config)
-        .then((response) => {
+        .then((res) => {
+          let obj = res.data
           this.isPublishing = false
-          ElMessage({
-            type: 'success',
-            message: response.data.msg,
-          })
-          this.router.push({
-            path: `/postlist/${this.route.params.chatid}`,
-          })
+          if (obj.code === 200) {
+            ElMessage({
+              type: 'success',
+              message: obj.msg,
+            })
+            this.router.push({
+              path: `/postlist/${this.route.params.chatid}`,
+            })
+          } else {
+            ElMessage({
+              type: 'error',
+              message: obj.msg,
+            })
+          }
         })
         .catch((error) => {
           this.isPublishing = false
           ElMessage({
             type: 'error',
-            message: '发送失败',
+            message: '发送失败：' + error.message,
           })
           console.log(error)
         })
