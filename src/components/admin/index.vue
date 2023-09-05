@@ -67,7 +67,7 @@
         <div v-loading="isLoadingData">
           <el-table :data="bbs_list" stripe style="width: 100%">
             <el-table-column prop="id" width="80" label="ID" />
-            <el-table-column prop="name" label="标题" width="180" />
+            <el-table-column prop="title" label="标题" width="180" />
             <el-table-column prop="content" label="内容" width="180" />
             <el-table-column prop="uid" label="发布者ID" width="80" />
             <el-table-column prop="cate_id" label="板块ID" width="80" />
