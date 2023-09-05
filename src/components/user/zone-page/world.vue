@@ -84,6 +84,7 @@ import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
 import { watch } from 'vue'
+import { api } from '@/apitypes'
 
 export default {
   name: 'WorldPage',
@@ -92,7 +93,6 @@ export default {
       ...Cfg,
       isLoading: false,
       list: [] as any[],
-      activeItemIndex: -1,
       page: 1,
       limit: 10,
       total: 0,
@@ -100,8 +100,21 @@ export default {
   },
   methods: {
     handleDelete(index: number) {
-      this.activeItemIndex = index
-      ElMessage('暂不支持')
+      Method.api_post('/bbs/del', { id: index }).then((res: any) => {
+        let obj = res.data as api
+        if (obj.code === 200) {
+          ElMessage({
+            type: 'success',
+            message: obj.msg,
+          })
+          this.refreshList()
+        } else {
+          ElMessage({
+            type: 'error',
+            message: obj.msg,
+          })
+        }
+      })
     },
     refreshList() {
       this.isLoading = true

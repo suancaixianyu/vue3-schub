@@ -3,7 +3,6 @@ import axios, { AxiosStatic } from 'axios'
 import { ElMessage } from 'element-plus'
 import useClipboard from 'vue-clipboard3'
 const { toClipboard } = useClipboard()
-import { useRoute } from 'vue-router'
 
 //开启cookie携带
 axios.defaults.withCredentials = true
@@ -387,8 +386,6 @@ class Method {
    * 刷新页面重新获取用户信息
    */
   getInformation(callback: any = null) {
-    let route = useRoute()
-    console.log(route);
 
     let { userInfo } = Cfg
     //刷新页面重新获取用户信息
@@ -399,7 +396,7 @@ class Method {
       }
     }).catch((err: any) => {
       console.log(err)
-      // window.open(`${Cfg.config.captchaserver}?url=${Cfg.config.view}${route.path}`, '_self')
+      window.open(`${Cfg.config.captchaserver}?url=${Cfg.config.view}`, '_self')
     })
     this.api_get('/mod/global_data_list').then((response) => {
       let roleRes = response.data
@@ -415,6 +412,7 @@ class Method {
         q.isLogin = true;
         q.isLoginDialogVisible = false;
         q.data = res.data;
+        q.data.isAdmin = /1/g.test(res.data.role)
         Cfg.userInfo = q;
       }
       if (callback != null) callback();

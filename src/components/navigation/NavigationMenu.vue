@@ -328,6 +328,11 @@
                   <a href="javascript:;">个人中心</a>
                 </router-link>
               </li>
+              <li v-if="userInfo.data.isAdmin">
+                <router-link to="/admin">
+                  <a href="javascript:;">网站后台</a>
+                </router-link>
+              </li>
               <li>
                 <a @click="loginOut">退出登录</a>
               </li>

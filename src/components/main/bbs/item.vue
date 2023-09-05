@@ -99,6 +99,26 @@
             </el-button>
           </li>
         </router-link>
+        <li class="linkbtn">
+          <el-button link class="linkbtn">
+            <el-dropdown class="linkbtn">
+              <span class="el-dropdown-link linkbtn">
+                <el-icon class="numicon linkbtn">
+                  <MoreFilled />
+                </el-icon>
+              </span>
+
+              <template #dropdown class="linkbtn">
+                <el-dropdown-menu class="linkbtn">
+                  <el-dropdown-item>编辑</el-dropdown-item>
+                  <el-dropdown-item divided @click="del(item.id)">
+                    <el-text type="danger">删除</el-text>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-button>
+        </li>
       </ul>
     </el-footer>
   </div>
@@ -137,6 +157,22 @@ export default {
       goodNum: props.item.likes,
       like: props.item.like,
     })
+    function del(id: any) {
+      Method.api_post('/bbs/del', { id }).then((res: any) => {
+        let obj = res.data as api
+        if (obj.code === 200) {
+          ElMessage({
+            type: 'success',
+            message: obj.msg,
+          })
+        } else {
+          ElMessage({
+            type: 'error',
+            message: obj.msg,
+          })
+        }
+      })
+    }
     function doLike() {
       //帖子点赞
       data.isDoGooding = true
@@ -157,7 +193,7 @@ export default {
         })
       })
     }
-    return { ...toRefs(data), doLike }
+    return { ...toRefs(data), doLike, del }
   },
 }
 </script>
@@ -210,5 +246,9 @@ export default {
 
 .item-content {
   margin: 10px 0;
+}
+
+.linkbtn:active {
+  border: none;
 }
 </style>
