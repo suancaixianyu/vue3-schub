@@ -90,7 +90,7 @@
             <details>
               <summary>扩展工具</summary>
               <ul>
-                <li><a href="http://suancaixianyu.cn/sss">简谱转换</a></li>
+                <li><a href="https://www.suancaixianyu.cn/sss">简谱转换</a></li>
                 <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
               </ul>
             </details>
@@ -119,12 +119,12 @@
           width: 10rem;
           border-radius: var(--rounded-btn);
           position: absolute;
-          top: 4rem;
+          top: 3.5rem;
         "
       >
         <li>
           <!-- 返回主页 -->
-          <router-link to="/" @click="clickDetails">
+          <router-link to="/">
             <el-icon :size="28" style="padding: 0 2px">
               <House />
             </el-icon>
@@ -140,7 +140,7 @@
           </div>
         </li>
         <li>
-          <router-link to="/setup" @click="clickDetails">
+          <router-link to="/setup">
             <el-icon :size="28" style="padding: 0 2px">
               <setting />
             </el-icon>
@@ -154,7 +154,7 @@
               class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52"
               @click="clickDetails(false)"
             >
-              <li><a href="http://suancaixianyu.cn/sss">简谱转换</a></li>
+              <li><a href="https://www.suancaixianyu.cn/sss">简谱转换</a></li>
               <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
             </ul>
           </details>
@@ -396,19 +396,7 @@ export default {
   },
   methods: {
     clickDetails(type: boolean) {
-      console.log(type == false && this.openDetails == true)
-      console.log(type == true && this.openDetails == true)
-      console.log(type == true && this.openDetails == false)
-      if (type == false && this.openDetails == true) {
-        this.openDetails = false
-      }
-      if (type && this.openDetails) {
-        this.openDetails = false
-      }
-      if (type == true && this.openDetails == false) {
-        this.openDetails = true
-      }
-      console.log(this.openDetails)
+      this.openDetails = type
     },
     settitle() {
       if (this.title == '登录') this.title = '注册'
@@ -489,6 +477,12 @@ export default {
         } else {
           this.isRootPath = true
         }
+      },
+    )
+    watch(
+      () => this.$route.path,
+      () => {
+        this.openDetails = false
       },
     )
   },
