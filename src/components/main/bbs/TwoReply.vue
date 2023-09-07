@@ -143,7 +143,10 @@ export default {
           if (callback != null) callback()
           ElMessage('回复成功')
         } else {
-          ElMessage('回复失败')
+          ElMessage({
+            type: 'error',
+            message: `回复失败：${response.data.msg}`,
+          })
         }
       })
     }

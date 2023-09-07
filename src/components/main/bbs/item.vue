@@ -1,29 +1,31 @@
 <template>
-  <div v-if="set.ismobile">
+  <div>
     <el-container>
       <el-aside width="100%">
         <router-link :to="`/postlist/${path}/${item.id}`">
           <!-- 列表顶部栏 S -->
-          <div class="item-top-title">
-            <!-- 头像 -->
-            <UserIcon
-              class="item-top-title-list avatar"
-              :src="item.author.headurl"
-              :size="headsize"
-              :alt="item.author.nickname"
-            />
-            <!-- 标题 -->
-            <el-text
-              class="item-top-title-list mx-1 time title"
-              size="large"
-              tag="b"
-              v-html="item.title"
-            ></el-text>
-            <!-- 发布时间 -->
-            <el-text class="item-top-title-list release-time" size="small">{{
-              item.time
-            }}</el-text>
-          </div>
+          <el-row style="align-items: center">
+            <el-col :span="19" style="display: flex">
+              <UserIcon
+                class="item-top-title-list avatar"
+                :src="item.author.headurl"
+                :size="headsize"
+                :alt="item.author.nickname"
+              />
+              <el-text
+                class="item-top-title-list time title"
+                size="large"
+                tag="b"
+                style="margin-left: 1rem"
+              >
+                {{ item.title }}
+              </el-text>
+            </el-col>
+            <el-col :span="5" style="text-align: right">
+              <el-text size="small">{{ item.time }}</el-text>
+            </el-col>
+          </el-row>
+
           <!-- 列表顶部栏 E -->
           <el-text
             class="mx-1 time item-content"
@@ -48,79 +50,32 @@
               </el-button>
             </li>
           </router-link>
+          <li class="linkbtn">
+            <el-button link class="linkbtn">
+              <el-dropdown class="linkbtn">
+                <span class="el-dropdown-link linkbtn">
+                  <el-icon class="numicon linkbtn">
+                    <MoreFilled />
+                  </el-icon>
+                </span>
+
+                <template #dropdown class="linkbtn">
+                  <el-dropdown-menu class="linkbtn">
+                    <el-dropdown-item>编辑</el-dropdown-item>
+                    <el-dropdown-item divided @click="del(item.id)">
+                      <el-text type="danger">删除</el-text>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </el-button>
+          </li>
         </ul>
       </el-aside>
       <el-main style="padding: 0; text-align: right" v-if="item.cover">
         <el-image style="height: 80px" :src="item.cover" fit="cover" />
       </el-main>
     </el-container>
-  </div>
-  <div v-else>
-    <!-- 头部 -->
-    <el-header style="height: 46px; padding: 0">
-      <UserHead :item="item" />
-    </el-header>
-    <!-- 中部 -->
-    <router-link :to="`/postlist/${path}/${item.id}`">
-      <el-container>
-        <el-aside width="70%">
-          <el-text
-            class="mx-1 time title"
-            size="large"
-            tag="b"
-            v-html="item.title"
-          ></el-text>
-          <el-text
-            class="mx-1 time"
-            style="text-align: left"
-            v-html="item.summary"
-          ></el-text>
-        </el-aside>
-        <el-main style="padding: 0; text-align: right" v-if="item.cover">
-          <el-image style="height: 80px" :src="item.cover" fit="cover" />
-        </el-main>
-      </el-container>
-    </router-link>
-    <!-- 底部 -->
-    <el-footer style="text-align: left; padding: 0; height: 25px">
-      <ul class="category-counts">
-        <li @click="doLike">
-          <el-button link :style="{ color: like == 0 ? '' : '#FD70A1' }">
-            <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
-          </el-button>
-        </li>
-        <router-link :to="`/postlist/${path}/${item.id}`">
-          <li>
-            <el-button link>
-              <el-icon :size="18" style="margin-right: 5px">
-                <ChatDotSquare />
-              </el-icon>
-              {{ item.comments }}
-            </el-button>
-          </li>
-        </router-link>
-        <li class="linkbtn">
-          <el-button link class="linkbtn">
-            <el-dropdown class="linkbtn">
-              <span class="el-dropdown-link linkbtn">
-                <el-icon class="numicon linkbtn">
-                  <MoreFilled />
-                </el-icon>
-              </span>
-
-              <template #dropdown class="linkbtn">
-                <el-dropdown-menu class="linkbtn">
-                  <el-dropdown-item>编辑</el-dropdown-item>
-                  <el-dropdown-item divided @click="del(item.id)">
-                    <el-text type="danger">删除</el-text>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </el-button>
-        </li>
-      </ul>
-    </el-footer>
   </div>
 </template>
 
@@ -227,7 +182,6 @@ export default {
 
 .item-top-title .item-top-title-list {
   flex: 1;
-  margin-right: 10px;
   overflow: hidden;
 }
 

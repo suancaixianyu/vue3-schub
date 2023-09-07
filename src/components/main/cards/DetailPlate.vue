@@ -7,10 +7,10 @@
         <div class="detail-title-container">
           <el-col :span="16">
             <el-text
-                class="mx-1 time title"
-                size="large"
-                tag="b"
-                v-html="content.title"
+              class="mx-1 time title"
+              size="large"
+              tag="b"
+              v-html="content.title"
             ></el-text>
           </el-col>
           <el-col :span="8" style="display: flex; justify-content: flex-end">
@@ -60,7 +60,7 @@
           <!-- 个人评论区 -->
           <div class="reply-body">
             <!-- 发表评论 -->
-            <el-row :gutter="24">
+            <el-row :gutter="24" style="align-items: center">
               <el-col :span="3" style="padding: 0">
                 <user-icon
                   :src="headurl"
@@ -68,17 +68,29 @@
                   :alt="userInfo.nickname"
                 />
               </el-col>
-              <el-col :span="14" style="padding: 0">
-                <el-input v-model="comments" autosize placeholder="发表评论" />
+              <el-col :span="16" style="padding: 0">
+                <el-input
+                  v-model="comments"
+                  autosize
+                  :placeholder="
+                    reply_list.length >= 1
+                      ? '发表评论'
+                      : '这里是评论区，不是无人区;-)'
+                  "
+                />
               </el-col>
-              <el-col :span="3" style="padding: 0">
-                <el-button icon="Edit" :loading="isReplying" @click="doReply">
+              <el-col :span="5" style="padding-left: 10px">
+                <el-button :loading="isReplying" @click="doReply">
                   发表
                 </el-button>
               </el-col>
             </el-row>
             <!-- 回复列表 -->
-            <div style="margin-top: 15px" v-loading="isLoadingReply">
+            <div
+              style="margin-top: 15px"
+              v-if="reply_list.length >= 1"
+              v-loading="isLoadingReply"
+            >
               <OneReply
                 v-for="(x, index) in reply_list"
                 :key="x"
@@ -88,6 +100,12 @@
                 :previewid="index"
                 @refreshEvent="refresh_reply_list"
               />
+            </div>
+            <div
+              style="margin-top: 15px; text-align: center; color: #9499a0"
+              v-else
+            >
+              没有更多评论
             </div>
           </div>
         </el-col>
@@ -104,18 +122,25 @@
         <el-row :gutter="24" style="padding: 0" v-if="content != null">
           <div class="detail-title-container">
             <el-col :span="16">
-              <el-text
-                class="mx-1 time title"
-                size="large"
-                tag="b"
-                v-html="content.title"
-              ></el-text>
+              <el-text class="mx-1 time title" size="large" tag="b">
+                {{ content.title }}
+              </el-text>
             </el-col>
             <el-col :span="8" style="display: flex; justify-content: flex-end">
-              <el-icon @click="refresh_item" :size="25" title="刷新" class="icon">
+              <el-icon
+                @click="refresh_item"
+                :size="25"
+                title="刷新"
+                class="icon"
+              >
                 <Flushed />
               </el-icon>
-              <el-icon @click="copyText" :size="25" title="复制链接" class="icon">
+              <el-icon
+                @click="copyText"
+                :size="25"
+                title="复制链接"
+                class="icon"
+              >
                 <Link />
               </el-icon>
               <el-icon @click="close" :size="25" title="关闭" class="icon">
@@ -158,8 +183,8 @@
             <!-- 个人评论区 -->
             <div class="reply-body">
               <!-- 发表评论 -->
-              <el-row :gutter="24">
-                <el-col :xs="8" :sm="2" :md="2" :lg="1" :xl="1">
+              <el-row :gutter="24" style="align-items: center">
+                <el-col :xs="3" :sm="3" :md="2" :lg="2" :xl="1">
                   <user-icon
                     :src="headurl"
                     :alt="userInfo.nickname"
@@ -170,8 +195,11 @@
                   <el-input
                     v-model="comments"
                     autosize
-                    type="textarea"
-                    placeholder="发表评论"
+                    :placeholder="
+                      reply_list.length >= 1
+                        ? '发表评论'
+                        : '这里是评论区，不是无人区:-)'
+                    "
                   />
                 </el-col>
                 <el-col :span="3">
@@ -185,7 +213,11 @@
                 </el-col>
               </el-row>
               <!-- 回复列表 -->
-              <div style="margin-top: 15px" v-loading="isLoadingReply">
+              <div
+                style="margin-top: 15px"
+                v-if="reply_list.length >= 1"
+                v-loading="isLoadingReply"
+              >
                 <OneReply
                   v-for="(x, index) in reply_list"
                   :key="x"
@@ -195,6 +227,12 @@
                   :previewid="index"
                   @refreshEvent="refresh_reply_list"
                 />
+              </div>
+              <div
+                style="margin-top: 15px; text-align: center; color: #9499a0"
+                v-else
+              >
+                没有更多评论
               </div>
             </div>
           </el-col>
@@ -264,7 +302,7 @@ export default {
           this.isLoading = false
           if (res.data.code === 200) {
             let item = res.data.data
-            item.time = Method.formatBbsTime(item.time)
+            item.time = Method.formatNormalTime(item.time)
             item.author.headurl = Method.getHostUrl(item.author.headurl)
             this.content = item
             this.userInfo = {
@@ -362,7 +400,7 @@ export default {
       Method.api_post(`/bbs/reply`, {
         content: this.comments,
         bid: this.$route.params.id,
-      }).then((response: { data: { code: number } }) => {
+      }).then((response: any) => {
         this.isReplying = false
         if (response.data.code == 200) {
           this.isLoadingReply = true
@@ -370,7 +408,10 @@ export default {
           this.refresh_reply_list() //刷新评论
           ElMessage('评论成功')
         } else {
-          ElMessage('评论失败')
+          ElMessage({
+            type: 'error',
+            message: `评论失败：${response.data.msg}`,
+          })
         }
       })
     },

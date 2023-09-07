@@ -1,44 +1,40 @@
 <template>
-  <el-image
-    class="el-image"
-    :class="shape"
-    :src="src ?? ''"
-    :style="'width:' + size + 'px;height:' + size + 'px;'"
-  >
-    <template #error>
-      <div
-        class="image-slot"
-        :style="'width:' + size + 'px;height:' + size + 'px'"
-        v-html="alt?.substring(0, 1)"
-      ></div>
-    </template>
-  </el-image>
+  <el-avatar :size="size" :shape="shape" :src="avatar" @error="errorHandler">
+    <el-text class="avatar-text" tag="b" size="large">
+      {{ alt?.substring(0, 1) }}
+    </el-text>
+  </el-avatar>
 </template>
 <script lang="ts">
 import { Picture } from '@element-plus/icons-vue'
 import Cfg from '@/config/config.ts'
+import Method from '@/globalmethods'
+
 export default {
   name: 'userIcon',
   components: { Picture },
-  props: ['src', 'size', 'alt', 'shape'],
+  props: ['src', 'size', 'alt'],
   data() {
     return {
+      avatar: Method.getHostUrl(this.$props.src),
       shape: Cfg.set.shape, //square circle
     }
   },
+  methods: {
+    errorHandler() {
+      return true
+    },
+  },
 }
 </script>
+
 <style scoped>
-.el-image.circle {
-  border-radius: 50%;
-}
-.image-slot {
-  border-radius: 20%;
-  background: #777;
+.avatar-text {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  color: #fff;
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
 }
 </style>

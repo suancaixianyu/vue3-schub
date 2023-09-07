@@ -169,7 +169,7 @@ export default {
         reply_id: rid,
       }).then((response) => {
         data.isReplying = false
-        let res = response.data
+        let res = response.data as api
         if (res.code == 200) {
           data.isLoadingReply = true
           data.comments = ''
@@ -178,7 +178,10 @@ export default {
           ElMessage('回复成功')
         } else {
           data.isReplying = false
-          ElMessage('回复失败')
+          ElMessage({
+            type: 'error',
+            message: `回复失败：${res.msg}`,
+          })
         }
       })
     }

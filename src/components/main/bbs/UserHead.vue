@@ -2,7 +2,7 @@
   <div class="user">
     <!-- 头像 -->
     <user-icon
-      :src="item.author?.headurl"
+      :src="item.headurl"
       :size="headsize"
       :alt="item.nickname"
       style="margin-right: 12px"
@@ -10,16 +10,22 @@
     <!-- 昵称，日期 -->
     <div class="time" :style="item.style">
       <div style="display: flex; justify-content: center">
-        <div style="font-size: 15px" v-html="item.nickname"></div>
-        <UserRole :role="item.role" />
-      </div>
-      <div>
-        <el-text
-          size="small"
-          style="display: flex; justify-content: flex-start"
-          v-html="item.time + '发表了帖子'"
-        >
-        </el-text>
+        <div style="font-size: 15px">
+          <div>
+            <el-text tag="b" size="large">
+              {{ item.nickname }}
+            </el-text>
+            <UserRole :role="item.role" :size="'small'" />
+          </div>
+          <div>
+            <el-text
+              size="small"
+              style="display: flex; justify-content: flex-start"
+            >
+              {{ item.time }}
+            </el-text>
+          </div>
+        </div>
       </div>
     </div>
   </div>

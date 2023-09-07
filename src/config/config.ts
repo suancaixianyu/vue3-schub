@@ -111,7 +111,7 @@ class Cfg {
       server: "https://api.schub.top",
       // view: 'http://localhost:4000',
       view: 'http://suancaixianyu.cn',
-      captchaserver: 'https://schub.top'
+      captchaserver: 'https://api.schub.top'
 
     }
     this.webstyle = webstyle

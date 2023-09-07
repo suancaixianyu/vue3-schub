@@ -31,6 +31,14 @@
           <div
             class="card w-96 bg-base-100 shadow-xl card-compact item-header"
             :class="set.ismobile ? 'mobile' : ''"
+            :style="{
+              background: item.id == focus ? '#fff' : '#fff',
+              paddingTop: item.id == focus ? '25px' : '20px',
+              boxShadow:
+                item.id == focus
+                  ? 'inset 5px 5px 10px #f2f2f2,inset -5px -5px 10px #ffffff'
+                  : 'var(--el-box-shadow-light)',
+            }"
           >
             <BbsItem
               :item="item"
@@ -98,11 +106,13 @@ export default {
       plate: <any[]>[],
       txt: '加载更多',
       path: '',
+      focus: '',
     }
   },
   methods: {
     onItemClick(item: any) {
       this.$emit('itemClickEvent', item)
+      this.focus = item.id
     },
     /**指定页面加载 */
     handleCurrentChange(page: any) {
@@ -173,19 +183,6 @@ export default {
     },
   },
   mounted() {
-    if (Cfg.set.ismobile) {
-      Cfg.maincontainer.overflowY = 'auto'
-      Cfg.maincontainer.height = 'auto'
-    }
-    watch(
-      () => Cfg.set.ismobile,
-      () => {
-        if (Cfg.set.ismobile) {
-          Cfg.maincontainer.overflowY = 'auto'
-          Cfg.maincontainer.height = 'auto'
-        }
-      },
-    )
     watch(
       () => this.$route.params.cateid,
       () => {
@@ -200,6 +197,7 @@ export default {
       () => {
         if (this.$route.params.id) this.pagination = false
         else this.pagination = true
+        this.focus = <string>this.$route.params.id
       },
       { immediate: true },
     )
