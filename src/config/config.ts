@@ -67,6 +67,7 @@ const userInfo: userInfoType = reactive({
     server_version_list: []
   },
   role_list: [],
+  unreadMessage: 0,
   isLogin: false,
   isLoginDialogVisible: false,
   data: { role: '', nickname: '', headurl: '', id: 0, signature: '', isAdmin: false },

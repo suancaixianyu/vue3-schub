@@ -181,7 +181,11 @@
         <!-- 消息 -->
         <li class="hidden-xs-only" @click="bailanle">
           <div class="indicator">
-            <span class="indicator-item badge">5</span>
+            <span
+              class="indicator-item badge"
+              v-if="userInfo.unreadMessage != 0"
+              >{{ userInfo.unreadMessage }}</span
+            >
             <el-icon :size="28" style="padding: 0 2px">
               <Message />
             </el-icon>
@@ -199,7 +203,6 @@
                   height="200"
                   style="margin: 0"
                 >
-                  s
                   <path
                     d="M817.87 556.31h-63.58v-66.24A42.27 42.27 0 0 0 712 447.8h-84.81a42.27 42.27 0 0 0-42.27 42.27v66.24H436.57v-66.24a42.27 42.27 0 0 0-42.27-42.27h-84.83a42.27 42.27 0 0 0-42.27 42.27v66.24h-61.83A22.39 22.39 0 0 0 183 578.7a22.39 22.39 0 0 0 22.39 22.39h61.81v65.55a42.27 42.27 0 0 0 42.27 42.27h84.83a42.27 42.27 0 0 0 42.27-42.27v-65.55h148.36v65.55a42.27 42.27 0 0 0 42.27 42.27H712a42.27 42.27 0 0 0 42.27-42.27v-65.55h63.58a22.39 22.39 0 0 0 22.39-22.39 22.39 22.39 0 0 0-22.37-22.39z m-438.64 95.26h-54.69V505.14h54.69z m317.72 0h-54.69V505.14H697z"
                   ></path>

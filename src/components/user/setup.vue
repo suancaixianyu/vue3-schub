@@ -25,23 +25,38 @@
         </el-form-item>
 
         <el-form-item label="背景图片">
-          <el-input
-            drag
-            v-model="config.background"
-            placeholder="输入图片地址或上传"
-          />
-          <el-upload
-            :action="uploadFileSrc"
-            v-model="config.background"
-            :with-credentials="true"
-            :show-file-list="false"
-            :on-success="uploadCover"
-            :on-progress="uploadProgress"
-            :on-error="uploadError"
-            accept="image/png, image/jpeg"
-          >
-            <el-button type="primary">上传</el-button>
-          </el-upload>
+          <el-row>
+            <el-col :span="24">
+              <el-input
+                drag
+                v-model="config.background"
+                placeholder="输入图片地址或上传"
+              />
+            </el-col>
+            <el-col :span="10" style="display: flex">
+              <el-upload
+                :action="uploadFileSrc"
+                v-model="config.background"
+                :with-credentials="true"
+                :show-file-list="false"
+                :on-success="uploadCover"
+                :on-progress="uploadProgress"
+                :on-error="uploadError"
+                accept="image/png, image/jpeg"
+              >
+                <el-button type="primary">上传</el-button>
+              </el-upload>
+
+              <el-button
+                @click="
+                  config.background =
+                    '/image/{2FB1489E-9572-4803-9114-850E04589092}.png'
+                "
+              >
+                使用默认
+              </el-button>
+            </el-col>
+          </el-row>
         </el-form-item>
 
         <el-form-item label="">

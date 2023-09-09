@@ -413,6 +413,7 @@ class Method {
         q.isLoginDialogVisible = false;
         q.data = res.data;
         q.data.isAdmin = /1/g.test(res.data.role)
+        q.unreadMessage = res.unreadMessage
         Cfg.userInfo = q;
       }
       if (callback != null) callback();
