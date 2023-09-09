@@ -50,7 +50,7 @@
               <el-button
                 @click="
                   config.background =
-                    '/image/{2FB1489E-9572-4803-9114-850E04589092}.png'
+                    'https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png'
                 "
               >
                 使用默认
