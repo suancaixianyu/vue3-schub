@@ -36,7 +36,13 @@
       <div class="item">最后编辑: {{ last_modify }}</div>
       <div class="item">
         <div>资源作者/开发团队:</div>
-        <div>无</div>
+        <el-row class="author-item" v-for="x in author_list">
+          <el-avatar shape="circle" :src="x.avatar"></el-avatar>
+          <div class="nickname">
+            <div v-html="x.nickname"></div>
+            <div v-html="x.staff" class="staff"></div>
+          </div>
+        </el-row>
       </div>
       <div class="item" v-if="link_list.length > 0">相关链接:</div>
       <div class="item" v-if="link_list.length > 0">
@@ -299,7 +305,7 @@
     <div class="panel-right">
       <div class="rate">
         <div class="rate-area">
-          <div>5.0</div>
+          <div>开摆！</div>
           <div>名扬天下</div>
         </div>
         <div class="rate-info">

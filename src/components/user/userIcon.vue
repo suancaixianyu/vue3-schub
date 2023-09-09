@@ -1,5 +1,10 @@
 <template>
-  <el-avatar :size="size" :shape="shape" :src="avatar" @error="errorHandler">
+  <el-avatar
+    :size="size"
+    :shape="shape"
+    :src="Method.getHostUrl(src)"
+    @error="errorHandler"
+  >
     <el-text class="avatar-text" tag="b" size="large">
       {{ alt?.substring(0, 1) }}
     </el-text>
@@ -16,7 +21,7 @@ export default {
   props: ['src', 'size', 'alt'],
   data() {
     return {
-      avatar: Method.getHostUrl(this.$props.src),
+      Method,
       shape: Cfg.set.shape, //square circle
     }
   },

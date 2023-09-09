@@ -294,7 +294,7 @@
                   <a href="javascript:;">个人中心</a>
                 </router-link>
               </li>
-              <li v-if="/1/g.test(userInfo.data.role)">
+              <li v-if="userInfo.data.isAdmin">
                 <router-link to="/admin">
                   <a href="javascript:;">后台管理</a>
                 </router-link>

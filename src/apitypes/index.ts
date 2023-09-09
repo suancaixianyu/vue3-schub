@@ -47,7 +47,15 @@ export interface userInfoType {
   /** 用户ID */
   id?: string
   /** 用户信息 */
-  data: { headurl?: string; nickname?: string; role: any, id: number, signature: string, isAdmin: boolean }
+  data: {
+    headurl?: string;
+    nickname?: string;
+    role: any;
+    id: number;
+    signature: string;
+    isAdmin: boolean;
+    background?: string;
+  }
 }
 
 export interface setType {

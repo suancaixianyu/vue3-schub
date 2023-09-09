@@ -478,7 +478,7 @@ class Method {
   /**
      * 上传图片
      */
-  async UploadImage(file: any): Promise<string | undefined> {
+  async UploadImage(file: any, isUploadUrl: boolean = false): Promise<string | undefined> {
     ElMessage('上传中...')
     ElMessage('111')
     // 执行图片上传的逻辑
@@ -495,7 +495,12 @@ class Method {
             type: 'success',
             message: '上传成功',
           })
-          url = `![](${this.getHostUrl(obj.data.src)})`
+          if (isUploadUrl) {
+            url = this.getHostUrl(obj.data.src)
+          } else {
+            url = `![](${this.getHostUrl(obj.data.src)})`
+          }
+
         }
       })
       .catch((error) => {
