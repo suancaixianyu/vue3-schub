@@ -6,11 +6,9 @@
         backgroundImage:
           // 'url(https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png)',
           // 'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png)',
-          `url(${
-            userInfo.data.background
-              ? userInfo.data.background
-              : 'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png'
-          }))`,
+          userInfo.data.background == ''
+            ? 'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png)'
+            : `url(${userInfo.data.background})`,
         padding: '0',
       }"
     >

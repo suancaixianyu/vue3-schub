@@ -334,7 +334,7 @@
                 </router-link>
               </li>
               <li>
-                <a @click="loginOut">退出登录</a>
+                <a @click="out">退出登录</a>
               </li>
             </ul>
           </details>
@@ -358,7 +358,7 @@ import Method from '@/globalmethods'
 import ScLogo from '@comps/icons/ScLogo.vue'
 import ScMod from '@comps/icons/ScMod.vue'
 import UserLogin from '@comps/user/login.vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import UserIcon from '@comps/user/userIcon.vue'
@@ -405,6 +405,14 @@ export default {
     goBack() {
       this.$router.back()
     },
+    out() {
+      ElMessageBox.alert('确定要退出登录吗？', '退出登录', {
+        confirmButtonText: '确定',
+        callback: () => {
+          this.loginOut()
+        },
+      })
+    },
     loginOut() {
       Method.api_get('/user/loginOut')
         .then((res: any) => {
@@ -414,7 +422,7 @@ export default {
               message: res.data.msg,
             })
             this.userInfo.isLogin = false
-            this.$router.push({ path: '/' })
+            this.$router.push({ path: this.$route.path })
           }
         })
         .catch((error) => {
