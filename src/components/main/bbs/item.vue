@@ -2,7 +2,7 @@
   <div>
     <el-container>
       <el-aside width="100%">
-        <router-link :to="`/postlist/${path}/${item.id}`">
+        <router-link :to="`/postlist/${path}/${item.id}`" @click="onItemClick">
           <!-- 列表顶部栏 S -->
           <el-row style="align-items: center">
             <el-col :span="19" style="display: flex">
@@ -62,7 +62,11 @@
                 <template #dropdown class="linkbtn">
                   <el-dropdown-menu class="linkbtn">
                     <el-dropdown-item>编辑</el-dropdown-item>
-                    <el-dropdown-item divided @click="del(item.id)">
+                    <el-dropdown-item
+                      divided
+                      @click="del(item.id)"
+                      v-if="userInfo.data.isAdmin"
+                    >
                       <el-text type="danger">删除</el-text>
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -101,32 +105,38 @@ export default {
   props: ['item', 'path'],
   data() {
     return {
-      set: Cfg.set,
-      headsize: Cfg.headsize.post,
+      ...Cfg,
     }
   },
-  setup(props) {
+
+  setup(props, context) {
     let data = reactive({
       isDoGooding: false,
       isDoBading: false,
       goodNum: props.item.likes,
       like: props.item.like,
     })
+    function onItemClick() {
+      context.emit('onItemClick', props.item.id)
+    }
     function del(id: any) {
-      Method.api_post('/bbs/del', { id }).then((res: any) => {
-        let obj = res.data as api
-        if (obj.code === 200) {
-          ElMessage({
-            type: 'success',
-            message: obj.msg,
-          })
-        } else {
-          ElMessage({
-            type: 'error',
-            message: obj.msg,
-          })
-        }
-      })
+      Method.api_post('/admin/lock_item', { id, stat: 0, type: 2 }).then(
+        (res: any) => {
+          let obj = res.data as api
+          if (obj.code === 200) {
+            ElMessage({
+              type: 'success',
+              message: obj.msg,
+            })
+            context.emit('childEvent', 1)
+          } else {
+            ElMessage({
+              type: 'error',
+              message: obj.msg,
+            })
+          }
+        },
+      )
     }
     function doLike() {
       //帖子点赞
@@ -148,7 +158,7 @@ export default {
         })
       })
     }
-    return { ...toRefs(data), doLike, del }
+    return { ...toRefs(data), doLike, del, onItemClick }
   },
 }
 </script>

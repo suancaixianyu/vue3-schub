@@ -425,7 +425,7 @@ export default {
               message: res.data.msg,
             })
             this.userInfo.isLogin = false
-            this.$router.push({ path: this.$route.path })
+            this.$router.push({ path: '/postlist/0' })
           }
         })
         .catch((error) => {

@@ -27,12 +27,12 @@
           <div class="left">
             <router-link :to="x.to_link">
               <div class="flag-area hide-scrollbar">
-                <mod-flag
+                <!-- <mod-flag
                   class="flag"
                   :flag="xx.flag_name"
                   active
                   v-for="xx in x.flag_list"
-                />
+                /> -->
               </div>
               <div class="name-line">
                 <div>{{ `[${x.mini_name}]` }}{{ x.name }}({{ x.en_name }})</div>
@@ -79,12 +79,13 @@
           </div>
           <div class="left">
             <div class="name-line">
-              <mod-flag
+              <!-- <mod-flag
                 class="flag"
                 :flag="xx.flag_name"
                 active
                 v-for="xx in x.flag_list"
-              />{{ x.mini_name ? `[${x.mini_name}]` : '' }}{{ x.name
+              /> -->
+              {{ x.mini_name ? `[${x.mini_name}]` : '' }}{{ x.name
               }}{{ x.en_name ? `(${x.en_name})` : '' }}
             </div>
             <div class="description-line">{{ x.description }}</div>
@@ -112,11 +113,6 @@
         </div>
       </router-link>
     </el-container>
-    <el-pagination
-      layout="prev, pager, next, total"
-      :total="total"
-      v-model="page"
-    />
     <el-pagination
       :current-page="page"
       :page-size="10"
@@ -181,6 +177,7 @@ export default {
     /**指定页面加载 */
     handleCurrentChange(page: any) {
       this.page = page // 更新当前页码
+      this.pullList(true)
     },
     onFlagClick(id: any) {
       let c = <HTMLDivElement>this.$refs.flagContainer
@@ -221,7 +218,13 @@ export default {
         }
       }
     },
-    pullList() {
+    /**
+     * 加载列表
+     * @param isNext 是否为翻页
+     */
+    pullList(isNext: boolean = false) {
+      console.log('调用')
+
       let payLoad = {
         page: this.page,
         limit: this.limit,
@@ -233,7 +236,7 @@ export default {
         let res = response.data
         this.isLoading = false
         if (res.code == 200) {
-          this.total = res.sum.total
+          if (!isNext) this.total = res.sum.total
           let flagSum = <any>res.flag_sum
           flagSum.forEach((x: any) => {
             let f = this.mod_flag_list.find((xx: any) => {
@@ -252,8 +255,7 @@ export default {
                 : x.description
             if (x.cover_src) x.cover_src = Method.getHostUrl(x.cover_src)
           })
-          if (this.page == 1) this.list = res.data
-          else this.list = this.list.concat(res.data)
+          this.list = res.data
         }
       })
     },
@@ -269,16 +271,11 @@ export default {
       mod_flag_list.push({ flag_name: x.flag_name, count: 0, id: x.id })
     })
     this.mod_flag_list = mod_flag_list
-    this.pullList()
-    watch(
-      () => this.page,
-      () => {
-        this.pullList()
-      },
-    )
+    console.log(0)
     watch(
       () => this.activeFlagId,
       () => {
+        console.log(2)
         this.pullList()
       },
     )
@@ -290,6 +287,8 @@ export default {
     Cfg.maincontainer.overflowY = 'hidden'
   },
   mounted() {
+    console.log('挂载')
+    this.pullList()
     Cfg.maincontainer.overflowY = 'auto'
   },
 }

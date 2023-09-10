@@ -90,16 +90,18 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="copyText(index)"
-                      >复制链接</el-dropdown-item
-                    >
-                    <el-dropdown-item @click="manageFileList(index)"
-                      >文件列表</el-dropdown-item
-                    >
-                    <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)"
-                      >删除</el-dropdown-item
-                    >
+                    <el-dropdown-item @click="copyText(index)">
+                      复制链接
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="manageFileList(index)">
+                      文件列表
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="handleModify(index)">
+                      编辑
+                    </el-dropdown-item>
+                    <el-dropdown-item divided @click="handleDelete(index)">
+                      删除
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
