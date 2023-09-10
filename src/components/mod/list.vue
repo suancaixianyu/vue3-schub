@@ -221,6 +221,7 @@ export default {
         let res = response.data
         this.isLoading = false
         if (res.code == 200) {
+          console.log(this.page)
           if(this.page==1){
             this.total = res.sum.total
             let flagSum = <any>res.flag_sum

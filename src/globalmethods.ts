@@ -403,20 +403,20 @@ class Method {
       if (roleRes.code == 200) {
         userInfo.global_mod_data_list = roleRes.data //全局标签数据缓存
       }
-    })
-    this.api_get('/user/info').then((response2) => {
-      let res = response2.data;
-      if (res.code == 200) {
-        let q = userInfo;
-        res.data.headurl = this.getHostUrl(res.data.headurl);
-        q.isLogin = true;
-        q.isLoginDialogVisible = false;
-        q.data = res.data;
-        q.data.isAdmin = /1/g.test(res.data.role)
-        q.unreadMessage = res.unreadMessage
-        Cfg.userInfo = q;
-      }
-      if (callback != null) callback();
+      this.api_get('/user/info').then((response2) => {
+        let res = response2.data;
+        if (res.code == 200) {
+          let q = userInfo;
+          res.data.headurl = this.getHostUrl(res.data.headurl);
+          q.isLogin = true;
+          q.isLoginDialogVisible = false;
+          q.data = res.data;
+          q.data.isAdmin = /1/g.test(res.data.role)
+          q.unreadMessage = res.unreadMessage
+          Cfg.userInfo = q;
+        }
+        if (callback != null) callback();
+      })
     })
   }
 
