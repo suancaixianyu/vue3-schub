@@ -108,7 +108,7 @@ class Cfg {
       //  server: "http://localhost:8081",
       // server: '/xyapi',
       // server: "http://suancaixianyu.cn:8000",
-      server: "https://api.schub.top",
+      server: "https://m.schub.top",
       // view: 'http://localhost:4000',
       view: 'http://suancaixianyu.cn',
       captchaserver: 'https://api.schub.top'

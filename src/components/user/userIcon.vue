@@ -9,6 +9,7 @@
 import { Picture } from '@element-plus/icons-vue'
 import Cfg from '@/config/config.ts'
 import Method from '@/globalmethods'
+import {watch} from "vue";
 
 export default {
   name: 'userIcon',
@@ -16,8 +17,8 @@ export default {
   props: ['src', 'size', 'alt'],
   data() {
     return {
-      avatar: Method.getHostUrl(this.$props.src),
-      shape: Cfg.set.shape, //square circle
+      avatar: '',
+      shape: Cfg.set.shape
     }
   },
   methods: {
@@ -25,6 +26,12 @@ export default {
       return true
     },
   },
+  created(){
+    this.avatar = this.src;
+    watch(()=>this.src,(v)=>{
+      this.avatar = Method.getHostUrl(v);
+    })
+  }
 }
 </script>
 

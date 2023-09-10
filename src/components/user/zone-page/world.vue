@@ -144,6 +144,7 @@ export default {
   },
   mounted() {
     this.page = 1
+    this.refreshList()
     watch(
       () => this.page,
       () => {

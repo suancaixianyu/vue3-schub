@@ -221,7 +221,7 @@ class Method {
    * @param e 资源相对路径
    */
   getHostUrl(e: string): string {
-    if (e == null) return '';
+    if (e == null || e == '') return '';
     if (e.indexOf('http://') != -1 || e.indexOf('https://') != -1) return e
     if (e.indexOf('./') == -1) {
       return Cfg.config.server + e
