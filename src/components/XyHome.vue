@@ -74,21 +74,22 @@ export default {
     function pagewidth(width: number) {
       if (width <= 480) {
         Cfg.set.ismobile = true
+        Cfg.maincontainer.height = 'auto'
       } else {
         Cfg.set.ismobile = false
+        Cfg.maincontainer.height = 'calc(100vh - 4rem)'
       }
     }
 
     onMounted(() => {
       pagewidth(document.body.clientWidth)
+
       watch(
-        () => Cfg.set.ismobile,
+        () => document.body.clientWidth,
         () => {
           if (Cfg.set.ismobile) {
-            Cfg.maincontainer.overflowY = 'auto'
             Cfg.maincontainer.height = 'auto'
           } else {
-            Cfg.maincontainer.overflowY = 'auto'
             Cfg.maincontainer.height = 'calc(100vh - 4rem)'
           }
         },
