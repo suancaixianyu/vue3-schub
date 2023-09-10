@@ -39,7 +39,7 @@
           <!-- 分割线 -->
           <div class="plate-label">
             <div class="large">评论</div>
-            <div class="small" v-html="sum.total"></div>
+            <div class="small" v-html="sum"></div>
             <div class="space"></div>
             <div
               class="filter"
@@ -101,6 +101,9 @@
                 :previewid="index"
                 @refreshEvent="refresh_reply_list"
               />
+              <el-text type="primary" link @click="loadMore" class="text-btn">
+                {{ txt }}
+              </el-text>
             </div>
             <div
               style="margin-top: 15px; text-align: center; color: #9499a0"
@@ -163,7 +166,7 @@
             <!-- 分割线 -->
             <div class="plate-label">
               <div class="large">评论</div>
-              <div class="small">{{ sum.total }}</div>
+              <div class="small">{{ sum }}</div>
               <div class="space"></div>
               <div
                 class="filter"
@@ -229,6 +232,9 @@
                   :previewid="index"
                   @refreshEvent="refresh_reply_list"
                 />
+                <el-text type="primary" link @click="loadMore" class="text-btn">
+                  {{ txt }}
+                </el-text>
               </div>
               <div
                 style="margin-top: 15px; text-align: center; color: #9499a0"
@@ -286,14 +292,25 @@ export default {
       page: 1,
       limit: 10,
       sort: 0, //0最新1最热
-      sum: {
-        total: 0,
-      },
+      sum: 0,
       content: <any>null,
       reply_list: [] as any,
+      txt: '加载更多',
+      totalpages: 0, // 总评论页数
+      isLoadingMore: false,
     }
   },
   methods: {
+    loadMore() {
+      if (this.isLoadingMore) return
+      if (this.page + 1 <= this.totalpages) {
+        this.isLoadingMore = true
+        this.refresh_reply_list(true)
+        this.page++
+      } else {
+        this.txt = '没有了...'
+      }
+    },
     /**
      * 刷新帖子详情
      */
@@ -319,6 +336,13 @@ export default {
                 alignItems: 'center',
               },
             }
+            this.totalpages = Math.ceil(item.comments / this.limit)
+            if (this.totalpages == 1) {
+              this.txt = ''
+            } else {
+              this.txt = '加载更多'
+            }
+            this.sum = item.comments
             this.refresh_reply_list()
           } else {
             ElMessage({
@@ -339,7 +363,7 @@ export default {
     /**
      * 刷新回复列表
      */
-    refresh_reply_list() {
+    refresh_reply_list(appendMode: boolean = false) {
       let { page, limit, sort } = this
       this.isLoadingReply = true
       Method.api_get(
@@ -362,11 +386,15 @@ export default {
             )
           }
           formatList(list)
-          this.reply_list = list
-          if (this.page === 1) {
-            this.sum.total = res.data.sum.total
+          if (appendMode) {
+            for (const el of list) {
+              this.reply_list.push(el)
+            }
+          } else {
+            this.reply_list = list
           }
           this.isLoadingReply = false
+          this.isLoadingMore = false
         })
         .catch((error: { message: any }) => {
           this.isLoading = false
@@ -439,6 +467,11 @@ export default {
 </script>
 
 <style>
+.text-btn {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
 .markdown-body {
   box-sizing: border-box;
   min-width: 200px;

@@ -23,6 +23,42 @@
         <el-form-item label="个性签名">
           <el-input v-model="config.signature" placeholder="个性签名" />
         </el-form-item>
+
+        <el-form-item label="背景图片">
+          <el-row>
+            <el-col :span="24">
+              <el-input
+                drag
+                v-model="config.background"
+                placeholder="输入图片地址或上传"
+              />
+            </el-col>
+            <el-col :span="10" style="display: flex">
+              <el-upload
+                :action="uploadFileSrc"
+                v-model="config.background"
+                :with-credentials="true"
+                :show-file-list="false"
+                :on-success="uploadCover"
+                :on-progress="uploadProgress"
+                :on-error="uploadError"
+                accept="image/png, image/jpeg"
+              >
+                <el-button type="primary">上传</el-button>
+              </el-upload>
+
+              <el-button
+                @click="
+                  config.background =
+                    'https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png'
+                "
+              >
+                使用默认
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
+
         <el-form-item label="">
           <el-button @click="edit"> 提交 </el-button>
         </el-form-item>
@@ -66,10 +102,28 @@ export default {
         nickname: Cfg.userInfo.data.nickname,
         signature: Cfg.userInfo.data.signature,
         avatar: '',
+        background: '',
       },
+      uploadFileSrc: `${Cfg.config.server}/Upload/Upload`,
     }
   },
   methods: {
+    uploadError() {
+      ElMessage({
+        type: 'error',
+        message: '上传失败',
+      })
+    },
+    uploadProgress() {
+      ElMessage('上传中')
+    },
+    uploadCover(e: any) {
+      this.config.background = e.data.src
+      ElMessage({
+        type: 'success',
+        message: '上传成功',
+      })
+    },
     offdialog() {
       this.page = false
     },
@@ -108,6 +162,9 @@ export default {
 </script>
 
 <style scoped>
+.el-input {
+  flex: 1;
+}
 .el-form {
   background-color: hsl(var(--b1));
   box-shadow: var(--el-box-shadow-light);

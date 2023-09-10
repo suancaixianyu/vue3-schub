@@ -12,33 +12,34 @@
       </div>
     </el-header>
     <el-container class="el-container" v-loading="isLoading">
-      <router-link
-        v-if="set.ismobile"
-        :to="x.to_link"
-        v-for="x in list"
-        style="margin: 0.5rem"
-      >
+      <div v-if="set.ismobile" v-for="x in list" style="margin: 0.5rem">
         <div class="res-item">
-          <div class="right" v-if="x.cover_src">
-            <el-image
-              style="width: 128px; height: 96px"
-              :src="x.cover_src"
-              fit="contain"
-            />
-          </div>
-          <div class="left">
-            <div class="flag-area hide-scrollbar">
-              <mod-flag
-                class="flag"
-                :flag="xx.flag_name"
-                active
-                v-for="xx in x.flag_list"
+          <router-link :to="x.to_link">
+            <div class="right" v-if="x.cover_src">
+              <el-image
+                style="width: 128px; height: 96px"
+                :src="x.cover_src"
+                fit="contain"
               />
             </div>
-            <div class="name-line">
-              <div>[{{ x.mini_name }}]{{ x.name }}({{ x.en_name }})</div>
-            </div>
-            <div class="description-line">{{ x.description }}</div>
+          </router-link>
+
+          <div class="left">
+            <router-link :to="x.to_link">
+              <div class="flag-area hide-scrollbar">
+                <mod-flag
+                  class="flag"
+                  :flag="xx.flag_name"
+                  active
+                  v-for="xx in x.flag_list"
+                />
+              </div>
+              <div class="name-line">
+                <div>{{ `[${x.mini_name}]` }}{{ x.name }}({{ x.en_name }})</div>
+              </div>
+              <div class="description-line">{{ x.description }}</div>
+            </router-link>
+
             <div class="btn-line">
               <div class="item">
                 <icon-hot :size="18"></icon-hot>
@@ -61,7 +62,7 @@
             </div>
           </div>
         </div>
-      </router-link>
+      </div>
       <router-link
         v-else
         :to="x.to_link"
@@ -83,7 +84,8 @@
                 :flag="xx.flag_name"
                 active
                 v-for="xx in x.flag_list"
-              />[{{ x.mini_name }}]{{ x.name }}({{ x.en_name }})
+              />{{ x.mini_name ? `[${x.mini_name}]` : '' }}{{ x.name
+              }}{{ x.en_name ? `(${x.en_name})` : '' }}
             </div>
             <div class="description-line">{{ x.description }}</div>
             <div class="btn-line">
@@ -115,6 +117,15 @@
       :total="total"
       v-model="page"
     />
+    <el-pagination
+      :current-page="page"
+      :page-size="10"
+      :pager-count="5"
+      :total="total"
+      @current-change="handleCurrentChange"
+      style="justify-content: center"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -167,6 +178,10 @@ export default {
   },
   methods: {
     doLike() {},
+    /**指定页面加载 */
+    handleCurrentChange(page: any) {
+      this.page = page // 更新当前页码
+    },
     onFlagClick(id: any) {
       let c = <HTMLDivElement>this.$refs.flagContainer
       this.activeFlagId = id
@@ -231,6 +246,10 @@ export default {
           res.data.forEach((x: any) => {
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
+            x.description =
+              x.description.length > 80
+                ? x.description.substring(0, 80) + '...'
+                : x.description
             if (x.cover_src) x.cover_src = Method.getHostUrl(x.cover_src)
           })
           if (this.page == 1) this.list = res.data
