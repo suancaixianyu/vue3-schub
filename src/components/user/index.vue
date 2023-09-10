@@ -121,7 +121,7 @@ export default {
       Method.api_post('/user/edit', { avatar: e.data.src })
         .then((res) => {
           let obj = res.data as api
-          if (obj.code === 200) {
+          if (obj.code == 200) {
             ElMessage({
               type: 'success',
               message: obj.msg,

@@ -102,7 +102,7 @@ export default {
     handleDelete(index: number) {
       Method.api_post('/bbs/del', { id: index }).then((res: any) => {
         let obj = res.data as api
-        if (obj.code === 200) {
+        if (obj.code == 200) {
           ElMessage({
             type: 'success',
             message: obj.msg,

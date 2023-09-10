@@ -55,11 +55,11 @@
 <script lang="ts">
 import { ElMessage } from 'element-plus'
 import { MdEditor } from 'md-editor-v3'
-import { useRoute, useRouter } from 'vue-router'
 /** md编辑器 */
 import 'md-editor-v3/lib/style.css'
 import Cfg from '@/config/config'
 import Method from '@/globalmethods'
+import { api } from '@/apitypes'
 
 export default {
   name: 'PublishPost',
@@ -103,19 +103,20 @@ export default {
       if (this.config.title === '') return ElMessage('请输入帖子标题')
       else if (this.config.content === '') return ElMessage('请输入帖子内容')
       this.isPublishing = true
-      this.config.cate_id = <string>this.route.params.chatid
-      Method.api_post('/bbs/add', this.config)
+      this.config.cate_id = <string>this.$route.params.chatid
+      Method.api_post(
+        this.$route.params.id ? '/bbs/edit' : '/bbs/add',
+        this.config,
+      )
         .then((res) => {
           let obj = res.data
           this.isPublishing = false
-          if (obj.code === 200) {
+          if (obj.code == 200) {
             ElMessage({
               type: 'success',
               message: obj.msg,
             })
-            this.router.push({
-              path: `/postlist/${this.route.params.chatid}`,
-            })
+            this.$router.back()
           } else {
             ElMessage({
               type: 'error',
@@ -133,13 +134,16 @@ export default {
         })
     },
   },
-  setup() {
-    const router = useRouter()
-    const route = useRoute()
-
-    return {
-      router,
-      route,
+  mounted() {
+    if (this.$route.params.id) {
+      Method.api_get(`/bbs/item/${this.$route.params.id}`).then((res: any) => {
+        let obj = res.data as api
+        if (obj.code == 200) {
+          this.config.content = obj.data.summary
+          this.config.title = obj.data.title
+          this.config.cover_src = obj.data.cover
+        }
+      })
     }
   },
 }

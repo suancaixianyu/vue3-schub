@@ -10,12 +10,9 @@
       <div class="user-label">
         <div>{{ x.author.nickname }}</div>
         <UserRole :role="x.author.role" />
-        <el-tag
-          size="small"
-          :color="xv.color"
-          v-for="xv in x.author.role_list"
-          v-html="xv.name"
-        ></el-tag>
+        <el-tag size="small" :color="xv.color" v-for="xv in x.author.role_list">
+          {{ xv.name }}
+        </el-tag>
       </div>
       <!-- <div class="comments">{{ x.content }}</div> -->
       <MdPreview
@@ -25,9 +22,9 @@
         style="padding: 2px 0"
       />
       <div class="extra-line">
-        <div class="time" v-html="x.time"></div>
+        <div class="time">{{ x.time }}</div>
         <LikeIcon @click="doLike" class="label"></LikeIcon>
-        <div class="label amount" v-html="likes"></div>
+        <div class="label amount">{{ likes }}</div>
         <div class="label" @click="readyReply">回复</div>
       </div>
       <!-- 二级评论 -->
@@ -150,7 +147,7 @@ export default {
         data.isDoGooding = true
         Method.api_get(`/bbs/reply_good/${props.x.id}`).then((res: any) => {
           let obj = res.data as api
-          if (obj.code === 200) data.likes += parseInt(obj.data)
+          if (obj.code == 200) data.likes += parseInt(obj.data)
 
           ElMessage({
             type: obj.code == 200 ? 'success' : 'error',

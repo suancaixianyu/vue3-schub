@@ -481,7 +481,6 @@ class Method {
      */
   async UploadImage(file: any, isUploadUrl: boolean = false): Promise<string | undefined> {
     ElMessage('上传中...')
-    ElMessage('111')
     // 执行图片上传的逻辑
     const formData = new FormData()
     let url = ''
@@ -489,7 +488,7 @@ class Method {
     this.api_post(`/Upload/Upload`, formData)
       .then((response) => {
         let obj = response.data
-        if (obj.code === 200) {
+        if (obj.code == 200) {
           console.log(obj.data.src);
 
           ElMessage({

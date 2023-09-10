@@ -8,10 +8,10 @@
     />
     <div class="area">
       <div class="user-label">
-        <div v-html="v.xx.author.nickname"></div>
+        <div class="to-user-name">{{ v.xx.author.nickname }}</div>
         <div class="to-user" v-if="v.xx.to_author != null">
           <div class="to-user-label">回复</div>
-          <a class="to-user-name" v-html="'@' + v.xx.to_author.nickname"></a>
+          <a class="to-user-name"> {{ '@' + v.xx.to_author.nickname }}</a>
           <div>:</div>
         </div>
       </div>
@@ -21,9 +21,9 @@
         :editorId="`preview-tow-${previewid}`"
       />
       <div class="extra-line">
-        <div class="time" v-html="v.xx.time"></div>
+        <div class="time">{{ v.xx.time }}</div>
         <LikeIcon class="label" @click="doLike"></LikeIcon>
-        <div class="label amount" v-html="likes"></div>
+        <div class="label amount">{{ likes }}</div>
         <div class="label" @click="readyReply">回复</div>
       </div>
       <div v-if="isReadyReply">

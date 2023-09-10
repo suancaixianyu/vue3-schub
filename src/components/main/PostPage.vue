@@ -146,7 +146,7 @@ export default {
           let obj = response.data
           this.isLoadingMore = false
           this.isLoadingList = false
-          if (obj.code === 200) {
+          if (obj.code == 200) {
             const scrollElement = <any>this.$refs.container
             // 获取总帖子数量
             this.total = obj.sum.total

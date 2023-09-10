@@ -22,16 +22,16 @@
     <div class="extra-area" style="background-color: white; padding: 0 10px">
       <div class="item">
         <el-text
-          >支持的游戏版本:<el-tag
-            v-for="x in game_list"
-            v-html="x.name"
-          ></el-tag
-        ></el-text>
+          >支持的游戏版本:<el-tag v-for="x in game_list">
+            {{ x.name }}
+          </el-tag>
+        </el-text>
       </div>
       <div class="item">
         <el-text
-          >支持的API版本: <el-tag v-for="x in api_list" v-html="x.name"></el-tag
-        ></el-text>
+          >支持的API版本:
+          <el-tag v-for="x in api_list">{{ x.name }}</el-tag></el-text
+        >
       </div>
       <div class="item">最后编辑: {{ last_modify }}</div>
       <div class="item">
@@ -39,8 +39,8 @@
         <el-row class="author-item" v-for="x in author_list">
           <el-avatar shape="circle" :src="x.avatar"></el-avatar>
           <div class="nickname">
-            <div v-html="x.nickname"></div>
-            <div v-html="x.staff" class="staff"></div>
+            <div>{{ x.nickname }}</div>
+            <div class="staff">{{ x.staff }}</div>
           </div>
         </el-row>
       </div>
@@ -55,7 +55,7 @@
           <el-icon v-if="x.id == 6" size="26">
             <Share />
           </el-icon>
-          <div v-html="x.name"></div>
+          <div>{{ x.name }}</div>
         </a>
       </div>
       <el-tabs class="el-tabs" type="card">
@@ -74,17 +74,16 @@
               :name="i"
             >
               <div class="flex" v-for="xx in x.list">
-                <el-tag
-                  class="ml-2"
-                  type="success"
-                  v-html="xx.type_name"
-                ></el-tag>
+                <el-tag class="ml-2" type="success">
+                  {{ xx.type_name }}
+                </el-tag>
                 <el-button
                   type="primary"
                   link
                   @click="goModDetail(xx.package_id)"
-                  v-html="xx.package_name"
-                ></el-button>
+                >
+                  {{ xx.package_name }}
+                </el-button>
               </div>
             </el-collapse-item>
           </el-collapse>
@@ -181,10 +180,10 @@
             :content="x.description"
           >
             <template #reference>
-              <div class="version" v-html="x.version"></div>
+              <div class="version">{{ x.version }}</div>
             </template>
           </el-popover>
-          <div class="date" v-html="x.time"></div>
+          <div class="date">{{ x.time }}</div>
         </div>
         <div class="update-log" v-if="version_list.length == 0">
           暂无更新日志
@@ -211,11 +210,11 @@
       <div class="extra-area">
         <div class="item">
           <div>支持的游戏版本:</div>
-          <el-tag v-for="x in game_list" v-html="x.name"></el-tag>
+          <el-tag v-for="x in game_list"> {{ x.name }}</el-tag>
         </div>
         <div class="item">
           <div>支持的API版本:</div>
-          <el-tag v-for="x in api_list" v-html="x.name"></el-tag>
+          <el-tag v-for="x in api_list">{{ x.name }}</el-tag>
         </div>
         <div class="item">最后编辑: {{ last_modify }}</div>
         <div class="item">
@@ -223,8 +222,8 @@
           <el-row class="author-item" v-for="x in author_list">
             <el-avatar shape="circle" :src="x.avatar"></el-avatar>
             <div class="nickname">
-              <div v-html="x.nickname"></div>
-              <div v-html="x.staff" class="staff"></div>
+              <div>{{ x.nickname }}</div>
+              <div class="staff">{{ x.staff }}</div>
             </div>
           </el-row>
         </div>
@@ -242,7 +241,7 @@
             <el-icon v-if="x.id == 6" size="26">
               <Share />
             </el-icon>
-            <div v-html="x.name"></div>
+            <div>{{ x.name }}</div>
           </a>
         </div>
         <el-tabs class="el-tabs" type="card">
@@ -261,17 +260,16 @@
                 :name="i"
               >
                 <div class="flex" v-for="xx in x.list">
-                  <el-tag
-                    class="ml-2"
-                    type="success"
-                    v-html="xx.type_name"
-                  ></el-tag>
+                  <el-tag class="ml-2" type="success">
+                    {{ xx.type_name }}
+                  </el-tag>
                   <el-button
                     type="primary"
                     link
                     @click="goModDetail(xx.package_id)"
-                    v-html="xx.package_name"
-                  ></el-button>
+                  >
+                    {{ xx.package_name }}
+                  </el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>

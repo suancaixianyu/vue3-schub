@@ -123,8 +123,9 @@
                   size="small"
                   :type="mod_list[scope.$index].stat_data.type"
                   v-if="mod_list[scope.$index].stat !== 3"
-                  v-html="mod_list[scope.$index].stat_data.name"
-                ></el-tag>
+                >
+                  {{ mod_list[scope.$index].stat_data.name }}
+                </el-tag>
                 <el-popover
                   v-if="mod_list[scope.$index].stat == 3"
                   placement="top-start"
@@ -183,8 +184,9 @@
                   :color="role_list[scope.$index].color"
                   :type="role_list[scope.$index].type"
                   :effect="role_list[scope.$index].effect"
-                  v-html="role_list[scope.$index].name"
-                ></el-tag>
+                >
+                  {{ role_list[scope.$index].name }}
+                </el-tag>
               </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right">
@@ -303,8 +305,9 @@
             :color="x.color"
             :type="x.type"
             :effect="x.effect"
-            v-html="x.name"
-          ></el-tag>
+          >
+            {{ x.name }}
+          </el-tag>
         </el-row>
       </el-form-item>
       <el-form-item label="已选择">
@@ -315,8 +318,9 @@
             :color="x.color"
             :type="x.type"
             :effect="x.effect"
-            v-html="x.name"
-          ></el-tag>
+          >
+            {{ x.name }}
+          </el-tag>
         </el-row>
       </el-form-item>
     </el-form>
@@ -402,8 +406,9 @@
           :effect="roleConfig.effect"
           :type="roleConfig.type"
           :color="roleConfig.color"
-          v-html="roleConfig.name"
-        ></el-tag>
+        >
+          {{ roleConfig.name }}
+        </el-tag>
       </el-form-item>
       <el-form-item label="名称">
         <el-input v-model="roleConfig.name"></el-input>

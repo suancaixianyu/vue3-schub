@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/user',
     name: 'UserIndex',
-    meta: { title: '个人中心-SC中文社区',keepAlive:true },
+    meta: { title: '个人中心-SC中文社区', keepAlive: true },
     component: () => import('@comps/user/index.vue'),
   },
   {
@@ -49,7 +49,7 @@ const routes: RouteRecordRaw[] = [
   // },
   /** 发帖 */
   {
-    path: '/publish/:chatid',
+    path: '/publish/:chatid/:id',
     name: 'publish',
     meta: { title: '发布帖子-SC中文社区' },
     component: () => import('@comps/main/PublishPost.vue'),

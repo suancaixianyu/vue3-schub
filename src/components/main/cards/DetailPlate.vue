@@ -6,12 +6,9 @@
       <el-row :gutter="24" style="padding: 0" v-if="content != null">
         <div class="detail-title-container">
           <el-col :span="16">
-            <el-text
-              class="mx-1 time title"
-              size="large"
-              tag="b"
-              v-html="content.title"
-            ></el-text>
+            <el-text class="mx-1 time title" size="large" tag="b">
+              {{ content.title }}
+            </el-text>
           </el-col>
           <el-col :span="8" style="display: flex; justify-content: flex-end">
             <el-icon @click="refresh_item" :size="24" title="刷新" class="icon">
@@ -39,7 +36,7 @@
           <!-- 分割线 -->
           <div class="plate-label">
             <div class="large">评论</div>
-            <div class="small" v-html="sum"></div>
+            <div class="small">{{ sum }}</div>
             <div class="space"></div>
             <div
               class="filter"
@@ -63,20 +60,21 @@
             <el-row :gutter="24" style="align-items: center">
               <el-col :span="3" style="padding: 0">
                 <user-icon
-                    v-if="myUserInfo.isLogin"
-                    :src="myUserInfo.data.headurl"
-                    :alt="myUserInfo.data.nickname"
-                    :size="headsize"
+                  v-if="myUserInfo.isLogin"
+                  :src="myUserInfo.data.headurl"
+                  :alt="myUserInfo.data.nickname"
+                  :size="headsize"
                 />
               </el-col>
               <el-col :span="16" style="padding: 0">
                 <el-input
                   v-model="comments"
+                  type="textarea"
                   autosize
                   :placeholder="
                     reply_list.length >= 1
                       ? '发表评论'
-                      : '这里是评论区，不是无人区;-)'
+                      : '这里是评论区，不是无人区:-)'
                   "
                 />
               </el-col>
@@ -190,7 +188,7 @@
               <el-row :gutter="24" style="align-items: center">
                 <el-col :xs="3" :sm="3" :md="2" :lg="2" :xl="1">
                   <user-icon
-                      v-if="myUserInfo.isLogin"
+                    v-if="myUserInfo.isLogin"
                     :src="myUserInfo.data.headurl"
                     :alt="myUserInfo.data.nickname"
                     :size="headsize"
@@ -199,6 +197,7 @@
                 <el-col :xs="8" :sm="15" :md="15" :lg="17" :xl="16">
                   <el-input
                     v-model="comments"
+                    type="textarea"
                     autosize
                     :placeholder="
                       reply_list.length >= 1
@@ -278,8 +277,8 @@ export default {
   // },
   data() {
     return {
-      myUserInfo: Cfg.userInfo,//登录的账号的信息
-      userInfo: <any>{},//发帖人的账号信息
+      myUserInfo: Cfg.userInfo, //登录的账号的信息
+      userInfo: <any>{}, //发帖人的账号信息
       headsize: Cfg.headsize.post,
       set: Cfg.set,
       shape: Cfg.set.shape,
@@ -319,7 +318,7 @@ export default {
       Method.api_get(`/bbs/item/${this.$route.params.id}`)
         .then((res: any) => {
           this.isLoading = false
-          if (res.data.code === 200) {
+          if (res.data.code == 200) {
             let item = res.data.data
             item.time = Method.formatNormalTime(item.time)
             item.author.headurl = Method.getHostUrl(item.author.headurl)

@@ -27,11 +27,9 @@
           </el-row>
 
           <!-- 列表顶部栏 E -->
-          <el-text
-            class="mx-1 time item-content"
-            style="text-align: left"
-            v-html="item.summary"
-          ></el-text>
+          <el-text class="mx-1 time item-content" style="text-align: left">
+            {{ item.summary }}
+          </el-text>
         </router-link>
 
         <ul class="category-counts">
@@ -123,7 +121,7 @@ export default {
       Method.api_post('/admin/lock_item', { id, stat: 0, type: 2 }).then(
         (res: any) => {
           let obj = res.data as api
-          if (obj.code === 200) {
+          if (obj.code == 200) {
             ElMessage({
               type: 'success',
               message: obj.msg,
@@ -144,7 +142,7 @@ export default {
       Method.api_get(`/bbs/good/${props.item.id}`).then((res: any) => {
         let obj = res.data as api
         data.isDoGooding = false
-        if (obj.code === 200) {
+        if (obj.code == 200) {
           data.goodNum += parseInt(obj.data)
           if (obj.data == 1) {
             data.like = 1

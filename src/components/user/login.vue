@@ -288,7 +288,7 @@ export default {
       Method.api_post('/user/editPass', this.editPass)
         .then((res) => {
           let obj = <api>res.data
-          if (obj.code === 200) {
+          if (obj.code == 200) {
             ElMessage({
               type: 'success',
               message: '修改成功',
@@ -338,7 +338,7 @@ export default {
       Method.api_post(url, configdata)
         .then((response) => {
           this.loading = false
-          if (response.data.code === 200) {
+          if (response.data.code == 200) {
             if (type == 'login') {
               Method.api_get(infourl).then((response2: any) => {
                 if (response2.data.code == 200) {

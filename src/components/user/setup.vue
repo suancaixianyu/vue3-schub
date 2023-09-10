@@ -136,7 +136,7 @@ export default {
       Method.api_post('/user/edit', this.config)
         .then((res) => {
           let obj = res.data as api
-          if (obj.code === 200) {
+          if (obj.code == 200) {
             ElMessage({
               type: 'success',
               message: '设置成功',
