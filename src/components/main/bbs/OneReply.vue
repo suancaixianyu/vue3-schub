@@ -193,6 +193,11 @@ export default {
 </script>
 
 <style scoped>
+.to-user-name {
+  color: #008ac5;
+  padding: 0 5px;
+  cursor: pointer;
+}
 .md-editor-preview-wrapper {
   padding: 0.5rem 0;
 }

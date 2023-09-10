@@ -8,7 +8,7 @@
     />
     <div class="area">
       <div class="user-label">
-        <div class="to-user-name">{{ v.xx.author.nickname }}</div>
+        <div>{{ v.xx.author.nickname }}</div>
         <div class="to-user" v-if="v.xx.to_author != null">
           <div class="to-user-label">回复</div>
           <a class="to-user-name"> {{ '@' + v.xx.to_author.nickname }}</a>
