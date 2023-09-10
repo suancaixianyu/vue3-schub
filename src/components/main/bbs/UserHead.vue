@@ -35,6 +35,7 @@
 import UserRole from '@comps/user/roleList.vue'
 import UserIcon from '@comps/user/userIcon.vue'
 import Cfg from '@/config/config'
+import {watch} from "vue";
 export default {
   name: 'UserHead',
   components: { UserIcon, UserRole },
@@ -44,6 +45,11 @@ export default {
       headsize: Cfg.headsize.post,
     }
   },
+  mounted(){
+    watch(()=>this.item,(v)=>{
+      console.log(v)
+    })
+  }
 }
 </script>
 

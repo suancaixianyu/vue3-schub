@@ -62,7 +62,12 @@
             <!-- 发表评论 -->
             <el-row :gutter="24" style="align-items: center">
               <el-col :span="3" style="padding: 0">
-                <user-icon :src="headurl" :alt="userInfo.nickname" />
+                <user-icon
+                    v-if="myUserInfo.isLogin"
+                    :src="myUserInfo.data.headurl"
+                    :alt="myUserInfo.data.nickname"
+                    :size="headsize"
+                />
               </el-col>
               <el-col :span="16" style="padding: 0">
                 <el-input
@@ -185,8 +190,9 @@
               <el-row :gutter="24" style="align-items: center">
                 <el-col :xs="3" :sm="3" :md="2" :lg="2" :xl="1">
                   <user-icon
-                    :src="headurl"
-                    :alt="userInfo.nickname"
+                      v-if="myUserInfo.isLogin"
+                    :src="myUserInfo.data.headurl"
+                    :alt="myUserInfo.data.nickname"
                     :size="headsize"
                   />
                 </el-col>
@@ -272,8 +278,8 @@ export default {
   // },
   data() {
     return {
-      headurl: Cfg.userInfo.data.headurl,
-      userInfo: <any>null,
+      myUserInfo: Cfg.userInfo,//登录的账号的信息
+      userInfo: <any>{},//发帖人的账号信息
       headsize: Cfg.headsize.post,
       set: Cfg.set,
       shape: Cfg.set.shape,
