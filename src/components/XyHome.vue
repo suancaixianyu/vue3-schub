@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import 'element-plus/theme-chalk/display.css'
-import { provide, ref, reactive, onMounted, computed } from 'vue'
+import { provide, ref, reactive, onMounted, computed, watch } from 'vue'
 import Cfg from '@/config/config'
 import NavigationMenu from '@comps/navigation/NavigationMenu.vue'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
@@ -81,6 +81,18 @@ export default {
 
     onMounted(() => {
       pagewidth(document.body.clientWidth)
+      watch(
+        () => Cfg.set.ismobile,
+        () => {
+          if (Cfg.set.ismobile) {
+            Cfg.maincontainer.overflowY = 'auto'
+            Cfg.maincontainer.height = 'auto'
+          } else {
+            Cfg.maincontainer.overflowY = 'auto'
+            Cfg.maincontainer.height = 'calc(100vh - 4rem)'
+          }
+        },
+      )
     })
 
     let theme = ref('cupcake')

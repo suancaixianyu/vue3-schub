@@ -119,7 +119,7 @@
       :pager-count="5"
       :total="total"
       @current-change="handleCurrentChange"
-      style="justify-content: center"
+      style="justify-content: center; margin: 0.5rem 0"
     >
     </el-pagination>
   </div>

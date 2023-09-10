@@ -5,7 +5,7 @@ import type { userInfoType, setType } from '@/apitypes'
 /** 内容样式 */
 const maincontainer = reactive({
   padding: '0',
-  height: 'calc(100vh - 6rem)',
+  height: 'calc(100vh - 4rem)',
   overflowY: 'hidden',
 })
 
