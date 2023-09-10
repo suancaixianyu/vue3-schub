@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import 'element-plus/theme-chalk/display.css'
-import { provide, ref, reactive, onMounted, computed, watch } from 'vue'
+import { provide, ref, reactive, onMounted, computed } from 'vue'
 import Cfg from '@/config/config'
 import NavigationMenu from '@comps/navigation/NavigationMenu.vue'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'

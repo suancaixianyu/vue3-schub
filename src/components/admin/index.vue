@@ -16,6 +16,17 @@
       </el-tab-pane>
       <el-tab-pane label="账号管理" name="2">
         <div v-loading="isLoadingData">
+          <el-input
+            v-model="searchUser"
+            placeholder="Please input"
+            class="input-with-select"
+          >
+            <template #prepend> 搜索用户 </template>
+            <template #append>
+              <el-button @click="refreshMemberList" icon="Search" />
+            </template>
+          </el-input>
+
           <el-table :data="member_list" stripe style="width: 100%">
             <el-table-column prop="id" width="60" label="ID" />
             <el-table-column prop="account" label="账号" width="120" />
@@ -465,6 +476,7 @@ export default {
   data() {
     return {
       set: Cfg.set,
+      searchUser: '',
       dialogShow: {
         lockAccount: false,
         addRole: false,
@@ -751,6 +763,10 @@ export default {
       let payLoad = {
         page: this.page,
         limit: this.limit,
+        search: this.searchUser,
+        order: 0,
+        role: 0,
+        state: 0,
       }
       Method.api_post('/admin/member_list', payLoad).then((response) => {
         this.isLoadingData = false
