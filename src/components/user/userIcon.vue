@@ -1,5 +1,5 @@
 <template>
-  <el-avatar :size="size" :shape="shape" :src="avatar" @error="errorHandler">
+  <el-avatar :size="size" :shape="shape" :src="getUrl(src)" @error="errorHandler">
     <el-text class="avatar-text" tag="b" size="large">
       {{ alt?.substring(0, 1) }}
     </el-text>
@@ -9,28 +9,22 @@
 import { Picture } from '@element-plus/icons-vue'
 import Cfg from '@/config/config.ts'
 import Method from '@/globalmethods'
-import {watch} from "vue";
-
 export default {
   name: 'userIcon',
   components: { Picture },
   props: ['src', 'size', 'alt'],
   data() {
     return {
-      avatar: '',
       shape: Cfg.set.shape
     }
   },
   methods: {
+    getUrl(v:string){
+      return Method.getHostUrl(v);
+    },
     errorHandler() {
       return true
     },
-  },
-  created(){
-    this.avatar = this.src;
-    watch(()=>this.src,(v)=>{
-      this.avatar = Method.getHostUrl(v);
-    })
   }
 }
 </script>

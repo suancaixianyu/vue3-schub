@@ -115,17 +115,9 @@
     <el-pagination
       layout="prev, pager, next, total"
       :total="total"
-      v-model="page"
+      :page-size="limit"
+      v-model:current-page="page"
     />
-    <el-pagination
-      :current-page="page"
-      :page-size="10"
-      :pager-count="5"
-      :total="total"
-      @current-change="handleCurrentChange"
-      style="justify-content: center"
-    >
-    </el-pagination>
   </div>
 </template>
 
@@ -178,10 +170,6 @@ export default {
   },
   methods: {
     doLike() {},
-    /**指定页面加载 */
-    handleCurrentChange(page: any) {
-      this.page = page // 更新当前页码
-    },
     onFlagClick(id: any) {
       let c = <HTMLDivElement>this.$refs.flagContainer
       this.activeFlagId = id
@@ -233,16 +221,18 @@ export default {
         let res = response.data
         this.isLoading = false
         if (res.code == 200) {
-          this.total = res.sum.total
-          let flagSum = <any>res.flag_sum
-          flagSum.forEach((x: any) => {
-            let f = this.mod_flag_list.find((xx: any) => {
-              return xx.id == x.flag_id
+          if(this.page==1){
+            this.total = res.sum.total
+            let flagSum = <any>res.flag_sum
+            flagSum.forEach((x: any) => {
+              let f = this.mod_flag_list.find((xx: any) => {
+                return xx.id == x.flag_id
+              })
+              if (f != null) {
+                f.count = x.count
+              }
             })
-            if (f != null) {
-              f.count = x.count
-            }
-          })
+          }
           res.data.forEach((x: any) => {
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
@@ -252,8 +242,7 @@ export default {
                 : x.description
             if (x.cover_src) x.cover_src = Method.getHostUrl(x.cover_src)
           })
-          if (this.page == 1) this.list = res.data
-          else this.list = this.list.concat(res.data)
+          this.list = res.data;
         }
       })
     },
