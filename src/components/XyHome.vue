@@ -67,6 +67,11 @@ export default {
           immediate = true
           pagewidth(windowwidth.value)
         }, 200)
+        if (Cfg.set.ismobile) {
+          Cfg.maincontainer.height = 'auto'
+        } else {
+          Cfg.maincontainer.height = 'calc(100vh - 4rem)'
+        }
       }
     }
 
@@ -83,17 +88,6 @@ export default {
 
     onMounted(() => {
       pagewidth(document.body.clientWidth)
-
-      watch(
-        () => document.body.clientWidth,
-        () => {
-          if (Cfg.set.ismobile) {
-            Cfg.maincontainer.height = 'auto'
-          } else {
-            Cfg.maincontainer.height = 'calc(100vh - 4rem)'
-          }
-        },
-      )
     })
 
     let theme = ref('cupcake')
