@@ -88,13 +88,9 @@ export default {
      * 上传图片
      */
     UploadImage(file: any) {
-      console.log('开始执行')
-
-      let url = Method.UploadImage(file)
-      console.log('上传成功' + url)
-      if (url) {
+      Method.UploadImage(file,false,(url:string)=>{
         this.config.content += url
-      }
+      })
     },
     /**
      * 提交帖子

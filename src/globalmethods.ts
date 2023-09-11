@@ -479,7 +479,7 @@ class Method {
   /**
      * 上传图片
      */
-  async UploadImage(file: any, isUploadUrl: boolean = false): Promise<string | undefined> {
+  UploadImage(file: any, isUploadUrl: boolean = false,callback:any = null) {
     ElMessage('上传中...')
     // 执行图片上传的逻辑
     const formData = new FormData()
@@ -489,8 +489,6 @@ class Method {
       .then((response) => {
         let obj = response.data
         if (obj.code == 200) {
-          console.log(obj.data.src);
-
           ElMessage({
             type: 'success',
             message: '上传成功',
@@ -500,16 +498,14 @@ class Method {
           } else {
             url = `![](${this.getHostUrl(obj.data.src)})`
           }
-
+          if(callback!=null)callback(url);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         ElMessage({
           type: 'error',
           message: '上传失败',
         })
-        console.log('error', error)
-        url = ''
       })
     return url
   }

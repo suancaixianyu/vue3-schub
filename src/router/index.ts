@@ -49,7 +49,7 @@ const routes: RouteRecordRaw[] = [
   // },
   /** 发帖 */
   {
-    path: '/publish/:chatid/:id',
+    path: '/publish/:chatid',
     name: 'publish',
     meta: { title: '发布帖子-SC中文社区' },
     component: () => import('@comps/main/PublishPost.vue'),
