@@ -125,7 +125,12 @@
         </div>
       </router-link>
     </el-container>
-    <el-affix position="bottom" :offset="60" style="text-align: right">
+    <el-affix
+      position="bottom"
+      :offset="60"
+      style="text-align: right"
+      v-if="set.ismobile"
+    >
       <router-link to="/ModPublish/0" style="margin-right: 1rem">
         <el-button
           type="primary"
