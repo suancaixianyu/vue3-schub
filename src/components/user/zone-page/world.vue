@@ -37,7 +37,7 @@
                     <el-dropdown-item>复制链接</el-dropdown-item>
                     <el-dropdown-item>下架</el-dropdown-item>
                     <el-dropdown-item disabled>发布</el-dropdown-item>
-                    <el-dropdown-item divided @click="handleDelete(index)"
+                    <el-dropdown-item divided @click="confirmHandle(index)"
                       >删除</el-dropdown-item
                     >
                   </el-dropdown-menu>
