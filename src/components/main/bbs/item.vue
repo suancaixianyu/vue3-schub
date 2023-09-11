@@ -33,6 +33,11 @@
         </router-link>
 
         <ul class="category-counts">
+          <li>
+            <el-button link>
+              <icon-view :size="18"></icon-view>{{ viewNum }}
+            </el-button>
+          </li>
           <li @click="doLike">
             <el-button link :style="{ color: like == 0 ? '' : '#FD70A1' }">
               <el-icon :size="22"> <LikeIcon /> </el-icon>{{ goodNum }}
@@ -49,17 +54,18 @@
             </li>
           </router-link>
           <li class="linkbtn">
-            <el-button link class="linkbtn">
+            <el-button link class="linkbtn" v-if="userInfo.isLogin && item.uid == userInfo.data.id">
               <el-dropdown class="linkbtn">
                 <span class="el-dropdown-link linkbtn">
                   <el-icon class="numicon linkbtn">
                     <MoreFilled />
                   </el-icon>
                 </span>
-
                 <template #dropdown class="linkbtn">
                   <el-dropdown-menu class="linkbtn">
-                    <el-dropdown-item>编辑</el-dropdown-item>
+                    <el-dropdown-item
+                        @click="edit(item.id,item.cate_id)"
+                    >编辑</el-dropdown-item>
                     <el-dropdown-item
                       divided
                       @click="del(item.id)"
@@ -91,10 +97,15 @@ import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import { MdPreview } from 'md-editor-v3'
 import UserIcon from '@comps/user/userIcon.vue'
+import {useRouter} from "vue-router";
+import IconHot from "@comps/icons/common/hot.vue";
+import IconView from "@comps/icons/common/view.vue";
 
 export default {
   name: 'BbsItem',
   components: {
+    IconView,
+    IconHot,
     LikeIcon,
     UserHead,
     MdPreview,
@@ -108,17 +119,22 @@ export default {
   },
 
   setup(props, context) {
+    let router = useRouter();
     let data = reactive({
       isDoGooding: false,
       isDoBading: false,
       goodNum: props.item.likes,
       like: props.item.like,
+      viewNum:props.item.views
     })
     function onItemClick() {
       context.emit('onItemClick', props.item.id)
     }
-    function del(id: any) {
-      Method.api_post('/admin/lock_item', { id, stat: 0, type: 2 }).then(
+    function edit(id:number,cate_id:number){
+      router.push(`/publish/${cate_id}/${id}`);
+    }
+    function del(id: number) {
+      Method.api_post('/bbs/lock_item', { id : id }).then(
         (res: any) => {
           let obj = res.data as api
           if (obj.code == 200) {
@@ -156,7 +172,7 @@ export default {
         })
       })
     }
-    return { ...toRefs(data), doLike, del, onItemClick }
+    return { ...toRefs(data), doLike, edit,del, onItemClick }
   },
 }
 </script>

@@ -22,7 +22,8 @@
             <el-icon>
               <Edit />
             </el-icon>
-            <el-text>发帖</el-text>
+            <el-text v-if="config.id>0">确认编辑</el-text>
+            <el-text v-else>发布</el-text>
           </el-button>
         </div>
       </el-form-item>
@@ -71,8 +72,10 @@ export default {
       previewid: 'preview-set',
       uploadServer: `${Cfg.config.server}/Upload/Upload`,
       isPublishing: false,
+      cate_id:0,
       set: Cfg.set,
       config: {
+        id: 0,
         title: '',
         content: '',
         cate_id: '',
@@ -88,13 +91,9 @@ export default {
      * 上传图片
      */
     UploadImage(file: any) {
-      console.log('开始执行')
-
-      let url = Method.UploadImage(file)
-      console.log('上传成功' + url)
-      if (url) {
+      Method.UploadImage(file,false,(url:string)=>{
         this.config.content += url
-      }
+      })
     },
     /**
      * 提交帖子
@@ -103,11 +102,7 @@ export default {
       if (this.config.title === '') return ElMessage('请输入帖子标题')
       else if (this.config.content === '') return ElMessage('请输入帖子内容')
       this.isPublishing = true
-      this.config.cate_id = <string>this.$route.params.chatid
-      Method.api_post(
-        this.$route.params.id ? '/bbs/edit' : '/bbs/add',
-        this.config,
-      )
+      Method.api_post('/bbs/add', this.config)
         .then((res) => {
           let obj = res.data
           this.isPublishing = false
@@ -135,7 +130,11 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.params.id) {
+    let p = <any>this.$route.params;
+    this.config.id = <number>p.id;
+    this.cate_id = <number>p.chatid;
+
+    if (this.config.id > 0) {
       Method.api_get(`/bbs/item/${this.$route.params.id}`).then((res: any) => {
         let obj = res.data as api
         if (obj.code == 200) {
