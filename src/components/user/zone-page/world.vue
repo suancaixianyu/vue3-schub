@@ -62,7 +62,7 @@
             size="small"
             link
             type="danger"
-            @click="handleDelete(scope.$index)"
+            @click="confirmHandle(scope.$index)"
             >删除</el-button
           >
         </template>
@@ -77,6 +77,9 @@
       :total="total"
     />
   </div>
+  <dialog-confirm title="提示" v-model:visible="showConfirm" @submit="handleDelete" :loading="isDeleting">
+    <label>是否删除存档<label v-text="activeItem.name"></label>?</label>
+  </dialog-confirm>
 </template>
 
 <script lang="ts">
@@ -85,9 +88,11 @@ import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
 import { watch } from 'vue'
 import { api } from '@/apitypes'
+import DialogConfirm from "@comps/dialogs/confirm.vue";
 
 export default {
   name: 'WorldPage',
+  components: {DialogConfirm},
   data() {
     return {
       ...Cfg,
@@ -96,12 +101,22 @@ export default {
       page: 1,
       limit: 10,
       total: 0,
+      showConfirm:false,
+      isDeleting:false,
+      activeItem:<any>null
     }
   },
   methods: {
-    handleDelete(index: number) {
-      Method.api_post('/bbs/del', { id: index }).then((res: any) => {
-        let obj = res.data as api
+    confirmHandle(index: number){
+      this.activeItem = this.list[index];
+      this.showConfirm=true;
+    },
+    handleDelete() {
+      this.isDeleting=true;
+      Method.api_post('/user/document_del', { id: this.activeItem.id }).then(res => {
+        let obj = <api>res.data;
+        this.showConfirm=false;
+        this.isDeleting=true;
         if (obj.code == 200) {
           ElMessage({
             type: 'success',

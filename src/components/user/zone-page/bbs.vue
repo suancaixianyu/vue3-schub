@@ -47,6 +47,13 @@
                     <el-dropdown-item @click="handleModify(x.cate_id, x.id)"
                       >编辑</el-dropdown-item
                     >
+                    <el-button
+                        size="small"
+                        link
+                        type="danger"
+                        @click="handleLock(index)"
+                    >锁定</el-button
+                    >
                     <el-dropdown-item divided @click="handleDelete(index)"
                       >删除</el-dropdown-item
                     >
@@ -105,6 +112,13 @@
             >复制链接</el-button
           >
           <el-button
+              size="small"
+              link
+              type="danger"
+              @click="handleLock(scope.$index)"
+          >锁定</el-button
+          >
+          <el-button
             size="small"
             link
             type="danger"
@@ -122,41 +136,34 @@
       :total="total"
     />
   </div>
+  <dialog-confirm title="提示" @submit="deleteBbs(1)" v-model:visible="isDialogVisible" v-if="operate_type==2" :loading="isDeleting">
+        <span>是否删除帖子[ID:{{ activeItem.id }}]
+          <span style="color: #008ac5">{{ activeItem.title }}</span>
+        </span>
+  </dialog-confirm>
+  <dialog-confirm title="提示" @submit="deleteBbs(0)" v-model:visible="isDialogVisible" v-if="operate_type==1" :loading="isDeleting">
+        <span>是否锁定帖子[ID:{{ activeItem.id }}]
+          <span style="color: #008ac5">{{ activeItem.title }}</span>
+        </span>
+  </dialog-confirm>
 
-  <el-dialog
-    v-model="isDialogVisible"
-    title="提示"
-    width="30%"
-    :fullscreen="set.ismobile"
-    align-center
-  >
-    <span
-      >是否删除帖子[ID:{{ activeItem.id }}]
-      <span style="color: #008ac5">{{ activeItem.title }}</span></span
-    >
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="isDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="deleteBbs" :loading="isDeleting">
-          确认
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 <script lang="ts">
 import Method from '@/globalmethods.ts'
 import { ElMessage } from 'element-plus'
 import Cfg from '@/config/config'
 import { watch } from 'vue'
+import DialogConfirm from "@comps/dialogs/confirm.vue";
 
 export default {
   name: 'BbsPage',
+  components: {DialogConfirm},
   data() {
     return {
       ...Cfg,
       isDeleting: false,
       isDialogVisible: false,
+      operate_type:0,
       isLoading: false,
       list: <any>[],
       activeItem: <any>null,
@@ -169,16 +176,23 @@ export default {
     copyUrl(url: string) {
       Method.copyText(url)
     },
-    handleModify(cateid: number, id: number) {
-      this.$router.push(`/publish/${cateid}/${id}`)
+    handleModify(cate_id: number, id: number) {
+      this.$router.push(`/publish/${cate_id}/${id}`)
+    },
+    handleLock(index: number) {
+      this.activeItem = this.list[index];
+      this.isDialogVisible = true;
+      this.operate_type = 1;
     },
     handleDelete(index: number) {
-      this.activeItem = this.list[index]
-      this.isDialogVisible = true
+      this.activeItem = this.list[index];
+      this.isDialogVisible = true;
+      this.operate_type = 2;
     },
-    deleteBbs() {
+    deleteBbs(type:number) {
       let payLoad = {
         id: this.activeItem.id,
+        type:type
       }
       this.isDeleting = true
       Method.api_post(`/bbs/del`, payLoad).then((response: any) => {
