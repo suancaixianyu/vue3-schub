@@ -49,17 +49,18 @@
             </li>
           </router-link>
           <li class="linkbtn">
-            <el-button link class="linkbtn">
+            <el-button link class="linkbtn" v-if="userInfo.isLogin && item.uid == userInfo.data.id">
               <el-dropdown class="linkbtn">
                 <span class="el-dropdown-link linkbtn">
                   <el-icon class="numicon linkbtn">
                     <MoreFilled />
                   </el-icon>
                 </span>
-
                 <template #dropdown class="linkbtn">
                   <el-dropdown-menu class="linkbtn">
-                    <el-dropdown-item>编辑</el-dropdown-item>
+                    <el-dropdown-item
+                        @click="edit(item.id,item.cate_id)"
+                    >编辑</el-dropdown-item>
                     <el-dropdown-item
                       divided
                       @click="del(item.id)"
@@ -91,6 +92,7 @@ import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import { MdPreview } from 'md-editor-v3'
 import UserIcon from '@comps/user/userIcon.vue'
+import {useRouter} from "vue-router";
 
 export default {
   name: 'BbsItem',
@@ -108,6 +110,7 @@ export default {
   },
 
   setup(props, context) {
+    let router = useRouter();
     let data = reactive({
       isDoGooding: false,
       isDoBading: false,
@@ -117,7 +120,10 @@ export default {
     function onItemClick() {
       context.emit('onItemClick', props.item.id)
     }
-    function del(id: any) {
+    function edit(id:number,cate_id:number){
+      router.push(`/publish/${cate_id}/${id}`);
+    }
+    function del(id: number) {
       Method.api_post('/admin/lock_item', { id, stat: 0, type: 2 }).then(
         (res: any) => {
           let obj = res.data as api
@@ -156,7 +162,7 @@ export default {
         })
       })
     }
-    return { ...toRefs(data), doLike, del, onItemClick }
+    return { ...toRefs(data), doLike, edit,del, onItemClick }
   },
 }
 </script>
