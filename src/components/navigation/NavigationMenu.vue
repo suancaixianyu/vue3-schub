@@ -219,7 +219,7 @@
               @mouseleave="menuClick('tool')"
             >
               <li>
-                <a href="http://suancaixianyu.cn/sss">简谱转换</a>
+                <a href="http://www.suancaixianyu.cn/sss">简谱转换</a>
               </li>
               <li>
                 <a href="https://suancaixianyu.com/gpt">白嫖gpt</a>

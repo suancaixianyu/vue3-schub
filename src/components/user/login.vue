@@ -145,6 +145,9 @@
       </el-form-item>
     </el-col>
   </el-row>
+  <el-button v-if="err" @click="logerr"
+    >出现了不该出现的报错？打印请求体求助</el-button
+  >
 
   <el-dialog
     v-model="showdialog"
@@ -182,7 +185,7 @@ import { useRoute } from 'vue-router'
 import Cfg from '@/config/config.ts'
 import Method from '@/globalmethods.ts'
 
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { api } from '@/apitypes'
 
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha'
@@ -202,6 +205,7 @@ export default {
     let src = Method.getHostUrl('/captcha')
     return {
       ...Cfg,
+      err: false, //登录是否出现了错误
       dialogwidth: Cfg.set.ismobile ? '100%' : '50%',
       showdialog: false,
       showimgcode: false,
@@ -213,6 +217,8 @@ export default {
       userInfo: Cfg.userInfo,
       pass_uuid: '',
       imgcode: '',
+      resend: <any>[], // 错误请求返回结果
+      errtext: '', // 错误内容
       regitser: {
         pass: '',
         repass: '',
@@ -251,6 +257,30 @@ export default {
     }
   },
   methods: {
+    logerr() {
+      let loginconfig = this.loginconfig,
+        regitser = this.regitser,
+        editPass = this.editPass
+
+      loginconfig.pass = ''
+      regitser.pass = ''
+      regitser.repass = ''
+      editPass.oldPass = ''
+      editPass.newPass = ''
+
+      this.errtext = JSON.stringify({
+        登录: { ...loginconfig },
+        注册: { ...regitser },
+        改密码: { ...editPass },
+        请求结果: this.resend,
+      })
+      ElMessageBox.alert(this.errtext, '打印请求体', {
+        confirmButtonText: '复制',
+        callback: () => {
+          Method.copyText(this.errtext)
+        },
+      })
+    },
     offDialog() {
       if (this.$props.page) {
         this.editPass.pass_uuid = this.pass_uuid
@@ -296,6 +326,8 @@ export default {
             Method.getInformation()
             this.$emit('childEvent')
           } else {
+            this.resend.push(obj)
+            this.err = true
             ElMessage({
               type: 'error',
               message: obj.msg,
@@ -304,6 +336,8 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+          this.resend.push(err)
+          this.err = true
           ElMessage({
             type: 'error',
             message: '请求错误：' + err.message,
@@ -363,6 +397,8 @@ export default {
               type: 'success',
             })
           } else {
+            this.resend.push(response.data)
+            this.err = true
             ElMessage({
               message: response.data.msg,
               type: 'error',
@@ -371,6 +407,8 @@ export default {
           }
         })
         .catch((error) => {
+          this.resend.push(error)
+          this.err = true
           ElMessage({
             type: 'error',
             message: error,
