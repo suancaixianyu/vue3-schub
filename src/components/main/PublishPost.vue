@@ -1,10 +1,20 @@
 <template>
   <el-container class="el-container">
     <el-form>
+      <el-form-item label="发布板块">
+        <el-select v-model="config.cate_id" placeholder="请选择发布的板块">
+          <el-option
+            v-for="item in options"
+            :key="item"
+            :label="item.label"
+            :value="item.id"
+            :disabled="item.disabled"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <template #label>
           <div>标&emsp;&emsp;题</div>
-          <div class="font-red">*</div>
         </template>
         <div class="title-line">
           <el-input
@@ -22,7 +32,7 @@
             <el-icon>
               <Edit />
             </el-icon>
-            <el-text v-if="config.id>0">确认编辑</el-text>
+            <el-text v-if="config.id > 0">确认编辑</el-text>
             <el-text v-else>发布</el-text>
           </el-button>
         </div>
@@ -72,8 +82,7 @@ export default {
       previewid: 'preview-set',
       uploadServer: `${Cfg.config.server}/Upload/Upload`,
       isPublishing: false,
-      cate_id:0,
-      set: Cfg.set,
+      ...Cfg,
       config: {
         id: 0,
         title: '',
@@ -81,6 +90,7 @@ export default {
         cate_id: '',
         cover_src: '',
       },
+      options: <any>[],
     }
   },
   methods: {
@@ -91,7 +101,7 @@ export default {
      * 上传图片
      */
     UploadImage(file: any) {
-      Method.UploadImage(file,false,(url:string)=>{
+      Method.UploadImage(file, false, (url: string) => {
         this.config.content += url
       })
     },
@@ -100,7 +110,8 @@ export default {
      */
     submit() {
       if (this.config.title === '') return ElMessage('请输入帖子标题')
-      else if (this.config.content === '') return ElMessage('请输入帖子内容')
+      if (this.config.content === '') return ElMessage('请输入帖子内容')
+      if (this.config.cate_id === '') return ElMessage('请选择一个板块')
       this.isPublishing = true
       Method.api_post('/bbs/add', this.config)
         .then((res) => {
@@ -130,9 +141,39 @@ export default {
     },
   },
   mounted() {
-    let p = <any>this.$route.params;
-    this.config.id = <number>p.id;
-    this.cate_id = <number>p.chatid;
+    let p = <any>this.$route.params
+    this.config.id = <number>p.id
+
+    Method.api_get('/cate/list')
+      .then((response) => {
+        let res: api = response.data
+        if (res.code == 200) {
+          for (const v of res.data) {
+            this.options.push({
+              label: v.name,
+              id: v.id,
+              disabled:
+                (this.userInfo.isLogin && v.id != 5) ||
+                (v.id == 5 &&
+                  this.userInfo.isLogin &&
+                  this.userInfo.data.isAdmin)
+                  ? false
+                  : true,
+            })
+          }
+        } else {
+          ElMessage({
+            type: 'error',
+            message: res.msg,
+          })
+        }
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'error',
+          message: '请求出错',
+        })
+      })
 
     if (this.config.id > 0) {
       Method.api_get(`/bbs/item/${this.$route.params.id}`).then((res: any) => {

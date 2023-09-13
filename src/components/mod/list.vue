@@ -2,11 +2,7 @@
   <div class="tab-container">
     <el-header class="el-header" style="flex-wrap: wrap">
       <div class="filter-item hide-scrollbar" ref="flagContainer">
-        <router-link
-          to="/ModPublish/0"
-          style="margin-right: 1rem"
-          v-if="!set.ismobile"
-        >
+        <router-link to="/ModPublish/0" style="margin-right: 1rem">
           <el-button
             type="primary"
             icon="Plus"
@@ -125,21 +121,6 @@
         </div>
       </router-link>
     </el-container>
-    <el-affix
-      position="bottom"
-      :offset="60"
-      style="text-align: right"
-      v-if="set.ismobile"
-    >
-      <router-link to="/ModPublish/0" style="margin-right: 1rem">
-        <el-button
-          type="primary"
-          icon="Plus"
-          circle
-          style="width: 3rem; height: 3rem"
-        />
-      </router-link>
-    </el-affix>
     <el-pagination
       :current-page="page"
       :page-size="10"

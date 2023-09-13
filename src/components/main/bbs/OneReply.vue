@@ -4,7 +4,7 @@
       :src="x.author.headurl"
       :size="size"
       :alt="x.author.nickname"
-      style="margin-right: 12px"
+      :style="{ width: `${size}px`, height: `${size}px` }"
     />
     <div class="area">
       <div class="user-label">

@@ -9,7 +9,10 @@
               <UserIcon
                 class="item-top-title-list avatar"
                 :src="item.author.headurl"
-                :size="headsize"
+                :style="{
+                  width: `${headsize.post}px`,
+                  height: `${headsize.post}px`,
+                }"
                 :alt="item.author.nickname"
               />
               <el-text
@@ -54,7 +57,14 @@
             </li>
           </router-link>
           <li class="linkbtn">
-            <el-button link class="linkbtn" v-if="userInfo.isLogin && item.uid == userInfo.data.id">
+            <el-button
+              link
+              class="linkbtn"
+              v-if="
+                (userInfo.isLogin && item.uid == userInfo.data.id) ||
+                userInfo.data.isAdmin
+              "
+            >
               <el-dropdown class="linkbtn">
                 <span class="el-dropdown-link linkbtn">
                   <el-icon class="numicon linkbtn">
@@ -64,12 +74,16 @@
                 <template #dropdown class="linkbtn">
                   <el-dropdown-menu class="linkbtn">
                     <el-dropdown-item
-                        @click="edit(item.id,item.cate_id)"
-                    >编辑</el-dropdown-item>
+                      v-if="userInfo.isLogin && item.uid == userInfo.data.id"
+                      @click="edit(item.id, item.cate_id)"
+                      >编辑</el-dropdown-item
+                    >
                     <el-dropdown-item
                       divided
                       @click="del(item.id)"
-                      v-if="userInfo.data.isAdmin"
+                      v-if="
+                        userInfo.data.isAdmin || item.uid == userInfo.data.id
+                      "
                     >
                       <el-text type="danger">删除</el-text>
                     </el-dropdown-item>
@@ -97,9 +111,9 @@ import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import { MdPreview } from 'md-editor-v3'
 import UserIcon from '@comps/user/userIcon.vue'
-import {useRouter} from "vue-router";
-import IconHot from "@comps/icons/common/hot.vue";
-import IconView from "@comps/icons/common/view.vue";
+import { useRouter } from 'vue-router'
+import IconHot from '@comps/icons/common/hot.vue'
+import IconView from '@comps/icons/common/view.vue'
 
 export default {
   name: 'BbsItem',
@@ -119,38 +133,38 @@ export default {
   },
 
   setup(props, context) {
-    let router = useRouter();
+    let router = useRouter()
     let data = reactive({
       isDoGooding: false,
       isDoBading: false,
       goodNum: props.item.likes,
       like: props.item.like,
-      viewNum:props.item.views
+      viewNum: props.item.views,
     })
     function onItemClick() {
       context.emit('onItemClick', props.item.id)
     }
-    function edit(id:number,cate_id:number){
-      router.push(`/publish/${cate_id}/${id}`);
+    function edit(id: number, cate_id: number) {
+      router.push(`/publish/${cate_id}/${id}`)
     }
     function del(id: number) {
-      Method.api_post('/bbs/lock_item', { id : id }).then(
-        (res: any) => {
-          let obj = res.data as api
-          if (obj.code == 200) {
-            ElMessage({
-              type: 'success',
-              message: obj.msg,
-            })
-            context.emit('childEvent', 1)
-          } else {
-            ElMessage({
-              type: 'error',
-              message: obj.msg,
-            })
-          }
-        },
-      )
+      let url = '/bbs/del'
+      if (Cfg.userInfo.data.isAdmin) url = '/bbs/lock_item'
+      Method.api_post(url, { id: id }).then((res: any) => {
+        let obj = res.data as api
+        if (obj.code == 200) {
+          ElMessage({
+            type: 'success',
+            message: obj.msg,
+          })
+          context.emit('childEvent', true)
+        } else {
+          ElMessage({
+            type: 'error',
+            message: obj.msg,
+          })
+        }
+      })
     }
     function doLike() {
       //帖子点赞
@@ -172,7 +186,7 @@ export default {
         })
       })
     }
-    return { ...toRefs(data), doLike, edit,del, onItemClick }
+    return { ...toRefs(data), doLike, edit, del, onItemClick }
   },
 }
 </script>

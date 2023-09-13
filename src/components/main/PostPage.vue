@@ -43,7 +43,7 @@
             <BbsItem
               :item="item"
               :path="path"
-              @childEvent="listUpdate"
+              @childEvent="listUpdate(false)"
               @onItemClick="onItemClick(item)"
             ></BbsItem>
           </div>

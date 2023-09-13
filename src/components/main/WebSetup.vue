@@ -43,11 +43,7 @@
           <el-input type="number" v-model="headsize.post" />
         </el-form-item>
         <el-form-item label="用户主头像页大小">
-          <el-input
-            type="number"
-            v-model="headsize.userindex"
-            @blur="sizeuser"
-          />
+          <el-input type="number" v-model="headsize.userindex" />
         </el-form-item>
       </el-form>
 
@@ -223,10 +219,8 @@ export default {
       Method.setwebstyle()
       ElMessage('重置成功，刷新页面生效')
     },
-    sizepost() {
-      Cfg.headsize.post = Number(Cfg.headsize.post)
-    },
     sizeuser() {
+      Cfg.headsize.post = Number(Cfg.headsize.post)
       Cfg.headsize.userindex = Number(Cfg.headsize.userindex)
     },
     setstyle() {

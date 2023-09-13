@@ -2,9 +2,13 @@
   <el-container v-if="set.ismobile">
     <el-col class="el-main v bg-base-100">
       <div class="cate-list mobile bg-base-100" v-if="!isBbsView">
-        <el-button type="primary" plain @click="topicPublish"
-          >发布主题</el-button
-        >
+        <el-button
+          type="primary"
+          icon="Plus"
+          circle
+          style="width: 1.5rem; height: 1.5rem"
+          @click="topicPublish"
+        />
         <div class="list bg-base-100 hide-scrollbar" v-loading="loadingCate">
           <router-link
             v-for="item in cate_list"
@@ -88,11 +92,7 @@ export default {
   methods: {
     /** 发布帖子 */
     topicPublish() {
-      if (this.active_cate_id > 0) {
-        this.$router.push(`/publish/${this.active_cate_id}`)
-      } else {
-        ElMessage('请先选择一个板块')
-      }
+      this.$router.push(`/publish/${this.active_cate_id}`)
     },
 
     /** 初始化板块列表 */
@@ -187,6 +187,7 @@ export default {
   display: flex;
   overflow: hidden;
   flex-direction: row;
+  align-items: center;
   padding: 10px;
   height: 50px;
 }
@@ -207,8 +208,8 @@ export default {
   overflow-y: hidden;
   display: flex;
   flex-direction: row;
+  align-items: center;
   flex: 1;
-  height: inherit;
   margin-left: 10px;
 }
 

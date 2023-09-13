@@ -2,9 +2,8 @@
   <div class="post-area">
     <user-icon
       :src="v.xx.author.headurl"
-      :size="v.size"
       :alt="v.xx.author.nickname"
-      style="margin-right: 12px"
+      :style="{ width: `${v.size}px`, height: `${v.size}px` }"
     />
     <div class="area">
       <div class="user-label">

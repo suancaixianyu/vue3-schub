@@ -3,9 +3,9 @@
     <!-- 头像 -->
     <user-icon
       :src="item.headurl"
-      :size="headsize"
       :alt="item.nickname"
       style="margin-right: 12px"
+      :style="{ width: `${headsize}px`, height: `${headsize}px` }"
     />
     <!-- 昵称，日期 -->
     <div class="time" :style="item.style">
@@ -35,7 +35,7 @@
 import UserRole from '@comps/user/roleList.vue'
 import UserIcon from '@comps/user/userIcon.vue'
 import Cfg from '@/config/config'
-import {watch} from "vue";
+import { watch } from 'vue'
 export default {
   name: 'UserHead',
   components: { UserIcon, UserRole },
@@ -45,11 +45,14 @@ export default {
       headsize: Cfg.headsize.post,
     }
   },
-  mounted(){
-    watch(()=>this.item,(v)=>{
-      console.log(v)
-    })
-  }
+  mounted() {
+    watch(
+      () => this.item,
+      (v) => {
+        console.log(v)
+      },
+    )
+  },
 }
 </script>
 
