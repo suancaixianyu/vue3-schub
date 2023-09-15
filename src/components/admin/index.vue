@@ -157,6 +157,13 @@
                   size="small"
                   link
                   type="primary"
+                  @click="toView(scope.$index)"
+                  >查看</el-button
+                >
+                <el-button
+                  size="small"
+                  link
+                  type="primary"
                   @click="showExamineMode(scope.$index)"
                   >审核</el-button
                 >
@@ -166,8 +173,7 @@
                   type="danger"
                   @click="showLockItem(3, scope.$index)"
                 >
-                  <div v-if="mod_list[scope.$index].stat == 0">解锁</div>
-                  <div v-else>锁定</div>
+                  {{ mod_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
                 </el-button>
               </template>
             </el-table-column>
@@ -531,6 +537,10 @@ export default {
     }
   },
   methods: {
+    toView(index: number) {
+      let id = this.mod_list[index].id
+      this.$router.push(`/ModDetail/${id}`)
+    },
     showLockItem(type: number, index: number) {
       switch (type) {
         case 1:

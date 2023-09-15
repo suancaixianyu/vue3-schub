@@ -183,6 +183,7 @@
               @click="submit"
               :loading="isCreating"
               v-if="modId == 0"
+              :disabled="!userInfo.isLogin"
               >创建</el-button
             >
             <el-button
@@ -209,7 +210,9 @@
               :on-success="uploadCover"
               accept="image/png, image/jpeg"
             >
-              <el-button type="primary">上传</el-button>
+              <el-button type="primary" :disabled="!userInfo.isLogin"
+                >上传</el-button
+              >
             </el-upload>
           </el-form-item>
           <el-form-item label="资源介绍*">
@@ -322,7 +325,7 @@ export default {
       openDialogLink: false,
       openDialog: false,
       modId: 0,
-      set: Cfg.set,
+      ...Cfg,
       uploadServer: `${Cfg.config.server}/Upload/Upload`,
       cover_list: [],
       en_name: '',

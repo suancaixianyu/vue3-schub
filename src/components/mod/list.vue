@@ -43,7 +43,10 @@
                 /> -->
               </div>
               <div class="name-line">
-                <div>{{ `[${x.mini_name}]` }}{{ x.name }}({{ x.en_name }})</div>
+                <div>
+                  {{ x.mini_name ? `[${x.mini_name}]` : '' }}{{ x.name
+                  }}{{ x.en_name ? `(${x.en_name})` : '' }}
+                </div>
               </div>
               <div class="description-line">{{ x.description }}</div>
             </router-link>

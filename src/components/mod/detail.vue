@@ -6,7 +6,9 @@
           <div class="item left">活跃</div>
           <div class="item right">闭源</div>
         </div>
-        <div class="name">[{{ mini_name }}]{{ name }}</div>
+        <div class="name">
+          {{ mini_name ? `[${mini_name}]` : '' }}{{ name }}
+        </div>
         <div class="en-name">{{ en_name }}</div>
         <div class="flag-area">
           <mod-flag
@@ -196,7 +198,9 @@
           <div class="item left">活跃</div>
           <div class="item right">闭源</div>
         </div>
-        <div class="name">[{{ mini_name }}]{{ name }}</div>
+        <div class="name">
+          {{ mini_name ? `[${mini_name}]` : '' }}{{ name }}
+        </div>
         <div class="en-name">{{ en_name }}</div>
       </div>
       <div class="flag-area">

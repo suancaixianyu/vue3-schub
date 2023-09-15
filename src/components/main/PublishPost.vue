@@ -25,6 +25,7 @@
           />
           <el-button
             :loading="isPublishing"
+            :disabled="!userInfo.isLogin"
             class="btn btn-sm"
             title="发帖"
             @click="submit"
@@ -48,7 +49,9 @@
             :on-success="uploadCover"
             accept="image/png, image/jpeg"
           >
-            <el-button type="primary">上传</el-button>
+            <el-button type="primary" :disabled="!userInfo.isLogin"
+              >上传</el-button
+            >
           </el-upload>
         </div>
       </el-form-item>
