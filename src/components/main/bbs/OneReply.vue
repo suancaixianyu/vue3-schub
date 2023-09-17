@@ -4,15 +4,12 @@
       :src="x.author.headurl"
       :size="size"
       :alt="x.author.nickname"
-      :style="{ width: `${size}px`, height: `${size}px` }"
+      style="margin-right: 0.5rem"
     />
     <div class="area">
       <div class="user-label">
         <div>{{ x.author.nickname }}</div>
         <UserRole :role="x.author.role" />
-        <el-tag size="small" :color="xv.color" v-for="xv in x.author.role_list">
-          {{ xv.name }}
-        </el-tag>
       </div>
       <!-- <div class="comments">{{ x.content }}</div> -->
       <MdPreview
@@ -23,9 +20,29 @@
       />
       <div class="extra-line">
         <div class="time">{{ x.time }}</div>
-        <LikeIcon @click="doLike" class="label"></LikeIcon>
-        <div class="label amount">{{ likes }}</div>
-        <div class="label" @click="readyReply">回复</div>
+
+        <el-button class="label amount" size="small" link>
+          <el-icon :size="22">
+            <LikeIcon @click="doLike" />
+          </el-icon>
+          <el-text>
+            {{ likes }}
+          </el-text>
+        </el-button>
+        <el-button class="label" @click="readyReply" size="small" link>
+          回复
+        </el-button>
+        <el-button
+          class="label"
+          @click="delReply(x.id)"
+          size="small"
+          link
+          v-if="
+            (userInfo.isLogin && x.uid == userInfo.id) || userInfo.data.isAdmin
+          "
+        >
+          删除
+        </el-button>
       </div>
       <!-- 二级评论 -->
       <div
@@ -39,7 +56,8 @@
         <TowReply
           v-for="(xx, index) in x.children"
           :key="xx"
-          :v="{ x, xx, shape: set.shape, size }"
+          :v="{ x, xx, shape: set.shape }"
+          :size="size"
           :previewid="index"
           @refreshEvent="refreshList"
         />
@@ -53,6 +71,7 @@
               autosize
               type="textarea"
               :placeholder="`回复${x.author.nickname}`"
+              v-on:dblclick="handleDoubleClick"
             />
           </el-col>
           <el-col :span="3">
@@ -67,6 +86,20 @@
         </el-row>
       </div>
     </div>
+    <el-dialog
+      v-model="mdEditor"
+      title="全屏输入"
+      :draggable="true"
+      :fullscreen="true"
+    >
+      <MdEditor
+        editorId="previewOne"
+        :preview="!set.ismobile"
+        v-model="comments"
+        style="height: 72vh"
+        @onUploadImg="UploadImage"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -76,7 +109,7 @@ import TowReply from '@comps/main/bbs/TwoReply.vue'
 import { reactive, toRefs } from 'vue'
 import { api } from '@/apitypes'
 import { ElMessage } from 'element-plus'
-import { MdPreview } from 'md-editor-v3'
+import { MdPreview, MdEditor } from 'md-editor-v3'
 
 /** md编辑器 */
 import 'md-editor-v3/lib/preview.css'
@@ -93,21 +126,9 @@ export default {
     TowReply,
     LikeIcon,
     MdPreview,
+    MdEditor,
   },
-  props: {
-    previewid: {
-      type: Number,
-      required: true,
-    },
-    x: {
-      type: Object,
-      required: true,
-    },
-    size: {
-      type: Number,
-      required: true,
-    },
-  },
+  props: ['previewid', 'x', 'size'],
 
   data() {
     return {
@@ -115,6 +136,38 @@ export default {
     }
   },
   methods: {
+    UploadImage(file: any) {
+      Method.UploadImage(file, false, (url: string) => {
+        this.comments += url
+      })
+    },
+    handleDoubleClick() {
+      this.mdEditor = true
+    },
+    delReply(id: number) {
+      Method.api_get(`bbs/del_reply/${id}`)
+        .then((res: any) => {
+          let obj = res.data as api
+          if (obj.code == 200) {
+            ElMessage({
+              type: 'success',
+              message: obj.msg,
+            })
+            this.$emit('refreshEvent')
+          } else {
+            ElMessage({
+              type: 'error',
+              message: obj.msg,
+            })
+          }
+        })
+        .catch(() =>
+          ElMessage({
+            type: 'error',
+            message: '删除失败，可能没做',
+          }),
+        )
+    },
     reply() {
       this.doReply(() => {
         this.$emit('refreshEvent')
@@ -129,6 +182,7 @@ export default {
   },
   setup(props) {
     let data = reactive({
+      mdEditor: false,
       comments: '',
       isReadyReply: false,
       likes: 0,

@@ -1,5 +1,5 @@
 <template>
-  <XyHome v-if="isInitialized" class="bg-base-100" />
+  <XyHome v-if="isInitialized" />
   <el-container
     class="el-container"
     v-else

@@ -1,5 +1,13 @@
 <template>
-  <el-avatar :shape="shape" :src="getUrl(src)" @error="errorHandler">
+  <el-avatar
+    :shape="shape"
+    :src="getUrl(src)"
+    @error="errorHandler"
+    :style="{
+      width: `${size}px`,
+      height: `${size}px`,
+    }"
+  >
     <el-text class="avatar-text" tag="b" size="large">
       {{ alt?.substring(0, 1) }}
     </el-text>
@@ -12,7 +20,7 @@ import Method from '@/globalmethods'
 export default {
   name: 'userIcon',
   components: { Picture },
-  props: ['src', 'alt'],
+  props: ['src', 'alt', 'size'],
   data() {
     return {
       shape: Cfg.set.shape,

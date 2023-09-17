@@ -285,19 +285,16 @@ export default {
       if (this.$props.page) {
         this.editPass.pass_uuid = this.pass_uuid
         this.editPass.captcha_code = this.imgcode
-        console.log(this.editPass)
 
         this.edit(true)
       }
       if (this.isregister) {
         this.regitser.pass_uuid = this.pass_uuid
         this.regitser.captcha_code = this.imgcode
-        console.log(this.regitser)
         this.submitLogin('register', true)
       } else {
         this.loginconfig.pass_uuid = this.pass_uuid
         this.loginconfig.captcha_code = this.imgcode
-        console.log(this.loginconfig)
 
         this.submitLogin('login', true)
       }
@@ -305,8 +302,6 @@ export default {
       this.showdialog = false
     },
     addHcaptchaToken(token: string) {
-      console.log(token)
-
       this.pass_uuid = token
       this.showimgcode = true
     },
@@ -367,7 +362,6 @@ export default {
         url = '/user/register'
       }
       this.loading = true
-      console.log('xxx', this.regitser, this.loginconfig)
 
       Method.api_post(url, configdata)
         .then((response) => {

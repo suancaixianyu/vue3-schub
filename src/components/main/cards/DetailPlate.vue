@@ -60,9 +60,8 @@
             <el-row :gutter="24" style="align-items: center">
               <el-col :span="3" style="padding: 0">
                 <user-icon
-                  v-if="myUserInfo.isLogin"
                   :src="myUserInfo.data.headurl"
-                  :alt="myUserInfo.data.nickname"
+                  :alt="myUserInfo.data.nickname ?? '游客'"
                   :size="headsize"
                 />
               </el-col>
@@ -94,7 +93,7 @@
                 v-for="(x, index) in reply_list"
                 :key="x"
                 :x="{ ...x }"
-                :shape="shape"
+                :shape="set.shape"
                 :size="headsize"
                 :previewid="index"
                 @refreshEvent="refresh_reply_list"
@@ -151,7 +150,11 @@
             </el-col>
           </div>
           <el-col :span="24">
-            <UserHead :item="userInfo" style="padding-left: 10px" />
+            <UserHead
+              :size="headsize"
+              :item="userInfo"
+              style="padding-left: 10px"
+            />
           </el-col>
           <el-col :span="24">
             <!-- 帖子内容展示 -->
@@ -188,10 +191,9 @@
               <el-row :gutter="24" style="align-items: center">
                 <el-col :xs="3" :sm="3" :md="2" :lg="2" :xl="1">
                   <user-icon
-                    v-if="myUserInfo.isLogin"
                     :src="myUserInfo.data.headurl"
-                    :alt="myUserInfo.data.nickname"
-                    :size="headsize"
+                    :alt="myUserInfo.data.nickname ?? '游客'"
+                    :size="32"
                   />
                 </el-col>
                 <el-col :xs="8" :sm="15" :md="15" :lg="17" :xl="16">
@@ -204,6 +206,7 @@
                         ? '发表评论'
                         : '这里是评论区，不是无人区:-)'
                     "
+                    v-on:dblclick="handleDoubleClick"
                   />
                 </el-col>
                 <el-col :span="3">
@@ -226,7 +229,7 @@
                   v-for="(x, index) in reply_list"
                   :key="x"
                   :x="{ ...x }"
-                  :shape="shape"
+                  :shape="set.shape"
                   :size="headsize"
                   :previewid="index"
                   @refreshEvent="refresh_reply_list"
@@ -246,6 +249,20 @@
         </el-row>
       </div>
     </div>
+    <el-dialog
+      v-model="mdEditor"
+      title="全屏输入"
+      :draggable="true"
+      :fullscreen="true"
+    >
+      <MdEditor
+        editorId="previewOne"
+        :preview="!set.ismobile"
+        v-model="comments"
+        style="height: 72vh"
+        @onUploadImg="UploadImage"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -259,7 +276,7 @@ import OneReply from '@comps/main/bbs/OneReply.vue'
 import Method from '@/globalmethods'
 import Cfg from '@/config/config'
 
-import { MdPreview } from 'md-editor-v3'
+import { MdPreview, MdEditor } from 'md-editor-v3'
 import UserIcon from '@comps/user/userIcon.vue'
 /** md编辑器 */
 
@@ -270,6 +287,7 @@ export default {
     Flushed,
     UserHead,
     MdPreview,
+    MdEditor,
     OneReply,
   },
   // props:{
@@ -277,16 +295,15 @@ export default {
   // },
   data() {
     return {
+      mdEditor: false,
       myUserInfo: Cfg.userInfo, //登录的账号的信息
       userInfo: <any>{}, //发帖人的账号信息
       headsize: Cfg.headsize.post,
       set: Cfg.set,
-      shape: Cfg.set.shape,
       isLoading: false,
       isReplying: false,
       replyType: 0, //0对帖子1对评论
       comments: '',
-      size: 28,
       isLoadingReply: false,
       page: 1,
       limit: 10,
@@ -300,6 +317,14 @@ export default {
     }
   },
   methods: {
+    UploadImage(file: any) {
+      Method.UploadImage(file, false, (url: string) => {
+        this.comments += url
+      })
+    },
+    handleDoubleClick() {
+      this.mdEditor = true
+    },
     loadMore() {
       if (this.isLoadingMore) return
       if (this.page + 1 <= this.totalpages) {
@@ -328,7 +353,7 @@ export default {
               nickname: item.author.nickname,
               time: item.time,
               role: item.author.role,
-              shape: this.shape,
+              shape: this.set.shape,
               headsize: this.headsize,
               style: {
                 flexDirection: 'row',
@@ -401,7 +426,7 @@ export default {
             type: 'error',
             message: '评论获取失败，请点击刷新按钮重试',
           })
-          console.error(error.message)
+          console.error(error)
         })
     },
     sortByTime() {
@@ -528,7 +553,7 @@ export default {
 
 .reply-body {
   display: flex;
-  padding: 12px 18px;
+  padding: 0.5rem;
   justify-self: center;
   flex-direction: column;
   margin: 0 5px;

@@ -65,7 +65,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/ModList',
     name: 'ModList',
-    meta: { title: '资源大厅-SC中文社区' },
+    meta: { title: '资源大厅-SC中文社区', keepAlive: true },
     component: () => import('@comps/mod/list.vue'),
   },
   /**模组详情**/
@@ -86,7 +86,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/admin',
     name: 'Admin',
-    meta: { title: '网页后台-SC中文社区' },
+    meta: { title: '网页后台-SC中文社区', keepAlive: true },
     component: () => import('@comps/admin/index.vue'),
   },
 ]

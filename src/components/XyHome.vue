@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider :locale="locale" :button="button" class="bg-base-100">
+  <el-config-provider :locale="locale" :button="button">
     <div class="common-layout bg-base-100">
       <el-container :style="container">
         <el-header :style="container" style="z-index: 20">
@@ -20,14 +20,6 @@
             <component v-if="!$route.meta.keepAlive" :is="Component" />
           </router-view>
         </el-main>
-        <!-- <el-footer
-          v-if="set.showfooter"
-          :style="container"
-          class="home-footer"
-          style="height: 2rem"
-        >
-          <el-text>这里是底部栏</el-text>
-        </el-footer> -->
       </el-container>
     </div>
   </el-config-provider>

@@ -76,6 +76,7 @@
         layout="prev, pager, next"
         :total="total"
         :pager-count="5"
+        @current-change="handleCurrentChange"
       />
     </div>
   </div>
@@ -183,7 +184,11 @@ export default {
       this.listUpdate()
     },
   },
+  unmounted() {
+    Cfg.maincontainer.height = 'calc(100vh - 4rem)'
+  },
   mounted() {
+    Cfg.maincontainer.height = 'auto'
     watch(
       () => this.$route.params.cateid,
       () => {
@@ -280,6 +285,6 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 10px;
+  margin: 0.5rem 0;
 }
 </style>

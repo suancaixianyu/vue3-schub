@@ -9,17 +9,14 @@
               <UserIcon
                 class="item-top-title-list avatar"
                 :src="item.author.headurl"
-                :style="{
-                  width: `${headsize.post}px`,
-                  height: `${headsize.post}px`,
-                }"
+                :size="headsize.post"
                 :alt="item.author.nickname"
               />
               <el-text
                 class="item-top-title-list time title"
                 size="large"
                 tag="b"
-                style="margin-left: 1rem"
+                style="margin-left: 0.5rem"
               >
                 {{ item.title }}
               </el-text>

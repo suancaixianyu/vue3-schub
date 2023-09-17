@@ -15,7 +15,7 @@ const postliststyle = reactive({
   padding: '12px 18px',
   justifyContent: 'center',
   margin: '10px auto',
-  width: '88%',
+  width: '95%',
   maxHeight: '200px',
   boxShadow: 'var(--el-box-shadow-light)',
   borderRadius: 'var(--rounded-btn)',

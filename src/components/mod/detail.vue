@@ -115,6 +115,7 @@
                   display: flex;
                   justify-content: center;
                   align-items: center;
+                  overflow-x: hidden;
                 "
                 ><el-button
                   size="small"

@@ -3,7 +3,8 @@
     <user-icon
       :src="v.xx.author.headurl"
       :alt="v.xx.author.nickname"
-      :style="{ width: `${v.size}px`, height: `${v.size}px` }"
+      :size="size"
+      style="margin-right: 0.5rem"
     />
     <div class="area">
       <div class="user-label">
@@ -73,16 +74,7 @@ export default {
     LikeIcon,
     MdPreview,
   },
-  props: {
-    previewid: {
-      type: Number,
-      required: true,
-    },
-    v: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: ['previewid', 'v', 'size'],
   data() {
     return {
       ...Cfg,

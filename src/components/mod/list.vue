@@ -18,6 +18,15 @@
           @click="onFlagClick(x.id)"
         />
       </div>
+      <el-input
+        v-model="search"
+        placeholder="搜索资源"
+        class="input-with-select"
+      >
+        <template #append>
+          <el-button icon="Search" @click="pullList" />
+        </template>
+      </el-input>
     </el-header>
     <el-container class="el-container" v-loading="isLoading">
       <div v-if="set.ismobile" v-for="x in list" style="margin: 0.5rem">
@@ -234,8 +243,6 @@ export default {
      * @param isNext 是否为翻页
      */
     pullList(isNext: boolean = false) {
-      console.log('调用')
-
       let payLoad = {
         page: this.page,
         limit: this.limit,
@@ -282,11 +289,9 @@ export default {
       mod_flag_list.push({ flag_name: x.flag_name, count: 0, id: x.id })
     })
     this.mod_flag_list = mod_flag_list
-    console.log(0)
     watch(
       () => this.activeFlagId,
       () => {
-        console.log(2)
         this.pullList()
       },
     )
@@ -298,7 +303,6 @@ export default {
     Cfg.maincontainer.overflowY = 'hidden'
   },
   mounted() {
-    console.log('挂载')
     this.pullList()
     Cfg.maincontainer.overflowY = 'auto'
   },

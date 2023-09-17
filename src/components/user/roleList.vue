@@ -1,10 +1,11 @@
 <template>
   <el-tag
+    v-for="x in role_list"
+    :key="x"
     size="small"
     :color="x.color"
     :type="x.type"
     :effect="x.effect"
-    v-for="x in role_list"
     >{{ x.name }}</el-tag
   >
 </template>
@@ -22,9 +23,6 @@ export default {
     }
   },
   created() {
-    // console.log(Method.decodeRoleList(this.role))
-    // console.log(this.role)
-
     this.role_list = Method.decodeRoleList(this.role)
     watch(
       () => this.role,

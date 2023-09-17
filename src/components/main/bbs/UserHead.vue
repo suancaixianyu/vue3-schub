@@ -5,7 +5,7 @@
       :src="item.headurl"
       :alt="item.nickname"
       style="margin-right: 12px"
-      :style="{ width: `${headsize}px`, height: `${headsize}px` }"
+      :size="size"
     />
     <!-- 昵称，日期 -->
     <div class="time" :style="item.style">
@@ -15,7 +15,7 @@
             <el-text tag="b" size="large">
               {{ item.nickname }}
             </el-text>
-            <UserRole :role="item.role" :size="'small'" />
+            <UserRole :role="item.role" />
           </div>
           <div>
             <el-text
@@ -34,25 +34,10 @@
 <script lang="ts">
 import UserRole from '@comps/user/roleList.vue'
 import UserIcon from '@comps/user/userIcon.vue'
-import Cfg from '@/config/config'
-import { watch } from 'vue'
 export default {
   name: 'UserHead',
   components: { UserIcon, UserRole },
-  props: ['item'],
-  data() {
-    return {
-      headsize: Cfg.headsize.post,
-    }
-  },
-  mounted() {
-    watch(
-      () => this.item,
-      (v) => {
-        console.log(v)
-      },
-    )
-  },
+  props: ['item', 'size'],
 }
 </script>
 
