@@ -33,6 +33,8 @@
             class="bg-base-200 md-editor-preview-wrapper-main"
           />
 
+          <el-divider />
+
           <!-- 分割线 -->
           <div class="plate-label">
             <div class="large">评论</div>
@@ -75,6 +77,7 @@
                       ? '发表评论'
                       : '这里是评论区，不是无人区:-)'
                   "
+                  v-on:dblclick="handleDoubleClick"
                 />
               </el-col>
               <el-col :span="5" style="padding-left: 10px">
@@ -163,6 +166,8 @@
               :modelValue="content.summary"
               class="bg-base-200 md-editor-preview-wrapper-main"
             />
+
+            <el-divider />
 
             <!-- 分割线 -->
             <div class="plate-label">
@@ -278,7 +283,6 @@ import Cfg from '@/config/config'
 
 import { MdPreview, MdEditor } from 'md-editor-v3'
 import UserIcon from '@comps/user/userIcon.vue'
-/** md编辑器 */
 
 export default {
   name: 'DetailPlate',

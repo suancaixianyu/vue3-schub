@@ -21,7 +21,12 @@
       <div class="extra-line">
         <div class="time">{{ x.time }}</div>
 
-        <el-button class="label amount" size="small" link>
+        <el-button
+          class="label amount"
+          size="small"
+          link
+          :style="{ color: x.like == 0 ? '' : '#FD70A1' }"
+        >
           <el-icon :size="22">
             <LikeIcon @click="doLike" />
           </el-icon>
@@ -44,6 +49,35 @@
           删除
         </el-button>
       </div>
+
+      <div v-if="isReadyReply">
+        <el-row :gutter="24">
+          <el-col :xs="17" :sm="15" :md="15" :lg="17" :xl="17">
+            <el-input
+              v-model="comments"
+              autosize
+              type="textarea"
+              :placeholder="`回复${x.author.nickname}`"
+              v-on:dblclick="handleDoubleClick"
+            />
+          </el-col>
+          <el-col :span="3" style="display: flex">
+            <el-button @click="readyReply" plain v-if="!set.ismobile">
+              取消
+            </el-button>
+            <el-button
+              :icon="set.ismobile ? '' : 'Edit'"
+              :loading="isReplying"
+              @click="reply"
+              type="primary"
+              plain
+            >
+              回复
+            </el-button>
+          </el-col>
+        </el-row>
+      </div>
+
       <!-- 二级评论 -->
       <div
         v-if="x.children.length > 0"
@@ -61,29 +95,6 @@
           :previewid="index"
           @refreshEvent="refreshList"
         />
-      </div>
-
-      <div v-if="isReadyReply">
-        <el-row :gutter="24">
-          <el-col :xs="17" :sm="15" :md="15" :lg="17" :xl="17">
-            <el-input
-              v-model="comments"
-              autosize
-              type="textarea"
-              :placeholder="`回复${x.author.nickname}`"
-              v-on:dblclick="handleDoubleClick"
-            />
-          </el-col>
-          <el-col :span="3">
-            <el-button
-              :icon="set.ismobile ? '' : 'Edit'"
-              :loading="isReplying"
-              @click="reply"
-            >
-              回复
-            </el-button>
-          </el-col>
-        </el-row>
       </div>
     </div>
     <el-dialog

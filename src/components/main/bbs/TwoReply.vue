@@ -36,11 +36,16 @@
               :placeholder="`回复${v.xx.author.nickname}`"
             />
           </el-col>
-          <el-col :span="3">
+          <el-col :span="3" style="display: flex">
+            <el-button @click="readyReply" plain v-if="!set.ismobile">
+              取消
+            </el-button>
             <el-button
               :loading="isReplying"
               @click="reply"
               :icon="set.ismobile ? '' : 'Edit'"
+              type="primary"
+              plain
             >
               回复
             </el-button>

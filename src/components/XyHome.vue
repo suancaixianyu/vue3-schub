@@ -34,6 +34,9 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 import en from 'element-plus/dist/locale/en.mjs'
 
+/** md编辑器 */
+import 'md-editor-v3/lib/style.css'
+
 const language = ref('zh-cn')
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
 const button = reactive({

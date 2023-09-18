@@ -69,8 +69,7 @@
 <script lang="ts">
 import { ElMessage } from 'element-plus'
 import { MdEditor } from 'md-editor-v3'
-/** md编辑器 */
-import 'md-editor-v3/lib/style.css'
+
 import Cfg from '@/config/config'
 import Method from '@/globalmethods'
 import { api } from '@/apitypes'
