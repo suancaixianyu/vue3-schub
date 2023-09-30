@@ -16,11 +16,7 @@
       </el-tab-pane>
       <el-tab-pane label="账号管理" name="2">
         <div v-loading="isLoadingData">
-          <el-input
-            v-model="searchUser"
-            placeholder="Please input"
-            class="input-with-select"
-          >
+          <el-input v-model="searchUser" placeholder="Please input" class="input-with-select">
             <template #prepend> 搜索用户 </template>
             <template #append>
               <el-button @click="refreshMemberList" icon="Search" />
@@ -32,46 +28,22 @@
             <el-table-column prop="account" label="账号" width="120" />
             <el-table-column prop="nickname" label="昵称" width="120" />
             <el-table-column prop="reg_time" label="注册时间" width="180" />
-            <el-table-column
-              prop="last_login_time"
-              label="最后登录时间"
-              width="180"
-            />
-            <el-table-column
-              prop="last_login_ip"
-              label="最后登录IP"
-              width="120"
-            />
+            <el-table-column prop="last_login_time" label="最后登录时间" width="180" />
+            <el-table-column prop="last_login_ip" label="最后登录IP" width="120" />
             <el-table-column prop="money" label="积分" width="80" />
             <el-table-column prop="email" label="邮箱" width="120" />
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  link
-                  type="danger"
-                  @click="showLockItem(1, scope.$index)"
-                >
+                <el-button size="small" link type="danger" @click="showLockItem(1, scope.$index)">
                   <div v-if="member_list[scope.$index].stat == 0">解锁</div>
                   <div v-else>锁定</div>
                 </el-button>
-                <el-button
-                  size="small"
-                  link
-                  type="primary"
-                  @click="showLockItem(6, scope.$index)"
-                  >头衔设置</el-button
-                >
+                <el-button size="small" link type="primary" @click="showLockItem(6, scope.$index)">头衔设置</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            v-model:current-page="page"
-            background
-            :page-size="limit"
-            layout="prev, pager, next"
-            :total="total"
-          />
+          <el-pagination v-model:current-page="page" background :page-size="limit" layout="prev, pager, next"
+            :total="total" />
         </div>
       </el-tab-pane>
       <el-tab-pane label="帖子管理" name="3">
@@ -85,39 +57,21 @@
             <el-table-column prop="create_time" label="发布时间" width="180" />
             <el-table-column prop="stat" label="状态" width="80">
               <template #default="scope">
-                <el-tag
-                  size="small"
-                  v-if="bbs_list[scope.$index].stat == 0"
-                  type="danger"
-                  >删除</el-tag
-                >
-                <el-tag size="small" v-if="bbs_list[scope.$index].stat == 1"
-                  >正常</el-tag
-                >
+                <el-tag size="small" v-if="bbs_list[scope.$index].stat == 0" type="danger">删除</el-tag>
+                <el-tag size="small" v-if="bbs_list[scope.$index].stat == 1">正常</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  link
-                  :type="
-                    bbs_list[scope.$index].stat == 0 ? 'primary' : 'danger'
-                  "
-                  @click="showLockItem(2, scope.$index)"
-                >
+                <el-button size="small" link :type="bbs_list[scope.$index].stat == 0 ? 'primary' : 'danger'
+                  " @click="showLockItem(2, scope.$index)">
                   {{ bbs_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            v-model:current-page="page"
-            background
-            :page-size="limit"
-            layout="prev, pager, next"
-            :total="total"
-          />
+          <el-pagination v-model:current-page="page" background :page-size="limit" layout="prev, pager, next"
+            :total="total" />
         </div>
       </el-tab-pane>
       <el-tab-pane label="资源管理" name="4">
@@ -130,21 +84,12 @@
             <el-table-column prop="create_time" label="发布时间" width="180" />
             <el-table-column prop="stat" label="状态" width="180">
               <template #default="scope">
-                <el-tag
-                  size="small"
-                  :type="mod_list[scope.$index].stat_data.type"
-                  v-if="mod_list[scope.$index].stat !== 3"
-                >
+                <el-tag size="small" :type="mod_list[scope.$index].stat_data.type"
+                  v-if="mod_list[scope.$index].stat !== 3">
                   {{ mod_list[scope.$index].stat_data.name }}
                 </el-tag>
-                <el-popover
-                  v-if="mod_list[scope.$index].stat == 3"
-                  placement="top-start"
-                  title="原因"
-                  :width="200"
-                  trigger="hover"
-                  :content="mod_list[scope.$index].reason"
-                >
+                <el-popover v-if="mod_list[scope.$index].stat == 3" placement="top-start" title="原因" :width="200"
+                  trigger="hover" :content="mod_list[scope.$index].reason">
                   <template #reference>
                     <el-tag size="small" type="danger">审核未通过</el-tag>
                   </template>
@@ -153,94 +98,49 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  link
-                  type="primary"
-                  @click="toView(scope.$index)"
-                  >查看</el-button
-                >
-                <el-button
-                  size="small"
-                  link
-                  type="primary"
-                  @click="showExamineMode(scope.$index)"
-                  >审核</el-button
-                >
-                <el-button
-                  size="small"
-                  link
-                  type="danger"
-                  @click="showLockItem(3, scope.$index)"
-                >
+                <el-button size="small" link type="primary" @click="toView(scope.$index)">查看</el-button>
+                <el-button size="small" link type="primary" @click="showExamineMode(scope.$index)">审核</el-button>
+                <el-button size="small" link type="danger" @click="showLockItem(3, scope.$index)">
                   {{ mod_list[scope.$index].stat == 0 ? '解锁' : '锁定' }}
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            background
-            v-model:current-page="page"
-            :page-size="limit"
-            layout="prev, pager, next"
-            :total="total"
-          />
+          <el-pagination background v-model:current-page="page" :page-size="limit" layout="prev, pager, next"
+            :total="total" />
         </div>
       </el-tab-pane>
       <el-tab-pane label="头衔列表管理" name="5">
         <div v-loading="isLoadingData">
-          <el-button type="primary" plain @click="showAddRole"
-            >添加头衔</el-button
-          >
+          <el-button type="primary" plain @click="showAddRole">添加头衔</el-button>
           <el-table :data="role_list" stripe style="width: 100%">
             <el-table-column prop="id" width="80" label="ID" />
             <el-table-column prop="name" label="名称" width="180" />
             <el-table-column label="预览" width="180">
               <template #default="scope">
-                <el-tag
-                  :color="role_list[scope.$index].color"
-                  :type="role_list[scope.$index].type"
-                  :effect="role_list[scope.$index].effect"
-                >
+                <el-tag :color="role_list[scope.$index].color" :type="role_list[scope.$index].type"
+                  :effect="role_list[scope.$index].effect">
                   {{ role_list[scope.$index].name }}
                 </el-tag>
               </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  link
-                  type="primary"
-                  @click="showLockItem(7, scope.$index)"
-                  >编辑</el-button
-                >
-                <el-button
-                  size="small"
-                  link
-                  type="danger"
-                  @click="showLockItem(4, scope.$index)"
-                >
+                <el-button size="small" link type="primary" @click="showLockItem(7, scope.$index)">编辑</el-button>
+                <el-button size="small" link type="danger" @click="showLockItem(4, scope.$index)">
                   <div v-if="role_list[scope.$index].stat == 0">启用</div>
                   <div v-else>停用</div>
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            v-model:current-page="page"
-            background
-            :page-size="limit"
-            layout="prev, pager, next"
-            :total="total"
-          />
+          <el-pagination v-model:current-page="page" background :page-size="limit" layout="prev, pager, next"
+            :total="total" />
         </div>
       </el-tab-pane>
       <el-tab-pane label="板块列表管理" name="6">
         <div v-loading="isLoadingData">
-          <el-button type="primary" plain @click="showAddCate"
-            >添加板块</el-button
-          >
+          <el-button type="primary" plain @click="showAddCate">添加板块</el-button>
           <el-table :data="cate_list" stripe style="width: 100%">
             <el-table-column prop="id" width="80" label="ID" />
             <el-table-column prop="name" label="名称" width="180" />
@@ -249,32 +149,16 @@
             <el-table-column prop="interaction" label="回复数" width="80" />
             <el-table-column label="操作" fixed="right">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  link
-                  type="primary"
-                  @click="showModifyCate(scope.$index)"
-                  >编辑</el-button
-                >
-                <el-button
-                  size="small"
-                  link
-                  type="danger"
-                  @click="showLockItem(5, scope.$index)"
-                >
+                <el-button size="small" link type="primary" @click="showModifyCate(scope.$index)">编辑</el-button>
+                <el-button size="small" link type="danger" @click="showLockItem(5, scope.$index)">
                   <div v-if="cate_list[scope.$index].stat == 0">解锁</div>
                   <div v-else>锁定</div>
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            v-model:current-page="page"
-            background
-            :page-size="limit"
-            layout="prev, pager, next"
-            :total="total"
-          />
+          <el-pagination v-model:current-page="page" background :page-size="limit" layout="prev, pager, next"
+            :total="total" />
         </div>
       </el-tab-pane>
       <el-tab-pane label="游戏内置内容管理" name="7">
@@ -283,21 +167,27 @@
             <el-input rows="20" type="textarea" v-model="x.value" />
           </el-form-item>
           <el-form-item>
-            <el-button @click="saveSiteConfig" :loading="isLocking"
-              >保存配置</el-button
-            >
+            <el-button @click="saveSiteConfig" :loading="isLocking">保存配置</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
+      <el-tab-pane label="邀请码管理" name="8">
+
+        <el-form :model="yqm">
+          <el-form-item label="使用次数">
+            <el-input v-model="yqm.num" type="number" style="max-width: 10rem;" />
+          </el-form-item>
+
+        </el-form>
+        <el-button @click="yaoqingma">获取邀请码</el-button>
+
+      </el-tab-pane>
     </el-tabs>
+
   </div>
   <!---添加/编辑板块弹窗-->
-  <dialog-confirm
-    :title="cateConfig.id > 0 ? '修改板块' : '添加板块'"
-    v-model:visible="dialogShow.addCate"
-    @submit="addCate(false)"
-    :loading="isLocking"
-  >
+  <dialog-confirm :title="cateConfig.id > 0 ? '修改板块' : '添加板块'" v-model:visible="dialogShow.addCate"
+    @submit="addCate(false)" :loading="isLocking">
     <el-form>
       <el-form-item label="板块名称">
         <el-input v-model="cateConfig.name"></el-input>
@@ -308,34 +198,19 @@
     </el-form>
   </dialog-confirm>
   <!--头衔设置弹窗-->
-  <dialog-confirm
-    title="头衔设置"
-    v-model:visible="dialogShow.setRole"
-    @submit="setUserRole"
-  >
+  <dialog-confirm title="头衔设置" v-model:visible="dialogShow.setRole" @submit="setUserRole">
     <el-form>
       <el-form-item label="头衔列表">
         <el-row>
-          <el-tag
-            @click="addUserRole(x)"
-            v-for="x in role_list"
-            :color="x.color"
-            :type="x.type"
-            :effect="x.effect"
-          >
+          <el-tag @click="addUserRole(x)" v-for="x in role_list" :color="x.color" :type="x.type" :effect="x.effect">
             {{ x.name }}
           </el-tag>
         </el-row>
       </el-form-item>
       <el-form-item label="已选择">
         <el-row>
-          <el-tag
-            @click="removeUserRole(x)"
-            v-for="x in user_role_list"
-            :color="x.color"
-            :type="x.type"
-            :effect="x.effect"
-          >
+          <el-tag @click="removeUserRole(x)" v-for="x in user_role_list" :color="x.color" :type="x.type"
+            :effect="x.effect">
             {{ x.name }}
           </el-tag>
         </el-row>
@@ -343,87 +218,49 @@
     </el-form>
   </dialog-confirm>
   <!--锁定账号弹窗-->
-  <dialog-confirm
-    title="提示"
-    v-model:visible="dialogShow.lockAccount"
-    :loading="isLocking"
-    @submit="lockItem(1)"
-  >
+  <dialog-confirm title="提示" v-model:visible="dialogShow.lockAccount" :loading="isLocking" @submit="lockItem(1)">
     <span>
       <span>是否锁定账号[ID:{{ activeItem.member.id }}]</span>
       <span style="color: #008ac5">{{ activeItem.member.account }}</span>
     </span>
   </dialog-confirm>
   <!--锁定资源弹窗-->
-  <dialog-confirm
-    title="提示"
-    v-model:visible="dialogShow.lockMod"
-    :loading="isLocking"
-    @submit="lockItem(3)"
-  >
+  <dialog-confirm title="提示" v-model:visible="dialogShow.lockMod" :loading="isLocking" @submit="lockItem(3)">
     <span>
       <span>是否锁定资源[ID:{{ activeItem.mod.id }}]</span>
       <span style="color: #008ac5">{{ activeItem.mod.name }}</span>
     </span>
   </dialog-confirm>
   <!--锁定帖子弹窗-->
-  <dialog-confirm
-    title="提示"
-    v-model:visible="dialogShow.lockBbs"
-    :loading="isLocking"
-    @submit="lockItem(2)"
-  >
+  <dialog-confirm title="提示" v-model:visible="dialogShow.lockBbs" :loading="isLocking" @submit="lockItem(2)">
     <span>
       <span>是否锁定帖子[ID:{{ activeItem.bbs.id }}]</span>
       <span style="color: #008ac5">{{ activeItem.bbs.title }}</span>
     </span>
   </dialog-confirm>
   <!--停用板块弹窗-->
-  <dialog-confirm
-    title="提示"
-    v-model:visible="dialogShow.lockCate"
-    :loading="isLocking"
-    @submit="lockItem(5)"
-  >
+  <dialog-confirm title="提示" v-model:visible="dialogShow.lockCate" :loading="isLocking" @submit="lockItem(5)">
     <span>
       <span>是否停用板块[ID:{{ activeItem.cate.id }}]</span>
       <span style="color: #008ac5">{{ activeItem.cate.name }}</span>
     </span>
   </dialog-confirm>
   <!--停用头衔弹窗-->
-  <dialog-confirm
-    title="提示"
-    v-model:visible="dialogShow.lockRole"
-    :loading="isLocking"
-    @submit="lockItem(4)"
-  >
+  <dialog-confirm title="提示" v-model:visible="dialogShow.lockRole" :loading="isLocking" @submit="lockItem(4)">
     <span>
       <span>是否停用头衔[ID:{{ activeItem.role.id }}]</span>
       <span style="color: #008ac5">{{ activeItem.role.name }}</span>
     </span>
   </dialog-confirm>
   <!--审核资源弹窗-->
-  <dialog-examine
-    title="审核"
-    :visible="dialogShow.examineMod"
-    @submit="examineMod"
-    :loading-inject="isInjecting"
-    :loading-success="isPassing"
-  ></dialog-examine>
+  <dialog-examine title="审核" :visible="dialogShow.examineMod" @submit="examineMod" :loading-inject="isInjecting"
+    :loading-success="isPassing"></dialog-examine>
   <!--添加/编辑头衔弹窗-->
-  <dialog-confirm
-    v-model:visible="dialogShow.addRole"
-    :title="activeItem.role.id > 0 ? '修改头衔' : '添加头衔'"
-    :loading="isLocking"
-    @submit="addRole"
-  >
+  <dialog-confirm v-model:visible="dialogShow.addRole" :title="activeItem.role.id > 0 ? '修改头衔' : '添加头衔'"
+    :loading="isLocking" @submit="addRole">
     <el-form>
       <el-form-item label="预览">
-        <el-tag
-          :effect="roleConfig.effect"
-          :type="roleConfig.type"
-          :color="roleConfig.color"
-        >
+        <el-tag :effect="roleConfig.effect" :type="roleConfig.type" :color="roleConfig.color">
           {{ roleConfig.name }}
         </el-tag>
       </el-form-item>
@@ -472,7 +309,7 @@ import Method from '@/globalmethods'
 import './index.ts'
 import { watch } from 'vue'
 import UserRole from '@comps/user/roleList.vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import DialogConfirm from '@comps/dialogs/confirm.vue'
 import DialogExamine from '@comps/dialogs/examine.vue'
 
@@ -483,6 +320,9 @@ export default {
     return {
       set: Cfg.set,
       searchUser: '',
+      yqm: {
+        num: 1
+      },
       dialogShow: {
         lockAccount: false,
         addRole: false,
@@ -537,6 +377,32 @@ export default {
     }
   },
   methods: {
+    yaoqingma() {
+
+      // 设置请求参数
+      const data = {
+        avail_num: this.yqm.num
+      }
+
+      // 发送POST请求
+      Method.api_post('/user/generate_invitation', data)
+
+        .then(async (res: any) => {
+          const obj = res.data
+          if (obj.code == 200) {
+            ElMessageBox.alert(`邀请码如下：\n${obj.data}`, '生成邀请码', {
+              confirmButtonText: '确定',
+              callback: () => {
+                Method.copyText(obj.data)
+              }
+            })
+          }
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+
+    },
     toView(index: number) {
       let id = this.mod_list[index].id
       this.$router.push(`/ModDetail/${id}`)
@@ -959,6 +825,7 @@ export default {
 .container {
   margin-top: 20px;
 }
+
 .el-pagination {
   margin-top: 10px;
 }
