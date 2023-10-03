@@ -168,18 +168,31 @@
           </el-form-item>
           <el-form-item>
             <el-button @click="saveSiteConfig" :loading="isLocking">保存配置</el-button>
-          </el-form-item>
+          </el-form-item>s
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="邀请码管理" name="8">
 
         <el-form :model="yqm">
-          <el-form-item label="使用次数">
+
+          <el-form-item label="生成邀请码"></el-form-item>
+          <el-form-item label="设置可使用次数">
             <el-input v-model="yqm.num" type="number" style="max-width: 10rem;" />
           </el-form-item>
 
         </el-form>
-        <el-button @click="yaoqingma">获取邀请码</el-button>
+        <el-button @click="yaoqingma">生成</el-button>
+        <el-divider />
+
+        <el-table :data="InvitationList" border style="width: 100%;max-height: 50rem;overflow-y: auto;">
+          <el-table-column prop="iid" label="邀请码ID" />
+          <el-table-column prop="invitation" label="邀请码" />
+          <el-table-column prop="nickname" label="使用者昵称" />
+          <el-table-column prop="account" label="使用者邮箱" />
+          <el-table-column prop="time" label="注册时间" />
+        </el-table>
+        <el-pagination background layout="prev, pager, next,total" hide-on-single-page :page-size="50"
+          :total="invitationNum" pager-count="7" />
 
       </el-tab-pane>
     </el-tabs>
@@ -323,6 +336,8 @@ export default {
       yqm: {
         num: 1
       },
+      InvitationList: [],
+      invitationNum: 0,
       dialogShow: {
         lockAccount: false,
         addRole: false,
@@ -406,6 +421,39 @@ export default {
     toView(index: number) {
       let id = this.mod_list[index].id
       this.$router.push(`/ModDetail/${id}`)
+    },
+    refreshInvitationList() {
+      Method.api_post(
+        '/admin/getInviteCode',
+        {
+
+          page: 1,
+          limit: 100
+        }
+      )
+        .then((res: any) => {
+          let obj = res.data
+          for (const el of obj.data) {
+            el.time = Method.formatNormalTime(el.time)
+          }
+          this.InvitationList = obj.data
+          this.invitationNum = obj.sum
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+
+      Method.api_post('/user/my_invitation_code', {})
+        .then((res: any) => {
+          // 打印返回的JSON
+
+          const obj = res.data
+          console.log(obj)
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+
     },
     showLockItem(type: number, index: number) {
       switch (type) {
@@ -793,6 +841,8 @@ export default {
         case 7:
           this.refreshConfigList()
           break
+        case 8:
+          this.refreshInvitationList()
       }
     },
   },
