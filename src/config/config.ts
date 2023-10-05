@@ -67,12 +67,17 @@ const userInfo: userInfoType = reactive({
     server_version_list: []
   },
   role_list: [],
+  cate_list: [],
   state: {
     unreadMessage: 0,
     isLogin: false,
     isLoginDialogVisible: false,
   },
   data: { role: '', nickname: '', headurl: '', id: 0, signature: '', isAdmin: false },
+})
+
+const webpublic = reactive({
+  active_cate_id: 0
 })
 
 class Cfg {
@@ -104,6 +109,9 @@ class Cfg {
   }
   maincontainer: { [key: string]: string }
   postliststyle: { [key: string]: string }
+  webpublic: {
+    active_cate_id: number
+  }
 
   constructor() {
     this.config = {
@@ -124,6 +132,7 @@ class Cfg {
     this.container = container
     this.postliststyle = postliststyle
     this.maincontainer = maincontainer
+    this.webpublic = webpublic
   }
 }
 

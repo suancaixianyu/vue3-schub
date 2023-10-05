@@ -1,3 +1,5 @@
+import '@/components/admin/index.ts'
+
 /** 板块类型 */
 export interface catelist {
   /** 板块id */
@@ -41,6 +43,8 @@ export interface userInfoType {
   }
   /** 全局角色列表 */
   role_list: any[]
+  /** 板块列表 */
+  cate_list: cateItem[]
   /** 用户ID */
   id?: string
   /** 状态 */

@@ -33,6 +33,17 @@
         </router-link>
 
         <ul class="category-counts">
+          <li style="justify-content: flex-start; width: 50%">
+            <router-link
+              :to="`/postlist/${item.cate_id}/`"
+              @click="webpublic.active_cate_id = item.cate_id"
+            >
+              <el-text class="mx-1" type="info">
+                {{ getName(item.cate_id) }}
+              </el-text>
+            </router-link>
+          </li>
+          <li style="width: 100%"></li>
           <li>
             <el-button link>
               <icon-view :size="18"></icon-view>{{ viewNum }}
@@ -185,7 +196,12 @@ export default {
         })
       })
     }
-    return { ...toRefs(data), doLike, edit, del, onItemClick }
+    function getName(id: number) {
+      for (const el of Cfg.userInfo.cate_list) {
+        if (el.id == id) return el.name
+      }
+    }
+    return { ...toRefs(data), doLike, edit, del, onItemClick, getName }
   },
 }
 </script>

@@ -12,14 +12,14 @@
         <div class="list bg-base-100 hide-scrollbar" v-loading="loadingCate">
           <router-link
             v-for="item in cate_list"
-            :class="active_cate_id == item.id ? 'btnactive' : ''"
+            :class="webpublic.active_cate_id == item.id ? 'btnactive' : ''"
             class="bg-base-100"
             :to="`/postlist/${item.id}`"
-            @click="active_cate_id = item.id"
+            @click="webpublic.active_cate_id = item.id"
           >
             <el-button
               link
-              :type="active_cate_id == item.id ? 'primary' : ''"
+              :type="webpublic.active_cate_id == item.id ? 'primary' : ''"
               style="margin: 0 0.5rem"
             >
               <div class="name">{{ item.name }}</div>
@@ -43,9 +43,9 @@
         <div class="container" v-loading="loadingCate">
           <router-link
             class="cate-item"
-            :class="item.id == active_cate_id ? 'active' : ''"
+            :class="item.id == webpublic.active_cate_id ? 'active' : ''"
             v-for="item in cate_list"
-            @click="active_cate_id = item.id"
+            @click="webpublic.active_cate_id = item.id"
             :to="`/postlist/${item.id}`"
           >
             <el-icon>
@@ -76,7 +76,7 @@ export default {
   components: { DetailPlate, BbsItem, LikeIcon, PostPage },
   data() {
     return {
-      set: Cfg.set,
+      ...Cfg,
       isBbsView: false,
       activeBbsItem: <any>null,
       headsize: Cfg.headsize.post,
@@ -84,15 +84,13 @@ export default {
       cate_list: <cateItem[]>[],
       loadingCate: false,
       loadingBbs: false,
-      /**当前板块id */
-      active_cate_id: 0,
       page: 1,
     }
   },
   methods: {
     /** 发布帖子 */
     topicPublish() {
-      this.$router.push(`/publish/${this.active_cate_id}`)
+      this.$router.push(`/publish/${Cfg.webpublic.active_cate_id}`)
     },
 
     /** 初始化板块列表 */
@@ -113,13 +111,14 @@ export default {
             if (res.code == 200) {
               list = list.concat(res.data)
               this.cate_list = list
+              Cfg.userInfo.cate_list = list
             }
 
             if (this.$route.params.cateid) {
-              this.active_cate_id = Number(this.$route.params.cateid)
+              Cfg.webpublic.active_cate_id = Number(this.$route.params.cateid)
             } else {
               if (res.data.length > 0) {
-                this.active_cate_id = list[0].id
+                Cfg.webpublic.active_cate_id = list[0].id
               }
             }
           }
