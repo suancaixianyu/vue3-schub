@@ -396,7 +396,11 @@ class Method {
       }
     }).catch((err: any) => {
       console.log(err)
-      window.open(`${Cfg.config.captchaserver}?url=${Cfg.config.view}`, '_self')
+      ElMessage({
+        type: 'error',
+        message: '社区连接失败，请刷新重试'
+      })
+      // window.open(`${Cfg.config.captchaserver}?url=${Cfg.config.view}`, '_self')
     })
     this.api_get('/mod/global_data_list').then((response) => {
       let roleRes = response.data
@@ -479,7 +483,7 @@ class Method {
   /**
      * 上传图片
      */
-  UploadImage(file: any, isUploadUrl: boolean = false,callback:any = null) {
+  UploadImage(file: any, isUploadUrl: boolean = false, callback: any = null) {
     ElMessage('上传中...')
     // 执行图片上传的逻辑
     const formData = new FormData()
@@ -498,7 +502,7 @@ class Method {
           } else {
             url = `![](${this.getHostUrl(obj.data.src)})`
           }
-          if(callback!=null)callback(url);
+          if (callback != null) callback(url);
         }
       })
       .catch(() => {
