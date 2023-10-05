@@ -43,7 +43,8 @@
           size="small"
           link
           v-if="
-            (userInfo.isLogin && x.uid == userInfo.id) || userInfo.data.isAdmin
+            (userInfo.state.isLogin && x.uid == userInfo.id) ||
+            userInfo.data.isAdmin
           "
         >
           删除

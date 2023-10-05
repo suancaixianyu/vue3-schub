@@ -443,12 +443,6 @@ export default {
         this.reloadPageData()
       },
     )
-    Cfg.maincontainer.height = 'auto'
-    Cfg.maincontainer.overflowY = 'auto'
-  },
-  unmounted() {
-    Cfg.maincontainer.height = 'calc(100vh - 6rem)'
-    Cfg.maincontainer.overflowY = 'hidden'
   },
 }
 </script>

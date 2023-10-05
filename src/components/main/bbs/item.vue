@@ -58,7 +58,7 @@
               link
               class="linkbtn"
               v-if="
-                (userInfo.isLogin && item.uid == userInfo.data.id) ||
+                (userInfo.state.isLogin && item.uid == userInfo.data.id) ||
                 userInfo.data.isAdmin
               "
             >
@@ -71,7 +71,9 @@
                 <template #dropdown class="linkbtn">
                   <el-dropdown-menu class="linkbtn">
                     <el-dropdown-item
-                      v-if="userInfo.isLogin && item.uid == userInfo.data.id"
+                      v-if="
+                        userInfo.state.isLogin && item.uid == userInfo.data.id
+                      "
                       @click="edit(item.id, item.cate_id)"
                       >编辑</el-dropdown-item
                     >

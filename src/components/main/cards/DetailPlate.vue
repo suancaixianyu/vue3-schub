@@ -475,11 +475,6 @@ export default {
     },
   },
 
-  updated() {
-    Cfg.maincontainer.height = Cfg.set.ismobile ? 'auto' : 'calc(100vh - 6rem)'
-    Cfg.maincontainer.overflowY = Cfg.set.ismobile ? 'auto' : 'hidden'
-  },
-
   created() {
     watch(
       () => this.$route.params.id,
@@ -549,8 +544,8 @@ export default {
   padding: 12px 18px;
   justify-self: center;
   flex-direction: column;
-  margin: 20px 5px;
-  height: calc(100vh - 130px);
+  margin: 12px 5px;
+  height: calc(100vh - 6rem);
   overflow-y: auto;
   border-radius: var(--rounded-card);
 }

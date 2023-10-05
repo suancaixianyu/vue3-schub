@@ -23,8 +23,7 @@ export interface api {
 }
 
 export interface userInfoType {
-  /** 未读消息数 */
-  unreadMessage: number
+
   /** mod列表 */
   global_mod_data_list: {
     /** 版本列表 */
@@ -41,22 +40,27 @@ export interface userInfoType {
     server_version_list: any
   }
   /** 全局角色列表 */
-  role_list: any
-  /** 是否已登录 */
-  isLogin: boolean
-  /** 登录窗口是否可见 */
-  isLoginDialogVisible: boolean
+  role_list: any[]
   /** 用户ID */
   id?: string
+  /** 状态 */
+  state: {
+    /** 未读消息数 */
+    unreadMessage: number
+    /** 是否已登录 */
+    isLogin: boolean
+    /** 登录窗口是否可见 */
+    isLoginDialogVisible: boolean
+  }
   /** 用户信息 */
   data: {
-    headurl?: string;
-    nickname?: string;
-    role: any;
-    id: number;
-    signature: string;
-    isAdmin: boolean;
-    background?: string;
+    headurl?: string
+    nickname?: string
+    role: any
+    id: number
+    signature: string
+    isAdmin: boolean
+    background?: string
   }
 }
 

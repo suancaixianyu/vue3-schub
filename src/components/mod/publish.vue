@@ -183,7 +183,7 @@
               @click="submit"
               :loading="isCreating"
               v-if="modId == 0"
-              :disabled="!userInfo.isLogin"
+              :disabled="!userInfo.state.isLogin"
               >创建</el-button
             >
             <el-button
@@ -210,7 +210,7 @@
               :on-success="uploadCover"
               accept="image/png, image/jpeg"
             >
-              <el-button type="primary" :disabled="!userInfo.isLogin"
+              <el-button type="primary" :disabled="!userInfo.state.isLogin"
                 >上传</el-button
               >
             </el-upload>
@@ -497,7 +497,6 @@ export default {
     this.mod_link_type = Method.copyObject(link_type)
     this.mod_flag_list = Method.copyObject(flag_list)
     this.server_version_list = Method.copyObject(server_version_list)
-    Cfg.maincontainer.overflowY = 'auto'
     let p = <any>this.$route.params
     this.modId = p.id
     if (this.modId > 0) {
@@ -578,9 +577,6 @@ export default {
           })
         })
     }
-  },
-  unmounted() {
-    Cfg.maincontainer.overflowY = 'hidden'
   },
 }
 </script>

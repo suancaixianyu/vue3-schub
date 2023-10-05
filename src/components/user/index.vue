@@ -190,12 +190,6 @@ export default {
       userInfo: userInfo,
     }
   },
-  mounted() {
-    Cfg.maincontainer.overflowY = 'auto'
-  },
-  unmounted() {
-    Cfg.maincontainer.overflowY = 'hidden'
-  },
 }
 </script>
 

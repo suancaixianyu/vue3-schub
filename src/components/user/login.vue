@@ -377,12 +377,13 @@ export default {
                       remember: this.remember,
                     })
                   }
-                  userInfo.isLogin = true
-                  userInfo.isLoginDialogVisible = false
+                  userInfo.state.isLogin = true
+                  userInfo.state.isLoginDialogVisible = false
                   response2.data.data.headurl = Method.getHostUrl(
                     response2.data.data.headurl,
                   )
                   userInfo.data = response2.data.data
+                  Method.getInformation()
                 }
               })
             }

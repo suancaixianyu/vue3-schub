@@ -300,11 +300,9 @@ export default {
     if (this.animateTimerId > 0) {
       clearInterval(this.animateTimerId)
     }
-    Cfg.maincontainer.overflowY = 'hidden'
   },
   mounted() {
     this.pullList()
-    Cfg.maincontainer.overflowY = 'auto'
   },
 }
 </script>

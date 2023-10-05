@@ -412,11 +412,11 @@ class Method {
         if (res.code == 200) {
           let q = userInfo;
           res.data.headurl = this.getHostUrl(res.data.headurl);
-          q.isLogin = true;
-          q.isLoginDialogVisible = false;
+          q.state.isLogin = true;
+          q.state.isLoginDialogVisible = false;
           q.data = res.data;
           q.data.isAdmin = /1/g.test(res.data.role)
-          q.unreadMessage = res.unreadMessage
+          q.state.unreadMessage = res.unreadMessage
           Cfg.userInfo = q;
         }
         if (callback != null) callback();

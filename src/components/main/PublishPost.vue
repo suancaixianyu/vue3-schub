@@ -25,7 +25,7 @@
           />
           <el-button
             :loading="isPublishing"
-            :disabled="!userInfo.isLogin"
+            :disabled="!userInfo.state.isLogin"
             class="btn btn-sm"
             title="发帖"
             @click="submit"
@@ -49,7 +49,7 @@
             :on-success="uploadCover"
             accept="image/png, image/jpeg"
           >
-            <el-button type="primary" :disabled="!userInfo.isLogin"
+            <el-button type="primary" :disabled="!userInfo.state.isLogin"
               >上传</el-button
             >
           </el-upload>
@@ -151,13 +151,16 @@ export default {
         let res: api = response.data
         if (res.code == 200) {
           for (const v of res.data) {
+            if (v.id == this.$route.params.chatid) {
+              this.config.cate_id = v.name
+            }
             this.options.push({
               label: v.name,
               id: v.id,
               disabled:
-                (this.userInfo.isLogin && v.id != 5) ||
+                (this.userInfo.state.isLogin && v.id != 5) ||
                 (v.id == 5 &&
-                  this.userInfo.isLogin &&
+                  this.userInfo.state.isLogin &&
                   this.userInfo.data.isAdmin)
                   ? false
                   : true,

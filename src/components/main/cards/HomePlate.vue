@@ -32,7 +32,7 @@
     </el-col>
   </el-container>
   <el-container v-else>
-    <el-main>
+    <el-main style="height: calc(100vh - 4rem); overflow-y: hidden">
       <!-- 板块列表 -->
       <div class="cate-list" :class="isBbsView ? '' : 'active'">
         <div class="cate-item">

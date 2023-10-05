@@ -1,8 +1,16 @@
 <template>
-  <div v-if="set.ismobile" class="bbs-list mobile" :style="{ display: showlist }">
+  <div
+    v-if="set.ismobile"
+    class="bbs-list mobile"
+    :style="{ display: showlist }"
+  >
     <PostPage />
   </div>
-  <div v-else class="bbs-list" :class="isBbsView ? 'item-active' : 'item-detach'">
+  <div
+    v-else
+    class="bbs-list"
+    :class="isBbsView ? 'item-active' : 'item-detach'"
+  >
     <PostPage />
   </div>
 
@@ -12,9 +20,8 @@
   </div>
 </template>
 
-
 <script lang="ts">
-import { watch } from "vue";
+import { watch } from 'vue'
 import PostPage from '@comps/main/PostPage.vue'
 import Cfg from '@/config/config'
 export default {
@@ -23,11 +30,11 @@ export default {
     return {
       isBbsView: false,
       set: Cfg.set,
-      showlist: ''
+      showlist: '',
     }
   },
   components: {
-    PostPage
+    PostPage,
   },
   mounted() {
     watch(
@@ -41,9 +48,9 @@ export default {
           this.showlist = ''
         }
       },
-      { immediate: true }
+      { immediate: true },
     )
-  }
+  },
 }
 </script>
 
@@ -51,7 +58,7 @@ export default {
 .cate-list,
 .bbs-list,
 .bbs-detail {
-  transition: all .3s;
+  transition: all 0.3s;
   display: flex;
   flex-direction: column;
 }
@@ -64,7 +71,6 @@ export default {
 .bbs-detail.active {
   width: 65%;
 }
-
 
 .bbs-list {
   overflow: hidden;
@@ -79,7 +85,7 @@ export default {
 }
 
 .bbs-list.item-detach {
-  width: 50%;
+  width: 80%;
 }
 
 .bbs-detail.active {

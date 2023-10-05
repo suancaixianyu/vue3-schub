@@ -184,7 +184,6 @@
 
 <script lang="ts">
 import Cfg from '@/config/config'
-import { onMounted, onUnmounted } from 'vue'
 import Method from '@/globalmethods'
 import { ElMessage } from 'element-plus'
 export default {
@@ -197,14 +196,6 @@ export default {
     }
   },
   setup() {
-    onMounted(() => {
-      Cfg.maincontainer.overflowY = 'visible'
-      Cfg.maincontainer.height = 'auto'
-    })
-    onUnmounted(() => {
-      Cfg.maincontainer.overflowY = 'hidden'
-      Cfg.maincontainer.height = 'calc(100vh - 2rem)'
-    })
     return {
       userhead:
         'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',

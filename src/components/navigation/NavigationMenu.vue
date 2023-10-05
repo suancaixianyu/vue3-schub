@@ -183,8 +183,8 @@
           <div class="indicator">
             <span
               class="indicator-item badge"
-              v-if="userInfo.unreadMessage != 0"
-              >{{ userInfo.unreadMessage }}</span
+              v-if="userInfo.state.unreadMessage != 0"
+              >{{ userInfo.state.unreadMessage }}</span
             >
             <el-icon :size="28" style="padding: 0 2px">
               <Message />
@@ -268,7 +268,7 @@
         </li> -->
         <!-- 个人中心 -->
         <li>
-          <div v-if="!userInfo.isLogin" @click="showLoginDialog">
+          <div v-if="!userInfo.state.isLogin" @click="showLoginDialog">
             <el-icon :size="25" style="padding: 0 2px">
               <UserFilled />
             </el-icon>
@@ -345,7 +345,7 @@
       </ul>
     </div>
     <el-dialog
-      v-model="userInfo.isLoginDialogVisible"
+      v-model="userInfo.state.isLoginDialogVisible"
       :title="title"
       :draggable="true"
       :fullscreen="set.ismobile"
@@ -424,7 +424,7 @@ export default {
               type: 'success',
               message: res.data.msg,
             })
-            this.userInfo.isLogin = false
+            this.userInfo.state.isLogin = false
             this.$router.push({ path: '/postlist/0' })
           }
         })
@@ -436,7 +436,8 @@ export default {
         })
     },
     showLoginDialog() {
-      this.userInfo.isLoginDialogVisible = !this.userInfo.isLoginDialogVisible
+      this.userInfo.state.isLoginDialogVisible =
+        !this.userInfo.state.isLoginDialogVisible
     },
     /** 主题切换摆烂 */
     bailanle() {
