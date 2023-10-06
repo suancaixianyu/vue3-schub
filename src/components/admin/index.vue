@@ -121,6 +121,14 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="资源管理" name="4">
+        <el-row>
+          <el-button :plain="stat_filter==-1?'plain':''" @click="refreshModList()">全部</el-button>
+          <el-button :plain="stat_filter==4?'plain':''" @click="refreshModList(4)" type="info">未发布</el-button>
+          <el-button :plain="stat_filter==2?'plain':''" @click="refreshModList(2)" type="info">申请发布</el-button>
+          <el-button :plain="stat_filter==3?'plain':''" @click="refreshModList(3)" type="warning">申请发布未通过</el-button>
+          <el-button :plain="stat_filter==1?'plain':''" @click="refreshModList(1)" type="primary">正常</el-button>
+          <el-button :plain="stat_filter==0?'plain':''" @click="refreshModList(0)" type="danger">已锁定</el-button>
+        </el-row>
         <div v-loading="isLoadingData">
           <el-table :data="mod_list" stripe style="width: 100%">
             <el-table-column prop="id" width="80" label="ID" />
@@ -553,6 +561,7 @@ export default {
       page: 1,
       limit: 10,
       total: 0,
+      stat_filter:-1,
       activeItem: {
         member: <memberItem>{},
         bbs: <bbsItem>{},
@@ -891,11 +900,13 @@ export default {
     /**
      * 资源列表刷新
      */
-    refreshModList() {
+    refreshModList(stat_filter=-1) {
       this.isLoadingData = true
+      this.stat_filter = stat_filter;
       let payLoad = {
         page: this.page,
         limit: this.limit,
+        stat: this.stat_filter
       }
       Method.api_post('/admin/mod_list', payLoad).then((response) => {
         this.isLoadingData = false

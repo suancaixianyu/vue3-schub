@@ -139,22 +139,26 @@ class Method {
       case 1:
         obj = {
           name: '正常',
-          type: ''
+          type: 'primary'
         }
         break;
       case 2:
         obj = {
-          name: '审核中',
+          name: '申请发布',
           type: 'info'
         }
         break;
       case 3:
         obj = {
-          name: '审核未通过',
+          name: '申请发布未通过',
           type: 'warning'
         }
         break;
-      default:
+      case 4:
+        obj = {
+          name: '未发布',
+          type: 'info'
+        }
         break;
     }
     return obj

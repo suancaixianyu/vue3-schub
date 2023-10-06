@@ -96,6 +96,9 @@
                     <el-dropdown-item @click="manageFileList(index)">
                       文件列表
                     </el-dropdown-item>
+                    <el-dropdown-item @click="readyPublish(index)">
+                      发布
+                    </el-dropdown-item>
                     <el-dropdown-item @click="handleModify(index)">
                       编辑
                     </el-dropdown-item>
@@ -168,6 +171,16 @@
               >文件列表</el-button
             >
             <el-button
+                v-if="list[scope.$index].stat>=3"
+                :loading="isOperate"
+                size="small"
+                link
+                type="danger"
+                @click="readyPublish(scope.$index)"
+            >发布</el-button
+            >
+            <el-button
+                :loading="isOperate"
               size="small"
               link
               type="danger"
@@ -175,6 +188,7 @@
               >编辑</el-button
             >
             <el-button
+                :loading="isOperate"
               size="small"
               link
               type="danger"
@@ -193,27 +207,10 @@
       />
     </el-main>
   </div>
-  <el-dialog
-    v-model="isDialogVisible"
-    title="提示"
-    width="30%"
-    :fullscreen="set.ismobile"
-    align-center
-  >
-    <div>
-      是否删除资源 <span style="color: #008ac5">{{ modName }}</span
-      >?
-    </div>
+  <dialog-confirm v-model:visible="isDialogVisible" :loading="isDeleting" @submit="deleteMod">
+    <div>是否删除资源 <span style="color: #008ac5">{{ modName }}</span>?</div>
     <el-text type="danger">注意：其下所有文件也会被删除!!!!</el-text>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="isDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="deleteMod" :loading="isDeleting">
-          确认
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+  </dialog-confirm>
 </template>
 
 <script lang="ts">
@@ -223,10 +220,12 @@ import Cfg from '@/config/config'
 import Like from '@comps/icons/Like.vue'
 import { watch } from 'vue'
 import '@/components/admin/index.ts'
+import DialogConfirm from "@comps/dialogs/confirm.vue";
 
 export default {
   name: 'ModPage',
   components: {
+    DialogConfirm,
     Like,
   },
   data() {
@@ -238,6 +237,7 @@ export default {
       isDialogVisible: false,
       activeItemIndex: -1,
       isDeleting: false,
+      isOperate: false,
       page: 1,
       limit: 10,
       total: 0,
@@ -281,6 +281,23 @@ export default {
       this.activeItemIndex = index
       let modId = this.list[index].id
       this.$router.push(`/ModFiles/${modId}`)
+    },
+    readyPublish(index:number){
+      this.activeItemIndex = index;
+      let modId = this.list[index].id;
+      this.isOperate=true;
+      Method.api_post('/mod/ready_publish',{id:modId}).then(r=>{
+        let res = <res>r.data;
+        this.isOperate=false;
+        if(res.code==200){
+          ElMessage('申请发布成功，请等待审核通过');
+        }else{
+          ElMessage('申请发布失败');
+        }
+      }).catch(reason=>{
+        this.isOperate=false;
+        ElMessage(reason);
+      });
     },
     handleModify(index: number) {
       this.activeItemIndex = index

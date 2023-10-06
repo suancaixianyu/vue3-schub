@@ -294,12 +294,12 @@
             >
               <li>
                 <router-link to="/user">
-                  <a href="javascript:;">个人中心</a>
+                  个人中心
                 </router-link>
               </li>
               <li v-if="userInfo.data.isAdmin">
                 <router-link to="/admin">
-                  <a href="javascript:;">后台管理</a>
+                  后台管理
                 </router-link>
               </li>
               <li>
@@ -328,12 +328,12 @@
             >
               <li>
                 <router-link to="/user">
-                  <a href="javascript:;">个人中心</a>
+                  个人中心
                 </router-link>
               </li>
               <li v-if="userInfo.data.isAdmin">
                 <router-link to="/admin">
-                  <a href="javascript:;">网站后台</a>
+                  网站后台
                 </router-link>
               </li>
               <li>
@@ -513,12 +513,14 @@ export default {
     function menuClick(type: string, isopen?: boolean) {
       if (menu[type].value) {
         Object.keys(menu).forEach((el) => {
+          let obj = menu[el];
+          if(obj.value==null)return;
           if (isopen) {
             if (type !== el && menu[el].value) {
-              menu[el].value.removeAttribute('open')
+              obj.value.removeAttribute('open')
             }
           } else {
-            menu[el].value.removeAttribute('open')
+            obj.value.removeAttribute('open')
           }
         })
       }

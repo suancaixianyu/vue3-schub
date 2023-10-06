@@ -145,14 +145,13 @@ export default {
   mounted() {
     let p = <any>this.$route.params
     this.config.id = <number>p.id
-
     Method.api_get('/cate/list')
       .then((response) => {
         let res: api = response.data
         if (res.code == 200) {
           for (const v of res.data) {
             if (v.id == this.$route.params.chatid) {
-              this.config.cate_id = v.name
+              this.config.cate_id = v.id
             }
             this.options.push({
               label: v.name,
