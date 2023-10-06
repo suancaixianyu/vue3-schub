@@ -66,7 +66,7 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            :current-page="page"
+            v-model:current-page="page"
             background
             :page-size="limit"
             layout="prev, pager, next"
@@ -315,12 +315,12 @@
           <el-table-column prop="time" label="注册时间" />
         </el-table>
         <el-pagination
+          :current-page="page"
           background
-          layout="prev, pager, next,total"
-          hide-on-single-page
           :page-size="50"
+          layout="prev, pager, next, total"
           :total="invitationNum"
-          pager-count="7"
+          @current-change="refreshInvitationList"
         />
       </el-tab-pane>
     </el-tabs>
@@ -604,33 +604,39 @@ export default {
       let id = this.mod_list[index].id
       this.$router.push(`/ModDetail/${id}`)
     },
-    refreshInvitationList() {
+
+    refreshInvitationList(page: any) {
+      console.log('调用获取列表')
       Method.api_post('/admin/getInviteCode', {
-        page: this.page,
+        page: page ?? this.page,
         limit: 50,
       })
         .then((res: any) => {
           let obj = res.data
-          for (const el of obj.data) {
-            el.time = Method.formatNormalTime(el.time)
+          if (obj.code == 200) {
+            for (const el of obj.data) {
+              el.time = Method.formatNormalTime(el.time)
+            }
+            this.InvitationList = obj.data
+            this.invitationNum =
+              this.invitationNum == 0 ? obj.sum : this.invitationNum
+            this.page = page ?? this.page
           }
-          this.InvitationList = obj.data
-          this.invitationNum = obj.sum
         })
         .catch((error: any) => {
           console.log(error)
         })
 
-      Method.api_post('/user/my_invitation_code', {})
-        .then((res: any) => {
-          // 打印返回的JSON
+      // Method.api_post('/user/my_invitation_code', {})
+      //   .then((res: any) => {
+      //     // 打印返回的JSON
 
-          const obj = res.data
-          console.log(obj)
-        })
-        .catch((err: any) => {
-          console.log(err)
-        })
+      //     const obj = res.data
+      //     console.log(obj)
+      //   })
+      //   .catch((err: any) => {
+      //     console.log(err)
+      //   })
     },
     showLockItem(type: number, index: number) {
       switch (type) {
@@ -1018,8 +1024,6 @@ export default {
         case 7:
           this.refreshConfigList()
           break
-        case 8:
-          this.refreshInvitationList()
       }
     },
   },

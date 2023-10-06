@@ -304,11 +304,8 @@ export default {
       userInfo: <any>{}, //发帖人的账号信息
       headsize: Cfg.headsize.post,
       set: Cfg.set,
-      isLoading: false,
-      isReplying: false,
       replyType: 0, //0对帖子1对评论
       comments: '',
-      isLoadingReply: false,
       page: 1,
       limit: 10,
       sort: 0, //0最新1最热
@@ -318,6 +315,9 @@ export default {
       txt: '加载更多',
       totalpages: 0, // 总评论页数
       isLoadingMore: false,
+      isLoading: false,
+      isLoadingReply: false,
+      isReplying: false,
     }
   },
   methods: {
@@ -426,6 +426,7 @@ export default {
         })
         .catch((error: { message: any }) => {
           this.isLoading = false
+          this.isLoadingReply = false
           ElMessage({
             type: 'error',
             message: '评论获取失败，请点击刷新按钮重试',

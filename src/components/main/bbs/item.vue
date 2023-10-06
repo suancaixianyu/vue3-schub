@@ -33,7 +33,7 @@
         </router-link>
 
         <ul class="category-counts">
-          <li style="justify-content: flex-start; width: 50%">
+          <li style="justify-content: flex-start; width: 100%">
             <router-link
               :to="`/postlist/${item.cate_id}/`"
               @click="webpublic.active_cate_id = item.cate_id"
@@ -43,7 +43,6 @@
               </el-text>
             </router-link>
           </li>
-          <li style="width: 100%"></li>
           <li>
             <el-button link>
               <icon-view :size="18"></icon-view>{{ viewNum }}
