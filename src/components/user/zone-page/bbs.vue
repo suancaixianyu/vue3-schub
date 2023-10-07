@@ -1,5 +1,8 @@
 <template>
   <div v-if="set.ismobile">
+    <div class="el-row">
+      <el-button plain @click="refreshList">刷新</el-button>
+    </div>
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
       v-for="(x, index) in list"
@@ -68,6 +71,9 @@
     <div v-else>什么也没有~</div>
   </div>
   <div class="tab-container" v-loading="isLoading" v-else>
+    <div class="el-row">
+      <el-button plain @click="refreshList">刷新</el-button>
+    </div>
     <el-table :data="list" stripe style="width: 100%">
       <el-table-column prop="title" label="标题" />
       <el-table-column prop="create_time" label="创建时间" width="180" />

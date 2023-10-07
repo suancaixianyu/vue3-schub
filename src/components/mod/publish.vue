@@ -40,17 +40,6 @@
               />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="服务器版本*" v-if="mod_flag_list[9]?.active">
-            <el-radio-group>
-              <el-checkbox
-                v-model="x.active"
-                :key="x"
-                :label="x.name"
-                v-for="x in server_version_list"
-              />
-            </el-radio-group>
-          </el-form-item>
-
           <el-form-item label="作者/团队">
             <div v-for="x in mod_author" :key="x">
               <el-avatar :src="x.avatar" />
@@ -345,7 +334,6 @@ export default {
       relate_type_list: <any>[],
       game_version_list: <any>[],
       api_version_list: <any>[],
-      server_version_list: <any>[],
       relation: <any>[],
       link: <any>[],
       activeFlags: <boolean[]>[],
@@ -439,9 +427,6 @@ export default {
       this.api_version_list.forEach((x: any) => {
         if (x.active) activeApiId.push(x.id)
       })
-      this.server_version_list.forEach((x: any) => {
-        if (x.active) activeServerId.push(x.id)
-      })
 
       let payLoad = {
         name: this.name,
@@ -486,8 +471,7 @@ export default {
           link_type,
           relate_type,
           api_version,
-          game_version,
-          server_version_list,
+          game_version
         },
       },
     } = Cfg
@@ -496,7 +480,6 @@ export default {
     this.relate_type_list = Method.copyObject(relate_type)
     this.mod_link_type = Method.copyObject(link_type)
     this.mod_flag_list = Method.copyObject(flag_list)
-    this.server_version_list = Method.copyObject(server_version_list)
     let p = <any>this.$route.params
     this.modId = p.id
     if (this.modId > 0) {

@@ -82,6 +82,13 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '文件列表-SC中文社区' },
     component: () => import('@comps/mod/fileList.vue'),
   },
+  /**服务器列表**/
+  {
+    path: '/ModServers/:id',
+    name: 'ModServers',
+    meta: { title: '服务器列表-SC中文社区' },
+    component: () => import('@comps/mod/serverList.vue'),
+  },
   /**管理员**/
   {
     path: '/admin',

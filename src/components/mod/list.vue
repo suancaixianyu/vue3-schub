@@ -265,6 +265,9 @@ export default {
             }
           })
           res.data.forEach((x: any) => {
+            x.likes = Method.getNumber(<number>x.likes);
+            x.downloads = Method.getNumber(<number>x.downloads);
+            x.views = Method.getNumber(<number>x.views);
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
             x.description =

@@ -1,10 +1,8 @@
 <template>
   <div v-if="set.ismobile">
-    <div
-      class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
-      :style="postliststyle"
-    >
+    <div class="el-row">
       <el-button type="primary" plain @click="goPublish">添加模组</el-button>
+      <el-button plain @click="refreshList">刷新</el-button>
     </div>
     <div
       class="card w-96 bg-base-100 shadow-xl --el-box-shadow-lighter card-compact"
@@ -93,8 +91,11 @@
                     <el-dropdown-item @click="copyText(index)">
                       复制链接
                     </el-dropdown-item>
-                    <el-dropdown-item @click="manageFileList(index)">
+                    <el-dropdown-item v-if="list[index].flag_list_arr.indexOf('10')==-1" @click="manageFileList(index)">
                       文件列表
+                    </el-dropdown-item>
+                    <el-dropdown-item v-if="list[index].flag_list_arr.indexOf('10')!=-1" @click="manageServerList(index)">
+                      服务器列表
                     </el-dropdown-item>
                     <el-dropdown-item @click="readyPublish(index)">
                       发布
@@ -118,6 +119,7 @@
   <div class="tab-container" v-else>
     <el-header class="el-header">
       <el-button type="primary" plain @click="goPublish">添加资源</el-button>
+      <el-button plain @click="refreshList">刷新</el-button>
     </el-header>
     <el-main style="padding: 0; width: 100%">
       <el-table :data="list" stripe style="width: 100%" v-loading="isLoading">
@@ -164,11 +166,20 @@
               >复制链接</el-button
             >
             <el-button
+                v-if="list[scope.$index].flag_list_arr.indexOf('10')==-1"
               size="small"
               type="success"
               link
               @click="manageFileList(scope.$index)"
               >文件列表</el-button
+            >
+            <el-button
+                v-if="list[scope.$index].flag_list_arr.indexOf('10')!=-1"
+                size="small"
+                type="success"
+                link
+                @click="manageServerList(scope.$index)"
+            >服务器列表</el-button
             >
             <el-button
                 v-if="list[scope.$index].stat>=3"
@@ -282,6 +293,11 @@ export default {
       let modId = this.list[index].id
       this.$router.push(`/ModFiles/${modId}`)
     },
+    manageServerList(index: number) {
+      this.activeItemIndex = index
+      let modId = this.list[index].id
+      this.$router.push(`/ModServers/${modId}`)
+    },
     readyPublish(index:number){
       this.activeItemIndex = index;
       let modId = this.list[index].id;
@@ -327,12 +343,14 @@ export default {
         if (res.code == 200) {
           if (this.page == 1) this.total = res.sum
           res.data.forEach((x: modItem) => {
-            x.create_time_str = Method.formatNormalTime(<number>x.create_time)
-            x.downloads = Method.getNumber(<number>x.downloads)
-            x.views = Method.getNumber(<number>x.views)
-            x.likes = Method.getNumber(<number>x.likes)
-            x.cover_src = Method.getHostUrl(x.cover_src)
-            x.stat_data = Method.getStat(<number>x.stat)
+            x.create_time_str = Method.formatNormalTime(<number>x.create_time);
+            x.downloads = Method.getNumber(<number>x.downloads);
+            x.views = Method.getNumber(<number>x.views);
+            x.likes = Method.getNumber(<number>x.likes);
+            x.cover_src = Method.getHostUrl(x.cover_src);
+            x.stat_data = Method.getStat(<number>x.stat);
+            x.flag_list_arr = x.flag_list.split(',');
+            console.log(x.flag_list_arr);
           })
           this.list = res.data
         } else {

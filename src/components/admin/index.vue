@@ -122,12 +122,12 @@
       </el-tab-pane>
       <el-tab-pane label="资源管理" name="4">
         <el-row>
-          <el-button :plain="stat_filter==-1?'plain':''" @click="refreshModList()">全部</el-button>
-          <el-button :plain="stat_filter==4?'plain':''" @click="refreshModList(4)" type="info">未发布</el-button>
-          <el-button :plain="stat_filter==2?'plain':''" @click="refreshModList(2)" type="info">申请发布</el-button>
-          <el-button :plain="stat_filter==3?'plain':''" @click="refreshModList(3)" type="warning">申请发布未通过</el-button>
-          <el-button :plain="stat_filter==1?'plain':''" @click="refreshModList(1)" type="primary">正常</el-button>
-          <el-button :plain="stat_filter==0?'plain':''" @click="refreshModList(0)" type="danger">已锁定</el-button>
+          <el-button :plain="stat_filter==-1?'plain':''" @click="setModListFilter()">全部</el-button>
+          <el-button :plain="stat_filter==4?'plain':''" @click="setModListFilter(4)" type="info">未发布</el-button>
+          <el-button :plain="stat_filter==2?'plain':''" @click="setModListFilter(2)" type="info">申请发布</el-button>
+          <el-button :plain="stat_filter==3?'plain':''" @click="setModListFilter(3)" type="warning">申请发布未通过</el-button>
+          <el-button :plain="stat_filter==1?'plain':''" @click="setModListFilter(1)" type="primary">正常</el-button>
+          <el-button :plain="stat_filter==0?'plain':''" @click="setModListFilter(0)" type="danger">已锁定</el-button>
         </el-row>
         <div v-loading="isLoadingData">
           <el-table :data="mod_list" stripe style="width: 100%">
@@ -447,7 +447,7 @@
   <!--审核资源弹窗-->
   <dialog-examine
     title="审核"
-    :visible="dialogShow.examineMod"
+    v-model:visible="dialogShow.examineMod"
     @submit="examineMod"
     :loading-inject="isInjecting"
     :loading-success="isPassing"
@@ -897,12 +897,15 @@ export default {
         }
       })
     },
+    setModListFilter(stat_filter=-1){
+      this.stat_filter = stat_filter;
+      this.refreshModList();
+    },
     /**
      * 资源列表刷新
      */
-    refreshModList(stat_filter=-1) {
+    refreshModList() {
       this.isLoadingData = true
-      this.stat_filter = stat_filter;
       let payLoad = {
         page: this.page,
         limit: this.limit,

@@ -55,6 +55,8 @@ interface modItem {
     /** 封禁原因 */
     reason: null
     create_time_str: string
+    flag_list:string
+    flag_list_arr:string[]
     stat_data: {
         /** 状态名称 */
         name: string
