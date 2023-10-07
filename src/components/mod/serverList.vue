@@ -14,7 +14,7 @@
               size="small"
               link
               type="warning"
-              @click="handleModify(scope.$index, false)"
+              @click="handleModify(scope.$index)"
           >编辑</el-button
           >
           <el-button
