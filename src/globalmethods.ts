@@ -438,7 +438,7 @@ class Method {
   /**
    * 设置页面样式
    */
-  setwebstyle() {
+  setwebstyle(): void {
     let data = this.localGet('webstyle', {})
     if (Object.keys(data).length) {
       for (let key in Cfg.webstyle) {
@@ -485,9 +485,11 @@ class Method {
   }
 
   /**
-     * 上传图片
-     */
-  UploadImage(file: any, isUploadUrl: boolean = false, callback: any = null) {
+   * @param file 文件
+   * @param isUploadUrl 是否为md中的图片
+   * @param callback 回调方法
+   */
+  async UploadImage(file: any, isUploadUrl: boolean = false) {
     ElMessage('上传中...')
     // 执行图片上传的逻辑
     const formData = new FormData()
@@ -506,7 +508,6 @@ class Method {
           } else {
             url = `![](${this.getHostUrl(obj.data.src)})`
           }
-          if (callback != null) callback(url);
         }
       })
       .catch(() => {

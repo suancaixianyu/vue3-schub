@@ -109,7 +109,9 @@ class Cfg {
   }
   maincontainer: { [key: string]: string }
   postliststyle: { [key: string]: string }
+  /** 网页其他缓存 */
   webpublic: {
+    /** 当前编辑的帖子所在的板块id */
     active_cate_id: number
   }
 
@@ -123,7 +125,6 @@ class Cfg {
       // view: 'http://localhost:4000',
       view: 'https://www.schub.top',
       captchaserver: 'https://api.schub.top'
-
     }
     this.webstyle = webstyle
     this.userInfo = userInfo

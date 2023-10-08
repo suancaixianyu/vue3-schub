@@ -102,10 +102,9 @@ export default {
     /**
      * 上传图片
      */
-    UploadImage(file: any) {
-      Method.UploadImage(file, false, (url: string) => {
-        this.config.content += url
-      })
+    async UploadImage(file: any) {
+      let url = await Method.UploadImage(file, false)
+      this.config.content += url
     },
     /**
      * 提交帖子

@@ -91,10 +91,16 @@
                     <el-dropdown-item @click="copyText(index)">
                       复制链接
                     </el-dropdown-item>
-                    <el-dropdown-item v-if="list[index].flag_list_arr.indexOf('10')==-1" @click="manageFileList(index)">
+                    <el-dropdown-item
+                      v-if="list[index].flag_list_arr.indexOf('10') == -1"
+                      @click="manageFileList(index)"
+                    >
                       文件列表
                     </el-dropdown-item>
-                    <el-dropdown-item v-if="list[index].flag_list_arr.indexOf('10')!=-1" @click="manageServerList(index)">
+                    <el-dropdown-item
+                      v-if="list[index].flag_list_arr.indexOf('10') != -1"
+                      @click="manageServerList(index)"
+                    >
                       服务器列表
                     </el-dropdown-item>
                     <el-dropdown-item @click="readyPublish(index)">
@@ -166,7 +172,7 @@
               >复制链接</el-button
             >
             <el-button
-                v-if="list[scope.$index].flag_list_arr.indexOf('10')==-1"
+              v-if="list[scope.$index].flag_list_arr.indexOf('10') == -1"
               size="small"
               type="success"
               link
@@ -174,24 +180,24 @@
               >文件列表</el-button
             >
             <el-button
-                v-if="list[scope.$index].flag_list_arr.indexOf('10')!=-1"
-                size="small"
-                type="success"
-                link
-                @click="manageServerList(scope.$index)"
-            >服务器列表</el-button
+              v-if="list[scope.$index].flag_list_arr.indexOf('10') != -1"
+              size="small"
+              type="success"
+              link
+              @click="manageServerList(scope.$index)"
+              >服务器列表</el-button
             >
             <el-button
-                v-if="list[scope.$index].stat>=3"
-                :loading="isOperate"
-                size="small"
-                link
-                type="danger"
-                @click="readyPublish(scope.$index)"
-            >发布</el-button
+              v-if="list[scope.$index].stat >= 3"
+              :loading="isOperate"
+              size="small"
+              link
+              type="danger"
+              @click="readyPublish(scope.$index)"
+              >发布</el-button
             >
             <el-button
-                :loading="isOperate"
+              :loading="isOperate"
               size="small"
               link
               type="danger"
@@ -199,7 +205,7 @@
               >编辑</el-button
             >
             <el-button
-                :loading="isOperate"
+              :loading="isOperate"
               size="small"
               link
               type="danger"
@@ -218,8 +224,15 @@
       />
     </el-main>
   </div>
-  <dialog-confirm v-model:visible="isDialogVisible" :loading="isDeleting" @submit="deleteMod">
-    <div>是否删除资源 <span style="color: #008ac5">{{ modName }}</span>?</div>
+  <dialog-confirm
+    v-model:visible="isDialogVisible"
+    :loading="isDeleting"
+    @submit="deleteMod"
+  >
+    <div>
+      是否删除资源 <span style="color: #008ac5">{{ modName }}</span
+      >?
+    </div>
     <el-text type="danger">注意：其下所有文件也会被删除!!!!</el-text>
   </dialog-confirm>
 </template>
@@ -231,7 +244,7 @@ import Cfg from '@/config/config'
 import Like from '@comps/icons/Like.vue'
 import { watch } from 'vue'
 import '@/components/admin/index.ts'
-import DialogConfirm from "@comps/dialogs/confirm.vue";
+import DialogConfirm from '@comps/dialogs/confirm.vue'
 
 export default {
   name: 'ModPage',
@@ -298,22 +311,24 @@ export default {
       let modId = this.list[index].id
       this.$router.push(`/ModServers/${modId}`)
     },
-    readyPublish(index:number){
-      this.activeItemIndex = index;
-      let modId = this.list[index].id;
-      this.isOperate=true;
-      Method.api_post('/mod/ready_publish',{id:modId}).then(r=>{
-        let res = <res>r.data;
-        this.isOperate=false;
-        if(res.code==200){
-          ElMessage('申请发布成功，请等待审核通过');
-        }else{
-          ElMessage('申请发布失败');
-        }
-      }).catch(reason=>{
-        this.isOperate=false;
-        ElMessage(reason);
-      });
+    readyPublish(index: number) {
+      this.activeItemIndex = index
+      let modId = this.list[index].id
+      this.isOperate = true
+      Method.api_post('/mod/ready_publish', { id: modId })
+        .then((r) => {
+          let res = <res>r.data
+          this.isOperate = false
+          if (res.code == 200) {
+            ElMessage('申请发布成功，请等待审核通过')
+          } else {
+            ElMessage('申请发布失败')
+          }
+        })
+        .catch((reason) => {
+          this.isOperate = false
+          ElMessage(reason)
+        })
     },
     handleModify(index: number) {
       this.activeItemIndex = index
@@ -343,14 +358,14 @@ export default {
         if (res.code == 200) {
           if (this.page == 1) this.total = res.sum
           res.data.forEach((x: modItem) => {
-            x.create_time_str = Method.formatNormalTime(<number>x.create_time);
-            x.downloads = Method.getNumber(<number>x.downloads);
-            x.views = Method.getNumber(<number>x.views);
-            x.likes = Method.getNumber(<number>x.likes);
-            x.cover_src = Method.getHostUrl(x.cover_src);
-            x.stat_data = Method.getStat(<number>x.stat);
-            x.flag_list_arr = x.flag_list.split(',');
-            console.log(x.flag_list_arr);
+            x.create_time_str = Method.formatNormalTime(<number>x.create_time)
+            x.downloads = Method.getNumber(<number>x.downloads)
+            x.views = Method.getNumber(<number>x.views)
+            x.likes = Method.getNumber(<number>x.likes)
+            x.cover_src = Method.getHostUrl(x.cover_src)
+            x.stat_data = Method.getStat(<number>x.stat)
+            if (x.flag_list) x.flag_list_arr = x.flag_list.split(',')
+            console.log(x.flag_list_arr)
           })
           this.list = res.data
         } else {

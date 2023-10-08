@@ -148,10 +148,9 @@ export default {
     }
   },
   methods: {
-    UploadImage(file: any) {
-      Method.UploadImage(file, false, (url: string) => {
-        this.comments += url
-      })
+    async UploadImage(file: any) {
+      let url = await Method.UploadImage(file, false)
+      this.comments += url
     },
     handleDoubleClick() {
       this.mdEditor = true
