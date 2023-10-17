@@ -59,6 +59,7 @@
               </div>
               <div class="description-line">{{ x.description }}</div>
             </router-link>
+            <div style="height: 100%"></div>
 
             <div class="btn-line">
               <div class="item">
@@ -109,6 +110,7 @@
               }}{{ x.en_name ? `(${x.en_name})` : '' }}
             </div>
             <div class="description-line">{{ x.description }}</div>
+            <div style="height: 100%"></div>
             <div class="btn-line">
               <el-button link>
                 <icon-hot :size="18"></icon-hot>
@@ -384,7 +386,7 @@ export default {
 }
 
 .res-item .description-line {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .res-item .btn-line {
