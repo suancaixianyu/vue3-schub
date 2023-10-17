@@ -264,10 +264,14 @@ export default {
               f.count = x.count
             }
           })
+          // 显示全部tag时屏蔽服务器
+          let shield = (x: any) => /10/.test(x.flag_list) == false
+          if (this.activeFlagId == 0) res.data = res.data.filter(shield)
+
           res.data.forEach((x: any) => {
-            x.likes = Method.getNumber(<number>x.likes);
-            x.downloads = Method.getNumber(<number>x.downloads);
-            x.views = Method.getNumber(<number>x.views);
+            x.likes = Method.getNumber(<number>x.likes)
+            x.downloads = Method.getNumber(<number>x.downloads)
+            x.views = Method.getNumber(<number>x.views)
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
             x.description =

@@ -365,6 +365,7 @@ export default {
             x.cover_src = Method.getHostUrl(x.cover_src)
             x.stat_data = Method.getStat(<number>x.stat)
             if (x.flag_list) x.flag_list_arr = x.flag_list.split(',')
+            else x.flag_list_arr = []
             console.log(x.flag_list_arr)
           })
           this.list = res.data
