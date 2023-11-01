@@ -456,10 +456,8 @@ export default {
       })
     },
     async UploadImage(file: any) {
-      let url = await Method.UploadImage(file)
-      if (url) {
-        this.desc += url
-      }
+      let url = await Method.UploadImage(file, false)
+      this.desc += url
     },
   },
   mounted() {
@@ -471,7 +469,7 @@ export default {
           link_type,
           relate_type,
           api_version,
-          game_version
+          game_version,
         },
       },
     } = Cfg

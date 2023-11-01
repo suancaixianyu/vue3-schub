@@ -7,7 +7,7 @@
           // 'url(https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png)',
           // 'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png)',
           userInfo.data.background == null || userInfo.data.background == ''
-            ? 'url(https://pic.imgdb.cn/item/64eb64df661c6c8e549e1ce8.png)'
+            ? 'url(/image/{2FB1489E-9572-4803-9114-850E04589092}.png)'
             : `url(${userInfo.data.background})`,
         padding: '0',
       }"
@@ -44,9 +44,12 @@
                 </el-text>
               </el-col>
               <el-col :span="20">
-                <el-text class="signature">{{
-                  userInfo.data.signature
-                }}</el-text>
+                <el-text class="signature">
+                  <el-text class="uidtag">
+                    UID: {{ userInfo.data.id }}
+                  </el-text>
+                  {{ userInfo.data.signature }}
+                </el-text>
               </el-col>
             </el-row>
           </el-main>
@@ -60,7 +63,7 @@
           <template #label>
             <span class="custom-tabs-label"
               ><el-icon> <ChatLineSquare /> </el-icon
-              ><span>我的帖子</span></span
+              ><span> 我的帖子 </span></span
             >
           </template>
           <BbsPage v-if="activePages[0]" />
@@ -194,6 +197,13 @@ export default {
 </script>
 
 <style scoped>
+.uidtag {
+  color: black;
+  font-size: 12px;
+  background-color: #909399;
+  border-radius: 6px;
+  padding: 0 4px;
+}
 .padding-0 {
   padding: 0;
 }

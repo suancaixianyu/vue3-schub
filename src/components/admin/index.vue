@@ -615,7 +615,6 @@ export default {
     },
 
     refreshInvitationList(page: any) {
-      console.log('调用获取列表')
       Method.api_post('/admin/getInviteCode', {
         page: page ?? this.page,
         limit: 50,

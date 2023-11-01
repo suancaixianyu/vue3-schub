@@ -2,7 +2,7 @@
   <div class="tab-container">
     <el-header class="el-header" style="flex-wrap: wrap">
       <div class="filter-item hide-scrollbar" ref="flagContainer">
-        <router-link to="/ModPublish/0" style="margin-right: 1rem">
+        <router-link to="/ModPublish/0" style="margin-left: 0.5rem">
           <el-button
             type="primary"
             icon="Plus"
@@ -133,15 +133,26 @@
         </div>
       </router-link>
     </el-container>
+
     <el-pagination
+      v-if="set.ismobile"
+      layout="prev, pager, next"
       :current-page="page"
       :page-size="10"
       :pager-count="5"
       :total="total"
       @current-change="handleCurrentChange"
       style="justify-content: center; margin: 0.5rem 0"
-    >
-    </el-pagination>
+    />
+    <el-pagination
+      v-else
+      :current-page="page"
+      :page-size="10"
+      :pager-count="5"
+      :total="total"
+      @current-change="handleCurrentChange"
+      style="justify-content: center; margin: 0.5rem 0"
+    />
   </div>
 </template>
 
@@ -264,10 +275,14 @@ export default {
               f.count = x.count
             }
           })
+          // 显示全部tag时屏蔽服务器
+          let shield = (x: any) => /10/.test(x.flag_list) == false
+          if (this.activeFlagId == 0) res.data = res.data.filter(shield)
+
           res.data.forEach((x: any) => {
-            x.likes = Method.getNumber(<number>x.likes);
-            x.downloads = Method.getNumber(<number>x.downloads);
-            x.views = Method.getNumber(<number>x.views);
+            x.likes = Method.getNumber(<number>x.likes)
+            x.downloads = Method.getNumber(<number>x.downloads)
+            x.views = Method.getNumber(<number>x.views)
             x.to_link = `/ModDetail/${x.id}`
             x.flag_list = Method.decodeFlagList(x.flag_list)
             x.description =
@@ -336,6 +351,10 @@ export default {
   align-items: center;
   display: flex;
   height: auto;
+  padding: 0;
+}
+.input-with-select {
+  margin: 0 0.5rem;
 }
 
 .el-container {
