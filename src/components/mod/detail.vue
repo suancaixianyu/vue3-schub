@@ -383,7 +383,7 @@ export default {
     downLoad(index: number) {
       this.activeIndex = index
       let item = this.version_list[index]
-      window.location.href = Method.getHostUrl(`/down/${item.id}`)
+      window.location.href = Method.getHostUrl(`/fileload/${item.id}`)
     },
     reloadPageData() {
       this.isLoading = true
