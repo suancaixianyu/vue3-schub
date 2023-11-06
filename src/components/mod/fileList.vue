@@ -71,7 +71,7 @@
       </el-container>
     </div>
   </div>
-  <div class="tab-container" v-else>
+  <div class="tab-container file-list" v-else>
     <el-header class="el-header">
       <el-button type="primary" plain @click="showAddFile">添加文件</el-button>
     </el-header>
@@ -146,6 +146,8 @@
             <el-button type="primary">上传</el-button>
           </el-upload>
         </el-form-item>
+        <div class="tip">说明：游戏内置资源(材质皮肤等)请先在游戏内上传到社区后在此选择关联文件即可，只有这种方式才能在游戏内置社区搜索到资源!!!</div>
+        <div class="tip">此处是二选一，选择关联文件或者上传文件</div>
         <el-form-item label="游戏资源*" v-if="file_name == ''">
           <el-select v-model="inner_name" placeholder="选择类型">
             <el-option :label="r.name" :value="r.id" v-for="r in type_list" />
@@ -158,14 +160,14 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="API版本*">
+        <el-form-item label="API 版本*">
           <el-radio-group v-model="api_type" class="ml-4">
             <el-radio :label="x.id" size="large" v-for="x in api_list">{{
               x.version
             }}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="版本号*">
+        <el-form-item label="版 本 号*">
           <el-input v-model="version" />
         </el-form-item>
         <el-form-item label="更新内容*">
@@ -417,5 +419,13 @@ export default {
 
 .el-col {
   display: flex;
+}
+.tip{
+  color: red;font-weight: bold
+}
+</style>
+<style>
+.el-form-item .el-form-item__label{
+  width: 80px;
 }
 </style>
