@@ -930,7 +930,7 @@ export default {
       this.isLocking = true;
       let payLoad = this.versionConfig;
       payLoad.operate = 2;
-      payLoad.type = this.subActiveTab;
+      payLoad.type = parseInt(this.subActiveTab);
       if (modify) {
         payLoad.id = this.activeItem.version.id;
         payLoad.operate = 1;
@@ -940,7 +940,7 @@ export default {
         this.isLocking = false
         if (res.code == 200) {
           this.dialogShow.addVersion = false
-          this.subActiveTab = payLoad.type;
+          this.subActiveTab = payLoad.type + '';
           this.refreshVersionList();
           ElMessage(modify ? '修改成功' : '添加成功')
         } else {
