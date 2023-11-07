@@ -96,3 +96,10 @@ interface cateItem {
     stat: number
     introduce:string
 }
+interface versionItem{
+    id:number
+    name:string
+    version:string
+    operate:number
+    type:number
+}

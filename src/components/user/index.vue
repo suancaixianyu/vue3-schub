@@ -198,11 +198,12 @@ export default {
 
 <style scoped>
 .uidtag {
-  color: black;
+  color: deepskyblue;
   font-size: 12px;
-  background-color: #909399;
+  background-color: #fff;
   border-radius: 6px;
   padding: 0 4px;
+  border: 1px solid deepskyblue;
 }
 .padding-0 {
   padding: 0;

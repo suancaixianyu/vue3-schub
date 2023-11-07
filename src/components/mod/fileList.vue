@@ -125,7 +125,23 @@
     </template>
     <el-container class="el-container">
       <el-form class="el-form">
-        <el-form-item label="文件选择*" v-if="inner_file_name == ''">
+        <div class="tip">说明：游戏内置资源(材质皮肤等)请先在游戏内上传到社区后在此选择关联文件即可，只有这种方式才能在游戏内置社区搜索到资源!!!</div>
+        <div class="tip">此处是二选一，选择关联文件或者上传文件</div>
+
+        <el-form-item label="游戏资源" v-if="file_name == ''">
+          <el-select v-model="inner_name" placeholder="选择类型">
+            <el-option :label="r.name" :value="r.id" v-for="r in type_list" />
+          </el-select>
+          <el-select v-model="inner_file_name" placeholder="选择文件">
+            <el-option
+                :label="r.name"
+                :value="r.file_id"
+                v-for="r in world_list"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="文件选择" v-if="inner_file_name == ''">
           <el-input disabled v-model="file_name" class="el-input" />
           <el-progress
             class="my-progress"
@@ -146,20 +162,7 @@
             <el-button type="primary">上传</el-button>
           </el-upload>
         </el-form-item>
-        <div class="tip">说明：游戏内置资源(材质皮肤等)请先在游戏内上传到社区后在此选择关联文件即可，只有这种方式才能在游戏内置社区搜索到资源!!!</div>
-        <div class="tip">此处是二选一，选择关联文件或者上传文件</div>
-        <el-form-item label="游戏资源*" v-if="file_name == ''">
-          <el-select v-model="inner_name" placeholder="选择类型">
-            <el-option :label="r.name" :value="r.id" v-for="r in type_list" />
-          </el-select>
-          <el-select v-model="inner_file_name" placeholder="选择文件">
-            <el-option
-              :label="r.name"
-              :value="r.file_id"
-              v-for="r in world_list"
-            />
-          </el-select>
-        </el-form-item>
+
         <el-form-item label="API 版本*">
           <el-radio-group v-model="api_type" class="ml-4">
             <el-radio :label="x.id" size="large" v-for="x in api_list">{{

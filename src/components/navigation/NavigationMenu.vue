@@ -90,8 +90,9 @@
             <details>
               <summary>扩展工具</summary>
               <ul>
-                <li><a href="https://www.suancaixianyu.cn/sss">简谱转换</a></li>
-                <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
+                <li><a href="https://www.yuque.com/u589148/wf2knt" target="_blank">Mod开发教程</a></li>
+                <li><a href="https://www.suancaixianyu.cn/sss" target="_blank">简谱转换</a></li>
+                <li><a href="https://suancaixianyu.com/gpt" target="_blank">白嫖gpt</a></li>
               </ul>
             </details>
           </li>
@@ -154,8 +155,9 @@
               class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52"
               @click="clickDetails(false)"
             >
-              <li><a href="https://www.suancaixianyu.cn/sss">简谱转换</a></li>
-              <li><a href="https://suancaixianyu.com/gpt">白嫖gpt</a></li>
+              <li><a href="https://www.yuque.com/u589148/wf2knt" target="_blank">Mod开发教程</a></li>
+              <li><a href="https://www.suancaixianyu.cn/sss" target="_blank">简谱转换</a></li>
+              <li><a href="https://suancaixianyu.com/gpt" target="_blank">白嫖gpt</a></li>
             </ul>
           </details>
         </li>
@@ -218,12 +220,9 @@
               style="width: 10rem"
               @mouseleave="menuClick('tool')"
             >
-              <li>
-                <a href="http://www.suancaixianyu.cn/sss">简谱转换</a>
-              </li>
-              <li>
-                <a href="https://suancaixianyu.com/gpt">白嫖gpt</a>
-              </li>
+              <li><a href="https://www.yuque.com/u589148/wf2knt" target="_blank">Mod开发教程</a></li>
+              <li><a href="http://www.suancaixianyu.cn/sss" target="_blank">简谱转换</a></li>
+              <li><a href="https://suancaixianyu.com/gpt" target="_blank">白嫖gpt</a></li>
               <li>
                 <router-link to="/setup">
                   <el-icon :size="22">

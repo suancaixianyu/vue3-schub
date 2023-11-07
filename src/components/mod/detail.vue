@@ -222,7 +222,7 @@
           <el-tag v-for="x in api_list">{{ x.name }}</el-tag>
         </div>
         <div class="item">最后编辑: {{ last_modify }}</div>
-        <div class="item">
+        <div class="item" v-if="author_list.length > 0">
           <div>Mod作者/开发团队:</div>
           <el-row class="author-item" v-for="x in author_list">
             <el-avatar shape="circle" :src="x.avatar"></el-avatar>
@@ -232,8 +232,8 @@
             </div>
           </el-row>
         </div>
-        <div class="item">相关链接:</div>
-        <div class="item">
+        <div class="item" v-if="link_list.length > 0">相关链接:</div>
+        <div class="item" v-if="link_list.length > 0">
           <a class="link" :href="x.src" v-for="x in link_list">
             <icon-down v-if="x.id == 1"></icon-down>
             <icon-github v-if="x.id == 2"></icon-github>
@@ -250,14 +250,14 @@
           </a>
         </div>
         <el-tabs class="el-tabs" type="card">
-          <el-tab-pane label="资源介绍">
+          <el-tab-pane v-if="!is_server" label="资源介绍">
             <MdPreview
               editorId="preview-mobile"
               :modelValue="description"
               class="bg-base-200"
             />
           </el-tab-pane>
-          <el-tab-pane label="资源关系">
+          <el-tab-pane v-if="!is_server" label="资源关系">
             <el-collapse v-model="activeRelation">
               <el-collapse-item
                 v-for="(x, i) in relation_list"
@@ -279,7 +279,7 @@
               </el-collapse-item>
             </el-collapse>
           </el-tab-pane>
-          <el-tab-pane label="资源下载">
+          <el-tab-pane v-if="!is_server" label="资源下载">
             <el-table :data="version_list" stripe style="width: 100%">
               <el-table-column prop="version" label="版本" />
               <el-table-column prop="name" label="文件名" />
@@ -300,6 +300,22 @@
                   >
                 </template>
               </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane v-if="is_server" label="服务器介绍">
+            <MdPreview
+                editorId="preview-mobile"
+                :modelValue="description"
+                class="bg-base-200"
+            />
+          </el-tab-pane>
+          <el-tab-pane v-if="is_server" label="服务器地址">
+            <el-table :data="server_list" stripe style="width: 100%">
+              <el-table-column prop="order" width="60" label="序号" />
+              <el-table-column prop="name" label="名称" />
+              <el-table-column prop="ip" label="地址" />
+              <el-table-column prop="version" label="服务器版本" />
+              <el-table-column prop="create_time_str" label="创建时间" />
             </el-table>
           </el-tab-pane>
         </el-tabs>
@@ -366,6 +382,7 @@ export default {
       flag_list: <any>[],
       link_list: <any>[],
       game_list: <any>[],
+      server_list:<any>[],
       api_list: <any>[],
       relation_list: <any>[],
       author_list: <any>[],
@@ -374,6 +391,7 @@ export default {
       mini_name: '',
       en_name: '',
       activeIndex: 0,
+      is_server:false
     }
   },
   methods: {
@@ -411,8 +429,14 @@ export default {
             this.last_modify = Method.formatBbsTime(modInfo.last_modify_time)
             this.link_list = Method.decodeLinkList(modInfo.link_list)
             this.flag_list = Method.decodeFlagList(modInfo.flag_list)
+            this.is_server = this.flag_list.find((x:any)=>{return x.id == 10;}) != null;
             this.api_list = Method.decodeApiVersionList(modInfo.api_list)
             this.game_list = Method.decodeGameVersionList(modInfo.game_list)
+            res.data.server_list.forEach((x:any,i:number)=>{
+              x.create_time_str = Method.formatNormalTime(x.create_time);
+              x.order = i + 1;
+            });
+            this.server_list = res.data.server_list;
             this.version_list = version_list
             this.name = modInfo.name
             this.views = modInfo.views

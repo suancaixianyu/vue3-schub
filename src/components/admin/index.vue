@@ -122,12 +122,41 @@
       </el-tab-pane>
       <el-tab-pane label="资源管理" name="4">
         <el-row>
-          <el-button :plain="stat_filter==-1?'plain':''" @click="setModListFilter()">全部</el-button>
-          <el-button :plain="stat_filter==4?'plain':''" @click="setModListFilter(4)" type="info">未发布</el-button>
-          <el-button :plain="stat_filter==2?'plain':''" @click="setModListFilter(2)" type="info">申请发布</el-button>
-          <el-button :plain="stat_filter==3?'plain':''" @click="setModListFilter(3)" type="warning">申请发布未通过</el-button>
-          <el-button :plain="stat_filter==1?'plain':''" @click="setModListFilter(1)" type="primary">正常</el-button>
-          <el-button :plain="stat_filter==0?'plain':''" @click="setModListFilter(0)" type="danger">已锁定</el-button>
+          <el-button
+            :plain="stat_filter == -1 ? 'plain' : ''"
+            @click="setModListFilter()"
+            >全部</el-button
+          >
+          <el-button
+            :plain="stat_filter == 4 ? 'plain' : ''"
+            @click="setModListFilter(4)"
+            type="info"
+            >未发布</el-button
+          >
+          <el-button
+            :plain="stat_filter == 2 ? 'plain' : ''"
+            @click="setModListFilter(2)"
+            type="info"
+            >申请发布</el-button
+          >
+          <el-button
+            :plain="stat_filter == 3 ? 'plain' : ''"
+            @click="setModListFilter(3)"
+            type="warning"
+            >申请发布未通过</el-button
+          >
+          <el-button
+            :plain="stat_filter == 1 ? 'plain' : ''"
+            @click="setModListFilter(1)"
+            type="primary"
+            >正常</el-button
+          >
+          <el-button
+            :plain="stat_filter == 0 ? 'plain' : ''"
+            @click="setModListFilter(0)"
+            type="danger"
+            >已锁定</el-button
+          >
         </el-row>
         <div v-loading="isLoadingData">
           <el-table :data="mod_list" stripe style="width: 100%">
@@ -286,15 +315,15 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="游戏内置内容管理" name="7">
-        <el-form label-width="120px">
+        <el-form label-width="120px" v-loading="isLoadingData">
           <el-form-item :label="x.comments" v-for="x in site_config_list">
             <el-input rows="20" type="textarea" v-model="x.value" />
           </el-form-item>
           <el-form-item>
             <el-button @click="saveSiteConfig" :loading="isLocking"
               >保存配置</el-button
-            > </el-form-item
-          >s
+            >
+          </el-form-item>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="邀请码管理" name="8">
@@ -331,13 +360,83 @@
           @current-change="refreshInvitationList"
         />
       </el-tab-pane>
+      <el-tab-pane label="游戏版号管理" name="9">
+        <el-tabs type="border-card" v-model="subActiveTab">
+          <el-tab-pane label="游戏版本" name="1">
+            <div v-loading="isLoadingData">
+              <el-button type="primary" plain @click="showAddVersion">添加游戏版本</el-button>
+              <el-table :data="version_list" stripe style="width: 100%">
+                <el-table-column prop="id" width="80" label="ID" />
+                <el-table-column prop="name" label="名称" width="180" />
+                <el-table-column prop="version" label="版本" width="180" />
+                <el-table-column label="操作" fixed="right">
+                  <template #default="scope">
+                    <el-button size="small" link type="primary" @click="showModifyVersion(scope.$index)"                     >编辑</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                v-model:current-page="page"
+                background
+                :page-size="limit"
+                layout="prev, pager, next"
+                :total="total"
+              />
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="API版本" name="2">
+            <div v-loading="isLoadingData">
+              <el-button type="primary" plain @click="showAddVersion">添加API版本</el-button>
+              <el-table :data="version_list" stripe style="width: 100%">
+                <el-table-column prop="id" width="80" label="ID" />
+                <el-table-column prop="name" label="名称" width="180" />
+                <el-table-column prop="version" label="版本" width="180" />
+                <el-table-column label="操作" fixed="right">
+                  <template #default="scope">
+                    <el-button size="small" link type="primary" @click="showModifyVersion(scope.$index)"                     >编辑</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                  v-model:current-page="page"
+                  background
+                  :page-size="limit"
+                  layout="prev, pager, next"
+                  :total="total"
+              />
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="服务器版本" name="3">
+            <div v-loading="isLoadingData">
+              <el-button type="primary" plain @click="showAddVersion">添加服务器版本</el-button>
+              <el-table :data="version_list" stripe style="width: 100%">
+                <el-table-column prop="id" width="80" label="ID" />
+                <el-table-column prop="name" label="名称" width="180" />
+                <el-table-column prop="version" label="版本" width="180" />
+                <el-table-column label="操作" fixed="right">
+                  <template #default="scope">
+                    <el-button size="small" link type="primary" @click="showModifyVersion(scope.$index)"                     >编辑</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                  v-model:current-page="page"
+                  background
+                  :page-size="limit"
+                  layout="prev, pager, next"
+                  :total="total"
+              />
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-tab-pane>
     </el-tabs>
   </div>
   <!---添加/编辑板块弹窗-->
   <dialog-confirm
     :title="cateConfig.id > 0 ? '修改板块' : '添加板块'"
     v-model:visible="dialogShow.addCate"
-    @submit="addCate(false)"
+    @submit="addCate(cateConfig.id > 0)"
     :loading="isLocking"
   >
     <el-form>
@@ -346,6 +445,22 @@
       </el-form-item>
       <el-form-item label="板块简介">
         <el-input type="textarea" v-model="cateConfig.introduce"></el-input>
+      </el-form-item>
+    </el-form>
+  </dialog-confirm>
+  <!---添加/编辑版本弹窗-->
+  <dialog-confirm
+      :title="versionConfig.id > 0 ? '修改版本' : '添加版本'"
+      v-model:visible="dialogShow.addVersion"
+      @submit="addVersion(versionConfig.id > 0)"
+      :loading="isLocking"
+  >
+    <el-form>
+      <el-form-item label="版本名称">
+        <el-input v-model="versionConfig.name" placeholder="名称"></el-input>
+      </el-form-item>
+      <el-form-item label="版本版号">
+        <el-input type="textarea" v-model="versionConfig.version" placeholder="xx.xx.xx"></el-input>
       </el-form-item>
     </el-form>
   </dialog-confirm>
@@ -540,11 +655,18 @@ export default {
         examineMod: false,
         setRole: false,
         addCate: false,
+        addVersion:false
       },
+      subActiveTab: '0',
       cateConfig: <cateItem>{
         id: 0,
         name: '',
         introduce: '',
+      },
+      versionConfig: <versionItem>{
+        id: 0,
+        name: '',
+        version: '',
       },
       gameConfig: {
         name: '',
@@ -561,13 +683,14 @@ export default {
       page: 1,
       limit: 10,
       total: 0,
-      stat_filter:-1,
+      stat_filter: -1,
       activeItem: {
         member: <memberItem>{},
         bbs: <bbsItem>{},
         mod: <modItem>{},
         cate: <cateItem>{},
         role: <roleItem>{},
+        version:<versionItem>{},
       },
       isLoadingData: false,
       isLockAccountDialogVisible: false,
@@ -582,6 +705,7 @@ export default {
       cate_list: <cateItem[]>[],
       site_config_list: <siteConfig[]>[],
       serverInfo: <serverInfo>{},
+      version_list:<versionItem[]>[],
     }
   },
   methods: {
@@ -724,6 +848,14 @@ export default {
         introduce: '',
       }
     },
+    showAddVersion() {
+      this.dialogShow.addVersion = true
+      this.versionConfig = <versionItem>{
+        id: 0,
+        name: '',
+        version: '',
+      }
+    },
     showExamineMode(index: number) {
       this.activeItem.mod = this.mod_list[index]
       this.dialogShow.examineMod = true
@@ -793,6 +925,33 @@ export default {
       this.dialogShow.addCate = true
       this.activeItem.cate = this.cate_list[index]
       this.cateConfig = Method.copyObject(this.activeItem.cate)
+    },
+    addVersion(modify: boolean) {
+      this.isLocking = true;
+      let payLoad = this.versionConfig;
+      payLoad.operate = 2;
+      payLoad.type = this.subActiveTab;
+      if (modify) {
+        payLoad.id = this.activeItem.version.id;
+        payLoad.operate = 1;
+      }
+      Method.api_post('/admin/version_list', payLoad).then((response) => {
+        let res = response.data
+        this.isLocking = false
+        if (res.code == 200) {
+          this.dialogShow.addVersion = false
+          this.subActiveTab = payLoad.type;
+          this.refreshVersionList();
+          ElMessage(modify ? '修改成功' : '添加成功')
+        } else {
+          ElMessage(res.msg)
+        }
+      })
+    },
+    showModifyVersion(index: number) {
+      this.dialogShow.addVersion = true
+      this.activeItem.version = this.version_list[index]
+      this.versionConfig = this.version_list[index];
     },
     lockItem(type: number) {
       this.isLocking = true
@@ -896,9 +1055,9 @@ export default {
         }
       })
     },
-    setModListFilter(stat_filter=-1){
-      this.stat_filter = stat_filter;
-      this.refreshModList();
+    setModListFilter(stat_filter = -1) {
+      this.stat_filter = stat_filter
+      this.refreshModList()
     },
     /**
      * 资源列表刷新
@@ -908,7 +1067,7 @@ export default {
       let payLoad = {
         page: this.page,
         limit: this.limit,
-        stat: this.stat_filter
+        stat: this.stat_filter,
       }
       Method.api_post('/admin/mod_list', payLoad).then((response) => {
         this.isLoadingData = false
@@ -986,6 +1145,26 @@ export default {
       })
     },
     /**
+     * 游戏版号管理
+     */
+    refreshVersionList() {
+      this.isLoadingData = true
+      let payLoad = {
+        page: this.page,
+        limit: this.limit,
+        type:this.subActiveTab,
+        operate:0
+      }
+      Method.api_post('/admin/version_list', payLoad).then((response) => {
+        this.isLoadingData = false
+        let res = response.data
+        if (res.code == 200) {
+          if (this.page == 1) this.total = res.sum
+          this.version_list = res.data
+        }
+      })
+    },
+    /**
      * 配置列表刷新
      */
     refreshConfigList() {
@@ -1037,6 +1216,9 @@ export default {
         case 7:
           this.refreshConfigList()
           break
+        case 9:
+          this.subActiveTab = '1';
+          break
       }
     },
   },
@@ -1048,13 +1230,18 @@ export default {
         this.page = 1
         this.refreshItem(v)
       },
-    )
+    );
+    watch(
+        ()=>this.subActiveTab,
+        ()=>{
+          this.refreshVersionList();
+        });
     watch(
       () => this.page,
       () => {
         this.refreshItem(this.activeTab)
       },
-    )
+    );
   },
   created() {
     this.taskTimerId = 0
