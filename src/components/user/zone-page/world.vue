@@ -199,7 +199,7 @@ export default {
         this.isStartUpload = true;
         this.isUploading = true;
       }
-      this.uploadTaskId = setInterval(task,50);
+      this.uploadTaskId = window.setInterval(task,50);
     },
     addDocument(file_id:number,file_name:string){
       this.isSubmitting=true;
