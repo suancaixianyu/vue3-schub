@@ -16,12 +16,20 @@
       </el-tab-pane>
       <el-tab-pane label="账号管理" name="2">
         <div v-loading="isLoadingData">
+
           <el-input
             v-model="searchUser"
-            placeholder="搜索账号"
+            placeholder="搜索"
             class="input-with-select"
           >
-            <template #prepend> 搜索用户 </template>
+            <template #prepend>
+            <el-select v-model="searchType">
+              <el-option label="搜索用户" value="0"></el-option>
+              <el-option label="搜索昵称" value="1"></el-option>
+              <el-option label="搜索邮箱" value="2"></el-option>
+              <el-option label="搜索登录IP" value="3"></el-option>
+            </el-select>
+            </template>
             <template #append>
               <el-button @click="refreshMemberList" icon="Search" />
             </template>
@@ -640,6 +648,7 @@ export default {
     return {
       set: Cfg.set,
       searchUser: '',
+      searchType:'0',
       yqm: {
         num: 1,
       },
@@ -1038,6 +1047,7 @@ export default {
         page: this.page,
         limit: this.limit,
         search: this.searchUser,
+        search_type: this.searchType,
         order: 0,
         role: 0,
         state: 0,

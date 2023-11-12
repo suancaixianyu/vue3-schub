@@ -109,6 +109,7 @@
     width="60%"
     align-center
     :fullscreen="set.ismobile"
+    :close-on-click-modal="false"
   >
     <template #title>
       <span
@@ -143,21 +144,13 @@
 
         <el-form-item label="文件选择" v-if="inner_file_name == ''">
           <el-input disabled v-model="file_name" class="el-input" />
-          <el-progress
-            class="my-progress"
-            v-if="progress != 0"
-            :percentage="progress"
-            type="circle"
-            :show-text="false"
-            width="28"
-          />
           <el-upload
-            :action="uploadFileSrc"
             v-model="file_name"
-            :on-progress="onProgress"
             :with-credentials="true"
             :show-file-list="false"
-            :on-success="uploadFile"
+            :auto-upload="true"
+            :multiple="false"
+            :http-request="uploadBigFile"
           >
             <el-button type="primary">上传</el-button>
           </el-upload>
@@ -178,6 +171,12 @@
         </el-form-item>
       </el-form>
     </el-container>
+  </el-dialog>
+  <el-dialog :show-close="false"  v-model="isUploading" :title="uploadTitle" :close-on-click-modal="false" :align-center="true">
+    <div v-text="uploadContent"></div>
+    <el-progress :text-inside="true" :stroke-width="26" :percentage="uploadChunkPercent"></el-progress>
+    <div>总进度</div>
+    <el-progress :text-inside="true" :stroke-width="26" :percentage="uploadPercent"></el-progress>
   </el-dialog>
   <el-dialog
     v-model="isDeleteDialogVisible"
@@ -242,25 +241,78 @@ export default {
       page: 1,
       limit: 10,
       total: 0,
+
+      xhr:null as unknown as XMLHttpRequest,
+      isStartUpload:false,
+      isUploading:false,
+      currentUploadChunkIndex:0,
+      totalUploadChunkCount:0,
+      uploadTaskId:<number>0,
+      uploadTitle:'',
+      uploadContent:'',
+      uploadChunkPercent:0,
+      uploadPercent:0,
     }
   },
   methods: {
-    onProgress(event: any) {
-      this.progress = event.percent
-      if (this.progress == 100) {
-        ElMessage('上传成功')
-        setTimeout(() => {
-          this.progress = 0
-        }, 1000)
+    uploadBigFile(option:any){
+      if(this.uploadTaskId>0)return ElMessage('请等待上个文件上传完成');
+      let task = () => {
+        if(this.isStartUpload) return;
+        this.xhr = new XMLHttpRequest();
+        let file = option.file;
+        let size = <number>file.size;
+        let chunkSize = 1024 * 1024 * 2;//2MB
+        this.totalUploadChunkCount = parseInt(Math.ceil(size / chunkSize)+'');
+        this.xhr.onreadystatechange = (e:Event)=>{
+          let target = <any>e.currentTarget;
+          if(target.readyState==4){
+            let r = JSON.parse(target.responseText);
+            if(r.code==200){
+              this.currentUploadChunkIndex+=1;
+              if(this.currentUploadChunkIndex==this.totalUploadChunkCount){
+                //整个文件上传完成
+                clearInterval(this.uploadTaskId);
+                this.isUploading = false;
+                this.uploadTaskId=0;
+                this.currentUploadChunkIndex=0;
+                this.totalUploadChunkCount=0;
+                this.file_id = r.data.file_id;
+                this.file_name = r.data.file_name;
+              }
+            }else{
+              ElMessage(r.msg)
+              //上传出错
+              clearInterval(this.uploadTaskId);
+              this.isUploading = false;
+              this.uploadTaskId=0;
+              this.currentUploadChunkIndex=0;
+              this.totalUploadChunkCount=0;
+            }
+            this.isStartUpload=false;
+          }
+        };
+        this.xhr.upload.addEventListener('progress',(e)=>{
+          let percent = e.total > 0 ? (e.loaded / e.total) * 100 : 0;
+          percent = parseFloat(percent.toFixed(2)+'');
+          this.uploadChunkPercent = percent;
+          this.uploadPercent = this.currentUploadChunkIndex / this.totalUploadChunkCount * 100;
+          this.uploadPercent = parseFloat(this.uploadPercent.toFixed(2))
+          this.uploadTitle = `上传【${file.name}】`;
+          this.uploadContent = `分片 ${this.currentUploadChunkIndex}/${this.totalUploadChunkCount}，进度:${percent.toFixed(2)}%`;
+        })
+        let formData = new FormData();
+        formData.append('file',file.slice(this.currentUploadChunkIndex*chunkSize,(this.currentUploadChunkIndex+1)*chunkSize),file.name);
+        formData.append('which',this.currentUploadChunkIndex+'');
+        formData.append('total',this.totalUploadChunkCount+'');
+        formData.append('chunk_size',chunkSize+'');
+        this.xhr.withCredentials = true;
+        this.xhr.open("POST",Method.getHostUrl('/upload/bigUpload'),true);
+        this.xhr.send(formData);
+        this.isStartUpload = true;
+        this.isUploading = true;
       }
-    },
-    uploadFile(e: any) {
-      if (e.code == 200) {
-        this.file_name = e.data.file_name
-        this.file_id = e.data.file_id
-      } else {
-        ElMessage(e.msg)
-      }
+      this.uploadTaskId = window.setInterval(task,50);
     },
     showAddFile() {
       this.file_name = ''

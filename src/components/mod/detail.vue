@@ -417,6 +417,9 @@ export default {
               x.create_time_str = Method.formatNormalTime(x.create_time)
               x.file_size = Method.getFileSize(x.size)
             })
+            res.data.author_list.forEach((x:any)=>{
+              x.avatar = Method.getHostUrl(x.avatar);
+            });
             this.author_list = res.data.author_list
             this.relation_list = Method.decodeRelationList(res.data.relation)
             this.modRate = modInfo.rate
