@@ -11,6 +11,7 @@
                 :src="item.author.headurl"
                 :size="headsize.post"
                 :alt="item.author.nickname"
+                :style="{ minWidth: headsize.post, minHeight: headsize.post }"
               />
               <el-text
                 class="item-top-title-list time title"
