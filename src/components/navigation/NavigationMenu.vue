@@ -3,11 +3,7 @@
   <div class="navbar bg-base-100" style="padding: 0 8px; height: 64px">
     <!-- 宽屏logo -->
     <div class="flex-1 hidden-xs-only bg-base-100">
-      <router-link
-        v-if="isRootPath"
-        class="btn btn-ghost normal-case text-xl"
-        to="/"
-      >
+      <router-link v-if="isRootPath" class="btn btn-ghost normal-case text-xl" to="/">
         <ScLogo />
         <div class="site-title">SC中文社区</div>
       </router-link>
@@ -37,10 +33,7 @@
       <!-- 抽屉菜单 -->
       <div class="drawer-side">
         <label for="my-drawer" class="drawer-overlay"></label>
-        <ul
-          class="menu p-4 w-80 h-full bg-base-200 text-base-content"
-          style="height: 100%"
-        >
+        <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content" style="height: 100%;width: 55%;">
           <!-- Sidebar content here -->
           <li>
             <router-link to="/">
@@ -90,9 +83,7 @@
             <details>
               <summary>扩展工具</summary>
               <ul>
-                <li><a href="https://www.yuque.com/u589148/wf2knt" target="_blank">Mod开发教程</a></li>
-                <li><a href="https://www.suancaixianyu.cn/sss" target="_blank">简谱转换</a></li>
-                <li><a href="https://suancaixianyu.com/gpt" target="_blank">白嫖gpt</a></li>
+                <ToolUrls />
               </ul>
             </details>
           </li>
@@ -101,28 +92,18 @@
     </div>
 
     <!-- 弹窗菜单 -->
-    <div
-      class="hidden-sm-and-up"
-      ref="menu"
-      v-else
-      @mouseleave="clickDetails(false)"
-      @click="clickDetails(true)"
-    >
+    <div class="hidden-sm-and-up" ref="menu" v-else @mouseleave="clickDetails(false)" @click="clickDetails(true)">
       <summary class="m-1 btn bg-base-100 btn-ghost">
         <ScLogo />
       </summary>
-      <ul
-        v-if="openDetails"
-        class="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-52"
-        style="
+      <ul v-if="openDetails" class="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-52" style="
           box-shadow: var(--el-box-shadow-light);
           border: none;
           width: 10rem;
           border-radius: var(--rounded-btn);
           position: absolute;
           top: 3.5rem;
-        "
-      >
+        ">
         <li>
           <!-- 返回主页 -->
           <router-link to="/">
@@ -151,13 +132,8 @@
         <li>
           <details class="dropdown mb-32">
             <summary class="m-1">外部工具</summary>
-            <ul
-              class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52"
-              @click="clickDetails(false)"
-            >
-              <li><a href="https://www.yuque.com/u589148/wf2knt" target="_blank">Mod开发教程</a></li>
-              <li><a href="https://www.suancaixianyu.cn/sss" target="_blank">简谱转换</a></li>
-              <li><a href="https://suancaixianyu.com/gpt" target="_blank">白嫖gpt</a></li>
+            <ul class="p-2 shadow menu z-[1] bg-base-100 rounded-box w-52" @click="clickDetails(false)">
+              <ToolUrls />
             </ul>
           </details>
         </li>
@@ -168,10 +144,7 @@
     <div class="flex-grow" />
     <div class="flex-none">
       <!-- 右边选项卡 -->
-      <ul
-        class="menu menu-horizontal px-1"
-        style="align-items: center; padding: 0 8px"
-      >
+      <ul class="menu menu-horizontal px-1" style="align-items: center; padding: 0 8px">
         <!-- mod -->
         <li>
           <router-link to="/ModList">
@@ -183,11 +156,8 @@
         <!-- 消息 -->
         <li class="hidden-xs-only" @click="bailanle">
           <div class="indicator">
-            <span
-              class="indicator-item badge"
-              v-if="userInfo.state.unreadMessage != 0"
-              >{{ userInfo.state.unreadMessage }}</span
-            >
+            <span class="indicator-item badge" v-if="userInfo.state.unreadMessage != 0">{{ userInfo.state.unreadMessage
+            }}</span>
             <el-icon :size="28" style="padding: 0 2px">
               <Message />
             </el-icon>
@@ -198,31 +168,20 @@
           <details class="dropdown mb-32 rounded-box" ref="tool">
             <summary class="m-1 btn bg-base-100 btn-ghost">
               <el-icon :size="26">
-                <svg
-                  viewBox="0 0 1024 1024"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="200"
-                  height="200"
-                  style="margin: 0"
-                >
+                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="200" height="200"
+                  style="margin: 0">
                   <path
-                    d="M817.87 556.31h-63.58v-66.24A42.27 42.27 0 0 0 712 447.8h-84.81a42.27 42.27 0 0 0-42.27 42.27v66.24H436.57v-66.24a42.27 42.27 0 0 0-42.27-42.27h-84.83a42.27 42.27 0 0 0-42.27 42.27v66.24h-61.83A22.39 22.39 0 0 0 183 578.7a22.39 22.39 0 0 0 22.39 22.39h61.81v65.55a42.27 42.27 0 0 0 42.27 42.27h84.83a42.27 42.27 0 0 0 42.27-42.27v-65.55h148.36v65.55a42.27 42.27 0 0 0 42.27 42.27H712a42.27 42.27 0 0 0 42.27-42.27v-65.55h63.58a22.39 22.39 0 0 0 22.39-22.39 22.39 22.39 0 0 0-22.37-22.39z m-438.64 95.26h-54.69V505.14h54.69z m317.72 0h-54.69V505.14H697z"
-                  ></path>
+                    d="M817.87 556.31h-63.58v-66.24A42.27 42.27 0 0 0 712 447.8h-84.81a42.27 42.27 0 0 0-42.27 42.27v66.24H436.57v-66.24a42.27 42.27 0 0 0-42.27-42.27h-84.83a42.27 42.27 0 0 0-42.27 42.27v66.24h-61.83A22.39 22.39 0 0 0 183 578.7a22.39 22.39 0 0 0 22.39 22.39h61.81v65.55a42.27 42.27 0 0 0 42.27 42.27h84.83a42.27 42.27 0 0 0 42.27-42.27v-65.55h148.36v65.55a42.27 42.27 0 0 0 42.27 42.27H712a42.27 42.27 0 0 0 42.27-42.27v-65.55h63.58a22.39 22.39 0 0 0 22.39-22.39 22.39 22.39 0 0 0-22.37-22.39z m-438.64 95.26h-54.69V505.14h54.69z m317.72 0h-54.69V505.14H697z">
+                  </path>
                   <path
-                    d="M823 202.58h-90.81v-63.09a71.88 71.88 0  0 0-71.88-71.88H363.19a71.88 71.88 0 0 0-71.88 71.88v63.08h-90.12A137.17 137.17 0 0 0 64 339.75v479a137.17 137.17 0 0 0 137.19 137.14H823a137.17 137.17 0 0 0 137.19-137.17v-479A137.17 137.17 0 0 0 823 202.58z m-474.36-54.1A23.52 23.52 0 0 1 372.17 125h279.16a23.52 23.52 0 0 1 23.52 23.52v54.1h-326.2z m554.23 673.31a76.76 76.76 0 0 1-76.76 76.76h-628a76.76 76.76 0 0 1-76.76-76.76V336.67a76.76 76.76 0 0 1 76.76-76.76h628a76.76 76.76 0 0 1 76.76 76.76z"
-                  ></path>
+                    d="M823 202.58h-90.81v-63.09a71.88 71.88 0  0 0-71.88-71.88H363.19a71.88 71.88 0 0 0-71.88 71.88v63.08h-90.12A137.17 137.17 0 0 0 64 339.75v479a137.17 137.17 0 0 0 137.19 137.14H823a137.17 137.17 0 0 0 137.19-137.17v-479A137.17 137.17 0 0 0 823 202.58z m-474.36-54.1A23.52 23.52 0 0 1 372.17 125h279.16a23.52 23.52 0 0 1 23.52 23.52v54.1h-326.2z m554.23 673.31a76.76 76.76 0 0 1-76.76 76.76h-628a76.76 76.76 0 0 1-76.76-76.76V336.67a76.76 76.76 0 0 1 76.76-76.76h628a76.76 76.76 0 0 1 76.76 76.76z">
+                  </path>
                 </svg>
               </el-icon>
             </summary>
-            <ul
-              class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
-              @click="menuClick('tool')"
-              style="width: 10rem"
-              @mouseleave="menuClick('tool')"
-            >
-              <li><a href="https://www.yuque.com/u589148/wf2knt" target="_blank">Mod开发教程</a></li>
-              <li><a href="http://www.suancaixianyu.cn/sss" target="_blank">简谱转换</a></li>
-              <li><a href="https://suancaixianyu.com/gpt" target="_blank">白嫖gpt</a></li>
+            <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52" @click="menuClick('tool')"
+              style="width: 10rem" @mouseleave="menuClick('tool')">
+              <ToolUrls />
               <li>
                 <router-link to="/setup">
                   <el-icon :size="22">
@@ -272,68 +231,35 @@
               <UserFilled />
             </el-icon>
           </div>
-          <details
-            class="dropdown mb-32 dropdown-end"
-            ref="user"
-            @click="menuClick('user', true)"
-            v-else-if="set.ismobile"
-          >
+          <details class="dropdown mb-32 dropdown-end" ref="user" @click="menuClick('user', true)"
+            v-else-if="set.ismobile">
             <summary class="m-1 btn-ghost">
-              <user-icon
-                :src="userInfo.data.headurl"
-                :alt="userInfo.data.nickname"
-                :size="32"
-              />
+              <user-icon :src="userInfo.data.headurl" :alt="userInfo.data.nickname" :size="32" />
             </summary>
-            <ul
-              class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52"
-              @click="menuClick('user')"
-              @mouseleave="menuClick('user')"
-              style="width: 10rem; box-shadow: var(--el-box-shadow-light)"
-            >
+            <ul class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52" @click="menuClick('user')"
+              @mouseleave="menuClick('user')" style="width: 10rem; box-shadow: var(--el-box-shadow-light)">
               <li>
-                <router-link to="/user">
-                  个人中心
-                </router-link>
+                <router-link to="/user"> 个人中心 </router-link>
               </li>
               <li v-if="userInfo.data.isAdmin">
-                <router-link to="/admin">
-                  后台管理
-                </router-link>
+                <router-link to="/admin"> 后台管理 </router-link>
               </li>
               <li>
                 <a @click="loginOut">退出登录</a>
               </li>
             </ul>
           </details>
-          <details
-            class="dropdown mb-32 dropdown-end"
-            ref="user"
-            @click="menuClick('user', true)"
-            v-else
-          >
+          <details class="dropdown mb-32 dropdown-end" ref="user" @click="menuClick('user', true)" v-else>
             <summary class="m-1 btn-ghost">
-              <user-icon
-                :src="userInfo.data.headurl"
-                :size="32"
-                :alt="userInfo.data.nickname"
-              />
+              <user-icon :src="userInfo.data.headurl" :size="32" :alt="userInfo.data.nickname" />
             </summary>
-            <ul
-              class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52"
-              @click="menuClick('user')"
-              @mouseleave="menuClick('user')"
-              style="width: 10rem; box-shadow: var(--el-box-shadow-light)"
-            >
+            <ul class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52" @click="menuClick('user')"
+              @mouseleave="menuClick('user')" style="width: 10rem; box-shadow: var(--el-box-shadow-light)">
               <li>
-                <router-link to="/user">
-                  个人中心
-                </router-link>
+                <router-link to="/user"> 个人中心 </router-link>
               </li>
               <li v-if="userInfo.data.isAdmin">
-                <router-link to="/admin">
-                  网站后台
-                </router-link>
+                <router-link to="/admin"> 网站后台 </router-link>
               </li>
               <li>
                 <a @click="out">退出登录</a>
@@ -343,12 +269,7 @@
         </li>
       </ul>
     </div>
-    <el-dialog
-      v-model="userInfo.state.isLoginDialogVisible"
-      :title="title"
-      :draggable="true"
-      :fullscreen="set.ismobile"
-    >
+    <el-dialog v-model="userInfo.state.isLoginDialogVisible" :title="title" :draggable="true" :fullscreen="set.ismobile">
       <UserLogin @childEvent="settitle" />
     </el-dialog>
   </div>
@@ -360,6 +281,8 @@ import Method from '@/globalmethods'
 import ScLogo from '@comps/icons/ScLogo.vue'
 import ScMod from '@comps/icons/ScMod.vue'
 import UserLogin from '@comps/user/login.vue'
+import ToolUrls from '@comps/navigation/ToolUrls.vue'
+
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
@@ -377,6 +300,7 @@ export default {
     ScLogo,
     ScMod,
     UserLogin,
+    ToolUrls
   },
   data() {
     return {
@@ -512,8 +436,8 @@ export default {
     function menuClick(type: string, isopen?: boolean) {
       if (menu[type].value) {
         Object.keys(menu).forEach((el) => {
-          let obj = menu[el];
-          if(obj.value==null)return;
+          let obj = menu[el]
+          if (obj.value == null) return
           if (isopen) {
             if (type !== el && menu[el].value) {
               obj.value.removeAttribute('open')
