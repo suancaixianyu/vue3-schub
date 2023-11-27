@@ -4,13 +4,6 @@
 
 使用 `vite` + `vue3` + `typescript` + `element-plus` 重建的社区前端
 
-#### ~~免费招前端开发~~
-
-- ~~工作日：周一至周日~~
-- ~~工作时间：0点到24点~~
-
-~~要求：对此项目感兴趣~~
-
 
 ### 安装
 
@@ -54,3 +47,7 @@
 4. Vue Language Features (Volar)
 5. VS Code for Vite
 6. Prettier - Code formatter
+
+## 赞助支持
+
+爱发电：[https://afdian.net/a/xiaoxianyu712](https://afdian.net/a/xiaoxianyu712)
